@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pole Education · Judge Academy</title>
+  <meta name="description" content="Інтерактивний організаційно-суддівський курс Pole Education">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Pole Education Judge Academy">
+      <span class="brand-mark">PE</span>
+      <span><strong>Pole Education</strong><small>Judge Academy</small></span>
+    </a>
+    <nav class="topnav" aria-label="Головна навігація">
+      <a href="#modules">Модулі</a>
+      <a href="#judge-desk">Judge Desk</a>
+      <a href="#final">Фінальний іспит</a>
+    </nav>
+    <button class="ghost-btn" id="resetProgress" type="button">Скинути прогрес</button>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">POLE EDUCATION · CERTIFIED LEARNING PATH</p>
+        <h1>Організаційно-<br><span>суддівський курс</span></h1>
+        <p class="hero-lead">Сучасна інтерактивна система підготовки суддів та організаторів змагань з пілону й повітряних дисциплін.</p>
+        <div class="hero-actions">
+          <a class="primary-btn" href="#modules">Розпочати навчання</a>
+          <a class="secondary-btn" href="#judge-desk">Відкрити Judge Desk</a>
+        </div>
+        <div class="hero-stats" aria-label="Структура курсу">
+          <div><strong>8</strong><span>навчальних модулів</span></div>
+          <div><strong>8</strong><span>модульних тестів</span></div>
+          <div><strong>1</strong><span>фінальна атестація</span></div>
+        </div>
+      </div>
+
+      <aside class="progress-panel" aria-label="Прогрес курсу">
+        <div class="progress-kicker">YOUR JUDGE PATH</div>
+        <div class="progress-ring" id="progressRing"><span id="progressPercent">0%</span></div>
+        <h2>Ваш прогрес</h2>
+        <p id="progressText">0 з 8 модулів завершено</p>
+        <div class="route" id="routeDots" aria-label="Маршрут модулів"></div>
+        <div class="status-note"><span class="status-dot"></span><span>Фінальний іспит відкривається адміністратором курсу.</span></div>
+      </aside>
+    </section>
+
+    <section class="section" id="modules">
+      <div class="section-head">
+        <div><p class="eyebrow">CURRICULUM</p><h2>8 модулів до впевненого суддівства</h2></div>
+        <p>Кожен модуль завершується тестом. Після успішного проходження модуль отримує статус «Завершено».</p>
+      </div>
+      <div class="module-grid" id="moduleGrid"></div>
+    </section>
+
+    <section class="section desk" id="judge-desk">
+      <div class="section-head light">
+        <div><p class="eyebrow">QUICK REFERENCE</p><h2>Judge Desk</h2></div>
+        <p>Робочий центр судді: ключові теми, швидкі переходи та майбутні тренажери.</p>
+      </div>
+      <div class="desk-grid">
+        <button class="desk-card" data-go="4"><span>01</span><strong>Технічна складність</strong><small>Сила, гнучкість, динаміка, володіння знаряддям</small></button>
+        <button class="desk-card" data-go="5"><span>02</span><strong>Збавки та штрафи</strong><small>Лінії, переходи, контроль, помилки виконання</small></button>
+        <button class="desk-card" data-go="6"><span>03</span><strong>Артистизм</strong><small>Потік, хореографія, музика, харизма, сцена</small></button>
+        <button class="desk-card" data-go="7"><span>04</span><strong>Обов’язкові елементи</strong><small>Критерії, фіксації, уніфікація оцінювання</small></button>
+        <button class="desk-card" data-go="8"><span>05</span><strong>Head Judge</strong><small>Протоколи, конфлікти, апеляції, рішення</small></button>
+        <button class="desk-card disabled" type="button" aria-disabled="true"><span>+</span><strong>Ситуаційні тренажери</strong><small>Додамо на наступному етапі</small></button>
+      </div>
+    </section>
+
+    <section class="section final" id="final">
+      <div class="final-icon">🔒</div>
+      <div class="final-copy">
+        <p class="eyebrow">FINAL CERTIFICATION</p>
+        <h2>Фінальний іспит</h2>
+        <p id="finalMessage">Завершіть усі 8 модулів. Навіть після цього іспит залишатиметься закритим, доки Pole Education не відкриє атестацію.</p>
+      </div>
+      <button class="primary-btn final-btn" id="finalExamBtn" type="button" disabled>Іспит заблоковано</button>
+    </section>
+  </main>
+
+  <footer>
+    <span>© Pole Education · Judge Academy</span>
+    <span>Організаційно-суддівський курс</span>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
