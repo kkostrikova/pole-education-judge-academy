@@ -1,0 +1,1 @@
+Stage Simulator visual assets. Individual image files are embedded directly in module-2.html as data URIs to avoid browser/cache issues on GitHub Pages.
