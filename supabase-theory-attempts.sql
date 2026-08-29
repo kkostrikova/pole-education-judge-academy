@@ -597,3 +597,23 @@ grant execute on function public.pe_claim_theory_review_block(integer) to authen
 grant execute on function public.pe_save_theory_manual_score(uuid,integer,numeric) to authenticated;
 grant execute on function public.pe_publish_theory_result(uuid) to authenticated;
 grant execute on function public.pe_grant_theory_retry(uuid) to authenticated;
+
+create or replace function public.pe_admin_theory_attempts()
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $
+declare
+  v_rows jsonb;
+begin
+  if not public.pe_is_admin() then raise exception 'ADMIN_REQUIRED'; end if;
+  select coalesce(jsonb_agg(to_jsonb(t) order by t.created_at desc),'[]'::jsonb)
+  into v_rows
+  from public.theory_exam_attempts t;
+  return v_rows;
+end;
+$;
+
+grant execute on function public.pe_admin_theory_attempts() to authenticated;
+
