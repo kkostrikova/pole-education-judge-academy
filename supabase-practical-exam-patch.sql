@@ -30,6 +30,8 @@ create table if not exists public.practical_exam_attempts (
   unique(user_id,attempt_number)
 );
 
+alter table public.practical_exam_attempts add column if not exists admin_comment text;
+
 create index if not exists practical_exam_attempts_user_idx on public.practical_exam_attempts(user_id,attempt_number desc);
 
 alter table public.practical_exam_attempts enable row level security;
@@ -198,7 +200,6 @@ grant execute on function public.pe_submit_practical_exam(uuid,jsonb,jsonb,boole
 grant execute on function public.pe_admin_practical_attempts() to authenticated;
 
 
-alter table public.practical_exam_attempts add column if not exists admin_comment text;
 
 create or replace function public.pe_admin_practical_review(p_attempt_id uuid)
 returns jsonb
