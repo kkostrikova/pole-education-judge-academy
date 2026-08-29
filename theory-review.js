@@ -72,29 +72,19 @@ function renderSummary(){
 }
 
 function renderBlocks(){
-  const myBlock=blocks.find(b=>b.admin_user_id===session.user.id);
   blocksEl.innerHTML=blocks.map(block=>{
-    const owner=block.admin_user_id?profiles[block.admin_user_id]:null;
-    const mine=block.admin_user_id===session.user.id;
-    const unassigned=!block.admin_user_id;
     const qs=block.question_numbers||[];
-    const ownerLine=mine
-      ?'<span class="pill ok">Ваш блок</span>'
-      :owner
-        ?'<span class="pill">'+esc(owner.full_name||owner.email||'Адміністратор')+'</span>'
-        :'<span class="pill warn">Не призначено</span>';
-
-    const claim=unassigned&&!myBlock
-      ?'<button class="btn secondary claim-block" data-block="'+block.block_no+'">Взяти цей блок</button>'
-      :'';
-
     const questions=qs.map(q=>{
       const item=OPEN[q]||{text:'Питання '+q};
       const rec=scoreFor(q);
       const current=rec?Number(rec.points):null;
-      const controls=mine&&!attempt.result_published_at
-        ?'<div class="score-choices" data-q="'+q+'">'+[0,.5,1].map(v=>'<button class="score-btn '+(current===v?'active':'')+'" data-p="'+v+'">'+String(v).replace('.',',')+'</button>').join('')+'</div>'
-        :'<div class="readonly-score">'+(current===null?'—':String(current).replace('.',','))+' / 1</div>';
+      const reviewer=rec&&profiles[rec.reviewed_by]
+        ?'<span class="reviewed-by">Остання оцінка: '+esc(profiles[rec.reviewed_by].full_name||profiles[rec.reviewed_by].email||'Адміністратор')+'</span>'
+        :'';
+
+      const controls=!attempt.result_published_at
+        ?'<div class="score-wrap">'+reviewer+'<div class="score-choices" data-q="'+q+'">'+[0,.5,1].map(v=>'<button class="score-btn '+(current===v?'active':'')+'" data-p="'+v+'">'+String(v).replace('.',',')+'</button>').join('')+'</div></div>'
+        :'<div class="score-wrap">'+reviewer+'<div class="readonly-score">'+(current===null?'—':String(current).replace('.',','))+' / 1</div></div>';
 
       return '<article class="review-question">'+
         '<div class="review-qhead"><span>Питання '+q+'</span>'+controls+'</div>'+
@@ -106,17 +96,10 @@ function renderBlocks(){
 
     return '<section class="review-block">'+
       '<div class="review-block-head"><div><div class="mini">'+esc(block.title||('Блок '+block.block_no))+'</div><h2>Питання '+qs.join(' · ')+'</h2></div>'+
-      '<div class="block-meta">'+ownerLine+'<strong>'+blockStatus(block)+'</strong>'+claim+'</div></div>'+
+      '<div class="block-meta"><span class="pill ok">Доступно всім адмінам</span><strong>'+blockStatus(block)+'</strong></div></div>'+
       questions+
     '</section>';
   }).join('');
-
-  document.querySelectorAll('.claim-block').forEach(b=>b.onclick=async()=>{
-    b.disabled=true;
-    const {error}=await client.rpc('pe_claim_theory_review_block',{p_block_no:Number(b.dataset.block)});
-    if(error){alert('Не вдалося закріпити блок: '+error.message);b.disabled=false;return}
-    await reload();
-  });
 
   document.querySelectorAll('.score-btn').forEach(b=>b.onclick=async()=>{
     const wrap=b.closest('.score-choices');
@@ -150,7 +133,7 @@ async function reload(){
   studentName.textContent=student.full_name||student.email||'Студент';
   studentMeta.textContent=(student.email||'')+' · Спроба №'+attempt.attempt_number+' · '+(attempt.status==='timed_out'?'Час вичерпано':attempt.status==='submitted'?'Завершено':'В процесі');
   renderBlocks();renderSummary();
-  msg.textContent='Зміни зберігаються одразу. Можна вийти й повернутися до перевірки пізніше.';
+  msg.textContent='Усі адміністратори можуть редагувати всі відкриті питання. Зміни зберігаються одразу, а остання оцінка замінює попередню.';
   msg.className='message ok';
 }
 
