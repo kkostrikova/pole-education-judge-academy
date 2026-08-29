@@ -169,20 +169,33 @@ on public.theory_manual_scores for select to authenticated
 using (public.pe_is_admin());
 
 -- IMPORTANT:
--- Replace ONLY this function privately in Supabase when the 41-answer key is approved.
--- Do not commit the real key into this public repository.
-create or replace function public.pe_grade_theory_answers(p_answers jsonb)
-returns jsonb
-language sql
-stable
-security definer
-set search_path = public
-as $$
-  select jsonb_build_object(
-    'correct', null,
-    'total', 41
-  );
-$$;
+-- The real 41-answer key is installed privately in Supabase and must NOT be committed here.
+-- This bootstrap creates a placeholder only when the grading function does not already exist,
+-- so rerunning this public setup will not overwrite the private key.
+do $bootstrap$
+begin
+  if not exists (
+    select 1
+    from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname='public'
+      and p.proname='pe_grade_theory_answers'
+      and pg_get_function_identity_arguments(p.oid)='p_answers jsonb'
+  ) then
+    execute $fn$
+      create function public.pe_grade_theory_answers(p_answers jsonb)
+      returns jsonb
+      language sql
+      stable
+      security definer
+      set search_path = public
+      as $body$
+        select jsonb_build_object('correct', null, 'total', 41)
+      $body$
+    $fn$;
+  end if;
+end;
+$bootstrap$;
 
 create or replace function public.pe_theory_state()
 returns jsonb
