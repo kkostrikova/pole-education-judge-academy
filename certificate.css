@@ -1,0 +1,56 @@
+:root{
+  --accent:#51bcc4;
+  --accent-soft:#dff7f7;
+  --ink:#1d1d1f;
+  --muted:#777;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#eee;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+body.gold{--accent:#d0a04b;--accent-soft:#fff2d8}
+.hidden{display:none!important}
+.certificate-controls{position:sticky;top:0;z-index:20;display:flex;justify-content:center;gap:10px;padding:12px;background:#ffffffee;border-bottom:1px solid #ddd;backdrop-filter:blur(10px)}
+.control-btn{border:0;border-radius:999px;padding:11px 17px;text-decoration:none;font-weight:800;font-size:14px;cursor:pointer}
+.control-btn.primary{background:#6e2748;color:white}.control-btn.primary:disabled{opacity:.45;cursor:not-allowed}.control-btn.secondary{background:white;color:#33282d;border:1px solid #ccc}
+.certificate-stage{min-height:100vh;padding:30px;display:grid;place-items:start center}
+.certificate-message{width:min(794px,100%);padding:16px 18px;border-radius:14px;background:white;border:1px solid #ddd;color:#655}
+.certificate-message.ok{background:#edf7f0;color:#2d6b45}.certificate-message.err{background:#fbeaec;color:#8a2d3e}
+
+.certificate{width:min(794px,100%);aspect-ratio:210/297;background:#fff;position:relative;overflow:hidden;padding:44px 58px 34px;box-shadow:0 22px 70px #0002;display:flex;flex-direction:column;align-items:center}
+.pe-logo{width:82px;height:82px;border:1px solid #d8d8d8;border-radius:50%;display:grid;place-items:center;position:relative;margin-bottom:22px;color:#111}
+.pe-logo strong{font:400 38px Georgia,serif;line-height:1}.pe-logo small{font-size:5px;letter-spacing:.18em;margin-top:-17px}.logo-orbit{position:absolute;top:8px;right:-6px;font-size:5px;letter-spacing:.22em;transform:rotate(64deg);color:#777}
+.accent-lines{width:100%;display:grid;gap:4px}.accent-lines i{height:2px;background:linear-gradient(90deg,transparent 3%,var(--accent) 22%,var(--accent) 78%,transparent 97%);opacity:.8}.accent-lines i:nth-child(2){opacity:.45}.accent-lines i:nth-child(3){opacity:.25}
+.certificate h1{font:300 clamp(42px,7vw,62px)/1.05 Arial,sans-serif;letter-spacing:.015em;margin:12px 0 10px;text-align:center}
+.bottom-lines{margin-bottom:14px}
+.watermark{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);width:390px;height:390px;display:grid;place-items:center;color:#e8e8e8;pointer-events:none}
+.watermark-ring{position:absolute;inset:0;border:2px solid #efefef;border-radius:50%}
+.watermark strong{font:400 112px Georgia,serif;color:#efefef}.wm-top,.wm-bottom{position:absolute;letter-spacing:.46em;font-size:13px;color:#eeeeee}.wm-top{top:24px;transform:rotate(12deg)}.wm-bottom{bottom:33px}
+.cert-copy{position:relative;z-index:2;text-align:center;width:100%;margin-top:0}
+.confirm{font-size:16px;color:#777;margin:0 0 26px}
+.holder-name{font:300 31px/1.2 Arial,sans-serif;color:var(--accent);margin:0 auto 32px;max-width:620px}
+.course-line{font-size:18px;line-height:1.45;color:#666;margin:0 0 18px}.course-line b{font-weight:400;color:var(--accent)}
+.school-line,.qualification{font-size:17px;line-height:1.45;color:#666;margin:0 0 20px}.qualification{margin-top:26px}
+.authors{position:relative;z-index:2;margin-top:auto;width:100%;display:grid;grid-template-columns:1fr 150px 1fr;gap:16px;align-items:end}
+.author{text-align:center}.author-name{font-size:13px;line-height:1.25;color:#666;margin-bottom:10px}.author-name span{font-size:12px}
+.author-photo{width:104px;height:104px;margin:0 auto;border-radius:50%;border:1px solid #ddd;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,var(--accent-soft),#f4f4f4 68%);color:var(--accent);font:400 29px Georgia,serif}
+.signature{margin-top:14px;font:italic 21px "Segoe Script","Brush Script MT",cursive;color:#555;transform:rotate(-7deg)}
+.authors-title{text-align:center;color:var(--accent);font-size:13px;padding-bottom:56px}
+.certificate-footer{position:relative;z-index:3;width:100%;display:grid;grid-template-columns:1fr auto;align-items:end;margin-top:18px;padding-top:13px;border-top:1px solid #eee}
+.certificate-ident{display:grid;gap:3px;text-align:left;color:#777;font-size:10px}.certificate-ident strong{font-size:13px;color:#555;letter-spacing:.08em}
+.qr-wrap{display:flex;align-items:center;gap:8px;text-decoration:none;color:#777}.qr-wrap small{font-size:8px;max-width:60px;line-height:1.2}.qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:58px!important;height:58px!important;display:block}
+body.gold .certificate{background:linear-gradient(180deg,#fff 0%,#fffefb 100%)}
+body.gold .author-photo{box-shadow:0 0 0 4px #fff7e7}
+
+@media(max-width:700px){
+  .certificate-stage{padding:12px}.certificate{padding:28px 28px 24px}
+  .pe-logo{width:66px;height:66px}.pe-logo strong{font-size:30px}
+  .holder-name{font-size:24px;margin-bottom:24px}.course-line,.school-line,.qualification{font-size:14px}
+  .authors{grid-template-columns:1fr 90px 1fr}.authors-title{font-size:10px}.author-photo{width:74px;height:74px}.signature{font-size:15px}.author-name{font-size:10px}
+  .watermark{width:300px;height:300px}.watermark strong{font-size:90px}
+}
+@page{size:A4 portrait;margin:0}
+@media print{
+  body{background:#fff}
+  .certificate-controls,.certificate-message{display:none!important}
+  .certificate-stage{padding:0;display:block;min-height:0}
+  .certificate{width:210mm;height:297mm;aspect-ratio:auto;box-shadow:none;margin:0;padding:12mm 15mm 9mm}
+}
