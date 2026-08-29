@@ -100,20 +100,68 @@ const theoryPassedFinal=Boolean(theoryAttempt?.result_published&&theoryAttempt?.
 const practicalPassedFinal=Boolean(practicalAttempt?.result_published&&practicalAttempt?.passed);
 const courseComplete=modulesPassedCount===8&&theoryPassedFinal&&practicalPassedFinal;
 let issuedCertificate=null;
+let certificatePayload=null;
 if(courseComplete){
   const certResp=await client.rpc('pe_student_certificate');
   if(!certResp.error){
-    const payload=Array.isArray(certResp.data)?certResp.data[0]:certResp.data;
-    if(payload?.eligible)issuedCertificate=payload;
+    certificatePayload=Array.isArray(certResp.data)?certResp.data[0]:certResp.data;
+    if(certificatePayload?.eligible)issuedCertificate=certificatePayload;
   }
 }
 const certificateBtn=document.getElementById('certificateBtn');
+const certificateNameBox=document.getElementById('certificateNameBox');
+const certificateNameInput=document.getElementById('certificateNameInput');
+const confirmCertificateNameBtn=document.getElementById('confirmCertificateNameBtn');
+const certificateNameMessage=document.getElementById('certificateNameMessage');
+
 if(issuedCertificate){
   certStatus.textContent=issuedCertificate.certificate_type==='gold'?'Золотий':'Сертифікат';
   if(certificateBtn){certificateBtn.classList.remove('hidden');certificateBtn.textContent=issuedCertificate.certificate_type==='gold'?'Відкрити золотий сертифікат':'Відкрити сертифікат';}
+  if(certificateNameBox)certificateNameBox.classList.add('hidden');
+}else if(courseComplete&&certificatePayload?.name_confirmation_required){
+  certStatus.textContent='Підтвердьте ім’я';
+  if(certificateBtn)certificateBtn.classList.add('hidden');
+  if(certificateNameBox){
+    certificateNameBox.classList.remove('hidden');
+    certificateNameInput.value=certificatePayload.suggested_name||profile?.full_name||session.user.user_metadata?.full_name||session.user.user_metadata?.name||'';
+  }
 }else{
   certStatus.textContent=courseComplete?'Сертифікат готується':(cert?.[0]?.final_status||'У процесі');
   if(certificateBtn)certificateBtn.classList.add('hidden');
+  if(certificateNameBox)certificateNameBox.classList.add('hidden');
+}
+
+if(confirmCertificateNameBtn){
+  confirmCertificateNameBtn.onclick=async()=>{
+    const value=(certificateNameInput.value||'').trim().replace(/\s+/g,' ');
+    if(value.length<2){
+      certificateNameMessage.textContent='Вкажіть ім’я так, як воно має бути надруковане на сертифікаті.';
+      certificateNameMessage.className='message err';
+      return;
+    }
+    if(!confirm('Підтвердити написання «'+value+'» для сертифіката? Після видачі сертифіката ім’я буде зафіксовано.'))return;
+    confirmCertificateNameBtn.disabled=true;
+    certificateNameMessage.textContent='Зберігаємо ім’я та формуємо сертифікат…';
+    certificateNameMessage.className='message';
+    const {error:nameErr}=await client.rpc('pe_confirm_certificate_name',{p_certificate_name:value});
+    if(nameErr){
+      certificateNameMessage.textContent='Не вдалося підтвердити ім’я: '+nameErr.message;
+      certificateNameMessage.className='message err';
+      confirmCertificateNameBtn.disabled=false;
+      return;
+    }
+    const certResp=await client.rpc('pe_student_certificate');
+    const payload=!certResp.error?(Array.isArray(certResp.data)?certResp.data[0]:certResp.data):null;
+    if(certResp.error||!payload?.eligible){
+      certificateNameMessage.textContent='Ім’я збережено, але сертифікат поки не сформовано. Оновіть сторінку або зверніться до адміністратора.';
+      certificateNameMessage.className='message err';
+      confirmCertificateNameBtn.disabled=false;
+      return;
+    }
+    certificateNameMessage.textContent='Готово. Сертифікат сформовано.';
+    certificateNameMessage.className='message ok';
+    setTimeout(()=>location.reload(),450);
+  };
 }
 
 const ctitle=document.getElementById('courseCompletionTitle');
@@ -128,11 +176,17 @@ if(ctitle&&ctext&&cbadge&&csteps){
   ];
   csteps.innerHTML=items.map(x=>'<span class="pill '+(x[1]?'ok':'warn')+'">'+(x[1]?'✓ ':'')+x[0]+' · '+x[2]+'</span>').join('');
   if(courseComplete){
-    ctitle.textContent=issuedCertificate?.certificate_type==='gold'?'Курс завершено з відзнакою':'Курс успішно завершено';
-    ctext.textContent=issuedCertificate?.certificate_type==='gold'
-      ?'Усі вимоги виконані на високому рівні: модульні тести та фінальна теорія — понад 80%, практична частина відзначена адміністраторами. Вам видано золотий сертифікат.'
-      :'Усі 8 модулів, теоретичний і практичний іспити успішно завершені. Вам доступний сертифікат Pole Education Judge Academy.';
-    cbadge.textContent=issuedCertificate?.certificate_type==='gold'?'З відзнакою':'Завершено';cbadge.className='pill '+(issuedCertificate?.certificate_type==='gold'?'gold':'ok');
+    if(certificatePayload?.name_confirmation_required&&!issuedCertificate){
+      ctitle.textContent='Курс завершено — підтвердьте ім’я';
+      ctext.textContent='Усі вимоги курсу виконані. Перед видачею сертифіката перевірте ПІБ нижче та підтвердьте точне написання.';
+      cbadge.textContent='Потрібне підтвердження';cbadge.className='pill warn';
+    }else{
+      ctitle.textContent=issuedCertificate?.certificate_type==='gold'?'Курс завершено з відзнакою':'Курс успішно завершено';
+      ctext.textContent=issuedCertificate?.certificate_type==='gold'
+        ?'Усі вимоги виконані на високому рівні: модульні тести та фінальна теорія — понад 80%, практична частина відзначена адміністраторами. Вам видано золотий сертифікат.'
+        :'Усі 8 модулів, теоретичний і практичний іспити успішно завершені. Вам доступний сертифікат Pole Education Judge Academy.';
+      cbadge.textContent=issuedCertificate?.certificate_type==='gold'?'З відзнакою':'Завершено';cbadge.className='pill '+(issuedCertificate?.certificate_type==='gold'?'gold':'ok');
+    }
   }else{
     ctitle.textContent='Навчання триває';
     ctext.textContent='Курс буде завершено автоматично, коли всі 8 модулів та обидві частини фінальної атестації матимуть статус «Складено».';
