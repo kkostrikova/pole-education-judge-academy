@@ -17,6 +17,61 @@ as $$
   );
 $$;
 
+create table if not exists public.exam_access_settings (
+  exam_key text primary key check (exam_key in ('theory','practical')),
+  is_open boolean not null default false,
+  updated_at timestamptz not null default now(),
+  updated_by uuid references auth.users(id)
+);
+
+insert into public.exam_access_settings(exam_key,is_open)
+values ('theory',false),('practical',false)
+on conflict (exam_key) do nothing;
+
+alter table public.exam_access_settings enable row level security;
+
+drop policy if exists exam_access_read_authenticated on public.exam_access_settings;
+create policy exam_access_read_authenticated
+on public.exam_access_settings for select to authenticated
+using (true);
+
+create or replace function public.pe_exam_access_state(p_exam_key text)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $
+declare
+  v_open boolean;
+begin
+  if auth.uid() is null then raise exception 'AUTH_REQUIRED'; end if;
+  select is_open into v_open
+  from public.exam_access_settings
+  where exam_key=p_exam_key;
+  if not found then raise exception 'EXAM_NOT_FOUND'; end if;
+  return jsonb_build_object('exam_key',p_exam_key,'is_open',v_open);
+end;
+$;
+
+create or replace function public.pe_set_exam_access(p_exam_key text,p_open boolean)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $
+declare
+  v_row public.exam_access_settings%rowtype;
+begin
+  if not public.pe_is_admin() then raise exception 'ADMIN_REQUIRED'; end if;
+  update public.exam_access_settings
+  set is_open=p_open,updated_at=now(),updated_by=auth.uid()
+  where exam_key=p_exam_key
+  returning * into v_row;
+  if not found then raise exception 'EXAM_NOT_FOUND'; end if;
+  return to_jsonb(v_row);
+end;
+$;
+
 create table if not exists public.theory_exam_retry_grants (
   user_id uuid primary key references auth.users(id) on delete cascade,
   extra_attempts integer not null default 0 check (extra_attempts >= 0),
@@ -221,6 +276,9 @@ declare
   v_allowed integer := 1;
 begin
   if v_uid is null then raise exception 'AUTH_REQUIRED'; end if;
+  if not coalesce((select is_open from public.exam_access_settings where exam_key='theory'),false) then
+    raise exception 'EXAM_CLOSED';
+  end if;
 
   select * into v_active
   from public.theory_exam_attempts
@@ -529,6 +587,8 @@ end;
 $$;
 
 grant execute on function public.pe_is_admin() to authenticated;
+grant execute on function public.pe_exam_access_state(text) to authenticated;
+grant execute on function public.pe_set_exam_access(text,boolean) to authenticated;
 grant execute on function public.pe_theory_state() to authenticated;
 grant execute on function public.pe_start_theory_exam() to authenticated;
 grant execute on function public.pe_save_theory_exam_progress(uuid,jsonb,jsonb) to authenticated;
