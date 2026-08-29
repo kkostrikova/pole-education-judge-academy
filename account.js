@@ -99,7 +99,22 @@ if(practicalAttempt){
 const theoryPassedFinal=Boolean(theoryAttempt?.result_published&&theoryAttempt?.passed);
 const practicalPassedFinal=Boolean(practicalAttempt?.result_published&&practicalAttempt?.passed);
 const courseComplete=modulesPassedCount===8&&theoryPassedFinal&&practicalPassedFinal;
-certStatus.textContent=courseComplete?'Курс завершено':(cert?.[0]?.final_status||'У процесі');
+let issuedCertificate=null;
+if(courseComplete){
+  const certResp=await client.rpc('pe_student_certificate');
+  if(!certResp.error){
+    const payload=Array.isArray(certResp.data)?certResp.data[0]:certResp.data;
+    if(payload?.eligible)issuedCertificate=payload;
+  }
+}
+const certificateBtn=document.getElementById('certificateBtn');
+if(issuedCertificate){
+  certStatus.textContent=issuedCertificate.certificate_type==='gold'?'Золотий':'Сертифікат';
+  if(certificateBtn){certificateBtn.classList.remove('hidden');certificateBtn.textContent=issuedCertificate.certificate_type==='gold'?'Відкрити золотий сертифікат':'Відкрити сертифікат';}
+}else{
+  certStatus.textContent=courseComplete?'Сертифікат готується':(cert?.[0]?.final_status||'У процесі');
+  if(certificateBtn)certificateBtn.classList.add('hidden');
+}
 
 const ctitle=document.getElementById('courseCompletionTitle');
 const ctext=document.getElementById('courseCompletionText');
@@ -113,9 +128,11 @@ if(ctitle&&ctext&&cbadge&&csteps){
   ];
   csteps.innerHTML=items.map(x=>'<span class="pill '+(x[1]?'ok':'warn')+'">'+(x[1]?'✓ ':'')+x[0]+' · '+x[2]+'</span>').join('');
   if(courseComplete){
-    ctitle.textContent='Курс успішно завершено';
-    ctext.textContent='Усі 8 модулів, теоретичний і практичний іспити успішно завершені. Ви виконали всі вимоги Pole Education Judge Academy. Наступний етап — сертифікат.';
-    cbadge.textContent='Завершено';cbadge.className='pill ok';
+    ctitle.textContent=issuedCertificate?.certificate_type==='gold'?'Курс завершено з відзнакою':'Курс успішно завершено';
+    ctext.textContent=issuedCertificate?.certificate_type==='gold'
+      ?'Усі вимоги виконані на високому рівні: модульні тести та фінальна теорія — понад 80%, практична частина відзначена адміністраторами. Вам видано золотий сертифікат.'
+      :'Усі 8 модулів, теоретичний і практичний іспити успішно завершені. Вам доступний сертифікат Pole Education Judge Academy.';
+    cbadge.textContent=issuedCertificate?.certificate_type==='gold'?'З відзнакою':'Завершено';cbadge.className='pill '+(issuedCertificate?.certificate_type==='gold'?'gold':'ok');
   }else{
     ctitle.textContent='Навчання триває';
     ctext.textContent='Курс буде завершено автоматично, коли всі 8 модулів та обидві частини фінальної атестації матимуть статус «Складено».';
