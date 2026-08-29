@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Практичний іспит · Pole Education</title>
-  <link rel="stylesheet" href="practical.css">
+  <link rel="stylesheet" href="practical.css?v=20260829-practical3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=20260829-practical1"></script>
-  <script src="auth-guard.js?v=20260829-practical1"></script>
+  <script src="config.js?v=20260829-practical3"></script>
+  <script src="auth-guard.js?v=20260829-practical3"></script>
 </head>
 <body>
 <header class="exam-topbar">
@@ -30,7 +30,7 @@
 
     <div class="notice">
       <strong>Як проходить іспит</strong>
-      <p>Після старту таймер не зупиняється. Відкрийте відеоматеріали в окремій вкладці, самостійно визначте, який із трьох виступів оцінюватимете за кожним протоколом, і заповніть електронні бланки. Фото або файли протоколів завантажувати не потрібно.</p>
+      <p>Після старту таймер не зупиняється. Усі три відео відтворюються прямо на платформі. Самостійно визначте, який виступ оцінюватимете за кожним із трьох протоколів. Протокол технічної складності автоматично змінюється відповідно до обраного снаряда.</p>
     </div>
 
     <label class="agree"><input type="checkbox" id="agreeRules"> <span>Я ознайомився/лась з умовами практичного іспиту.</span></label>
@@ -43,23 +43,16 @@
 
   <section class="exam-card hidden" id="examCard">
     <div class="exam-head">
-      <div>
-        <p class="eyebrow">PRACTICAL JUDGING</p>
-        <h2>Три виступи · три протоколи</h2>
-      </div>
+      <div><p class="eyebrow">PRACTICAL JUDGING</p><h2>Три виступи · три протоколи</h2></div>
       <div class="save-state" id="saveState">Зміни зберігаються автоматично</div>
     </div>
 
-    <section class="video-source">
-      <div>
-        <p class="eyebrow">VIDEO SOURCE</p>
-        <h3>Відеоматеріали практичного іспиту</h3>
-        <p>У вихідній формі Pole Education ці три виступи подані окремими відео. Відкрийте їх у новій вкладці — таймер на платформі продовжить працювати.</p>
+    <section class="video-section">
+      <div class="section-title">
+        <div><p class="eyebrow">VIDEO REVIEW</p><h3>Відеоматеріали практичного іспиту</h3></div>
       </div>
-      <a class="btn primary" id="videoSourceLink" target="_blank" rel="noopener">Відкрити три відео ↗</a>
+      <div class="performance-grid" id="performanceGrid"></div>
     </section>
-
-    <div class="performance-grid" id="performanceGrid"></div>
 
     <section class="mapping-card">
       <div class="section-title">
@@ -69,7 +62,7 @@
       <div class="mapping-grid">
         <label><span>Технічна складність</span><select id="mapTechnique"><option value="">Оберіть виступ</option></select></label>
         <label><span>Артистизм та хореографія</span><select id="mapArtistry"><option value="">Оберіть виступ</option></select></label>
-        <label><span>Штрафи</span><select id="mapPenalties"><option value="">Оберіть виступ</option></select></label>
+        <label><span>Штрафи за виконання</span><select id="mapPenalties"><option value="">Оберіть виступ</option></select></label>
       </div>
       <p class="mapping-note" id="mappingNote">Кожен із трьох виступів має бути використаний рівно один раз.</p>
     </section>
@@ -83,36 +76,35 @@
 
       <article class="protocol-panel" id="panelTechnique">
         <div class="protocol-head">
-          <div><p class="eyebrow">PROTOCOL 01</p><h3>Технічна складність</h3><p id="techVideoLabel">Спочатку оберіть виступ.</p></div>
-          <div class="protocol-total"><span>ВСЬОГО</span><strong id="techTotal">0 / 60</strong></div>
+          <div><p class="eyebrow">PROTOCOL 01</p><h3 id="techProtocolTitle">Протокол оцінки технічної складності</h3><p id="techVideoLabel">Спочатку оберіть виступ.</p></div>
+          <div class="protocol-total"><span>ВСЬОГО</span><strong id="techTotal">0</strong></div>
         </div>
-        <div class="score-table" id="techniqueTable"></div>
-        <label class="comment-field"><span>Загальний коментар судді</span><textarea id="techniqueComment" placeholder="Короткий професійний коментар до оцінки…"></textarea></label>
+        <div class="protocol-scale">Оцінювання: 0 — відсутність критерії; 0,5–1,5 — погано; 2–3 — задовільно; 3,5–4,5 — добре; 5 — чудово.</div>
+        <div class="protocol-table" id="techniqueTable"></div>
       </article>
 
       <article class="protocol-panel hidden" id="panelArtistry">
         <div class="protocol-head">
-          <div><p class="eyebrow">PROTOCOL 02</p><h3>Артистизм та хореографія</h3><p id="artVideoLabel">Спочатку оберіть виступ.</p></div>
-          <div class="protocol-total"><span>ВСЬОГО</span><strong id="artTotal">0 / 40</strong></div>
+          <div><p class="eyebrow">PROTOCOL 02</p><h3>Протокол оцінки артистичної та хореографічної постановки</h3><p id="artVideoLabel">Спочатку оберіть виступ.</p></div>
+          <div class="protocol-total"><span>ПІСЛЯ ЗНИЖЕНЬ</span><strong id="artTotal">0 / 60</strong></div>
         </div>
-        <div class="score-table" id="artistryTable"></div>
-        <label class="comment-field"><span>Загальний коментар судді</span><textarea id="artistryComment" placeholder="Короткий професійний коментар до оцінки…"></textarea></label>
+        <div class="protocol-scale">Оцінювання: 0 — відсутність критерії; 0,5–1,5 — погано; 2–3 — задовільно; 3,5–4,5 — добре; 5 — чудово.</div>
+        <div class="protocol-table" id="artistryTable"></div>
       </article>
 
       <article class="protocol-panel hidden" id="panelPenalties">
         <div class="protocol-head">
-          <div><p class="eyebrow">PROTOCOL 03</p><h3>Штрафи</h3><p id="penVideoLabel">Спочатку оберіть виступ.</p></div>
-          <div class="protocol-total penalty"><span>СУМА ШТРАФІВ</span><strong id="penaltyTotal">0</strong></div>
+          <div><p class="eyebrow">PROTOCOL 03</p><h3>Протокол оцінки чистоти виконання, штрафи</h3><p id="penVideoLabel">Спочатку оберіть виступ.</p></div>
+          <div class="protocol-total penalty"><span>ЗАГАЛЬНЕ ЗНИЖЕННЯ</span><strong id="penaltyTotal">0</strong></div>
         </div>
-        <div class="penalty-table" id="penaltyTable"></div>
-        <label class="comment-field"><span>Загальний коментар судді</span><textarea id="penaltiesComment" placeholder="За потреби поясніть ключові штрафи…"></textarea></label>
+        <div class="protocol-table" id="penaltyTable"></div>
       </article>
     </section>
 
     <section class="submit-card">
       <div>
         <h3>Завершення практичного іспиту</h3>
-        <p id="submitHint">Призначте три різні відео та заповніть протоколи.</p>
+        <p id="submitHint">Призначте три різні відео та заповніть три протоколи.</p>
       </div>
       <button class="btn primary" id="submitBtn">Надіслати практичний іспит</button>
     </section>
@@ -122,17 +114,12 @@
     <p class="eyebrow">PRACTICAL · SUBMITTED</p>
     <div class="result-badge">✓</div>
     <h1>Практичний іспит передано на перевірку</h1>
-    <p>Електронні протоколи збережено. Після перевірки адміністратором статус практичної атестації з’явиться у вашому особистому кабінеті.</p>
-    <div class="result-stats">
-      <div><strong id="resultTech">—</strong><span>технічна складність</span></div>
-      <div><strong id="resultArt">—</strong><span>артистизм та хореографія</span></div>
-      <div><strong id="resultPen">—</strong><span>штрафи</span></div>
-    </div>
+    <p>Адміністратори переглянуть три заповнені протоколи. За практичну частину не нараховується окремий екзаменаційний бал: після перевірки буде встановлено статус «Складено» або «Не складено», а за потреби — додано коментар.</p>
     <a class="btn primary" href="account.html">До особистого кабінету</a>
   </section>
 </main>
 
 <footer>© Pole Education · Judge Academy · Practical Exam</footer>
-<script src="practical.js?v=20260829-practical1"></script>
+<script src="practical.js?v=20260829-practical3"></script>
 </body>
 </html>
