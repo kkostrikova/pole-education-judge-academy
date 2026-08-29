@@ -65,7 +65,7 @@ function renderSummary(){
       publishHint.textContent='Відкриті питання перевірені. Очікуємо підключення автоматичного ключа на сервері.';
       publishBtn.disabled=true;
     }else{
-      publishHint.textContent='Усі блоки перевірені. Можна опублікувати фінальний відсоток студенту.';
+      publishHint.textContent='Усі відкриті питання перевірені. Натисніть «Надіслати результат» — фінальний відсоток одразу з’явиться в кабінеті студента.';
       publishBtn.disabled=false;
     }
   }
