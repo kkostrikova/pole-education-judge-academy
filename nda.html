@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Договір про нерозповсюдження · Pole Education</title>
+<link rel="stylesheet" href="nda.css?v=20260829-nda1">
+</head>
+<body>
+<header class="nda-topbar">
+  <a class="nda-brand" href="index.html"><span class="mark">PE</span><span><strong>Pole Education</strong><small>Judge Academy · NDA</small></span></a>
+  <button class="ghost" id="logoutBtn" type="button">Вийти</button>
+</header>
+
+<main class="nda-shell">
+  <section class="nda-intro">
+    <div>
+      <p class="eyebrow">BEFORE COURSE ACCESS</p>
+      <h1>Договір про нерозповсюдження інформації</h1>
+      <p>Перед початком навчання прочитайте договір та підтвердьте згоду власноручним підписом на екрані.</p>
+    </div>
+    <div class="nda-status" id="ndaStatus">Перевіряємо статус…</div>
+  </section>
+
+  <section class="nda-card">
+    <div class="document-head">
+      <div>
+        <span>Версія документа</span>
+        <strong id="agreementVersion">—</strong>
+      </div>
+      <div>
+        <span>Акаунт</span>
+        <strong id="accountEmail">—</strong>
+      </div>
+    </div>
+
+    <div class="agreement-text" id="agreementText">Завантаження договору…</div>
+  </section>
+
+  <section class="nda-card signing-card" id="signingCard">
+    <div>
+      <p class="eyebrow">ELECTRONIC HANDWRITTEN SIGNATURE</p>
+      <h2>Підпис сторони, яка одержує</h2>
+      <p class="muted">ПІБ підставлено з вашого акаунта. Перевірте написання перед підписанням.</p>
+    </div>
+
+    <label class="field-label">
+      <span>ПІБ</span>
+      <input class="field" id="ndaFullName" maxlength="160" autocomplete="name">
+    </label>
+
+    <div class="signature-block">
+      <div class="signature-head">
+        <span>Поставте підпис мишкою або пальцем</span>
+        <button class="link-btn" id="clearSignature" type="button">Очистити</button>
+      </div>
+      <canvas id="signatureCanvas" width="900" height="260" aria-label="Поле для власноручного підпису"></canvas>
+      <small>Підпис зберігається разом з вашим акаунтом, email, датою/часом та версією цього договору.</small>
+    </div>
+
+    <label class="consent">
+      <input type="checkbox" id="ndaConsent">
+      <span>Я прочитав(ла) договір, розумію його умови та погоджуюсь їх дотримуватися.</span>
+    </label>
+
+    <div class="sign-actions">
+      <button class="primary" id="signNdaBtn" type="button" disabled>Підписати та розпочати навчання</button>
+      <a class="secondary" href="index.html">Повернутися</a>
+    </div>
+    <div class="message hidden" id="ndaMessage"></div>
+  </section>
+
+  <section class="nda-card signed-card hidden" id="signedCard">
+    <div class="signed-check">✓</div>
+    <div>
+      <p class="eyebrow">AGREEMENT SIGNED</p>
+      <h2>Договір підписано</h2>
+      <p id="signedMeta"></p>
+      <div class="sign-actions">
+        <a class="primary" id="continueBtn" href="index.html">Продовжити навчання</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js?v=20260829-nda1"></script>
+<script src="nda.js?v=20260829-nda1"></script>
+</body>
+</html>
