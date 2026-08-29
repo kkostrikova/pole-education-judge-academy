@@ -1,0 +1,7 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Мій кабінет · Pole Education</title><link rel="stylesheet" href="auth.css"></head><body><div class="shell"><main class="dashboard">
+<div class="dashhead"><div><div class="mini">POLE EDUCATION · JUDGE ACADEMY</div><h1>Мій кабінет</h1><div id="profileLine" style="color:#756a70"></div></div><div class="actions"><a class="btn secondary" href="index.html">До курсу</a><a class="btn secondary hidden" id="adminLink" href="admin.html">Адмін-панель</a><button class="btn primary" id="logoutBtn">Вийти</button></div></div>
+<div class="cards"><div class="card"><strong id="modulesDone">0/8</strong><span>завершені модулі</span></div><div class="card"><strong id="theoryScore">—</strong><span>теоретичний іспит</span></div><div class="card"><strong id="practicalStatus">—</strong><span>практична атестація</span></div><div class="card"><strong id="certStatus">—</strong><span>сертифікація</span></div></div>
+<section class="section"><h2>Результати модулів</h2><div class="tablewrap"><table class="table"><thead><tr><th>Модуль</th><th>Бали</th><th>Спроба</th><th>Статус</th></tr></thead><tbody id="moduleBody"></tbody></table></div></section>
+<div id="accountMessage" class="message" style="margin-top:18px">Завантаження…</div>
+</main></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="account.js"></script></body></html>
