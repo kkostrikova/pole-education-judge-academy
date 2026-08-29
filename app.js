@@ -13,6 +13,30 @@
   const state = JSON.parse(localStorage.getItem(key) || '{}');
   const grid = document.getElementById('moduleGrid');
   let signedIn = Boolean(window.PE_AUTH_STATE?.signedIn);
+  let examOpen = false;
+  let examAccessLoaded = false;
+  let accessClient = null;
+  try {
+    const cfg = window.PE_CONFIG || {};
+    if (window.supabase && cfg.supabaseUrl && cfg.supabasePublishableKey) {
+      accessClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabasePublishableKey);
+    }
+  } catch (_) {}
+
+  async function refreshExamAccess(){
+    examAccessLoaded = false;
+    if(!signedIn || !accessClient){ examOpen=false; examAccessLoaded=true; renderProgress(); return; }
+    try{
+      const {data,error}=await accessClient.rpc('pe_exam_access_state',{p_exam_key:'theory'});
+      if(error) throw error;
+      const state=Array.isArray(data)?data[0]:data;
+      examOpen=Boolean(state?.is_open);
+    }catch(_){
+      examOpen=false;
+    }
+    examAccessLoaded=true;
+    renderProgress();
+  }
 
   function isDone(n){ return Boolean(state[n]?.passed); }
   function isUnlocked(n){ if(!signedIn) return false; const cfg = window.PE_CONFIG || {}; return Boolean(cfg.reviewMode) || n === 1 || isDone(n - 1); }
@@ -49,9 +73,31 @@
     document.getElementById('progressText').textContent = `${done} з 8 модулів завершено`;
     document.getElementById('progressRing').style.setProperty('--p', `${percent*3.6}deg`);
     document.getElementById('routeDots').innerHTML = modules.map(m => `<i class="${isDone(m.n)?'done':''}" title="Модуль ${m.n}"></i>`).join('');
-    const cfg = window.PE_CONFIG || {}, btn = document.getElementById('finalExamBtn'), msg = document.getElementById('finalMessage');
-    if(done === 8 && cfg.finalExamOpen && cfg.finalExamUrl){btn.disabled=false;btn.textContent='Розпочати фінальний іспит';btn.addEventListener('click',()=>location.href=cfg.finalExamUrl,{once:true});msg.textContent='Усі модулі завершено. Pole Education відкрила фінальну атестацію.'}
-    else if(done === 8) msg.textContent='Усі 8 модулів завершено. Очікуйте, доки Pole Education відкриє фінальний іспит.';
+    const cfg = window.PE_CONFIG || {}, btn = document.getElementById('finalExamBtn'), msg = document.getElementById('finalMessage'), icon=document.querySelector('.final-icon');
+    const eligible = done === 8 || Boolean(cfg.reviewMode);
+    btn.onclick = null;
+    if(!examAccessLoaded){
+      btn.disabled=true;btn.textContent='Перевіряємо доступ…';
+      msg.textContent='Перевіряємо, чи відкритий фінальний іспит.';
+      if(icon)icon.textContent='⏳';
+    } else if(examOpen && eligible && cfg.finalExamUrl){
+      btn.disabled=false;btn.textContent='Розпочати фінальний іспит';
+      btn.onclick=()=>location.href=cfg.finalExamUrl;
+      msg.textContent=done===8
+        ?'Усі модулі завершено. Фінальний іспит відкритий.'
+        :'Фінальний іспит відкритий адміністратором для тестування.';
+      if(icon)icon.textContent='✓';
+    } else if(!examOpen){
+      btn.disabled=true;btn.textContent='Іспит заблоковано';
+      msg.textContent=done===8
+        ?'Усі 8 модулів завершено. Очікуйте, доки адміністратор відкриє фінальний іспит.'
+        :'Фінальний іспит зараз закритий адміністратором.';
+      if(icon)icon.textContent='🔒';
+    } else {
+      btn.disabled=true;btn.textContent='Іспит заблоковано';
+      msg.textContent='Спочатку завершіть усі 8 модулів.';
+      if(icon)icon.textContent='🔒';
+    }
   }
   document.querySelectorAll('.desk-card[data-go]').forEach(btn => btn.addEventListener('click', () => {
     const n=Number(btn.dataset.go);
@@ -64,6 +110,7 @@
     signedIn = Boolean(e.detail?.signedIn);
     renderModules();
     renderProgress();
+    refreshExamAccess();
   });
   window.addEventListener('pe-progress-updated', e => {
     const fresh = e.detail || JSON.parse(localStorage.getItem(key) || '{}');
@@ -72,5 +119,5 @@
     renderModules();
     renderProgress();
   });
-  renderModules();renderProgress();
+  renderModules();renderProgress();if(signedIn)refreshExamAccess();
 })();
