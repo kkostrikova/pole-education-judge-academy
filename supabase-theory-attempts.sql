@@ -59,12 +59,11 @@ alter table public.theory_exam_attempts add column if not exists result_publishe
 create index if not exists theory_exam_attempts_user_idx
   on public.theory_exam_attempts(user_id, attempt_number desc);
 
+-- Review blocks are visual grouping only. Every admin may edit every open question.
 create table if not exists public.theory_review_blocks (
   block_no integer primary key check (block_no between 1 and 3),
   title text not null,
-  question_numbers integer[] not null,
-  admin_user_id uuid unique references auth.users(id),
-  assigned_at timestamptz
+  question_numbers integer[] not null
 );
 
 insert into public.theory_review_blocks(block_no,title,question_numbers)
@@ -390,40 +389,12 @@ returns jsonb
 language plpgsql
 security definer
 set search_path = public
-as $$
-declare
-  v_uid uuid:=auth.uid();
-  v_block public.theory_review_blocks%rowtype;
-  v_other integer;
+as $
 begin
   if not public.pe_is_admin() then raise exception 'ADMIN_REQUIRED'; end if;
-
-  select block_no into v_other
-  from public.theory_review_blocks
-  where admin_user_id=v_uid and block_no<>p_block_no
-  limit 1;
-
-  if found then raise exception 'ADMIN_ALREADY_HAS_BLOCK_%',v_other; end if;
-
-  select * into v_block
-  from public.theory_review_blocks
-  where block_no=p_block_no
-  for update;
-
-  if not found then raise exception 'BLOCK_NOT_FOUND'; end if;
-  if v_block.admin_user_id is not null and v_block.admin_user_id<>v_uid then
-    raise exception 'BLOCK_ALREADY_ASSIGNED';
-  end if;
-
-  update public.theory_review_blocks
-  set admin_user_id=v_uid,
-      assigned_at=coalesce(assigned_at,now())
-  where block_no=p_block_no
-  returning * into v_block;
-
-  return to_jsonb(v_block);
+  return jsonb_build_object('block_no',p_block_no,'editable_by_all_admins',true);
 end;
-$$;
+$;
 
 create or replace function public.pe_save_theory_manual_score(
   p_attempt_id uuid,
@@ -449,8 +420,6 @@ begin
   limit 1;
 
   if not found then raise exception 'QUESTION_NOT_MANUAL'; end if;
-  if v_block.admin_user_id is null then raise exception 'BLOCK_NOT_ASSIGNED'; end if;
-  if v_block.admin_user_id<>v_uid then raise exception 'NOT_YOUR_BLOCK'; end if;
 
   select * into v_attempt
   from public.theory_exam_attempts
