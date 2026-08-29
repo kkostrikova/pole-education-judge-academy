@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Сертифікат · Pole Education</title>
-<link rel="stylesheet" href="certificate.css?v=20260829-cert1">
+<link rel="stylesheet" href="certificate.css?v=20260829-certlang1">
 </head>
 <body>
 <div class="certificate-controls">
   <a href="account.html" class="control-btn secondary">← Мій кабінет</a>
+  <div class="language-switch hidden" id="languageSwitch"><button class="control-btn secondary active" id="langUkBtn" type="button">UA</button><button class="control-btn secondary" id="langEnBtn" type="button">EN</button></div>
   <button id="printBtn" class="control-btn primary" disabled>Зберегти / PDF</button>
 </div>
 
@@ -17,28 +18,28 @@
 
   <article id="certificate" class="certificate hidden" aria-label="Сертифікат Pole Education">
     <div class="pe-logo">
-      <span class="logo-orbit">ОНЛАЙН ШКОЛА</span>
+      <span class="logo-orbit" id="logoOrbit">ОНЛАЙН ШКОЛА</span>
       <strong>PE</strong>
       <small>pole education</small>
     </div>
 
     <div class="accent-lines top-lines"><i></i><i></i><i></i></div>
-    <h1>СЕРТИФІКАТ</h1>
+    <h1 id="certificateTitle">СЕРТИФІКАТ</h1>
     <div class="accent-lines bottom-lines"><i></i><i></i><i></i></div>
 
     <div class="watermark">
       <div class="watermark-ring"></div>
-      <span class="wm-top">ОНЛАЙН ШКОЛА</span>
+      <span class="wm-top" id="watermarkTop">ОНЛАЙН ШКОЛА</span>
       <strong>PE</strong>
       <span class="wm-bottom">pole education</span>
     </div>
 
     <section class="cert-copy">
-      <p class="confirm">підтверджує успішне проходження</p>
+      <p class="confirm" id="confirmText">підтверджує що</p>
       <div id="holderName" class="holder-name">Ім’я Прізвище</div>
       <p class="course-line"><span id="courseTitle">Суддівсько-організаційного курсу</span><br><b id="examPhrase">та складання іспиту</b></p>
-      <p class="school-line">від онлайн школи Pole Education</p>
-      <p class="qualification">Кваліфікація: <span id="qualification">пілон, повітряні кільця, повітряні полотна</span><br>Тривалість курсу: <span id="durationHours">10</span> годин</p>
+      <p class="school-line" id="schoolText">від онлайн школи Pole Education</p>
+      <p class="qualification"><span id="qualificationLabel">Кваліфікація:</span> <span id="qualification">пілон, повітряні кільця, повітряні полотна</span><br><span id="durationLabel">Тривалість курсу:</span> <span id="durationHours">10</span> <span id="hoursLabel">годин</span></p>
     </section>
 
     <section class="authors">
@@ -47,7 +48,7 @@
         <div class="author-photo monogram">LS</div>
         <div class="signature">Lana Sova</div>
       </div>
-      <div class="authors-title">АВТОРИ/AUTHORS</div>
+      <div class="authors-title" id="authorsTitle">АВТОРИ/AUTHORS</div>
       <div class="author">
         <div class="author-name">Катерина Кострікова<br><span>Kateryna Kostrikova</span></div>
         <div class="author-photo monogram">KK</div>
@@ -57,13 +58,13 @@
 
     <section class="certificate-footer">
       <div class="certificate-ident">
-        <span>№ сертифіката</span>
+        <span id="certificateNoLabel">№ сертифіката</span>
         <strong id="certificateNo">—</strong>
         <span id="issueDate">—</span>
       </div>
       <a id="verifyLink" class="qr-wrap" href="#" target="_blank" rel="noopener">
         <div id="qrCode"></div>
-        <small>Перевірити сертифікат</small>
+        <small id="verifyLabel">Перевірити сертифікат</small>
       </a>
     </section>
   </article>
@@ -72,6 +73,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script src="config.js?v=20260829-cert1"></script>
-<script src="certificate.js?v=20260829-cert3"></script>
+<script src="certificate.js?v=20260829-certlang1"></script>
 </body>
 </html>
