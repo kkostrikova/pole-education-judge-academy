@@ -70,14 +70,14 @@ function renderMedia(q){
   els.mediaSlot.classList.remove('hidden');
   if(q.media.kind==='video'&&q.media.url){
     const id=(q.media.url.match(/[?&]v=([^&]+)/)||q.media.url.match(/youtu\.be\/([^?&]+)/)||[])[1]||'';
-    els.mediaSlot.innerHTML='<strong>Відеозавдання</strong><span>'+esc(q.media.label)+'</span>'+(id?'<div class="youtube-wrap"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?rel=0" title="'+esc(q.media.label)+'" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><a class="youtube-link" href="'+esc(q.media.url)+'" target="_blank" rel="noopener">Відкрити відео на YouTube ↗</a>':'');
+    els.mediaSlot.innerHTML='<span>'+esc(q.media.label)+'</span>'+(id?'<div class="youtube-wrap"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?rel=0" title="'+esc(q.media.label)+'" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><a class="youtube-link" href="'+esc(q.media.url)+'" target="_blank" rel="noopener">Відкрити відео на YouTube ↗</a>':'');
     return;
   }
   if(q.media.kind==='image'&&q.media.url){
-    els.mediaSlot.innerHTML='<strong>Візуальне завдання</strong><span>'+esc(q.media.label)+'</span><div class="exam-image-wrap"><img src="'+esc(q.media.url)+'" alt="'+esc(q.media.label)+'" loading="lazy"></div>';
+    els.mediaSlot.innerHTML='<span>'+esc(q.media.label)+'</span><div class="exam-image-wrap"><img src="'+esc(q.media.url)+'" alt="'+esc(q.media.label)+'" loading="lazy"></div>';
     return;
   }
-  els.mediaSlot.innerHTML='<strong>'+esc(q.media.kind==='video'?'Відеозавдання':'Візуальне завдання')+'</strong><span>'+esc(q.media.label)+'. Оригінальний медіафайл буде підключено перед відкриттям фінального іспиту студентам.</span>';
+  els.mediaSlot.innerHTML='<span>'+esc(q.media.label)+'. Оригінальний медіафайл буде підключено перед відкриттям фінального іспиту студентам.</span>';
 }
 function renderAnswer(q){
   if(q.type==='text'){els.answerSlot.innerHTML='<textarea class="open-answer" id="openAnswer" placeholder="Введіть вашу відповідь…">'+esc(answers[q.no]||'')+'</textarea>';document.getElementById('openAnswer').addEventListener('input',e=>{answers[q.no]=e.target.value;saveLocal();renderNavigator()});return}
