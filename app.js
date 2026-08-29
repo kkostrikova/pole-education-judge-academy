@@ -13,6 +13,7 @@
   const state = JSON.parse(localStorage.getItem(key) || '{}');
   const grid = document.getElementById('moduleGrid');
   let signedIn = Boolean(window.PE_AUTH_STATE?.signedIn);
+  let courseAccess = Boolean(window.PE_AUTH_STATE?.courseAccess);
   let examOpen = false;
   let practicalOpen = false;
   let theoryPassed = false;
@@ -28,7 +29,7 @@
 
   async function refreshExamAccess(){
     examAccessLoaded = false;
-    if(!signedIn || !accessClient){ examOpen=false; practicalOpen=false; theoryPassed=false; practicalPassed=false; examAccessLoaded=true; renderProgress(); return; }
+    if(!signedIn || !courseAccess || !accessClient){ examOpen=false; practicalOpen=false; theoryPassed=false; practicalPassed=false; examAccessLoaded=true; renderProgress(); return; }
     try{
       const [theoryAccess,practicalAccess,theoryResult,practicalResult]=await Promise.all([
         accessClient.rpc('pe_exam_access_state',{p_exam_key:'theory'}),
@@ -52,16 +53,18 @@
   }
 
   function isDone(n){ return Boolean(state[n]?.passed); }
-  function isUnlocked(n){ if(!signedIn) return false; const cfg = window.PE_CONFIG || {}; return Boolean(cfg.reviewMode) || n === 1 || isDone(n - 1); }
+  function isUnlocked(n){ if(!signedIn||!courseAccess) return false; const cfg = window.PE_CONFIG || {}; return Boolean(cfg.reviewMode) || n === 1 || isDone(n - 1); }
   function renderModules(){
     grid.innerHTML = modules.map(m => {
       const done = isDone(m.n), unlocked = isUnlocked(m.n);
-      const status = !signedIn ? 'Потрібен вхід 🔒' : done ? 'Завершено ✓' : unlocked ? 'Доступний' : 'Заблоковано 🔒';
+      const status = !signedIn ? 'Потрібен вхід 🔒' : !courseAccess ? 'Потрібен NDA 🔒' : done ? 'Завершено ✓' : unlocked ? 'Доступний' : 'Заблоковано 🔒';
       const cls = done && signedIn ? 'done' : unlocked ? '' : 'locked';
       const cfg = window.PE_CONFIG || {};
       const lectureUrl = cfg.lectureCourseUrl || 'https://westudy.ua/en/PoleEducation/course/519be545-a825-4517-9f7d-a075b071b6e9';
       const action = !signedIn
         ? '<span class="module-link locked-link">Увійдіть, щоб відкрити модуль</span>'
+        : !courseAccess
+          ? '<div class="module-actions"><a class="module-link" href="nda.html?next=index.html%23modules">Підписати договір NDA</a></div>'
         : unlocked
           ? `<div class="module-actions"><a class="module-link lecture-module-link" href="${lectureUrl}" target="_blank" rel="noopener">Відеолекція ↗</a><a class="module-link" href="module-${m.n}.html">Інтерактивний модуль</a></div>`
           : `<div class="module-actions"><a class="module-link lecture-module-link" href="${lectureUrl}" target="_blank" rel="noopener">Відеолекція ↗</a><span class="module-link locked-link">Спочатку складіть тест модуля ${m.n-1} на 80%</span></div>`;
@@ -87,6 +90,22 @@
       if(ct)ct.textContent='Фінальна сертифікація';
       if(cm)cm.textContent='Увійдіть, щоб побачити статус завершення курсу.';
       if(cs)cs.innerHTML='';
+      return;
+    }
+    if(!courseAccess){
+      document.getElementById('progressPercent').textContent='🔒';
+      document.getElementById('progressText').textContent='Підпишіть договір NDA перед початком навчання';
+      document.getElementById('progressRing').style.setProperty('--p','0deg');
+      document.getElementById('routeDots').innerHTML=modules.map(()=>'<i></i>').join('');
+      const btn=document.getElementById('finalExamBtn'),msg=document.getElementById('finalMessage');
+      const pbtn=document.getElementById('practicalExamBtn'),pmsg=document.getElementById('practicalMessage');
+      btn.disabled=true;btn.textContent='Потрібен NDA';msg.textContent='Перед доступом до курсу підпишіть договір про нерозповсюдження інформації.';
+      pbtn.disabled=true;pbtn.textContent='Потрібен NDA';pmsg.textContent='Перед доступом до курсу підпишіть договір про нерозповсюдження інформації.';
+      const ct=document.getElementById('completionTitle'),cm=document.getElementById('completionMessage'),cs=document.getElementById('completionSteps'),mk=document.getElementById('completionMark');
+      if(ct)ct.textContent='Перед початком навчання';
+      if(cm)cm.textContent='Підпишіть NDA власноручним підписом на екрані — після цього модулі, лекції та іспити відкриються.';
+      if(cs)cs.innerHTML='<div class="completion-step"><span>1</span><div><strong>NDA</strong><small>Потрібен підпис</small></div></div>';
+      if(mk){mk.textContent='NDA';mk.classList.remove('done')}
       return;
     }
     const done = modules.filter(m => isDone(m.n)).length;
@@ -159,12 +178,14 @@
   document.querySelectorAll('.desk-card[data-go]').forEach(btn => btn.addEventListener('click', () => {
     const n=Number(btn.dataset.go);
     if(!signedIn){ location.href='auth.html'; return; }
+    if(!courseAccess){location.href='nda.html?next='+encodeURIComponent('index.html#judge-desk');return;}
     if(isUnlocked(n)) location.href=`module-${n}.html`;
     else alert(`Модуль ${n} заблоковано. Спочатку складіть тест модуля ${n-1} щонайменше на 80%.`);
   }));
   document.getElementById('resetProgress').addEventListener('click',()=>{if(confirm('Скинути локальний прогрес цього браузера?')){localStorage.removeItem(key);location.reload()}});
   window.addEventListener('pe-auth-ready', e => {
     signedIn = Boolean(e.detail?.signedIn);
+    courseAccess = Boolean(e.detail?.courseAccess);
     renderModules();
     renderProgress();
     refreshExamAccess();
@@ -176,5 +197,21 @@
     renderModules();
     renderProgress();
   });
-  renderModules();renderProgress();if(signedIn)refreshExamAccess();
+  function renderLectureAccess(){
+    const launch=document.getElementById('lectureLaunch');if(!launch)return;
+    const cfg=window.PE_CONFIG||{};
+    if(!signedIn){
+      launch.href='auth.html?next='+encodeURIComponent('index.html#lectures');launch.removeAttribute('target');
+      launch.querySelector('strong').textContent='Увійти до курсу';launch.querySelector('small').textContent='Після входу потрібно підписати NDA';
+    }else if(!courseAccess){
+      launch.href='nda.html?next='+encodeURIComponent('index.html#lectures');launch.removeAttribute('target');
+      launch.querySelector('strong').textContent='Підписати договір NDA';launch.querySelector('small').textContent='Доступ до лекцій відкриється після підпису';
+    }else{
+      launch.href=cfg.lectureCourseUrl||'https://westudy.ua/en/PoleEducation/course/519be545-a825-4517-9f7d-a075b071b6e9';launch.target='_blank';launch.rel='noopener';
+      launch.querySelector('strong').textContent='Відкрити лекційний курс';launch.querySelector('small').textContent='Лекції відкриються в окремій вкладці ↗';
+    }
+  }
+  window.addEventListener('pe-auth-ready',()=>renderLectureAccess());
+  renderLectureAccess();
+  renderModules();renderProgress();if(signedIn&&courseAccess)refreshExamAccess();
 })();
