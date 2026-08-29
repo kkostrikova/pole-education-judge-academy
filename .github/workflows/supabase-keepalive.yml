@@ -27,5 +27,5 @@ jobs:
             --data '{}' \
             "$SUPABASE_URL/rest/v1/rpc/pe_keepalive")"
 
-          echo "$response" | grep -q '"ok":true'
+          echo "$response" | jq -e '.ok == true' >/dev/null
           echo "Supabase keepalive succeeded."
