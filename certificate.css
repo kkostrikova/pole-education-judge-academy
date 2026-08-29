@@ -54,3 +54,4 @@ body.gold .author-photo{box-shadow:0 0 0 4px #fff7e7}
   .certificate-stage{padding:0;display:block;min-height:0}
   .certificate{width:210mm;height:297mm;aspect-ratio:auto;box-shadow:none;margin:0;padding:12mm 15mm 9mm}
 }
+.language-switch{display:flex;gap:5px;padding:3px;border:1px solid #ddd;border-radius:999px;background:#f7f7f7}.language-switch .control-btn{padding:7px 11px;border:0}.language-switch .control-btn.active{background:#211b1e;color:#fff}
