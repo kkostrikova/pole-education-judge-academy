@@ -1,4 +1,5 @@
 (async()=>{const cfg=window.PE_CONFIG||{},client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey),msg=document.getElementById('accountMessage');const {data:{session}}=await client.auth.getSession();if(!session){location.href='auth.html';return}const uid=session.user.id;
+if(window.PE_flushLocalProgress){try{await window.PE_flushLocalProgress()}catch(_){}}
 const [{data:profile,error:pe},{data:mods,error:me},{data:theory},{data:practical},{data:cert}]=await Promise.all([
 client.from('profiles').select('*').eq('user_id',uid).single(),
 client.from('module_results').select('*').eq('user_id',uid).order('module_id').order('attempt'),
