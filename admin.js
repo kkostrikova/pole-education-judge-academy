@@ -99,7 +99,13 @@ theoryPassed.textContent=students.filter(s=>{
   const a=t[s.user_id];
   return a?a.result_published_at&&a.passed:legacy[s.user_id]?.passed;
 }).length;
-certPassed.textContent=students.filter(s=>c[s.user_id]?.final_status==='passed').length;
+certPassed.textContent=students.filter(s=>{
+  const done=Object.values(byMods[s.user_id]||{}).filter(x=>x.passed).length;
+  const ta=t[s.user_id],pa=p[s.user_id];
+  const theoryOk=ta?Boolean(ta.result_published_at&&ta.passed):Boolean(legacy[s.user_id]?.passed);
+  const practicalOk=Boolean(pa?.result_published_at&&pa?.passed);
+  return done===8&&theoryOk&&practicalOk;
+}).length;
 
 const theoryLabel=a=>{
   if(!a)return '—';
@@ -128,13 +134,16 @@ studentBody.innerHTML=students.length?students.map(s=>{
   const practicalLabel=pa
     ?(pa.result_published_at?(pa.passed?'Складено':'Не складено'):(pa.status==='in_progress'?'Складає':'На перевірці'))
     :'—';
+  const theoryOk=a?Boolean(a.result_published_at&&a.passed):Boolean(legacy[s.user_id]?.passed);
+  const practicalOk=Boolean(pa?.result_published_at&&pa?.passed);
+  const courseComplete=done===8&&theoryOk&&practicalOk;
   return '<tr>'+
     '<td>'+(s.full_name||'—')+'</td>'+
     '<td>'+s.email+'</td>'+
     '<td>'+done+'/8</td>'+
     '<td>'+theory+'</td>'+
     '<td>'+practicalLabel+'</td>'+
-    '<td><span class="pill '+(c[s.user_id]?.final_status==='passed'?'ok':'')+'">'+(c[s.user_id]?.final_status||'in progress')+'</span></td>'+
+    '<td><span class="pill '+(courseComplete?'ok':'warn')+'">'+(courseComplete?'Курс завершено':'У процесі')+'</span></td>'+
     '<td><div class="table-actions">'+review+retry+practicalReview+practicalRetry+'</div></td>'+
   '</tr>';
 }).join(''):'<tr><td colspan="7">Студентів ще немає.</td></tr>';
