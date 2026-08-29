@@ -46,5 +46,12 @@
     else alert(`Модуль ${n} заблоковано. Спочатку складіть тест модуля ${n-1} щонайменше на 80%.`);
   }));
   document.getElementById('resetProgress').addEventListener('click',()=>{if(confirm('Скинути локальний прогрес цього браузера?')){localStorage.removeItem(key);location.reload()}});
+  window.addEventListener('pe-progress-updated', e => {
+    const fresh = e.detail || JSON.parse(localStorage.getItem(key) || '{}');
+    Object.keys(state).forEach(k => delete state[k]);
+    Object.assign(state, fresh);
+    renderModules();
+    renderProgress();
+  });
   renderModules();renderProgress();
 })();
