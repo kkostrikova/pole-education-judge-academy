@@ -1,7 +1,7 @@
 (()=>{
   const cfg=window.PE_CONFIG||{};
   const a=document.getElementById('accountLink');
-  const emit=session=>window.dispatchEvent(new CustomEvent('pe-auth-ready',{detail:{signedIn:Boolean(session),session:session||null}}));
+  const emit=session=>{window.PE_AUTH_STATE={signedIn:Boolean(session),session:session||null};window.dispatchEvent(new CustomEvent('pe-auth-ready',{detail:window.PE_AUTH_STATE}))};
   if(!window.supabase||!cfg.supabaseUrl){
     if(a){a.textContent='Увійти';a.href='auth.html'}
     emit(null);
