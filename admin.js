@@ -137,13 +137,18 @@ studentBody.innerHTML=students.length?students.map(s=>{
   const theoryOk=a?Boolean(a.result_published_at&&a.passed):Boolean(legacy[s.user_id]?.passed);
   const practicalOk=Boolean(pa?.result_published_at&&pa?.passed);
   const courseComplete=done===8&&theoryOk&&practicalOk;
+  const moduleRows=Object.values(byMods[s.user_id]||{});
+  const moduleGold=moduleRows.length===8&&moduleRows.every(x=>Number(x.score)>80);
+  const theoryScoreValue=Number(a?.score??legacy[s.user_id]?.score??0);
+  const goldEligible=courseComplete&&moduleGold&&theoryScoreValue>80&&Boolean(pa?.distinction);
+  const certLabel=courseComplete?(goldEligible?'Золотий сертифікат':'Звичайний сертифікат'):'У процесі';
   return '<tr>'+
     '<td>'+(s.full_name||'—')+'</td>'+
     '<td>'+s.email+'</td>'+
     '<td>'+done+'/8</td>'+
     '<td>'+theory+'</td>'+
     '<td>'+practicalLabel+'</td>'+
-    '<td><span class="pill '+(courseComplete?'ok':'warn')+'">'+(courseComplete?'Курс завершено':'У процесі')+'</span></td>'+
+    '<td><span class="pill '+(courseComplete?(goldEligible?'gold':'ok'):'warn')+'">'+certLabel+'</span></td>'+
     '<td><div class="table-actions">'+review+retry+practicalReview+practicalRetry+'</div></td>'+
   '</tr>';
 }).join(''):'<tr><td colspan="7">Студентів ще немає.</td></tr>';
