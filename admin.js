@@ -47,7 +47,7 @@ const [
 ]=await Promise.all([
   client.from('profiles').select('*').order('created_at',{ascending:false}),
   client.from('module_results').select('*'),
-  client.from('theory_exam_attempts').select('*'),
+  client.rpc('pe_admin_theory_attempts'),
   client.from('theory_exam_results').select('*'),
   client.from('practical_results').select('*'),
   client.from('certifications').select('*')
@@ -55,7 +55,7 @@ const [
 
 if(profilesError){msg.textContent='Не вдалося завантажити студентів.';msg.className='message err';return}
 
-const attempts=attemptsResp.error?[]:(attemptsResp.data||[]);
+const attempts=attemptsResp.error?[]:(Array.isArray(attemptsResp.data)?attemptsResp.data:(attemptsResp.data||[]));
 const students=(profiles||[]).filter(p=>p.role==='student');
 const byMods={};
 (mods||[]).forEach(r=>{
@@ -120,7 +120,7 @@ document.querySelectorAll('.retry-theory').forEach(btn=>btn.onclick=async()=>{
 });
 
 msg.textContent=attemptsResp.error
-  ?'Адмін-доступ підтверджено. Серверну логіку нового теоретичного іспиту ще потрібно активувати в Supabase.'
+  ?'Не вдалося завантажити спроби теоретичного іспиту: '+attemptsResp.error.message
   :'Адмін-доступ підтверджено.';
 msg.className=attemptsResp.error?'message':'message ok';
 })();
