@@ -16,7 +16,7 @@
     <nav class="topnav" aria-label="Головна навігація">
       <a href="#modules">Модулі</a>
       <a href="#judge-desk">Judge Desk</a>
-      <a href="#final">Фінальний іспит</a>
+      <a href="#final">Фінальні іспити</a>
     </nav>
     <a class="ghost-btn" id="accountLink" href="auth.html">Увійти</a>
     <button class="ghost-btn" id="resetProgress" type="button">Скинути прогрес</button>
@@ -75,11 +75,21 @@
     <section class="section final" id="final">
       <div class="final-icon">🔒</div>
       <div class="final-copy">
-        <p class="eyebrow">FINAL CERTIFICATION</p>
-        <h2>Фінальний іспит</h2>
+        <p class="eyebrow">FINAL CERTIFICATION · THEORY</p>
+        <h2>Теоретичний іспит</h2>
         <p id="finalMessage">Завершіть усі 8 модулів. Навіть після цього іспит залишатиметься закритим, доки Pole Education не відкриє атестацію.</p>
       </div>
       <button class="primary-btn final-btn" id="finalExamBtn" type="button" disabled>Іспит заблоковано</button>
+    </section>
+
+    <section class="section final" id="practical">
+      <div class="final-icon practical-icon">🔒</div>
+      <div class="final-copy">
+        <p class="eyebrow">FINAL CERTIFICATION · PRACTICAL</p>
+        <h2>Практичний іспит</h2>
+        <p id="practicalMessage">Практична частина відкривається адміністратором після теоретичного етапу.</p>
+      </div>
+      <button class="primary-btn final-btn" id="practicalExamBtn" type="button" disabled>Іспит заблоковано</button>
     </section>
   </main>
 
@@ -89,9 +99,9 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
+  <script src="config.js?v=20260829-practical1"></script>
   <script src="site-auth.js"></script>
   <script src="progress-sync.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=20260829-practical1"></script>
 </body>
 </html>
