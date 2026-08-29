@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Перевірка теорії · Pole Education</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <div class="shell">
+    <main class="dashboard review-dashboard">
+      <div class="dashhead">
+        <div>
+          <a class="toplink" href="admin.html">← До адмін-панелі</a>
+          <div class="mini">ADMIN · THEORY REVIEW</div>
+          <h1 id="studentName">Перевірка іспиту</h1>
+          <div id="studentMeta" style="color:#756a70">Завантаження…</div>
+        </div>
+        <div class="actions">
+          <a class="btn secondary" href="final-theory.html">Preview іспиту</a>
+          <a class="btn secondary" href="admin.html">Студенти</a>
+        </div>
+      </div>
+
+      <div class="cards review-summary">
+        <div class="card"><strong id="autoScore">—</strong><span>автоматично · /41</span></div>
+        <div class="card"><strong id="manualScore">0 / 9</strong><span>відкриті питання</span></div>
+        <div class="card"><strong id="finalPreview">—</strong><span>попередній результат</span></div>
+        <div class="card"><strong id="reviewState">—</strong><span>стан перевірки</span></div>
+      </div>
+
+      <section class="section">
+        <div class="review-intro">
+          <div>
+            <h2>Відкриті відповіді</h2>
+            <p>Кожне відкрите питання оцінюється <strong>0 · 0,5 · 1 бал</strong>. Три адміністратори перевіряють по одному блоку. Оцінки можна зберігати поступово.</p>
+          </div>
+        </div>
+        <div id="blocks" class="review-blocks"></div>
+      </section>
+
+      <section class="section publish-section">
+        <div>
+          <h2>Публікація результату</h2>
+          <p id="publishHint">Результат студенту ще не надсилали.</p>
+        </div>
+        <button class="btn primary" id="publishBtn" disabled>Надіслати результат</button>
+      </section>
+
+      <div id="reviewMessage" class="message" style="margin-top:18px">Перевіряємо доступ…</div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="theory-review.js"></script>
+</body>
+</html>
