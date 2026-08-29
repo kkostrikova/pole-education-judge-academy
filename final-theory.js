@@ -6,14 +6,14 @@ const PASS=cfg.theoryPassScore||60;
 const media=(label,kind='media',url='')=>({label,kind,url,pending:!url});
 const Q=[
 {no:1,type:'single',text:'Швидкісний спуск зі зміною положення тіла на пілоні — це…',options:['Зрив','Світч','Каскад','Перехоплення']},
-{no:2,type:'multi',text:'Які бувають намоти? (декілька варіантів відповіді)',options:['Циклічні','Координаційні','Каскадні','Силові'],answer:['Координаційні','Силові']},
+{no:2,type:'multi',text:'Які бувають намоти? (декілька варіантів відповіді)',options:['Циклічні','Координаційні','Каскадні','Силові']},
 {no:3,type:'single',text:'Обертання 360 градусів навколо своєї осі — це…',options:['Обертання на статичному пілоні','Сальто','Світч','Переворот']},
-{no:4,type:'multi',text:'В яку графу протоколу ми зараховуємо контактне сальто з підлоги? (декілька варіантів відповіді)',options:['Контактне сальто','Сальто','Динамічні елементи та комбінації','Перевороти','Спритність та координація'],answer:['Контактне сальто','Динамічні елементи та комбінації','Спритність та координація']},
+{no:4,type:'multi',text:'В яку графу протоколу ми зараховуємо контактне сальто з підлоги? (декілька варіантів відповіді)',options:['Контактне сальто','Сальто','Динамічні елементи та комбінації','Перевороти','Спритність та координація']},
 {no:5,type:'single',text:'Як ви оціните гнучкість, якщо за весь номер було зроблено: 1 шпагат 160° на праву ногу, 1 шпагат 180° на ліву ногу та 1 задня затяжка із зігнутими ногами?',options:['0,5–1,5','2–3','3,5–4,5','5','0']},
 {no:6,type:'text',text:'Під час змагань ви почули викрикування в бік суддівського столу «Суддю на мило». Ваші дії?',note:'Відкрита ситуаційна відповідь. Вона не оцінюється автоматично та буде доступна адміністраторам.'},
 {no:7,type:'text',text:'Під час змагань один із учасників попросив прокоментувати свій виступ. Ваші дії?',note:'Відкрита ситуаційна відповідь.'},
-{no:8,type:'multi',text:'Чого завжди необхідно дотримуватись суддям під час змагань? (декілька варіантів відповіді)',options:['Правил змагань','Закону України','Правил здорового харчування','Правил етикету','Кодексу етичних норм'],answer:['Правил змагань','Закону України','Правил етикету','Кодексу етичних норм']},
-{no:9,type:'multi',text:'Що складає оцінку «Спритності та координації»? (декілька варіантів відповіді)',options:['Вміння утримувати елемент','Вміння швидко переходити із елементу в елемент','Вміння тримати рівновагу','Точно виконувати вправи'],answer:['Вміння швидко переходити із елементу в елемент','Точно виконувати вправи']},
+{no:8,type:'multi',text:'Чого завжди необхідно дотримуватись суддям під час змагань? (декілька варіантів відповіді)',options:['Правил змагань','Закону України','Правил здорового харчування','Правил етикету','Кодексу етичних норм']},
+{no:9,type:'multi',text:'Що складає оцінку «Спритності та координації»? (декілька варіантів відповіді)',options:['Вміння утримувати елемент','Вміння швидко переходити із елементу в елемент','Вміння тримати рівновагу','Точно виконувати вправи']},
 {no:10,type:'single',text:'В яких випадках ми НЕ зараховуємо зриви на пілоні?',options:['Спортсмен пролетів менше 2 метрів висоти','Повільний спуск з утриманням знаряддя іншою частиною тіла','Зрив зроблено вниз головою','Неправильний ракурс виконання']},
 {no:11,type:'text',text:'В яких випадках ми НЕ зараховуємо роли?',note:'Відкрита відповідь.'},
 {no:12,type:'text',text:'Під час заходу в стійку спортсмен хитається. Як це вплине на оцінювання технічної складності?',note:'Відкрита ситуаційна відповідь.'},
@@ -21,7 +21,7 @@ const Q=[
 {no:14,type:'single',text:'Яке мінімально допустиме навантаження на автоматичну електричну лебідку на змаганнях?',options:['350 кг','500 кг','1 тонна','3,5 тонни']},
 {no:15,type:'text',text:'Обов’язкове обертання зараховано чи не зараховано? Чому?',media:media('Відео до обов’язкового обертання','video','https://www.youtube.com/watch?v=G8Vd8BsAl2I'),note:'Вимоги з вихідної форми: більше 360° обертання; контакт кистями рук/зап’ястями без контакту з передпліччям; початок обома руками в прямому хваті; нижня рука перехоплює пілон у прямому хваті; дедліфт без контакту з підлогою; початок у «pencil», завершення — у положенні на вибір.'},
 {no:16,type:'text',text:'Подивіться відео. Як ви оціните цей елемент?',media:media('Відео до оцінювання елемента','video','https://www.youtube.com/watch?v=fWqn8ao5xZw'),note:'Відкрита відповідь: студент сам формулює суддівську оцінку.'},
-{no:17,type:'single',text:'Як ви оціните побачений шпагат у протоколі «Технічна складність»?',options:['Оціню шпагат та внесу бал у графу «Гнучкість»','Не буду оцінювати шпагат','Зафіксую шпагат у чернетці та додивлюсь номер до кінця','Пораджусь з іншими суддями','Все вище перераховане'],pendingKey:true,media:media('Відео зі шпагатом','video','https://www.youtube.com/watch?v=m6oLgE2yaLg'),note:'Ключ до цього питання залишено на підтвердження перед публікацією. У старій формі воно входило до автоматичної частини.'},
+{no:17,type:'single',text:'Як ви оціните побачений шпагат у протоколі «Технічна складність»?',options:['Оціню шпагат та внесу бал у графу «Гнучкість»','Не буду оцінювати шпагат','Зафіксую шпагат у чернетці та додивлюсь номер до кінця','Пораджусь з іншими суддями','Все вище перераховане'],media:media('Відео зі шпагатом','video','https://www.youtube.com/watch?v=m6oLgE2yaLg')},
 {no:18,type:'single',text:'Чи є паралель відносно підлоги передньої ноги?',options:['Так, паралель зараховано','Ні, паралель не зараховано'],media:media('Відео для перевірки паралелі','video','https://www.youtube.com/watch?v=sTstmG5EIi4')},
 {no:19,type:'single',text:'Який кут розкриття шпагату ви бачите на відео?',options:['160','180','нижче 160','нижче 180','більше 180'],media:media('Відео для визначення кута шпагату','video','https://www.youtube.com/watch?v=MGfdEpSGPLw')},
 {no:20,type:'single',text:'На змаганнях організатори посадили вас судити категорію, де виступають спортсмени, яким ви допомагали готуватись. Як називається ця ситуація?',options:['Ніяк не називається','Порушення правил','Зрив номеру','Конфлікт інтересів']},
@@ -57,14 +57,75 @@ const Q=[
 {no:50,type:'single',text:'Я — гарний суддя, постійно розвиваюся, навчаюся та вдосконалюю свої професійні навички.',options:['Погоджуюсь']}
 ];
 
-const els={startCard:document.getElementById('startCard'),examCard:document.getElementById('examCard'),resultCard:document.getElementById('resultCard'),agree:document.getElementById('agreeRules'),startBtn:document.getElementById('startBtn'),startMessage:document.getElementById('startMessage'),timer:document.getElementById('timer'),timerValue:document.getElementById('timerValue'),questionType:document.getElementById('questionType'),questionCounter:document.getElementById('questionCounter'),answeredLabel:document.getElementById('answeredLabel'),progressFill:document.getElementById('progressFill'),originalNo:document.getElementById('originalNo'),questionText:document.getElementById('questionText'),questionNote:document.getElementById('questionNote'),mediaSlot:document.getElementById('mediaSlot'),answerSlot:document.getElementById('answerSlot'),prevBtn:document.getElementById('prevBtn'),nextBtn:document.getElementById('nextBtn'),flagBtn:document.getElementById('flagBtn'),navigator:document.getElementById('navigator'),finishBtn:document.getElementById('finishBtn')};
-let client,session,profile,preview=false,current=0,answers={},flags={},startedAt=0,timerId=null;
+const els={
+  startCard:document.getElementById('startCard'),
+  examCard:document.getElementById('examCard'),
+  resultCard:document.getElementById('resultCard'),
+  agree:document.getElementById('agreeRules'),
+  startBtn:document.getElementById('startBtn'),
+  startMessage:document.getElementById('startMessage'),
+  timer:document.getElementById('timer'),
+  timerValue:document.getElementById('timerValue'),
+  questionType:document.getElementById('questionType'),
+  questionCounter:document.getElementById('questionCounter'),
+  answeredLabel:document.getElementById('answeredLabel'),
+  progressFill:document.getElementById('progressFill'),
+  originalNo:document.getElementById('originalNo'),
+  questionText:document.getElementById('questionText'),
+  questionNote:document.getElementById('questionNote'),
+  mediaSlot:document.getElementById('mediaSlot'),
+  answerSlot:document.getElementById('answerSlot'),
+  prevBtn:document.getElementById('prevBtn'),
+  nextBtn:document.getElementById('nextBtn'),
+  flagBtn:document.getElementById('flagBtn'),
+  navigator:document.getElementById('navigator'),
+  finishBtn:document.getElementById('finishBtn')
+};
 
-const storageKey=uid=>'pe_final_theory_preview_'+uid;
+let client,session,profile,preview=false,current=0,answers={},flags={},timerId=null,saveTimer=null,finishing=false;
+let attemptId=null,attemptNumber=0,serverStartedAt=0,serverExpiresAt=0;
+
+const previewStorageKey=uid=>'pe_final_theory_preview_'+uid;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-function isAnswered(q){const a=answers[q.no];return q.type==='multi'?Array.isArray(a)&&a.length>0:q.type==='text'?Boolean(String(a||'').trim()):a!==undefined&&a!==null&&a!==''}
-function saveLocal(){if(!session)return;localStorage.setItem(storageKey(session.user.id),JSON.stringify({answers,flags,current,startedAt}))}
-function loadLocal(){if(!session)return;try{const x=JSON.parse(localStorage.getItem(storageKey(session.user.id))||'{}');answers=x.answers||{};flags=x.flags||{};current=Number.isInteger(x.current)?Math.min(x.current,Q.length-1):0;startedAt=x.startedAt||0}catch(_){}}
+const asObj=data=>Array.isArray(data)?(data[0]||{}):(data||{});
+
+function isAnswered(q){
+  const a=answers[q.no];
+  return q.type==='multi'?Array.isArray(a)&&a.length>0:
+    q.type==='text'?Boolean(String(a||'').trim()):
+    a!==undefined&&a!==null&&a!=='';
+}
+
+function loadPreview(){
+  if(!session)return;
+  try{
+    const x=JSON.parse(localStorage.getItem(previewStorageKey(session.user.id))||'{}');
+    answers=x.answers||{};flags=x.flags||{};current=Number.isInteger(x.current)?Math.min(x.current,Q.length-1):0;
+  }catch(_){}
+}
+function savePreview(){
+  if(!session)return;
+  localStorage.setItem(previewStorageKey(session.user.id),JSON.stringify({answers,flags,current}));
+}
+
+async function saveRemote(){
+  if(preview||!attemptId||finishing)return;
+  const {data,error}=await client.rpc('pe_save_theory_exam_progress',{
+    p_attempt_id:attemptId,
+    p_answers:answers,
+    p_flags:flags
+  });
+  if(error)return;
+  const row=asObj(data);
+  if(row.status&&row.status!=='in_progress')showFinished(row);
+}
+function queueSave(){
+  if(preview){savePreview();return}
+  if(!attemptId)return;
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(saveRemote,550);
+}
+
 function renderMedia(q){
   if(!q.media){els.mediaSlot.classList.add('hidden');els.mediaSlot.innerHTML='';return}
   els.mediaSlot.classList.remove('hidden');
@@ -77,52 +138,254 @@ function renderMedia(q){
     els.mediaSlot.innerHTML='<div class="exam-image-wrap"><img src="'+esc(q.media.url)+'" alt="'+esc(q.media.label)+'" loading="lazy"></div>';
     return;
   }
-  els.mediaSlot.innerHTML='<span>'+esc(q.media.label)+'. Оригінальний медіафайл буде підключено перед відкриттям фінального іспиту студентам.</span>';
+  els.mediaSlot.innerHTML='';
 }
+
 function renderAnswer(q){
-  if(q.type==='text'){els.answerSlot.innerHTML='<textarea class="open-answer" id="openAnswer" placeholder="Введіть вашу відповідь…">'+esc(answers[q.no]||'')+'</textarea>';document.getElementById('openAnswer').addEventListener('input',e=>{answers[q.no]=e.target.value;saveLocal();renderNavigator()});return}
-  const type=q.type==='multi'?'checkbox':'radio',selected=q.type==='multi'?(answers[q.no]||[]):answers[q.no];
-  els.answerSlot.innerHTML=q.options.map((o,i)=>{const checked=q.type==='multi'?selected.includes(o):selected===o;return '<label class="option '+(checked?'selected':'')+'"><input type="'+type+'" name="q'+q.no+'" value="'+i+'" '+(checked?'checked':'')+'><span>'+esc(o)+'</span></label>'}).join('');
+  if(q.type==='text'){
+    els.answerSlot.innerHTML='<textarea class="open-answer" id="openAnswer" placeholder="Введіть вашу відповідь…">'+esc(answers[q.no]||'')+'</textarea>';
+    document.getElementById('openAnswer').addEventListener('input',e=>{
+      answers[q.no]=e.target.value;queueSave();renderNavigator();renderProgress();
+    });
+    return;
+  }
+  const type=q.type==='multi'?'checkbox':'radio';
+  const selected=q.type==='multi'?(answers[q.no]||[]):answers[q.no];
+  els.answerSlot.innerHTML=q.options.map((o,i)=>{
+    const checked=q.type==='multi'?selected.includes(o):selected===o;
+    return '<label class="option '+(checked?'selected':'')+'"><input type="'+type+'" name="q'+q.no+'" value="'+i+'" '+(checked?'checked':'')+'><span>'+esc(o)+'</span></label>';
+  }).join('');
   els.answerSlot.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{
     const val=q.options[Number(inp.value)];
-    if(q.type==='multi'){let arr=Array.isArray(answers[q.no])?[...answers[q.no]]:[];if(inp.checked&&!arr.includes(val))arr.push(val);if(!inp.checked)arr=arr.filter(x=>x!==val);answers[q.no]=arr}else answers[q.no]=val;
-    saveLocal();renderQuestion();renderNavigator()
-  }))
+    if(q.type==='multi'){
+      let arr=Array.isArray(answers[q.no])?[...answers[q.no]]:[];
+      if(inp.checked&&!arr.includes(val))arr.push(val);
+      if(!inp.checked)arr=arr.filter(x=>x!==val);
+      answers[q.no]=arr;
+    }else answers[q.no]=val;
+    queueSave();renderQuestion();
+  }));
 }
+
 function renderQuestion(){
-  const q=Q[current];els.questionType.textContent=q.type==='text'?'OPEN JUDGE RESPONSE':q.media?'MEDIA QUESTION':q.type==='multi'?'MULTIPLE SELECT':'SINGLE SELECT';els.questionCounter.textContent='Завдання '+(current+1)+' / '+Q.length;els.originalNo.textContent='Питання '+q.no;els.questionText.textContent=q.text;
-  if(q.note){els.questionNote.textContent=q.note;els.questionNote.classList.remove('hidden')}else els.questionNote.classList.add('hidden');
-  renderMedia(q);renderAnswer(q);els.prevBtn.disabled=current===0;els.nextBtn.textContent=current===Q.length-1?'До завершення →':'Далі →';els.flagBtn.classList.toggle('active',Boolean(flags[q.no]));els.flagBtn.textContent=flags[q.no]?'Позначено ✓':'Позначити для перевірки';renderProgress();renderNavigator()
+  const q=Q[current];
+  els.questionType.textContent=q.type==='text'?'OPEN JUDGE RESPONSE':q.media?'MEDIA QUESTION':q.type==='multi'?'MULTIPLE SELECT':'SINGLE SELECT';
+  els.questionCounter.textContent='Завдання '+(current+1)+' / '+Q.length;
+  els.originalNo.textContent='Питання '+q.no;
+  els.questionText.textContent=q.text;
+  if(q.note){els.questionNote.textContent=q.note;els.questionNote.classList.remove('hidden')}
+  else els.questionNote.classList.add('hidden');
+  renderMedia(q);renderAnswer(q);
+  els.prevBtn.disabled=current===0;
+  els.nextBtn.textContent=current===Q.length-1?'До завершення →':'Далі →';
+  els.flagBtn.classList.toggle('active',Boolean(flags[q.no]));
+  els.flagBtn.textContent=flags[q.no]?'Позначено ✓':'Позначити для перевірки';
+  renderProgress();renderNavigator();
 }
-function renderProgress(){const n=Q.filter(isAnswered).length;els.answeredLabel.textContent=n+' з '+Q.length+' мають відповідь';els.progressFill.style.width=Math.round(n/Q.length*100)+'%'}
-function renderNavigator(){els.navigator.innerHTML=Q.map((q,i)=>'<button class="nav-q '+(i===current?'current ':'')+(isAnswered(q)?'answered ':'')+(flags[q.no]?'flagged':'')+'" data-i="'+i+'" title="Питання '+q.no+'">'+(i+1)+'</button>').join('');els.navigator.querySelectorAll('button').forEach(b=>b.onclick=()=>{current=Number(b.dataset.i);saveLocal();renderQuestion();scrollTo({top:0,behavior:'smooth'})})}
-function updateTimer(){if(preview){els.timerValue.textContent='PREVIEW';return}const left=Math.max(0,DURATION_MS-(Date.now()-startedAt)),m=Math.floor(left/60000),s=Math.floor(left%60000/1000);els.timerValue.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');els.timer.classList.toggle('warning',left<=10*60000);els.timer.classList.toggle('danger',left<=5*60000);if(left<=0)finish(true)}
-function begin(){els.startCard.classList.add('hidden');els.examCard.classList.remove('hidden');if(!startedAt)startedAt=Date.now();saveLocal();renderQuestion();updateTimer();if(!preview)timerId=setInterval(updateTimer,1000)}
-function normalize(a){return Array.isArray(a)?[...a].sort():a}
-function scoreExam(){let correct=0,max=0,pending=0;Q.forEach(q=>{if(q.type==='text')return;if(q.pendingKey){pending++;return}if(q.answer==null)return;max++;const a=normalize(answers[q.no]),k=normalize(q.answer);if(JSON.stringify(a)===JSON.stringify(k))correct++});return{correct,max,pending,percent:max?Math.round(correct/max*100):0}}
-async function finish(timedOut=false){
-  if(!preview&&!timedOut){const missing=Q.filter(q=>!isAnswered(q));if(missing.length&&!confirm('Без відповіді залишилось '+missing.length+' завдань. Завершити іспит?'))return;if(!confirm('Після завершення змінити відповіді буде неможливо. Завершити іспит?'))return}
+
+function renderProgress(){
+  const n=Q.filter(isAnswered).length;
+  els.answeredLabel.textContent=n+' з '+Q.length+' мають відповідь';
+  els.progressFill.style.width=Math.round(n/Q.length*100)+'%';
+}
+function renderNavigator(){
+  els.navigator.innerHTML=Q.map((q,i)=>'<button class="nav-q '+(i===current?'current ':'')+(isAnswered(q)?'answered ':'')+(flags[q.no]?'flagged':'')+'" data-i="'+i+'" title="Питання '+q.no+'">'+(i+1)+'</button>').join('');
+  els.navigator.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    current=Number(b.dataset.i);queueSave();renderQuestion();scrollTo({top:0,behavior:'smooth'});
+  });
+}
+
+function updateTimer(){
+  if(preview){els.timerValue.textContent='PREVIEW';return}
+  const left=Math.max(0,serverExpiresAt-Date.now());
+  const m=Math.floor(left/60000),s=Math.floor(left%60000/1000);
+  els.timerValue.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  els.timer.classList.toggle('warning',left<=10*60000);
+  els.timer.classList.toggle('danger',left<=5*60000);
+  if(left<=0)finish(true);
+}
+
+function hydrateAttempt(row){
+  attemptId=row.id;
+  attemptNumber=Number(row.attempt_number||1);
+  answers=row.answers||{};
+  flags=row.flags||{};
+  serverStartedAt=Date.parse(row.started_at||new Date().toISOString());
+  serverExpiresAt=Date.parse(row.expires_at||new Date(Date.now()+DURATION_MS).toISOString());
+  current=Math.max(0,Q.findIndex(q=>!isAnswered(q)));
+  if(current<0)current=Q.length-1;
+}
+
+function beginExam(){
+  els.startCard.classList.add('hidden');
+  els.resultCard.classList.add('hidden');
+  els.examCard.classList.remove('hidden');
+  renderQuestion();
+  updateTimer();
   if(timerId)clearInterval(timerId);
-  const s=scoreExam(),elapsed=Math.min(DURATION_MS,Date.now()-startedAt),open=Q.filter(q=>q.type==='text'&&isAnswered(q)).length,pass=false;
-  els.examCard.classList.add('hidden');els.resultCard.classList.remove('hidden');
-  const badge=document.getElementById('resultBadge');badge.textContent=preview?'PREVIEW':'—';badge.className='result-badge';document.getElementById('resultTitle').textContent=preview?'Попередній перегляд результату':pass?'Іспит складено':'Іспит не складено';document.getElementById('resultText').textContent=preview?'Це адміністративний preview: результат не записано як екзаменаційну спробу. Медіа та ключ питання 17 ще потребують фінального підключення.':(timedOut?'60 хвилин завершилися. Система зафіксувала всі відповіді, які були внесені до цього моменту.':'Результат зафіксовано. Правильні відповіді не відображаються.');
-  document.getElementById('resultScore').textContent=preview?'не рахується':'—';document.getElementById('resultTime').textContent=Math.ceil(elapsed/60000)+' хв';document.getElementById('resultOpen').textContent=open;
-  if(preview)localStorage.removeItem(storageKey(session.user.id));
+  if(!preview)timerId=setInterval(updateTimer,1000);
 }
-els.agree.addEventListener('change',()=>els.startBtn.disabled=!els.agree.checked);
-els.prevBtn.onclick=()=>{if(current>0){current--;saveLocal();renderQuestion();scrollTo({top:0,behavior:'smooth'})}};
-els.nextBtn.onclick=()=>{if(current<Q.length-1){current++;saveLocal();renderQuestion();scrollTo({top:0,behavior:'smooth'})}else document.querySelector('.finish-row').scrollIntoView({behavior:'smooth'})};
-els.flagBtn.onclick=()=>{const no=Q[current].no;flags[no]=!flags[no];saveLocal();renderQuestion()};
+
+function openCount(){
+  return Q.filter(q=>q.type==='text'&&isAnswered(q)).length;
+}
+function timeLabel(seconds){
+  const s=Math.max(0,Number(seconds)||0);
+  const m=Math.floor(s/60);
+  return m+' хв';
+}
+
+function showFinished(row){
+  finishing=true;
+  if(timerId)clearInterval(timerId);
+  clearTimeout(saveTimer);
+  els.startCard.classList.add('hidden');
+  els.examCard.classList.add('hidden');
+  els.resultCard.classList.remove('hidden');
+
+  const score=row.score===null||row.score===undefined?null:Number(row.score);
+  const passed=row.passed===true;
+  const badge=document.getElementById('resultBadge');
+  badge.textContent=score===null?'✓':score+'%';
+  badge.className='result-badge '+(score===null?'':passed?'pass':'fail');
+  document.getElementById('resultTitle').textContent=score===null?'Відповіді зафіксовано':passed?'Іспит складено':'Іспит не складено';
+  document.getElementById('resultText').textContent=row.status==='timed_out'
+    ?'60 хвилин завершилися. Усі збережені відповіді зафіксовано автоматично.'
+    :score===null
+      ?'Спробу завершено. Автоматичний результат з’явиться після підключення фінального серверного ключа.'
+      :'Результат зафіксовано. Правильні відповіді після фінального іспиту не показуються.';
+  document.getElementById('resultScore').textContent=score===null?'очікує':((row.auto_correct??'—')+' / '+(row.auto_total||41));
+  document.getElementById('resultTime').textContent=timeLabel(row.elapsed_seconds);
+  const a=row.answers||answers||{};
+  document.getElementById('resultOpen').textContent=Q.filter(q=>q.type==='text'&&String(a[q.no]||'').trim()).length;
+}
+
+async function finish(timedOut=false){
+  if(finishing)return;
+  if(preview){
+    if(!timedOut){
+      const missing=Q.filter(q=>!isAnswered(q));
+      if(missing.length&&!confirm('Без відповіді залишилось '+missing.length+' завдань. Завершити preview?'))return;
+    }
+    finishing=true;
+    els.examCard.classList.add('hidden');els.resultCard.classList.remove('hidden');
+    const badge=document.getElementById('resultBadge');
+    badge.textContent='PREVIEW';badge.className='result-badge';
+    document.getElementById('resultTitle').textContent='Попередній перегляд завершено';
+    document.getElementById('resultText').textContent='Це адміністративний preview. Жодна екзаменаційна спроба не витрачена.';
+    document.getElementById('resultScore').textContent='не рахується';
+    document.getElementById('resultTime').textContent='—';
+    document.getElementById('resultOpen').textContent=openCount();
+    localStorage.removeItem(previewStorageKey(session.user.id));
+    return;
+  }
+
+  if(!attemptId)return;
+  if(!timedOut){
+    const missing=Q.filter(q=>!isAnswered(q));
+    if(missing.length){
+      current=Q.indexOf(missing[0]);renderQuestion();
+      alert('Перед завершенням дайте відповідь на всі 50 завдань. Без відповіді: '+missing.length+'.');
+      return;
+    }
+    if(!confirm('Після завершення змінити відповіді буде неможливо. Завершити іспит?'))return;
+  }
+
+  finishing=true;
+  if(timerId)clearInterval(timerId);
+  clearTimeout(saveTimer);
+  const {data,error}=await client.rpc('pe_submit_theory_exam',{
+    p_attempt_id:attemptId,
+    p_answers:answers,
+    p_flags:flags,
+    p_timed_out:Boolean(timedOut)
+  });
+  if(error){
+    finishing=false;
+    alert('Не вдалося зафіксувати спробу: '+error.message);
+    if(!timedOut)timerId=setInterval(updateTimer,1000);
+    return;
+  }
+  showFinished(asObj(data));
+}
+
+async function startRealAttempt(){
+  els.startBtn.disabled=true;
+  els.startMessage.textContent='Створюємо захищену екзаменаційну спробу…';
+  els.startMessage.className='message';
+  const {data,error}=await client.rpc('pe_start_theory_exam');
+  if(error){
+    els.startMessage.textContent=error.message.includes('NO_ATTEMPTS_LEFT')
+      ?'Основну спробу вже використано. Повторне складання може дозволити тільки адміністратор.'
+      :'Не вдалося розпочати іспит: '+error.message;
+    els.startMessage.className='message err';
+    return;
+  }
+  hydrateAttempt(asObj(data));
+  beginExam();
+}
+
+async function loadRealState(){
+  const {data,error}=await client.rpc('pe_theory_state');
+  if(error){
+    els.startBtn.disabled=true;
+    els.agree.disabled=true;
+    els.startMessage.textContent='Серверна логіка фінального іспиту ще не активована в Supabase.';
+    els.startMessage.className='message err';
+    return;
+  }
+  const state=asObj(data);
+  if(state.exists&&state.status==='in_progress'){
+    hydrateAttempt(state);
+    beginExam();
+    return;
+  }
+  if(state.exists&&state.can_start_new){
+    attemptNumber=Number(state.attempts_used||0)+1;
+    els.startMessage.textContent='Адміністратор дозволив повторне складання. Доступна спроба №'+attemptNumber+'.';
+    els.startMessage.className='message ok';
+    return;
+  }
+  if(state.exists){
+    showFinished(state);
+    return;
+  }
+  els.startMessage.textContent='Одна основна спроба. Прохідний результат — '+PASS+'%. Час — '+Math.round(DURATION_MS/60000)+' хвилин.';
+  els.startMessage.className='message';
+}
+
+els.agree.addEventListener('change',()=>{if(!finishing)els.startBtn.disabled=!els.agree.checked});
+els.prevBtn.onclick=()=>{if(current>0){current--;queueSave();renderQuestion();scrollTo({top:0,behavior:'smooth'})}};
+els.nextBtn.onclick=()=>{if(current<Q.length-1){current++;queueSave();renderQuestion();scrollTo({top:0,behavior:'smooth'})}else document.querySelector('.finish-row').scrollIntoView({behavior:'smooth'})};
+els.flagBtn.onclick=()=>{const no=Q[current].no;flags[no]=!flags[no];queueSave();renderQuestion()};
 els.finishBtn.onclick=()=>finish(false);
 
 (async()=>{
-  client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);const {data:{session:s}}=await client.auth.getSession();session=s;if(!session)return;
-  const {data:p}=await client.from('profiles').select('role,full_name').eq('user_id',session.user.id).single();profile=p||{};preview=profile.role==='admin'&&!cfg.finalExamOpen;
-  loadLocal();
-  if(preview){els.startBtn.textContent='Розпочати адміністративний перегляд';els.startMessage.textContent='Фінальний іспит поки закритий для студентів. Ви зайшли як адміністратор і можете перевірити структуру без витрачання спроби.';els.startMessage.className='message ok';els.timerValue.textContent='PREVIEW'}
-  else if(!cfg.finalExamOpen){els.startBtn.disabled=true;els.agree.disabled=true;els.startMessage.textContent='Фінальний теоретичний іспит поки закритий адміністратором курсу.';els.startMessage.className='message err'}
-  else{els.startMessage.textContent='Одна основна спроба. Прохідний результат — '+PASS+'%. Час — '+Math.round(DURATION_MS/60000)+' хвилин.';els.startMessage.className='message'}
-  els.startBtn.onclick=begin;
-  if(startedAt&&cfg.finalExamOpen&&!preview){begin()}
+  client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);
+  const {data:{session:s}}=await client.auth.getSession();
+  session=s;if(!session)return;
+  const {data:p}=await client.from('profiles').select('role,full_name').eq('user_id',session.user.id).single();
+  profile=p||{};
+  preview=profile.role==='admin'&&!cfg.finalExamOpen;
+
+  if(preview){
+    loadPreview();
+    els.startBtn.textContent='Розпочати адміністративний перегляд';
+    els.startMessage.textContent='Фінальний іспит поки закритий для студентів. Preview не витрачає спробу.';
+    els.startMessage.className='message ok';
+    els.timerValue.textContent='PREVIEW';
+    els.startBtn.onclick=()=>beginExam();
+    return;
+  }
+
+  if(!cfg.finalExamOpen){
+    els.startBtn.disabled=true;els.agree.disabled=true;
+    els.startMessage.textContent='Фінальний теоретичний іспит поки закритий адміністратором курсу.';
+    els.startMessage.className='message err';
+    return;
+  }
+
+  els.startBtn.onclick=startRealAttempt;
+  await loadRealState();
 })();
 })();
