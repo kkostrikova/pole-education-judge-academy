@@ -603,7 +603,7 @@ returns jsonb
 language plpgsql
 security definer
 set search_path = public
-as $
+as $pe$
 declare
   v_rows jsonb;
 begin
@@ -613,7 +613,7 @@ begin
   from public.theory_exam_attempts t;
   return v_rows;
 end;
-$;
+$pe$;
 
 grant execute on function public.pe_admin_theory_attempts() to authenticated;
 
