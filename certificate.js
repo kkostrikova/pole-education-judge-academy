@@ -44,12 +44,13 @@ if(!cert?.eligible){showError('Сертифікат ще недоступний.
 
 document.body.classList.toggle('gold',cert.certificate_type==='gold');
 document.getElementById('holderName').textContent=cert.holder_name||'Студент';
-document.getElementById('courseTitle').textContent=cert.course_title||'Суддівсько-організаційного курсу';
+const courseDisplay=(cert.course_title||'Суддівсько-організаційний курс')==='Суддівсько-організаційний курс'?'Суддівсько-організаційного курсу':cert.course_title;
+document.getElementById('courseTitle').textContent=courseDisplay;
 document.getElementById('qualification').textContent=cert.qualification||'пілон, повітряні кільця, повітряні полотна';
 document.getElementById('durationHours').textContent=cert.duration_hours||10;
 document.getElementById('certificateNo').textContent=cert.certificate_no||'—';
 document.getElementById('issueDate').textContent=fmtDate(cert.issued_at);
-document.getElementById('examPhrase').textContent=cert.certificate_type==='gold'?'та успішного складання іспиту з відзнакою':'та складання іспиту';
+document.getElementById('examPhrase').textContent=cert.certificate_type==='gold'?'та успішне складання іспиту з відзнакою':'та складання іспиту';
 
 const verifyUrl=new URL('certificate-verify.html',location.href);
 verifyUrl.searchParams.set('no',cert.certificate_no);
