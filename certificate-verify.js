@@ -12,7 +12,8 @@ async function verify(no){
   const r=Array.isArray(data)?data[0]:data;
   if(!r?.valid){box.className='result invalid';box.innerHTML='<strong>Сертифікат не знайдено</strong>Перевірте номер або зверніться до Pole Education.';return}
   box.className='result valid';
-  box.innerHTML='<div>✓ Дійсний сертифікат</div><strong>'+esc(r.holder_name)+'</strong><dl>'+
+  const englishName=r.english_version&&r.holder_name_en?'<div style="margin-top:4px"><b>English:</b> '+esc(r.holder_name_en)+'</div>':'';
+  box.innerHTML='<div>✓ Дійсний сертифікат</div><strong>'+esc(r.holder_name)+'</strong>'+englishName+'<dl>'+
     '<dt>Номер</dt><dd>'+esc(r.certificate_no)+'</dd>'+
     '<dt>Тип</dt><dd>'+(r.certificate_type==='gold'?'Золотий · з відзнакою':'Звичайний')+'</dd>'+
     '<dt>Курс</dt><dd>'+esc(r.course_title)+'</dd>'+
