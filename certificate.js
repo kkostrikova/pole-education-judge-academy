@@ -40,7 +40,14 @@ if(!cert){
   cert=Array.isArray(data)?data[0]:data;
 }
 
-if(!cert?.eligible){showError('Сертифікат ще недоступний. Потрібно завершити 8 модулів і успішно скласти теоретичну та практичну частини.');return}
+if(!cert?.eligible){
+  if(cert?.name_confirmation_required){
+    showError('Перед видачею сертифіката підтвердьте написання свого ПІБ у кабінеті.');
+  }else{
+    showError('Сертифікат ще недоступний. Потрібно завершити 8 модулів і успішно скласти теоретичну та практичну частини.');
+  }
+  return;
+}
 
 document.body.classList.toggle('gold',cert.certificate_type==='gold');
 document.getElementById('holderName').textContent=cert.holder_name||'Студент';
