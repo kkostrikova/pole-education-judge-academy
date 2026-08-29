@@ -40,7 +40,7 @@ returns jsonb
 language plpgsql
 security definer
 set search_path = public
-as $
+as $pe$
 declare
   v_open boolean;
 begin
@@ -51,14 +51,14 @@ begin
   if not found then raise exception 'EXAM_NOT_FOUND'; end if;
   return jsonb_build_object('exam_key',p_exam_key,'is_open',v_open);
 end;
-$;
+$pe$;
 
 create or replace function public.pe_set_exam_access(p_exam_key text,p_open boolean)
 returns jsonb
 language plpgsql
 security definer
 set search_path = public
-as $
+as $pe$
 declare
   v_row public.exam_access_settings%rowtype;
 begin
@@ -70,7 +70,7 @@ begin
   if not found then raise exception 'EXAM_NOT_FOUND'; end if;
   return to_jsonb(v_row);
 end;
-$;
+$pe$;
 
 create table if not exists public.theory_exam_retry_grants (
   user_id uuid primary key references auth.users(id) on delete cascade,
@@ -447,12 +447,12 @@ returns jsonb
 language plpgsql
 security definer
 set search_path = public
-as $
+as $pe$
 begin
   if not public.pe_is_admin() then raise exception 'ADMIN_REQUIRED'; end if;
   return jsonb_build_object('block_no',p_block_no,'editable_by_all_admins',true);
 end;
-$;
+$pe$;
 
 create or replace function public.pe_save_theory_manual_score(
   p_attempt_id uuid,
