@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Final Theory Exam · Pole Education</title>
+  <link rel="stylesheet" href="final-theory.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth-guard.js"></script>
+</head>
+<body>
+<header class="exam-topbar">
+  <a class="exam-brand" href="index.html"><span class="mark">PE</span><span><strong>Pole Education</strong><small>Judge Academy · Final Theory</small></span></a>
+  <div class="timer" id="timer"><span>ЗАЛИШИЛОСЯ</span><strong id="timerValue">60:00</strong></div>
+</header>
+<main class="exam-shell">
+  <section class="start-card" id="startCard">
+    <p class="eyebrow">FINAL CERTIFICATION · THEORY</p>
+    <h1>Фінальний теоретичний іспит</h1>
+    <p class="lead">Іспит зберігає логіку попередньої екзаменаційної форми Pole Education: тестові, ситуаційні, відкриті та медіазавдання.</p>
+    <div class="rules-grid">
+      <div><strong>60 хв</strong><span>загальний час</span></div>
+      <div><strong>60%</strong><span>прохідний результат</span></div>
+      <div><strong>1</strong><span>основна спроба</span></div>
+      <div><strong>40</strong><span>автоматичних балів</span></div>
+    </div>
+    <div class="notice"><strong>Перед стартом</strong><p>Таймер запускається після натискання «Розпочати іспит» і не зупиняється при закритті або оновленні сторінки. Після завершення повторна спроба можлива лише після дозволу адміністратора.</p></div>
+    <label class="agree"><input type="checkbox" id="agreeRules"> <span>Я ознайомився/лась з умовами іспиту.</span></label>
+    <div class="start-actions"><button class="btn primary" id="startBtn" disabled>Розпочати іспит</button><a class="btn secondary" href="index.html">Повернутися до курсу</a></div>
+    <div class="message hidden" id="startMessage"></div>
+  </section>
+
+  <section class="exam-card hidden" id="examCard">
+    <div class="exam-head">
+      <div><p class="eyebrow" id="questionType">THEORY</p><h2 id="questionCounter">Питання 1</h2></div>
+      <div class="progress-block"><span id="answeredLabel">0 відповіли</span><div class="progress-track"><i id="progressFill"></i></div></div>
+    </div>
+    <article class="question-panel">
+      <div class="original-no" id="originalNo"></div>
+      <h3 id="questionText"></h3>
+      <p class="question-note hidden" id="questionNote"></p>
+      <div id="mediaSlot" class="media-slot hidden"></div>
+      <div id="answerSlot" class="answer-slot"></div>
+    </article>
+    <div class="question-nav"><button class="btn secondary" id="prevBtn">← Назад</button><button class="btn secondary" id="flagBtn">Позначити для перевірки</button><button class="btn primary" id="nextBtn">Далі →</button></div>
+    <div class="navigator-wrap"><div class="navigator-head"><strong>Навігація</strong><span><i class="dot answered"></i> відповідь <i class="dot flagged"></i> перевірити</span></div><div class="navigator" id="navigator"></div></div>
+    <div class="finish-row"><button class="finish-btn" id="finishBtn">Завершити іспит</button></div>
+  </section>
+
+  <section class="result-card hidden" id="resultCard">
+    <p class="eyebrow">FINAL THEORY · RESULT</p><div class="result-badge" id="resultBadge">—</div><h1 id="resultTitle">Результат</h1><p id="resultText"></p>
+    <div class="result-stats"><div><strong id="resultScore">—</strong><span>автоматична частина</span></div><div><strong id="resultTime">—</strong><span>час</span></div><div><strong id="resultOpen">—</strong><span>відкритих відповідей</span></div></div>
+    <p class="result-note">Правильні відповіді після фінального іспиту не показуються. Відкриті відповіді зберігаються для перегляду адміністраторами Pole Education.</p>
+    <a class="btn primary" href="account.html">До особистого кабінету</a>
+  </section>
+</main>
+<footer>© Pole Education · Judge Academy · Final Theory Exam</footer>
+<script src="final-theory.js"></script>
+</body>
+</html>
