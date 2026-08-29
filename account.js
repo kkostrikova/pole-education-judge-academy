@@ -3,6 +3,19 @@ const cfg=window.PE_CONFIG||{},client=window.supabase.createClient(cfg.supabaseU
 const {data:{session}}=await client.auth.getSession();
 if(!session){location.href='auth.html';return}
 const uid=session.user.id;
+const ndaResp=await client.rpc('pe_nda_status');
+if(!ndaResp.error){
+  const nda=Array.isArray(ndaResp.data)?ndaResp.data[0]:ndaResp.data;
+  if(nda?.required!==false&&!nda?.signed){location.replace('nda.html?next=account.html');return}
+  if(nda?.signed){
+    const box=document.getElementById('ndaAccountBox'),txt=document.getElementById('ndaAccountText');
+    if(box)box.classList.remove('hidden');
+    if(txt){
+      const when=nda.signed_at?new Intl.DateTimeFormat('uk-UA',{dateStyle:'medium',timeStyle:'short'}).format(new Date(nda.signed_at)):'';
+      txt.textContent=(nda.full_name||'')+(when?' · '+when:'')+' · '+(nda.version||'');
+    }
+  }
+}
 if(window.PE_flushLocalProgress){try{await window.PE_flushLocalProgress()}catch(_){}}
 
 const [
