@@ -317,7 +317,9 @@ async function startRealAttempt(){
   if(error){
     els.startMessage.textContent=error.message.includes('NO_ATTEMPTS_LEFT')
       ?'Основну спробу вже використано. Повторне складання може дозволити тільки адміністратор.'
-      :'Не вдалося розпочати іспит: '+error.message;
+      :error.message.includes('EXAM_CLOSED')
+        ?'Іспит закрито адміністратором.'
+        :'Не вдалося розпочати іспит: '+error.message;
     els.startMessage.className='message err';
     return;
   }
@@ -385,9 +387,11 @@ els.finishBtn.onclick=()=>finish(false);
     return;
   }
 
-  if(!cfg.finalExamOpen){
+  const {data:accessData,error:accessError}=await client.rpc('pe_exam_access_state',{p_exam_key:'theory'});
+  const access=asObj(accessData);
+  if(accessError||!access.is_open){
     els.startBtn.disabled=true;els.agree.disabled=true;
-    els.startMessage.textContent='Фінальний теоретичний іспит поки закритий адміністратором курсу.';
+    els.startMessage.textContent='Фінальний теоретичний іспит зараз закритий адміністратором.';
     els.startMessage.className='message err';
     return;
   }
