@@ -35,3 +35,5 @@ form{display:grid;gap:14px}label span{display:block;font-size:12px;font-weight:8
 .google-btn:hover{border-color:#9f8f96;background:#fffdfb}.google-btn:disabled{opacity:.65;cursor:wait}
 .google-mark{width:23px;height:23px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-family:Arial,sans-serif;background:conic-gradient(from -45deg,#4285f4 0 25%,#34a853 0 50%,#fbbc05 0 75%,#ea4335 0);color:#fff;font-size:13px}
 .auth-divider{display:flex;align-items:center;gap:12px;color:#8a7d83;font-size:12px;margin:2px 0 18px}.auth-divider:before,.auth-divider:after{content:"";height:1px;background:#ded3d7;flex:1}.auth-divider span{white-space:nowrap}
+
+.pill.gold{background:#f7e8bd;color:#8a621c;border:1px solid #dfc477}.btn.gold{background:#c99b43;color:#fff}
