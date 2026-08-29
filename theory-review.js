@@ -62,8 +62,8 @@ function renderSummary(){
       publishHint.textContent='Щоб надіслати результат, усі 9 відкритих питань мають отримати оцінку.';
       publishBtn.disabled=true;
     }else if(auto===null||auto===undefined){
-      publishHint.textContent='Відкриті питання перевірені. Очікуємо підключення автоматичного ключа на сервері.';
-      publishBtn.disabled=true;
+      publishHint.textContent='Усі відкриті питання перевірені. Автоматична частина буде розрахована на сервері під час надсилання результату.';
+      publishBtn.disabled=false;
     }else{
       publishHint.textContent='Усі відкриті питання перевірені. Натисніть «Надіслати результат» — фінальний відсоток одразу з’явиться в кабінеті студента.';
       publishBtn.disabled=false;
