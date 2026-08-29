@@ -126,6 +126,12 @@ const certificateNameBox=document.getElementById('certificateNameBox');
 const certificateNameInput=document.getElementById('certificateNameInput');
 const confirmCertificateNameBtn=document.getElementById('confirmCertificateNameBtn');
 const certificateNameMessage=document.getElementById('certificateNameMessage');
+const englishCertificateWanted=document.getElementById('englishCertificateWanted');
+const englishNameWrap=document.getElementById('englishNameWrap');
+const englishNameInput=document.getElementById('englishNameInput');
+if(englishCertificateWanted){
+  englishCertificateWanted.onchange=()=>englishNameWrap?.classList.toggle('hidden',!englishCertificateWanted.checked);
+}
 
 if(issuedCertificate){
   certStatus.textContent=issuedCertificate.certificate_type==='gold'?'Золотий':'Сертифікат';
@@ -137,6 +143,7 @@ if(issuedCertificate){
   if(certificateNameBox){
     certificateNameBox.classList.remove('hidden');
     certificateNameInput.value=certificatePayload.suggested_name||profile?.full_name||session.user.user_metadata?.full_name||session.user.user_metadata?.name||'';
+    if(englishNameInput)englishNameInput.value=certificatePayload.suggested_name_en||session.user.user_metadata?.full_name||session.user.user_metadata?.name||'';
   }
 }else{
   certStatus.textContent=courseComplete?'Сертифікат готується':(cert?.[0]?.final_status||'У процесі');
@@ -147,18 +154,30 @@ if(issuedCertificate){
 if(confirmCertificateNameBtn){
   confirmCertificateNameBtn.onclick=async()=>{
     const value=(certificateNameInput.value||'').trim().replace(/\s+/g,' ');
+    const wantsEnglish=Boolean(englishCertificateWanted?.checked);
+    const valueEn=(englishNameInput?.value||'').trim().replace(/\s+/g,' ');
     if(value.length<2){
       certificateNameMessage.textContent='Вкажіть ім’я так, як воно має бути надруковане на сертифікаті.';
       certificateNameMessage.className='message err';
       return;
     }
-    if(!confirm('Підтвердити написання «'+value+'» для сертифіката? Після видачі сертифіката ім’я буде зафіксовано.'))return;
+    if(wantsEnglish&&valueEn.length<2){
+      certificateNameMessage.textContent='Вкажіть написання імені латиницею для англійського сертифіката.';
+      certificateNameMessage.className='message err';
+      return;
+    }
+    const confirmText=wantsEnglish?'Підтвердити українське написання «'+value+'» та англійське «'+valueEn+'»?':'Підтвердити написання «'+value+'» для сертифіката?';
+    if(!confirm(confirmText+' Після видачі сертифіката дані буде зафіксовано.'))return;
     confirmCertificateNameBtn.disabled=true;
     certificateNameMessage.textContent='Зберігаємо ім’я та формуємо сертифікат…';
     certificateNameMessage.className='message';
-    const {error:nameErr}=await client.rpc('pe_confirm_certificate_name',{p_certificate_name:value});
+    const {error:nameErr}=await client.rpc('pe_confirm_certificate_name',{
+      p_certificate_name:value,
+      p_english_version:wantsEnglish,
+      p_certificate_name_en:wantsEnglish?valueEn:''
+    });
     if(nameErr){
-      certificateNameMessage.textContent='Не вдалося підтвердити ім’я: '+nameErr.message;
+      certificateNameMessage.textContent='Не вдалося підтвердити дані сертифіката: '+nameErr.message+'. Якщо ви ще не оновлювали SQL, запустіть актуальний supabase-certificate-name-patch.sql.';
       certificateNameMessage.className='message err';
       confirmCertificateNameBtn.disabled=false;
       return;
