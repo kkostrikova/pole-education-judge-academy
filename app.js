@@ -12,7 +12,7 @@
   const key = 'pe_judge_progress_v1';
   const state = JSON.parse(localStorage.getItem(key) || '{}');
   const grid = document.getElementById('moduleGrid');
-  let signedIn = false;
+  let signedIn = Boolean(window.PE_AUTH_STATE?.signedIn);
 
   function isDone(n){ return Boolean(state[n]?.passed); }
   function isUnlocked(n){ if(!signedIn) return false; const cfg = window.PE_CONFIG || {}; return Boolean(cfg.reviewMode) || n === 1 || isDone(n - 1); }
