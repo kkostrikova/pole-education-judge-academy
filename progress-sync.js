@@ -45,6 +45,47 @@
     return { saved:true, attempt };
   }
 
+  window.PE_flushLocalProgress = async function() {
+    if (!client) return { saved:0, reason:'no-client' };
+    const { data:{ session } } = await client.auth.getSession();
+    if (!session) return { saved:0, reason:'not-signed-in' };
+
+    const local = readLocal();
+    let saved = 0;
+    for (const [moduleId, rec] of Object.entries(local)) {
+      if (!rec || typeof rec !== 'object') continue;
+      const id = Number(moduleId);
+      if (!Number.isInteger(id) || id < 1 || id > 8) continue;
+
+      const { data: existing, error: readError } = await client
+        .from('module_results')
+        .select('id,score,passed,attempt')
+        .eq('user_id', session.user.id)
+        .eq('module_id', id)
+        .order('attempt', { ascending:false })
+        .limit(1);
+
+      if (readError) continue;
+
+      const last = existing && existing[0];
+      const localScore = Math.max(0, Math.min(100, Math.round(Number(rec.score) || 0)));
+      const localPassed = Boolean(rec.passed);
+
+      if (last && Number(last.score) >= localScore && Boolean(last.passed) >= localPassed) continue;
+
+      const attempt = last ? Number(last.attempt || 0) + 1 : 1;
+      const { error } = await client.from('module_results').insert({
+        user_id: session.user.id,
+        module_id: id,
+        score: localScore,
+        passed: localPassed,
+        attempt
+      });
+      if (!error) saved++;
+    }
+    return { saved };
+  };
+
   window.PE_saveModuleResult = async function(moduleId, score, passed) {
     const id = Number(moduleId);
     const pct = Math.max(0, Math.min(100, Math.round(Number(score) || 0)));
