@@ -54,11 +54,13 @@
       const done = isDone(m.n), unlocked = isUnlocked(m.n);
       const status = !signedIn ? 'Потрібен вхід 🔒' : done ? 'Завершено ✓' : unlocked ? 'Доступний' : 'Заблоковано 🔒';
       const cls = done && signedIn ? 'done' : unlocked ? '' : 'locked';
+      const cfg = window.PE_CONFIG || {};
+      const lectureUrl = cfg.lectureCourseUrl || 'https://westudy.ua/en/PoleEducation/course/519be545-a825-4517-9f7d-a075b071b6e9';
       const action = !signedIn
         ? '<span class="module-link locked-link">Увійдіть, щоб відкрити модуль</span>'
         : unlocked
-          ? `<a class="module-link" href="module-${m.n}.html">Відкрити модуль</a>`
-          : `<span class="module-link locked-link">Спочатку складіть тест модуля ${m.n-1} на 80%</span>`;
+          ? `<div class="module-actions"><a class="module-link lecture-module-link" href="${lectureUrl}" target="_blank" rel="noopener">Відеолекція ↗</a><a class="module-link" href="module-${m.n}.html">Інтерактивний модуль</a></div>`
+          : `<div class="module-actions"><a class="module-link lecture-module-link" href="${lectureUrl}" target="_blank" rel="noopener">Відеолекція ↗</a><span class="module-link locked-link">Спочатку складіть тест модуля ${m.n-1} на 80%</span></div>`;
       return `<article class="module-card ${unlocked?'':'locked'}">
         <div class="module-top"><span class="module-no">0${m.n}</span><span class="module-status ${cls}">${status}</span></div>
         <h3>${m.title}</h3><p>${m.desc}</p>${action}
