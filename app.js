@@ -16,6 +16,7 @@
   let examOpen = false;
   let practicalOpen = false;
   let theoryPassed = false;
+  let practicalPassed = false;
   let examAccessLoaded = false;
   let accessClient = null;
   try {
@@ -27,21 +28,24 @@
 
   async function refreshExamAccess(){
     examAccessLoaded = false;
-    if(!signedIn || !accessClient){ examOpen=false; practicalOpen=false; theoryPassed=false; examAccessLoaded=true; renderProgress(); return; }
+    if(!signedIn || !accessClient){ examOpen=false; practicalOpen=false; theoryPassed=false; practicalPassed=false; examAccessLoaded=true; renderProgress(); return; }
     try{
-      const [theoryAccess,practicalAccess,theoryResult]=await Promise.all([
+      const [theoryAccess,practicalAccess,theoryResult,practicalResult]=await Promise.all([
         accessClient.rpc('pe_exam_access_state',{p_exam_key:'theory'}),
         accessClient.rpc('pe_exam_access_state',{p_exam_key:'practical'}),
-        accessClient.rpc('pe_student_theory_result')
+        accessClient.rpc('pe_student_theory_result'),
+        accessClient.rpc('pe_student_practical_result')
       ]);
       const t=Array.isArray(theoryAccess.data)?theoryAccess.data[0]:theoryAccess.data;
       const p=Array.isArray(practicalAccess.data)?practicalAccess.data[0]:practicalAccess.data;
       const tr=Array.isArray(theoryResult.data)?theoryResult.data[0]:theoryResult.data;
+      const pr=Array.isArray(practicalResult.data)?practicalResult.data[0]:practicalResult.data;
       examOpen=!theoryAccess.error&&Boolean(t?.is_open);
       practicalOpen=!practicalAccess.error&&Boolean(p?.is_open);
       theoryPassed=!theoryResult.error&&Boolean(tr?.result_published&&tr?.passed);
+      practicalPassed=!practicalResult.error&&Boolean(pr?.result_published&&pr?.passed);
     }catch(_){
-      examOpen=false;practicalOpen=false;theoryPassed=false;
+      examOpen=false;practicalOpen=false;theoryPassed=false;practicalPassed=false;
     }
     examAccessLoaded=true;
     renderProgress();
@@ -79,6 +83,10 @@
       pbtn.disabled=true;pbtn.textContent='Іспит заблоковано';
       msg.textContent='Увійдіть у свій акаунт, щоб продовжити навчання та зберігати результати.';
       pmsg.textContent='Увійдіть у свій акаунт, щоб побачити доступ до практичної атестації.';
+      const ct=document.getElementById('completionTitle'),cm=document.getElementById('completionMessage'),cs=document.getElementById('completionSteps');
+      if(ct)ct.textContent='Фінальна сертифікація';
+      if(cm)cm.textContent='Увійдіть, щоб побачити статус завершення курсу.';
+      if(cs)cs.innerHTML='';
       return;
     }
     const done = modules.filter(m => isDone(m.n)).length;
@@ -126,6 +134,26 @@
       pbtn.disabled=true;pbtn.textContent='Іспит заблоковано';pmsg.textContent='Практичний іспит зараз закритий адміністратором.';if(picon)picon.textContent='🔒';
     }else{
       pbtn.disabled=true;pbtn.textContent='Іспит заблоковано';pmsg.textContent='Спочатку потрібно успішно завершити теоретичний іспит.';if(picon)picon.textContent='🔒';
+    }
+
+    const completionTitle=document.getElementById('completionTitle');
+    const completionMessage=document.getElementById('completionMessage');
+    const completionSteps=document.getElementById('completionSteps');
+    const completionMark=document.getElementById('completionMark');
+    const modulesPassed=done===8;
+    const courseComplete=modulesPassed&&theoryPassed&&practicalPassed;
+    if(completionSteps){
+      const steps=[
+        ['8 модулів',modulesPassed,done+'/8'],
+        ['Теорія',theoryPassed,theoryPassed?'Складено':'Очікується'],
+        ['Практика',practicalPassed,practicalPassed?'Складено':'Очікується']
+      ];
+      completionSteps.innerHTML=steps.map(s=>'<div class="completion-step '+(s[1]?'done':'')+'"><span>'+(s[1]?'✓':'○')+'</span><div><strong>'+s[0]+'</strong><small>'+s[2]+'</small></div></div>').join('');
+      completionTitle.textContent=courseComplete?'Курс завершено':'Фінальна сертифікація';
+      completionMessage.textContent=courseComplete
+        ?'Вітаємо! Усі навчальні модулі та обидві частини фінальної атестації успішно завершені. Ви виконали всі вимоги курсу Pole Education Judge Academy.'
+        :'Для завершення курсу потрібно пройти всі 8 модулів, скласти теоретичний і практичний іспити.';
+      if(completionMark){completionMark.textContent=courseComplete?'✓':'03';completionMark.classList.toggle('done',courseComplete)}
     }
   }
   document.querySelectorAll('.desk-card[data-go]').forEach(btn => btn.addEventListener('click', () => {
