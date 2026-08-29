@@ -59,20 +59,21 @@ const [
   {data:mods},
   attemptsResp,
   {data:legacyTheory},
-  {data:practical},
+  practicalAttemptsResp,
   {data:certs}
 ]=await Promise.all([
   client.from('profiles').select('*').order('created_at',{ascending:false}),
   client.from('module_results').select('*'),
   client.rpc('pe_admin_theory_attempts'),
   client.from('theory_exam_results').select('*'),
-  client.from('practical_results').select('*'),
+  client.rpc('pe_admin_practical_attempts'),
   client.from('certifications').select('*')
 ]);
 
 if(profilesError){msg.textContent='Не вдалося завантажити студентів.';msg.className='message err';return}
 
 const attempts=attemptsResp.error?[]:(Array.isArray(attemptsResp.data)?attemptsResp.data:(attemptsResp.data||[]));
+const practicalAttempts=practicalAttemptsResp.error?[]:(Array.isArray(practicalAttemptsResp.data)?practicalAttemptsResp.data:(practicalAttemptsResp.data||[]));
 const students=(profiles||[]).filter(p=>p.role==='student');
 const byMods={};
 (mods||[]).forEach(r=>{
@@ -89,7 +90,7 @@ const latest=(rows,key='completed_at')=>{
 };
 const t=latest(attempts,'completed_at');
 const legacy=latest(legacyTheory);
-const p=latest(practical,'created_at');
+const p=latest(practicalAttempts,'completed_at');
 const c=Object.fromEntries((certs||[]).map(x=>[x.user_id,x]));
 
 studentCount.textContent=students.length;
@@ -112,21 +113,39 @@ studentBody.innerHTML=students.length?students.map(s=>{
   const a=t[s.user_id];
   const theory=a?theoryLabel(a):(legacy[s.user_id]?legacy[s.user_id].score+'%':'—');
   const review=a&&a.status!=='in_progress'
-    ?'<a class="btn secondary compact" href="theory-review.html?id='+encodeURIComponent(a.id)+'">'+(a.result_published_at?'Переглянути':'Перевірити')+'</a>'
+    ?'<a class="btn secondary compact" href="theory-review.html?id='+encodeURIComponent(a.id)+'">'+(a.result_published_at?'Переглянути теорію':'Перевірити теорію')+'</a>'
     :'';
   const retry=a&&a.status!=='in_progress'
-    ?'<button class="btn secondary compact retry-theory" data-user="'+s.user_id+'">Дозволити повтор</button>'
+    ?'<button class="btn secondary compact retry-theory" data-user="'+s.user_id+'">Повтор теорії</button>'
     :'';
+  const pa=p[s.user_id];
+  const practicalReview=pa&&pa.status!=='in_progress'
+    ?'<a class="btn secondary compact" href="practical-review.html?id='+encodeURIComponent(pa.id)+'">'+(pa.result_published_at?'Переглянути практику':'Перевірити практику')+'</a>'
+    :'';
+  const practicalRetry=pa&&pa.status!=='in_progress'
+    ?'<button class="btn secondary compact retry-practical" data-user="'+s.user_id+'">Повтор практики</button>'
+    :'';
+  const practicalLabel=pa
+    ?(pa.result_published_at?(pa.passed?'Складено':'Не складено'):(pa.status==='in_progress'?'Складає':'На перевірці'))
+    :'—';
   return '<tr>'+
     '<td>'+(s.full_name||'—')+'</td>'+
     '<td>'+s.email+'</td>'+
     '<td>'+done+'/8</td>'+
     '<td>'+theory+'</td>'+
-    '<td>'+(p[s.user_id]?.status||'—')+'</td>'+
+    '<td>'+practicalLabel+'</td>'+
     '<td><span class="pill '+(c[s.user_id]?.final_status==='passed'?'ok':'')+'">'+(c[s.user_id]?.final_status||'in progress')+'</span></td>'+
-    '<td><div class="table-actions">'+review+retry+'</div></td>'+
+    '<td><div class="table-actions">'+review+retry+practicalReview+practicalRetry+'</div></td>'+
   '</tr>';
 }).join(''):'<tr><td colspan="7">Студентів ще немає.</td></tr>';
+
+document.querySelectorAll('.retry-practical').forEach(btn=>btn.onclick=async()=>{
+  if(!confirm('Дозволити цьому студенту ще одну спробу практичного іспиту? Попередня спроба залишиться в історії.'))return;
+  btn.disabled=true;
+  const {error}=await client.rpc('pe_grant_practical_retry',{p_user_id:btn.dataset.user});
+  if(error){alert('Не вдалося дозволити повтор практики: '+error.message);btn.disabled=false;return}
+  btn.textContent='Повтор практики дозволено';
+});
 
 document.querySelectorAll('.retry-theory').forEach(btn=>btn.onclick=async()=>{
   if(!confirm('Дозволити цьому студенту ще одну спробу фінального теоретичного іспиту? Перша спроба залишиться в історії.'))return;
@@ -136,8 +155,9 @@ document.querySelectorAll('.retry-theory').forEach(btn=>btn.onclick=async()=>{
   btn.textContent='Повтор дозволено';
 });
 
-msg.textContent=attemptsResp.error
-  ?'Не вдалося завантажити спроби теоретичного іспиту: '+attemptsResp.error.message
-  :'Адмін-доступ підтверджено.';
-msg.className=attemptsResp.error?'message':'message ok';
+const errors=[];
+if(attemptsResp.error)errors.push('теорія: '+attemptsResp.error.message);
+if(practicalAttemptsResp.error)errors.push('практика: '+practicalAttemptsResp.error.message);
+msg.textContent=errors.length?'Не вдалося завантажити частину іспитів — '+errors.join(' · '):'Адмін-доступ підтверджено.';
+msg.className=errors.length?'message err':'message ok';
 })();
