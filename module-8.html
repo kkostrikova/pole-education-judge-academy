@@ -116,7 +116,7 @@ h1{font-size:clamp(38px,5.3vw,62px);line-height:1.02;margin:8px 0 14px}h2{font-s
 
 <section class="card"><div class="ey">HEAD JUDGE ALGORITHM</div><h2>4 кроки перед рішенням</h2><div class="summary"><div class="sum"><strong>1 · Факт</strong><p>Що саме сталося?</p></div><div class="sum"><strong>2 · Правило</strong><p>Який пункт застосовується?</p></div><div class="sum"><strong>3 · Безпека</strong><p>Чи є ризик?</p></div><div class="sum"><strong>4 · Рішення</strong><p>Об’єктивно, послідовно, з фіксацією.</p></div></div></section>
 <div class="footer">© Pole Education · Judge Academy · Module 08</div></div>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="progress-sync.js"></script><script>
 var scenarios=[
 {t:"Суддя не впевнений у критерії",x:"Перед початком категорії суддя просить уточнити критерій.",c:[["Сказати: оцінюй як вважаєш",0],["Роз’яснити критерій і переконатися в єдиному розумінні",1],["Передати питання спортсмену",0]],f:"Head Judge пояснює критерії та забезпечує єдине розуміння правил."},
 {t:"Скарга на рішення",x:"Під час змагання виникла суперечка щодо суддівського рішення.",c:[["Ігнорувати",0],["Розглянути об’єктивно відповідно до правил",1],["Автоматично підтримати суддю",0]],f:"Скарги й апеляції розглядаються об’єктивно відповідно до правил."},
@@ -153,7 +153,7 @@ var cstate={1:0,2:0,3:0};document.querySelectorAll('.challenge-step').forEach(fu
 });
 
 var answers={q1:'b',q2:'a',q3:'b',q4:'a',q5:'c',q6:'a',q7:'b',q8:'a',q9:'a',q10:'a'};
-quizForm.onsubmit=function(e){e.preventDefault();var score=0,answered=0;Object.keys(answers).forEach(function(q){var x=document.querySelector('input[name="'+q+'"]:checked');if(x){answered++;if(x.value===answers[q])score++}});if(answered<10){quizResult.textContent='Дай відповідь на всі 10 питань. Зараз: '+answered+'/10.';quizResult.style.color='#8a2437';return}var pct=Math.round(score*10);quizResult.textContent='Результат: '+score+'/10 · '+pct+'%'+(pct>=80?' · Модуль 8 засвоєно ✓':' · Потрібно щонайменше 80%.');quizResult.style.color=pct>=80?'#17643f':'#8a2437';if(pct>=80){var key='pe_judge_progress_v1',state=JSON.parse(localStorage.getItem(key)||'{}');state[8]={passed:true,score:pct};localStorage.setItem(key,JSON.stringify(state))}};
+quizForm.onsubmit=function(e){e.preventDefault();var score=0,answered=0;Object.keys(answers).forEach(function(q){var x=document.querySelector('input[name="'+q+'"]:checked');if(x){answered++;if(x.value===answers[q])score++}});if(answered<10){quizResult.textContent='Дай відповідь на всі 10 питань. Зараз: '+answered+'/10.';quizResult.style.color='#8a2437';return}var pct=Math.round(score*10);quizResult.textContent='Результат: '+score+'/10 · '+pct+'%'+(pct>=80?' · Модуль 8 засвоєно ✓':' · Потрібно щонайменше 80%.');quizResult.style.color=pct>=80?'#17643f':'#8a2437';if(window.PE_saveModuleResult)window.PE_saveModuleResult(8,pct,pct>=80);if(pct>=80){var key='pe_judge_progress_v1',state=JSON.parse(localStorage.getItem(key)||'{}');state[8]={passed:true,score:pct};localStorage.setItem(key,JSON.stringify(state))}};
 resetQuiz.onclick=function(){quizForm.reset();quizResult.textContent=''};
 </script>
 </body></html>
