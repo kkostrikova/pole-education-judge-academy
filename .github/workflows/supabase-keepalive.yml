@@ -20,7 +20,12 @@ jobs:
           SUPABASE_PUBLISHABLE_KEY: sb_publishable_G69GdUkmDVVZcAVUhLT9Mw_pADiXZOs
         run: |
           set -euo pipefail
-          response="$(curl --fail --silent --show-error             --request POST             --header "apikey: $SUPABASE_PUBLISHABLE_KEY"             --header "Authorization: Bearer $SUPABASE_PUBLISHABLE_KEY"             --header "Content-Type: application/json"             --data '{}'             "$SUPABASE_URL/rest/v1/rpc/pe_keepalive")"
+          response="$(curl --fail --silent --show-error \
+            --request POST \
+            --header "apikey: $SUPABASE_PUBLISHABLE_KEY" \
+            --header "Content-Type: application/json" \
+            --data '{}' \
+            "$SUPABASE_URL/rest/v1/rpc/pe_keepalive")"
 
           echo "$response" | grep -q '"ok":true'
           echo "Supabase keepalive succeeded."
