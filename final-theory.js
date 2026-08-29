@@ -246,20 +246,20 @@ function showFinished(row){
   const score=row.score===null||row.score===undefined?null:Number(row.score);
   const passed=row.passed===true;
   const badge=document.getElementById('resultBadge');
-  badge.textContent=score===null?'✓':score+'%';
+  badge.textContent=score===null?'…':score+'%';
   badge.className='result-badge '+(score===null?'':passed?'pass':'fail');
-  document.getElementById('resultTitle').textContent=score===null?'Відповіді зафіксовано':passed?'Іспит складено':'Іспит не складено';
-  document.getElementById('resultText').textContent=row.status==='timed_out'
-    ?'60 хвилин завершилися. Усі збережені відповіді зафіксовано автоматично.'
-    :score===null
-      ?'Спробу завершено. Автоматичний результат з’явиться після підключення фінального серверного ключа.'
-      :'Результат зафіксовано. Правильні відповіді після фінального іспиту не показуються.';
-  document.getElementById('resultScore').textContent=score===null?'очікує':((row.auto_correct??'—')+' / '+(row.auto_total||41));
+  document.getElementById('resultTitle').textContent=score===null?'Відповіді на перевірці':passed?'Іспит складено':'Іспит не складено';
+  document.getElementById('resultText').textContent=score===null
+    ?(row.status==='timed_out'
+      ?'60 хвилин завершилися. Усі збережені відповіді передані на перевірку. Після оцінювання відкритих питань і натискання адміністратором «Надіслати результат» відсоток з’явиться у вашому кабінеті.'
+      :'Іспит завершено. Відкриті відповіді перевіряють адміністратори. Після завершення перевірки та публікації результату у вашому кабінеті з’явиться фінальний відсоток.')
+    :'Фінальний результат опубліковано. Правильні відповіді після іспиту не показуються.';
+  document.getElementById('resultScore').textContent=score===null?'На перевірці':score+'%';
   document.getElementById('resultTime').textContent=timeLabel(row.elapsed_seconds);
-  const a=row.answers||answers||{};
-  document.getElementById('resultOpen').textContent=Q.filter(q=>q.type==='text'&&String(a[q.no]||'').trim()).length;
+  const a=(row.answers&&Object.keys(row.answers).length)?row.answers:(answers||{});
+  const openCount=Q.filter(q=>q.type==='text'&&String(a[q.no]||'').trim()).length;
+  document.getElementById('resultOpen').textContent=openCount?openCount:'—';
 }
-
 async function finish(timedOut=false){
   if(finishing)return;
   if(preview){
