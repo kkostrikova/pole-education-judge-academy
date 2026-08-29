@@ -14,6 +14,8 @@
   const grid = document.getElementById('moduleGrid');
   let signedIn = Boolean(window.PE_AUTH_STATE?.signedIn);
   let examOpen = false;
+  let practicalOpen = false;
+  let theoryPassed = false;
   let examAccessLoaded = false;
   let accessClient = null;
   try {
@@ -25,14 +27,21 @@
 
   async function refreshExamAccess(){
     examAccessLoaded = false;
-    if(!signedIn || !accessClient){ examOpen=false; examAccessLoaded=true; renderProgress(); return; }
+    if(!signedIn || !accessClient){ examOpen=false; practicalOpen=false; theoryPassed=false; examAccessLoaded=true; renderProgress(); return; }
     try{
-      const {data,error}=await accessClient.rpc('pe_exam_access_state',{p_exam_key:'theory'});
-      if(error) throw error;
-      const state=Array.isArray(data)?data[0]:data;
-      examOpen=Boolean(state?.is_open);
+      const [theoryAccess,practicalAccess,theoryResult]=await Promise.all([
+        accessClient.rpc('pe_exam_access_state',{p_exam_key:'theory'}),
+        accessClient.rpc('pe_exam_access_state',{p_exam_key:'practical'}),
+        accessClient.rpc('pe_student_theory_result')
+      ]);
+      const t=Array.isArray(theoryAccess.data)?theoryAccess.data[0]:theoryAccess.data;
+      const p=Array.isArray(practicalAccess.data)?practicalAccess.data[0]:practicalAccess.data;
+      const tr=Array.isArray(theoryResult.data)?theoryResult.data[0]:theoryResult.data;
+      examOpen=!theoryAccess.error&&Boolean(t?.is_open);
+      practicalOpen=!practicalAccess.error&&Boolean(p?.is_open);
+      theoryPassed=!theoryResult.error&&Boolean(tr?.result_published&&tr?.passed);
     }catch(_){
-      examOpen=false;
+      examOpen=false;practicalOpen=false;theoryPassed=false;
     }
     examAccessLoaded=true;
     renderProgress();
@@ -63,8 +72,11 @@
       document.getElementById('progressRing').style.setProperty('--p','0deg');
       document.getElementById('routeDots').innerHTML = modules.map(()=>'<i></i>').join('');
       const btn=document.getElementById('finalExamBtn'),msg=document.getElementById('finalMessage');
+      const pbtn=document.getElementById('practicalExamBtn'),pmsg=document.getElementById('practicalMessage');
       btn.disabled=true;btn.textContent='Іспит заблоковано';
+      pbtn.disabled=true;pbtn.textContent='Іспит заблоковано';
       msg.textContent='Увійдіть у свій акаунт, щоб продовжити навчання та зберігати результати.';
+      pmsg.textContent='Увійдіть у свій акаунт, щоб побачити доступ до практичної атестації.';
       return;
     }
     const done = modules.filter(m => isDone(m.n)).length;
@@ -97,6 +109,21 @@
       btn.disabled=true;btn.textContent='Іспит заблоковано';
       msg.textContent='Спочатку завершіть усі 8 модулів.';
       if(icon)icon.textContent='🔒';
+    }
+
+    const pbtn=document.getElementById('practicalExamBtn'),pmsg=document.getElementById('practicalMessage'),picon=document.querySelector('.practical-icon');
+    const practicalEligible=Boolean(cfg.reviewMode)||theoryPassed;
+    pbtn.onclick=null;
+    if(!examAccessLoaded){
+      pbtn.disabled=true;pbtn.textContent='Перевіряємо доступ…';pmsg.textContent='Перевіряємо доступ до практичного іспиту.';if(picon)picon.textContent='⏳';
+    }else if(practicalOpen&&practicalEligible&&cfg.practicalExamUrl){
+      pbtn.disabled=false;pbtn.textContent='Розпочати практичний іспит';pbtn.onclick=()=>location.href=cfg.practicalExamUrl;
+      pmsg.textContent=theoryPassed?'Теоретичний етап складено. Практичний іспит відкритий.':'Практичний іспит відкритий адміністратором для тестування.';
+      if(picon)picon.textContent='✓';
+    }else if(!practicalOpen){
+      pbtn.disabled=true;pbtn.textContent='Іспит заблоковано';pmsg.textContent='Практичний іспит зараз закритий адміністратором.';if(picon)picon.textContent='🔒';
+    }else{
+      pbtn.disabled=true;pbtn.textContent='Іспит заблоковано';pmsg.textContent='Спочатку потрібно успішно завершити теоретичний іспит.';if(picon)picon.textContent='🔒';
     }
   }
   document.querySelectorAll('.desk-card[data-go]').forEach(btn => btn.addEventListener('click', () => {
