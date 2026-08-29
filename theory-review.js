@@ -2,6 +2,7 @@
 const cfg=window.PE_CONFIG||{};
 const client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);
 const msg=document.getElementById('reviewMessage');
+const blocksEl=document.getElementById('blocks');
 const params=new URLSearchParams(location.search);
 const attemptId=params.get('id');
 
@@ -148,7 +149,6 @@ async function reload(){
   student=profiles[attempt.user_id]||{};
   studentName.textContent=student.full_name||student.email||'Студент';
   studentMeta.textContent=(student.email||'')+' · Спроба №'+attempt.attempt_number+' · '+(attempt.status==='timed_out'?'Час вичерпано':attempt.status==='submitted'?'Завершено':'В процесі');
-  window.blocksEl=document.getElementById('blocks');
   renderBlocks();renderSummary();
   msg.textContent='Зміни зберігаються одразу. Можна вийти й повернутися до перевірки пізніше.';
   msg.className='message ok';
