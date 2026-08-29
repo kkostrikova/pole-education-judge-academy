@@ -5,6 +5,8 @@ window.PE_CONFIG = {
   finalExamUrl: "final-theory.html",
   theoryPassScore: 60,
   theoryDurationMinutes: 60,
+  practicalExamUrl: "practical.html",
+  practicalDurationMinutes: 30,
   supabaseUrl: "https://mffjcqpyfcptwahpxeom.supabase.co",
   supabasePublishableKey: "sb_publishable_G69GdUkmDVVZcAVUhLT9Mw_pADiXZOs"
 };
