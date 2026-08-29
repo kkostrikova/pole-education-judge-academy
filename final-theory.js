@@ -3,7 +3,7 @@ const cfg=window.PE_CONFIG||{};
 const DURATION_MS=(cfg.theoryDurationMinutes||60)*60*1000;
 const PASS=cfg.theoryPassScore||60;
 
-const media=(label,kind='media')=>({label,kind,pending:true});
+const media=(label,kind='media',url='')=>({label,kind,url,pending:!url});
 const Q=[
 {no:1,type:'single',text:'Швидкісний спуск зі зміною положення тіла на пілоні — це…',options:['Зрив','Світч','Каскад','Перехоплення']},
 {no:2,type:'multi',text:'Які бувають намоти? (декілька варіантів відповіді)',options:['Циклічні','Координаційні','Каскадні','Силові'],answer:['Координаційні','Силові']},
@@ -19,11 +19,11 @@ const Q=[
 {no:12,type:'text',text:'Під час заходу в стійку спортсмен хитається. Як це вплине на оцінювання технічної складності?',note:'Відкрита ситуаційна відповідь.'},
 {no:13,type:'single',text:'Яка мінімально допустима відстань між пілонами на змаганнях?',options:['2 метри','3 метри','10 метрів','1 м 80 см']},
 {no:14,type:'single',text:'Яке мінімально допустиме навантаження на автоматичну електричну лебідку на змаганнях?',options:['350 кг','500 кг','1 тонна','3,5 тонни']},
-{no:15,type:'text',text:'Обов’язкове обертання зараховано чи не зараховано? Чому?',media:media('Відео до обов’язкового обертання','video'),note:'Вимоги з вихідної форми: більше 360° обертання; контакт кистями рук/зап’ястями без контакту з передпліччям; початок обома руками в прямому хваті; нижня рука перехоплює пілон у прямому хваті; дедліфт без контакту з підлогою; початок у «pencil», завершення — у положенні на вибір.'},
-{no:16,type:'text',text:'Подивіться відео. Як ви оціните цей елемент?',media:media('Відео до оцінювання елемента','video'),note:'Відкрита відповідь: студент сам формулює суддівську оцінку.'},
-{no:17,type:'single',text:'Як ви оціните побачений шпагат у протоколі «Технічна складність»?',options:['Оціню шпагат та внесу бал у графу «Гнучкість»','Не буду оцінювати шпагат','Зафіксую шпагат у чернетці та додивлюсь номер до кінця','Пораджусь з іншими суддями','Все вище перераховане'],pendingKey:true,media:media('Відео зі шпагатом','video'),note:'Ключ до цього питання залишено на підтвердження перед публікацією. У старій формі воно входило до автоматичної частини.'},
-{no:18,type:'single',text:'Чи є паралель відносно підлоги передньої ноги?',options:['Так, паралель зараховано','Ні, паралель не зараховано'],media:media('Відео для перевірки паралелі','video')},
-{no:19,type:'single',text:'Який кут розкриття шпагату ви бачите на відео?',options:['160','180','нижче 160','нижче 180','більше 180'],media:media('Відео для визначення кута шпагату','video')},
+{no:15,type:'text',text:'Обов’язкове обертання зараховано чи не зараховано? Чому?',media:media('Відео до обов’язкового обертання','video','https://www.youtube.com/watch?v=G8Vd8BsAl2I'),note:'Вимоги з вихідної форми: більше 360° обертання; контакт кистями рук/зап’ястями без контакту з передпліччям; початок обома руками в прямому хваті; нижня рука перехоплює пілон у прямому хваті; дедліфт без контакту з підлогою; початок у «pencil», завершення — у положенні на вибір.'},
+{no:16,type:'text',text:'Подивіться відео. Як ви оціните цей елемент?',media:media('Відео до оцінювання елемента','video','https://www.youtube.com/watch?v=fWqn8ao5xZw'),note:'Відкрита відповідь: студент сам формулює суддівську оцінку.'},
+{no:17,type:'single',text:'Як ви оціните побачений шпагат у протоколі «Технічна складність»?',options:['Оціню шпагат та внесу бал у графу «Гнучкість»','Не буду оцінювати шпагат','Зафіксую шпагат у чернетці та додивлюсь номер до кінця','Пораджусь з іншими суддями','Все вище перераховане'],pendingKey:true,media:media('Відео зі шпагатом','video','https://www.youtube.com/watch?v=m6oLgE2yaLg'),note:'Ключ до цього питання залишено на підтвердження перед публікацією. У старій формі воно входило до автоматичної частини.'},
+{no:18,type:'single',text:'Чи є паралель відносно підлоги передньої ноги?',options:['Так, паралель зараховано','Ні, паралель не зараховано'],media:media('Відео для перевірки паралелі','video','https://www.youtube.com/watch?v=sTstmG5EIi4')},
+{no:19,type:'single',text:'Який кут розкриття шпагату ви бачите на відео?',options:['160','180','нижче 160','нижче 180','більше 180'],media:media('Відео для визначення кута шпагату','video','https://www.youtube.com/watch?v=MGfdEpSGPLw')},
 {no:20,type:'single',text:'На змаганнях організатори посадили вас судити категорію, де виступають спортсмени, яким ви допомагали готуватись. Як називається ця ситуація?',options:['Ніяк не називається','Порушення правил','Зрив номеру','Конфлікт інтересів']},
 {no:21,type:'single',text:'Як ви оціните рівень різних перехоплень з одночасним перехопленням двох рук?',options:['Низький','Середній','Високий']},
 {no:22,type:'single',text:'Як ви оціните рівень виконання базового колеса з опорою на одну руку?',options:['Низький','Середній','Високий']},
@@ -65,7 +65,16 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 function isAnswered(q){const a=answers[q.no];return q.type==='multi'?Array.isArray(a)&&a.length>0:q.type==='text'?Boolean(String(a||'').trim()):a!==undefined&&a!==null&&a!==''}
 function saveLocal(){if(!session)return;localStorage.setItem(storageKey(session.user.id),JSON.stringify({answers,flags,current,startedAt}))}
 function loadLocal(){if(!session)return;try{const x=JSON.parse(localStorage.getItem(storageKey(session.user.id))||'{}');answers=x.answers||{};flags=x.flags||{};current=Number.isInteger(x.current)?Math.min(x.current,Q.length-1):0;startedAt=x.startedAt||0}catch(_){}}
-function renderMedia(q){if(!q.media){els.mediaSlot.classList.add('hidden');els.mediaSlot.innerHTML='';return}els.mediaSlot.classList.remove('hidden');els.mediaSlot.innerHTML='<strong>'+esc(q.media.kind==='video'?'Відеозавдання':'Візуальне завдання')+'</strong><span>'+esc(q.media.label)+'. Оригінальний медіафайл буде підключено перед відкриттям фінального іспиту студентам.</span>'}
+function renderMedia(q){
+  if(!q.media){els.mediaSlot.classList.add('hidden');els.mediaSlot.innerHTML='';return}
+  els.mediaSlot.classList.remove('hidden');
+  if(q.media.kind==='video'&&q.media.url){
+    const id=(q.media.url.match(/[?&]v=([^&]+)/)||q.media.url.match(/youtu\.be\/([^?&]+)/)||[])[1]||'';
+    els.mediaSlot.innerHTML='<strong>Відеозавдання</strong><span>'+esc(q.media.label)+'</span>'+(id?'<div class="youtube-wrap"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?rel=0" title="'+esc(q.media.label)+'" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><a class="youtube-link" href="'+esc(q.media.url)+'" target="_blank" rel="noopener">Відкрити відео на YouTube ↗</a>':'');
+    return;
+  }
+  els.mediaSlot.innerHTML='<strong>'+esc(q.media.kind==='video'?'Відеозавдання':'Візуальне завдання')+'</strong><span>'+esc(q.media.label)+'. Оригінальний медіафайл буде підключено перед відкриттям фінального іспиту студентам.</span>';
+}
 function renderAnswer(q){
   if(q.type==='text'){els.answerSlot.innerHTML='<textarea class="open-answer" id="openAnswer" placeholder="Введіть вашу відповідь…">'+esc(answers[q.no]||'')+'</textarea>';document.getElementById('openAnswer').addEventListener('input',e=>{answers[q.no]=e.target.value;saveLocal();renderNavigator()});return}
   const type=q.type==='multi'?'checkbox':'radio',selected=q.type==='multi'?(answers[q.no]||[]):answers[q.no];
