@@ -366,7 +366,7 @@ els.finishBtn.onclick=()=>finish(false);
   session=s;if(!session)return;
   const {data:p}=await client.from('profiles').select('role,full_name').eq('user_id',session.user.id).single();
   profile=p||{};
-  preview=profile.role==='admin'&&!cfg.finalExamOpen;
+  preview=profile.role==='admin';
 
   if(preview){
     loadPreview();
@@ -375,6 +375,13 @@ els.finishBtn.onclick=()=>finish(false);
     els.startMessage.className='message ok';
     els.timerValue.textContent='PREVIEW';
     els.startBtn.onclick=()=>beginExam();
+    return;
+  }
+
+  if(profile.role!=='student'){
+    els.startBtn.disabled=true;els.agree.disabled=true;
+    els.startMessage.textContent='Реальна екзаменаційна спроба доступна лише студентам.';
+    els.startMessage.className='message err';
     return;
   }
 
