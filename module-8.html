@@ -53,7 +53,7 @@ h1{font-size:clamp(38px,5.3vw,62px);line-height:1.02;margin:8px 0 14px}h2{font-s
 @media(max-width:700px){.wrap{padding:10px}.card,.control,.challenge{padding:18px;border-radius:20px}.dutygrid,.choicegrid,.stopgrid,.summary,.challenge-options,.hj-strip,.protocol-fields{grid-template-columns:1fr}.control-head{flex-direction:column}.scenario-list{display:grid;grid-template-columns:1fr 1fr}.nav{position:static}}
 @media print{.nav,.back,.control,.challenge,#safety,#quiz,.footer,.proto-tools{display:none!important}.protocol{grid-template-columns:1fr}.calc{background:#fff;color:#000;border:1px solid #ccc}.total strong{color:#000}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="auth-guard.js"></script></head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js?v=20260829-lectures1"></script><script src="auth-guard.js"></script></head>
 <body>
 <div class="wrap">
 <header class="card">
@@ -156,4 +156,4 @@ var answers={q1:'b',q2:'a',q3:'b',q4:'a',q5:'c',q6:'a',q7:'b',q8:'a',q9:'a',q10:
 quizForm.onsubmit=function(e){e.preventDefault();var score=0,answered=0;Object.keys(answers).forEach(function(q){var x=document.querySelector('input[name="'+q+'"]:checked');if(x){answered++;if(x.value===answers[q])score++}});if(answered<10){quizResult.textContent='Дай відповідь на всі 10 питань. Зараз: '+answered+'/10.';quizResult.style.color='#8a2437';return}var pct=Math.round(score*10);quizResult.textContent='Результат: '+score+'/10 · '+pct+'%'+(pct>=80?' · Модуль 8 засвоєно ✓':' · Потрібно щонайменше 80%.');quizResult.style.color=pct>=80?'#17643f':'#8a2437';if(window.PE_saveModuleResult)window.PE_saveModuleResult(8,pct,pct>=80);if(pct>=80){var key='pe_judge_progress_v1',state=JSON.parse(localStorage.getItem(key)||'{}');state[8]={passed:true,score:pct};localStorage.setItem(key,JSON.stringify(state))}};
 resetQuiz.onclick=function(){quizForm.reset();quizResult.textContent=''};
 </script>
-</body></html>
+<script src="lecture-link.js?v=20260829-lectures1"></script></body></html>
