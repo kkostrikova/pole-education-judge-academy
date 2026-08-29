@@ -14,7 +14,7 @@
   const grid = document.getElementById('moduleGrid');
 
   function isDone(n){ return Boolean(state[n]?.passed); }
-  function isUnlocked(n){ return n === 1 || isDone(n - 1); }
+  function isUnlocked(n){ const cfg = window.PE_CONFIG || {}; return Boolean(cfg.reviewMode) || n === 1 || isDone(n - 1); }
   function renderModules(){
     grid.innerHTML = modules.map(m => {
       const done = isDone(m.n), unlocked = isUnlocked(m.n);
