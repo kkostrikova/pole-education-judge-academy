@@ -65,42 +65,19 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 function isAnswered(q){const a=answers[q.no];return q.type==='multi'?Array.isArray(a)&&a.length>0:q.type==='text'?Boolean(String(a||'').trim()):a!==undefined&&a!==null&&a!==''}
 function saveLocal(){if(!session)return;localStorage.setItem(storageKey(session.user.id),JSON.stringify({answers,flags,current,startedAt}))}
 function loadLocal(){if(!session)return;try{const x=JSON.parse(localStorage.getItem(storageKey(session.user.id))||'{}');answers=x.answers||{};flags=x.flags||{};current=Number.isInteger(x.current)?Math.min(x.current,Q.length-1):0;startedAt=x.startedAt||0}catch(_){}}
-function closeVideoModal(){
-  const modal=document.getElementById('videoModal');
-  if(!modal)return;
-  const frame=modal.querySelector('iframe');
-  if(frame)frame.src='';
-  modal.remove();
-  document.body.classList.remove('modal-open');
-}
-function openVideoModal(url,label){
-  const id=(url.match(/[?&]v=([^&]+)/)||url.match(/youtu\.be\/([^?&]+)/)||[])[1]||'';
-  if(!id)return;
-  closeVideoModal();
-  const modal=document.createElement('div');
-  modal.id='videoModal';
-  modal.className='video-modal';
-  modal.innerHTML='<div class="video-modal-backdrop"></div><div class="video-modal-dialog" role="dialog" aria-modal="true" aria-label="'+esc(label||'Відео')+'"><button class="video-modal-close" type="button" aria-label="Закрити">×</button><div class="youtube-wrap modal-player"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=1&rel=0&playsinline=1" title="'+esc(label||'Відео')+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><a class="youtube-link" href="'+esc(url)+'" target="_blank" rel="noopener">Відкрити окремо ↗</a></div>';
-  document.body.appendChild(modal);
-  document.body.classList.add('modal-open');
-  modal.querySelector('.video-modal-close').onclick=closeVideoModal;
-  modal.querySelector('.video-modal-backdrop').onclick=closeVideoModal;
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVideoModal()});
-
 function renderMedia(q){
   if(!q.media){els.mediaSlot.classList.add('hidden');els.mediaSlot.innerHTML='';return}
   els.mediaSlot.classList.remove('hidden');
   if(q.media.kind==='video'&&q.media.url){
-    els.mediaSlot.innerHTML='<button class="video-launch" type="button" aria-label="Переглянути відео"><span class="video-launch-icon">▶</span><span class="video-launch-text">Переглянути відео</span></button>';
-    els.mediaSlot.querySelector('.video-launch').onclick=()=>openVideoModal(q.media.url,q.media.label);
+    const id=(q.media.url.match(/[?&]v=([^&]+)/)||q.media.url.match(/youtu\.be\/([^?&]+)/)||[])[1]||'';
+    els.mediaSlot.innerHTML=(id?'<div class="youtube-wrap"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?rel=0" title="'+esc(q.media.label)+'" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><a class="youtube-link" href="'+esc(q.media.url)+'" target="_blank" rel="noopener">Відкрити відео на YouTube ↗</a>':'');
     return;
   }
   if(q.media.kind==='image'&&q.media.url){
     els.mediaSlot.innerHTML='<div class="exam-image-wrap"><img src="'+esc(q.media.url)+'" alt="'+esc(q.media.label)+'" loading="lazy"></div>';
     return;
   }
-  els.mediaSlot.innerHTML='';
+  els.mediaSlot.innerHTML='<span>'+esc(q.media.label)+'. Оригінальний медіафайл буде підключено перед відкриттям фінального іспиту студентам.</span>';
 }
 function renderAnswer(q){
   if(q.type==='text'){els.answerSlot.innerHTML='<textarea class="open-answer" id="openAnswer" placeholder="Введіть вашу відповідь…">'+esc(answers[q.no]||'')+'</textarea>';document.getElementById('openAnswer').addEventListener('input',e=>{answers[q.no]=e.target.value;saveLocal();renderNavigator()});return}
