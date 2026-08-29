@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Перевірка практичного іспиту · Pole Education</title>
   <link rel="stylesheet" href="auth.css?v=20260829-practical3">
-  <link rel="stylesheet" href="practical-review.css?v=20260829-practical3">
+  <link rel="stylesheet" href="practical-review.css?v=20260829-cert1">
 </head>
 <body>
 <div class="shell">
@@ -49,6 +49,7 @@
       <button class="btn pass-btn" id="passBtn">Складено</button>
       <button class="btn fail-btn" id="failBtn">Не складено</button>
     </div>
+    <label class="distinction-check"><input type="checkbox" id="distinctionCheck"><span><strong>⭐ Високий рівень практичної частини</strong><small>Позначте для рекомендації на золотий сертифікат. Остаточно він видається лише якщо всі модульні тести та фінальна теорія мають результат понад 80%.</small></span></label>
     <label class="admin-comment"><span>Коментар студенту — за потреби</span><textarea id="adminComment" placeholder="Наприклад: зверніть увагу на оцінювання динамічної складності кільця…"></textarea></label>
     <button class="btn primary" id="publishBtn" disabled>Надіслати результат студенту</button>
   </section>
@@ -58,6 +59,6 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=20260829-practical3"></script>
-<script src="practical-review.js?v=20260829-practical3"></script>
+<script src="practical-review.js?v=20260829-cert1"></script>
 </body>
 </html>
