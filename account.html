@@ -1,4 +1,4 @@
-<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Мій кабінет · Pole Education</title><link rel="stylesheet" href="auth.css?v=20260829-certname1"></head><body><div class="shell"><main class="dashboard">
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Мій кабінет · Pole Education</title><link rel="stylesheet" href="auth.css?v=20260829-certlang1"></head><body><div class="shell"><main class="dashboard">
 <div class="dashhead"><div><div class="mini">POLE EDUCATION · JUDGE ACADEMY</div><h1>Мій кабінет</h1><div id="profileLine" style="color:#756a70"></div></div><div class="actions"><a class="btn secondary" href="index.html">До курсу</a><a class="btn secondary hidden" id="adminLink" href="admin.html">Адмін-панель</a><button class="btn primary" id="logoutBtn">Вийти</button></div></div>
 <div class="cards"><div class="card"><strong id="modulesDone">0/8</strong><span>завершені модулі</span></div><div class="card"><strong id="theoryScore">—</strong><span>теоретичний іспит</span></div><div class="card"><strong id="practicalStatus">—</strong><span>практична атестація</span></div><div class="card"><strong id="certStatus">—</strong><span>сертифікація</span></div></div>
 <section class="section hidden" id="ndaAccountBox"><h2>Конфіденційність</h2><div class="card"><div style="display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap"><div><div class="mini">NDA · COURSE ACCESS</div><strong style="font:500 24px Georgia">Договір про нерозповсюдження підписано</strong><p id="ndaAccountText" style="margin:6px 0 0;color:#756a70"></p></div><a class="btn secondary" href="nda.html?next=account.html">Переглянути статус</a></div></div></section>
@@ -13,7 +13,9 @@
       <strong class="certificate-name-title">Перевірте написання ПІБ</strong>
       <p>Ми підставили ім’я з вашого акаунта. Відредагуйте його, якщо потрібно, і підтвердьте саме той варіант, який має бути надрукований на сертифікаті.</p>
     </div>
-    <label class="certificate-name-field"><span>ПІБ для сертифіката</span><input id="certificateNameInput" class="field" maxlength="160" autocomplete="name"></label>
+    <label class="certificate-name-field"><span>ПІБ для сертифіката українською</span><input id="certificateNameInput" class="field" maxlength="160" autocomplete="name"></label>
+    <label class="certificate-language-choice"><input type="checkbox" id="englishCertificateWanted"><span><strong>Потрібен також сертифікат англійською?</strong><small>Якщо так — підтвердьте написання вашого імені латиницею.</small></span></label>
+    <label class="certificate-name-field hidden" id="englishNameWrap"><span>Ім’я та прізвище латиницею</span><input id="englishNameInput" class="field" maxlength="160" autocomplete="name" placeholder="Kateryna Kostrikova"></label>
     <div class="certificate-name-actions">
       <button id="confirmCertificateNameBtn" class="btn primary" type="button">Підтвердити ім’я</button>
       <small>Після видачі сертифіката ім’я буде зафіксовано.</small>
@@ -24,4 +26,4 @@
 <section class="section"><h2>Результати модулів</h2><div class="tablewrap"><table class="table"><thead><tr><th>Модуль</th><th>Бали</th><th>Спроба</th><th>Статус</th></tr></thead><tbody id="moduleBody"></tbody></table></div></section>
 <div id="accountMessage" class="message" style="margin-top:18px">Завантаження…</div>
 </main></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="progress-sync.js"></script><script src="account.js?v=20260829-nda1"></script></body></html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="progress-sync.js"></script><script src="account.js?v=20260829-certlang1"></script></body></html>
