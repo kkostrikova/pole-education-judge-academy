@@ -1,1 +1,159 @@
-<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Модуль 8 · Pole Education</title><link rel="stylesheet" href="styles.css"></head><body><main class="section"><p class="eyebrow">MODULE 08</p><h1 style="font-family:Georgia,serif;font-size:clamp(42px,7vw,76px);font-weight:500;max-width:900px">Обов’язки головного судді</h1><p style="max-width:720px;line-height:1.7;color:#756a70">Модуль готується до інтерактивного оформлення: керівництво суддівською колегією, протоколи, конфлікти, скарги, апеляції та дисциплінарні рішення.</p><a class="primary-btn" href="index.html#modules">← Повернутися до курсу</a></main></body></html>
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Модуль 8 · Обов’язки головного судді · Pole Education Judge Academy</title>
+<style>
+:root{--cream:#f6f0e9;--card:#fffaf4;--ink:#292327;--wine:#6e2748;--pink:#c43d77;--line:#dccfc5;--gold:#d1a04b;--green:#63c68d;--red:#d76573}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);font:15px Inter,system-ui,Arial;color:var(--ink)}
+.wrap{max-width:1400px;margin:auto;padding:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:26px;margin:18px 0}
+.ey{font-size:11px;letter-spacing:.16em;font-weight:900;color:var(--pink);text-transform:uppercase}h1,h2,h3{font-family:Georgia,serif;font-weight:500}
+h1{font-size:clamp(38px,5.3vw,62px);line-height:1.02;margin:8px 0 14px}h2{font-size:clamp(30px,4vw,43px);margin:7px 0 15px}
+.lead{font-size:18px;line-height:1.62;color:#5f555a;max-width:960px}.back{display:inline-block;color:var(--wine);font-weight:850;text-decoration:none;margin-bottom:12px}
+.pills,.actions{display:flex;gap:8px;flex-wrap:wrap}.pill{padding:8px 12px;border-radius:999px;background:#f1e3e9;color:#73324e;font-size:13px;font-weight:850}
+.nav{position:sticky;top:10px;z-index:30;display:flex;gap:8px;flex-wrap:wrap;background:#f6f0e9ed;backdrop-filter:blur(10px);padding:10px;border:1px solid #ded3cc;border-radius:18px;margin:14px 0}
+.nav a{border:1px solid #d6c8c5;background:#fff;color:#5c5056;text-decoration:none;border-radius:999px;padding:9px 13px;font-weight:700}
+.dutygrid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}.duty{background:#fff;border:1px solid #e2d6d1;border-radius:17px;padding:17px;min-height:170px;position:relative;overflow:hidden}
+.duty:after{content:attr(data-n);position:absolute;right:8px;bottom:-14px;font:700 72px Georgia;color:#7b2c4b0d}.duty .n{font-size:11px;color:var(--pink);font-weight:900}
+.duty strong{display:block;font:500 21px Georgia;color:var(--wine);margin:7px 0}.duty p{margin:0;line-height:1.5;color:#665b60}
+.control,.challenge{background:radial-gradient(circle at 84% 4%,#7a1f4d40,transparent 28%),linear-gradient(145deg,#05070c,#0b111b 60%,#101827);color:#fff;border-radius:30px;padding:22px;margin:18px 0;border:1px solid #263044}
+.control-head{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid #283348;padding-bottom:16px}.control h2,.challenge h2{color:#fff}.badge{border:1px solid #ffffff55;border-radius:14px;padding:10px 13px;text-align:center;font-weight:900;color:#f3b4cf}
+.scenario-layout{display:grid;grid-template-columns:300px 1fr;gap:14px;margin-top:16px}.scenario-list{display:flex;flex-direction:column;gap:8px}
+.scenario-tab{border:1px solid #303b4d;background:#0d1420;color:#d7dde7;border-radius:13px;padding:12px;text-align:left;cursor:pointer;font-weight:750}.scenario-tab.active{border-color:var(--gold);background:#2a2318}
+.scenario-panel{background:#101827;border:1px solid #2d394d;border-radius:18px;padding:20px}.scenario-panel h3{color:#fff;font-size:28px}.scenario-text{color:#d2d8e2;line-height:1.6}
+.hj-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}.hj-status{border:1px solid #2f3a4c;background:#0b111a;border-radius:12px;padding:10px}
+.hj-status span{display:block;color:#8190a4;font-size:10px;letter-spacing:.12em;font-weight:900}.hj-status strong{display:block;margin-top:4px;color:#e7ebf1;font-size:13px}
+.hj-status.on{border-color:#3c9168;background:#10231a}.hj-status.on strong{color:#aef0ce}.hj-status.alert{border-color:#b08b32;background:#251d0d}.hj-status.alert strong{color:#ffe094}
+.choicegrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.choice{border:1px solid #39465b;background:#121c2a;color:#eef2f7;border-radius:12px;padding:12px;text-align:left;cursor:pointer}
+.choice.good{background:#14281f;border-color:#4ea979}.choice.bad{background:#2a161a;border-color:#bd5967}.feedback{margin-top:12px;border-radius:13px;padding:12px 14px;background:#0a111b;border:1px solid #2a394d;color:#cbd4df}
+.feedback.ok{border-color:#2d7958;color:#aef0cd}.feedback.warn{border-color:#80601e;color:#ffe39d}.scenario-score{margin-top:12px;display:flex;gap:10px;align-items:center;color:#aeb8c7;font-size:12px}
+.meter{height:7px;background:#1b2635;border-radius:999px;overflow:hidden;flex:1}.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d1a04b,#e967a1);transition:.25s}
+.protocol-paper{background:#fff;border:1px solid #d9cec8;border-radius:20px;padding:18px;margin-bottom:14px}.protocol-paper-head{display:flex;justify-content:space-between;gap:18px;border-bottom:2px solid var(--wine);padding-bottom:12px;margin-bottom:12px}
+.protocol-paper-head h3{font:600 26px Georgia;color:#5d213e;margin:0}.protocol-fields{display:grid;grid-template-columns:2fr 1.4fr .8fr 1fr;gap:9px}
+.protocol-field label{display:block;font-size:10px;letter-spacing:.1em;font-weight:900;color:#8a7680;margin-bottom:5px}.protocol-field input{width:100%;border:1px solid #d8cbc6;background:#fffaf7;border-radius:9px;padding:9px 10px}
+.disq-flag{display:none;margin-top:12px;background:#fde7eb;color:#85293a;border:1px solid #e7b4be;border-radius:12px;padding:11px 12px;font-weight:900}.disq-flag.show{display:block}
+.protocol{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.proto-table{background:#fff;border:1px solid #e0d5d0;border-radius:18px;overflow:hidden}
+.proto-head,.proto-row{display:grid;grid-template-columns:1fr 115px;gap:10px;padding:12px 14px}.proto-head{background:var(--wine);color:#fff;font-weight:900}.proto-row{border-top:1px solid #eadfda}
+.proto-row button{border:0;background:none;text-align:left;color:#332c31;font-weight:750;cursor:pointer;padding:0}.points{font-weight:900;color:#8a294d;text-align:right}
+.calc{background:#101722;color:#fff;border-radius:18px;padding:18px;border:1px solid #29364a;position:sticky;top:90px;align-self:start}.calc h3{font-size:29px;color:#fff}.calc p{color:#b7c0cc}
+.selected-list{display:grid;gap:8px}.sel{display:flex;justify-content:space-between;gap:12px;background:#0b111b;border:1px solid #2e394a;border-radius:11px;padding:10px}.sel button{border:0;background:none;color:#f2a4c7;cursor:pointer;font-weight:900}
+.total{border-top:1px solid #344054;margin-top:14px;padding-top:14px;display:flex;justify-content:space-between;align-items:end}.total strong{font:600 34px Georgia;color:#f2c46a}
+.btn{border:0;border-radius:11px;padding:11px 15px;font-weight:900;cursor:pointer}.btn.primary{background:var(--gold);color:#18120a}.btn.secondary{background:#202a3b;color:#fff;border:1px solid #39475d}.btn.wine{background:var(--wine);color:#fff}
+.stopgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.stopcase{background:#fff;border:1px solid #e0d5d0;border-radius:17px;padding:17px}.stopcase .light{font-size:11px;color:#a92f64;font-weight:900}.stopchoices{display:flex;gap:8px}.stopchoices button{flex:1;border:1px solid #d8cbc6;background:#fff;border-radius:10px;padding:10px;font-weight:850;cursor:pointer}.stopfb{font-size:13px;font-weight:800;min-height:38px;margin-top:9px}
+.challenge-grid{display:grid;grid-template-columns:.78fr 1.22fr;gap:16px}.casefile{background:#fff7f1;color:#2c2529;border-radius:18px;padding:18px}.casefile h3{font-size:27px;color:#692642}.stamp{display:inline-block;border:2px solid #8c365b;color:#8c365b;border-radius:8px;padding:5px 8px;font-weight:900}
+.timeline{display:grid;gap:8px;margin-top:13px}.timeline div{border-left:3px solid #cfa55c;padding:8px 10px;background:#fff;border-radius:0 10px 10px 0}.timeline b{color:#6e2748}
+.challenge-panel{background:#101722;border:1px solid #303b4d;border-radius:18px;padding:18px}.challenge-step{background:#0b111a;border:1px solid #2a3648;border-radius:14px;padding:14px;margin:10px 0}.challenge-step h4{margin:0 0 9px;color:#f0c56d}
+.challenge-options{display:grid;grid-template-columns:1fr 1fr;gap:7px}.challenge-options button{border:1px solid #36445a;background:#121c2a;color:#edf1f6;border-radius:10px;padding:10px;text-align:left;cursor:pointer}
+.challenge-options button.correct{background:#13291f;border-color:#49a675}.challenge-options button.wrong{background:#2b171b;border-color:#b95766}.challenge-result{margin-top:12px;border-radius:13px;padding:12px;background:#0b111a;border:1px solid #2d3b4e;color:#cbd5e1}
+.quizq{background:#fff;border:1px solid #e0d4cf;border-radius:15px;padding:15px;margin:10px 0}.quizq b{display:block;margin-bottom:8px}.quizq label{display:block;padding:6px 4px;cursor:pointer}.resultbox{font-weight:900;margin-top:12px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.sum{background:#fff;border:1px solid #e0d5d0;border-radius:16px;padding:16px}.sum strong{display:block;color:var(--wine);margin-bottom:6px}
+.footer{text-align:center;color:#7b7075;font-size:12px;padding:10px 0 24px}
+@media(max-width:1050px){.dutygrid{grid-template-columns:repeat(2,1fr)}.scenario-layout,.protocol,.challenge-grid{grid-template-columns:1fr}.calc{position:static}.summary{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.wrap{padding:10px}.card,.control,.challenge{padding:18px;border-radius:20px}.dutygrid,.choicegrid,.stopgrid,.summary,.challenge-options,.hj-strip,.protocol-fields{grid-template-columns:1fr}.control-head{flex-direction:column}.scenario-list{display:grid;grid-template-columns:1fr 1fr}.nav{position:static}}
+@media print{.nav,.back,.control,.challenge,#safety,#quiz,.footer,.proto-tools{display:none!important}.protocol{grid-template-columns:1fr}.calc{background:#fff;color:#000;border:1px solid #ccc}.total strong{color:#000}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="card">
+<a class="back" href="index.html#modules">← До всіх модулів</a>
+<div class="ey">POLE EDUCATION · JUDGE ACADEMY · MODULE 08</div>
+<h1>Обов’язки головного судді</h1>
+<p class="lead">Head Judge відповідає не лише за власну оцінку. Його зона відповідальності — якість роботи суддівської колегії, протоколи, спірні рішення, безпека, дисципліна та професійний стандарт усього суддівства.</p>
+<div class="pills"><span class="pill">Head Judge</span><span class="pill">Контроль колегії</span><span class="pill">Конфлікти й апеляції</span><span class="pill">Протокол штрафів</span><span class="pill">Безпека</span></div>
+</header>
+<nav class="nav"><a href="#duties">8 обов’язків</a><a href="#control">Control Room</a><a href="#protocol">Протокол</a><a href="#safety">Безпека</a><a href="#challenge">Фінальний кейс</a><a href="#quiz">Тест</a></nav>
+
+<section class="card" id="duties"><div class="ey">РОЛЬ HEAD JUDGE</div><h2>8 зон відповідальності</h2>
+<div class="dutygrid">
+<div class="duty" data-n="01"><span class="n">01</span><strong>Керівництво колегією</strong><p>Ознайомлення суддів із правилами й критеріями, нагляд за справедливим оцінюванням, перевірка протоколів, за потреби — навчання суддів.</p></div>
+<div class="duty" data-n="02"><span class="n">02</span><strong>Підготовка до старту</strong><p>Список учасників, порядок виступів, готовність суддівського обладнання та матеріалів для оцінок.</p></div>
+<div class="duty" data-n="03"><span class="n">03</span><strong>Правила й процедури</strong><p>Комунікація з організаторами, роз’яснення правил суддям і вирішення ситуаційних питань.</p></div>
+<div class="duty" data-n="04"><span class="n">04</span><strong>Оцінки та зобов’язання</strong><p>Контроль справедливості оцінок, штрафи за власним протоколом, попередження та дискваліфікація за грубі порушення.</p></div>
+<div class="duty" data-n="05"><span class="n">05</span><strong>Конфлікти й апеляції</strong><p>Об’єктивний розгляд конфліктів, суперечок, скарг та апеляцій відповідно до правил.</p></div>
+<div class="duty" data-n="06"><span class="n">06</span><strong>Безпека й порядок</strong><p>Контроль майданчика, реагування на загрози, право зупинити виступ за необхідності та співпраця з організаторами.</p></div>
+<div class="duty" data-n="07"><span class="n">07</span><strong>Поліпшення системи</strong><p>Рекомендації та ініціативи для покращення майбутніх змагань і суддівської діяльності.</p></div>
+<div class="duty" data-n="08"><span class="n">08</span><strong>Професійний імідж</strong><p>Високий стандарт професіоналізму й етики та контроль дотримання етичних норм суддями.</p></div>
+</div></section>
+
+<section class="control" id="control"><div class="control-head"><div><div class="ey">HEAD JUDGE CONTROL ROOM</div><h2>Рішення під тиском</h2><p style="color:#aeb9c8">Обери ситуацію та правильну дію Head Judge.</p></div><div class="badge">MODULE 08<br>DECISION LAB</div></div>
+<div class="scenario-layout"><div class="scenario-list" id="scenarioList"></div><div class="scenario-panel"><div class="ey" id="scenarioCode"></div><h3 id="scenarioTitle"></h3><div class="scenario-text" id="scenarioText"></div>
+<div class="hj-strip"><div class="hj-status" id="stFact"><span>01 · FACTS</span><strong>Ситуація прочитана</strong></div><div class="hj-status" id="stRule"><span>02 · RULE</span><strong>Правило визначається</strong></div><div class="hj-status" id="stSafety"><span>03 · SAFETY</span><strong>Ризик перевіряється</strong></div><div class="hj-status" id="stDecision"><span>04 · DECISION</span><strong>Рішення очікується</strong></div></div>
+<div class="choicegrid" id="choiceGrid"></div><div class="feedback" id="scenarioFeedback">Обери рішення.</div><div class="scenario-score"><span id="scenarioScoreText"></span><div class="meter"><i id="scenarioMeter"></i></div></div>
+</div></div></section>
+
+<section class="card" id="protocol"><div class="ey">ПРОТОКОЛ ГОЛОВНОГО СУДДІ</div><h2>Штраф — не «на око»</h2>
+<div class="protocol-paper"><div class="protocol-paper-head"><div><h3>HEAD JUDGE · OFFICIAL WORKSHEET</h3><small>Навчальна форма для відпрацювання протоколу</small></div><div class="ey">POLE EDUCATION</div></div>
+<div class="protocol-fields"><div class="protocol-field"><label>СПОРТСМЕН / ПАРА</label><input placeholder="ПІБ / назва"></div><div class="protocol-field"><label>КАТЕГОРІЯ</label><input placeholder="Категорія"></div><div class="protocol-field"><label>СТАРТ №</label><input placeholder="00"></div><div class="protocol-field"><label>HEAD JUDGE</label><input placeholder="ПІБ судді"></div></div>
+<div class="disq-flag" id="disqFlag">⚠ У протоколі є пункт «-10 або дискваліфікація». Фінальне рішення Head Judge треба зафіксувати окремо.</div></div>
+<div class="protocol"><div class="proto-table"><div class="proto-head"><span>Порушення</span><span style="text-align:right">Списання</span></div><div id="penaltyRows"></div></div>
+<aside class="calc"><div class="ey">LIVE PROTOCOL</div><h3>Поточний протокол</h3><p>Додавай порушення з таблиці. Повторювані штрафи можна додати кілька разів.</p><div class="selected-list" id="selectedList"></div><div class="total"><span>Сумарне списання</span><strong id="totalPenalty">0</strong></div><div id="protoCount" style="font-size:12px;color:#9aa5b4;margin-top:8px"></div><div class="actions" style="margin-top:12px"><button class="btn secondary" id="clearProtocol">Очистити</button><button class="btn primary" id="printProtocol">Друк протоколу</button></div></aside>
+</div></section>
+
+<section class="card" id="safety"><div class="ey">SAFETY CHECK</div><h2>Коли Head Judge має втрутитися?</h2><div class="stopgrid" id="stopGrid"></div></section>
+
+<section class="challenge" id="challenge"><div class="ey">FINAL HEAD JUDGE CHALLENGE</div><h2>Один змагальний день · три рішення</h2><div class="challenge-grid">
+<div class="casefile"><span class="stamp">CASE FILE · HJ-08</span><h3>Категорія стартує за 4 хвилини</h3><div class="timeline"><div><b>08:56</b> · Виявлена проблема з кріпленням знаряддя.</div><div><b>09:18</b> · Спортсмен виконує заборонений елемент.</div><div><b>09:19</b> · Тренер двічі викрикує підказки.</div><div><b>09:35</b> · Представник спортсмена подає скаргу.</div></div></div>
+<div class="challenge-panel">
+<div class="challenge-step" data-step="1"><h4>КРОК 1 · БЕЗПЕКА</h4><div class="challenge-options"><button data-correct="1">Не починати категорію, доки проблема з кріпленням не усунена.</button><button data-correct="0">Почати, а кріплення перевірити пізніше.</button></div></div>
+<div class="challenge-step" data-step="2"><h4>КРОК 2 · ПРОТОКОЛ</h4><p style="color:#b8c2cf">Заборонений елемент: -5. Дві підказки тренера: 2 × -3.</p><div class="challenge-options"><button data-correct="0">-8</button><button data-correct="1">-11</button><button data-correct="0">-6</button><button data-correct="0">0</button></div></div>
+<div class="challenge-step" data-step="3"><h4>КРОК 3 · СКАРГА / АПЕЛЯЦІЯ</h4><div class="challenge-options"><button data-correct="1">Розглянути скаргу об’єктивно відповідно до правил і протоколу.</button><button data-correct="0">Автоматично скасувати штраф.</button><button data-correct="0">Не розглядати скаргу.</button><button data-correct="0">Передати рішення тренеру.</button></div></div>
+<div class="challenge-result" id="challengeResult">Пройди всі три кроки. Готовність: <strong id="challengeScore">0 / 3</strong></div></div></div></section>
+
+<section class="card" id="quiz"><div class="ey">MODULE TEST</div><h2>Тест модуля 8 · 10 питань</h2><form id="quizForm">
+<div class="quizq"><b>1. За що Head Judge відповідає в роботі суддівської колегії?</b><label><input type="radio" name="q1" value="a"> Лише за власний протокол</label><label><input type="radio" name="q1" value="b"> За ознайомлення суддів із правилами, якість оцінювання та контроль протоколів</label></div>
+<div class="quizq"><b>2. Що входить до підготовки до змагань?</b><label><input type="radio" name="q2" value="a"> Перевірка готовності суддівського обладнання та матеріалів</label><label><input type="radio" name="q2" value="b"> Вибір костюмів</label></div>
+<div class="quizq"><b>3. Як мають розглядатися скарги та апеляції?</b><label><input type="radio" name="q3" value="a"> За особистою симпатією</label><label><input type="radio" name="q3" value="b"> Об’єктивно і відповідно до правил</label></div>
+<div class="quizq"><b>4. Чи може Head Judge зупинити виступ?</b><label><input type="radio" name="q4" value="a"> Так, у разі необхідності, зокрема для безпеки</label><label><input type="radio" name="q4" value="b"> Ніколи</label></div>
+<div class="quizq"><b>5. Списання за заборонений елемент?</b><label><input type="radio" name="q5" value="a"> -1</label><label><input type="radio" name="q5" value="b"> -3</label><label><input type="radio" name="q5" value="c"> -5 за кожен елемент</label></div>
+<div class="quizq"><b>6. Допомога тренера / підказування?</b><label><input type="radio" name="q6" value="a"> -3 за кожен раз</label><label><input type="radio" name="q6" value="b"> Без списання</label></div>
+<div class="quizq"><b>7. Заборонені засоби зчеплення?</b><label><input type="radio" name="q7" value="a"> -3</label><label><input type="radio" name="q7" value="b"> -10 або дискваліфікація</label></div>
+<div class="quizq"><b>8. До професійного іміджу належить:</b><label><input type="radio" name="q8" value="a"> Контроль дотримання етичних норм суддями</label><label><input type="radio" name="q8" value="b"> Публічне обговорення оцінок</label></div>
+<div class="quizq"><b>9. За грубі порушення правил Head Judge може:</b><label><input type="radio" name="q9" value="a"> Дискваліфікувати спортсмена</label><label><input type="radio" name="q9" value="b"> Ігнорувати ситуацію</label></div>
+<div class="quizq"><b>10. Після змагань Head Judge може:</b><label><input type="radio" name="q10" value="a"> Висувати рекомендації для покращення майбутніх змагань</label><label><input type="radio" name="q10" value="b"> Не аналізувати роботу</label></div>
+<button class="btn wine" type="submit">Перевірити тест</button><button class="btn secondary" type="button" id="resetQuiz">Скинути</button><div class="resultbox" id="quizResult"></div></form></section>
+
+<section class="card"><div class="ey">HEAD JUDGE ALGORITHM</div><h2>4 кроки перед рішенням</h2><div class="summary"><div class="sum"><strong>1 · Факт</strong><p>Що саме сталося?</p></div><div class="sum"><strong>2 · Правило</strong><p>Який пункт застосовується?</p></div><div class="sum"><strong>3 · Безпека</strong><p>Чи є ризик?</p></div><div class="sum"><strong>4 · Рішення</strong><p>Об’єктивно, послідовно, з фіксацією.</p></div></div></section>
+<div class="footer">© Pole Education · Judge Academy · Module 08</div></div>
+<script>
+var scenarios=[
+{t:"Суддя не впевнений у критерії",x:"Перед початком категорії суддя просить уточнити критерій.",c:[["Сказати: оцінюй як вважаєш",0],["Роз’яснити критерій і переконатися в єдиному розумінні",1],["Передати питання спортсмену",0]],f:"Head Judge пояснює критерії та забезпечує єдине розуміння правил."},
+{t:"Скарга на рішення",x:"Під час змагання виникла суперечка щодо суддівського рішення.",c:[["Ігнорувати",0],["Розглянути об’єктивно відповідно до правил",1],["Автоматично підтримати суддю",0]],f:"Скарги й апеляції розглядаються об’єктивно відповідно до правил."},
+{t:"Загроза безпеці",x:"Під час виступу виникла реальна загроза безпеці.",c:[["Продовжити",0],["За необхідності зупинити виступ",1],["Чекати завершення музики",0]],f:"Безпека має пріоритет; Head Judge може зупинити виступ."},
+{t:"Грубе порушення",x:"Спортсмен допускає грубе порушення правил.",c:[["Не реагувати",0],["Застосувати правила, включно з дискваліфікацією, якщо передбачено",1],["Зняти довільну кількість балів",0]],f:"Рішення має відповідати правилам, а не бути довільним."},
+{t:"Після події",x:"Під час змагань були повторювані проблеми в суддівській системі.",c:[["Нічого не робити",0],["Сформувати рекомендації для поліпшення",1],["Публічно звинуватити суддю",0]],f:"Head Judge може висувати рекомендації для майбутніх змагань."}
+];
+var si=0,solved={};
+function drawScenario(){
+scenarioList.innerHTML=scenarios.map(function(s,i){return '<button class="scenario-tab '+(i===si?'active':'')+'" data-i="'+i+'">CASE 0'+(i+1)+' · '+s.t+'</button>'}).join('');
+var s=scenarios[si];scenarioCode.textContent='CASE 0'+(si+1);scenarioTitle.textContent=s.t;scenarioText.textContent=s.x;
+choiceGrid.innerHTML=s.c.map(function(c,i){return '<button class="choice" data-i="'+i+'">'+c[0]+'</button>'}).join('');
+scenarioFeedback.className='feedback';scenarioFeedback.textContent='Обери рішення.';
+[stFact,stRule,stSafety,stDecision].forEach(function(x){x.classList.remove('on','alert')});stFact.classList.add('on');
+}
+scenarioList.onclick=function(e){var b=e.target.closest('.scenario-tab');if(!b)return;si=+b.dataset.i;drawScenario()};
+choiceGrid.onclick=function(e){var b=e.target.closest('.choice');if(!b)return;var s=scenarios[si],c=s.c[+b.dataset.i],ok=!!c[1];choiceGrid.querySelectorAll('.choice').forEach(function(x){x.classList.remove('good','bad')});b.classList.add(ok?'good':'bad');stRule.classList.add('on');(si===2?stSafety:stDecision).classList.add(ok?'on':'alert');stDecision.classList.add(ok?'on':'alert');scenarioFeedback.className='feedback '+(ok?'ok':'warn');scenarioFeedback.textContent=(ok?'✓ Правильно. ':'Переглянь рішення. ')+s.f;if(ok)solved[si]=1;var n=Object.keys(solved).length;scenarioScoreText.textContent=n+' / '+scenarios.length+' правильних';scenarioMeter.style.width=(n/scenarios.length*100)+'%'};
+drawScenario();scenarioScoreText.textContent='0 / '+scenarios.length+' правильних';
+
+var penalties=[
+["Заборонений елемент",-5,"-5 за кожен елемент",0],["Музика не відповідає віку",-3,"-3",0],["Музика не відповідає правилам",-5,"-5",0],["Заборонена хореографія",-5,"-5 за кожен рух",0],["Вимовляння слів у категорії спорт",-1,"-1 за кожен раз",0],["Підказування тренера",-3,"-3 за кожен раз",0],["Явна допомога тренера",-5,"-5",0],["Костюм: шорти менше 1/3 або заважає",-1,"-1",0],["Костюм: немає спідньої білизни",-3,"-3",0],["Костюм: грубе порушення прикриття",-5,"-5",0],["Костюм: заборонені тканини",-3,"-3",0],["Зачіска заважає",-1,"-1 за кожен раз",0],["Реквізит не прибрано за 3 хв",-1,"-1",0],["Реквізит не відповідає правилам",-3,"-3",0],["Заборонені засоби зчеплення",-10,"-10 або дискваліфікація",1],["Сліди засобів зчеплення на снаряді",-5,"-5",0],["Неправдива інформація щодо категорії",-10,"-10 або дискваліфікація",1],["Неспортивна поведінка",-10,"-10 або дискваліфікація",1],["Торкання тросової системи",-1,"-1 за кожен раз",0],["Макіяж/фарба не відповідає правилам",-3,"-3",0],["Розмова з партнером під час програми",-1,"-1 за випадок",0],["Ненавмисний дотик/удар партнера",-1,"-1 за випадок",0]
+];
+var selected=[];
+penaltyRows.innerHTML=penalties.map(function(p,i){return '<div class="proto-row"><button data-i="'+i+'">'+p[0]+'</button><span class="points">'+p[2]+'</span></div>'}).join('');
+penaltyRows.onclick=function(e){var b=e.target.closest('button');if(!b)return;selected.push(+b.dataset.i);renderProtocol()};
+function renderProtocol(){selectedList.innerHTML=selected.length?selected.map(function(i,k){return '<div class="sel"><span>'+penalties[i][0]+' · <b>'+penalties[i][2]+'</b></span><button data-k="'+k+'">×</button></div>'}).join(''):'<div style="color:#9aa5b4">Порушень ще не додано.</div>';var total=selected.reduce(function(s,i){return s+penalties[i][1]},0);totalPenalty.textContent=total;protoCount.textContent=selected.length+' порушень у протоколі';disqFlag.classList.toggle('show',selected.some(function(i){return penalties[i][3]}))}
+selectedList.onclick=function(e){var b=e.target.closest('button');if(!b)return;selected.splice(+b.dataset.k,1);renderProtocol()};clearProtocol.onclick=function(){selected=[];renderProtocol()};printProtocol.onclick=function(){window.print()};renderProtocol();
+
+var stops=[["Кріплення / обладнання створює реальну загрозу під час виступу.",1,"Head Judge може зупинити виступ для безпеки."],["Суддя хоче уточнити критерій між категоріями.",0,"Це питання для роз’яснення правил, а не причина зупинки."],["Під час виступу виникла небезпечна ситуація для спортсмена.",1,"Безпека має пріоритет."]];
+stopGrid.innerHTML=stops.map(function(s,i){return '<div class="stopcase"><div class="light">SITUATION 0'+(i+1)+'</div><p>'+s[0]+'</p><div class="stopchoices"><button data-i="'+i+'" data-v="1">Зупинити</button><button data-i="'+i+'" data-v="0">Не зупиняти</button></div><div class="stopfb"></div></div>'}).join('');
+stopGrid.onclick=function(e){var b=e.target.closest('button');if(!b)return;var s=stops[+b.dataset.i],ok=((b.dataset.v==='1')===!!s[1]),box=b.closest('.stopcase');box.querySelector('.stopfb').textContent=(ok?'✓ ':'Переглянь рішення. ')+s[2];box.querySelector('.stopfb').style.color=ok?'#17643f':'#8a2437'};
+
+var cstate={1:0,2:0,3:0};document.querySelectorAll('.challenge-step').forEach(function(step){step.onclick=function(e){var b=e.target.closest('button');if(!b)return;step.querySelectorAll('button').forEach(function(x){x.classList.remove('correct','wrong')});var ok=b.dataset.correct==='1';b.classList.add(ok?'correct':'wrong');cstate[step.dataset.step]=ok?1:0;var n=Object.values(cstate).reduce(function(a,b){return a+b},0);challengeScore.textContent=n+' / 3';challengeResult.style.color=n===3?'#b7f2d0':'#cbd5e1';if(n===3)challengeResult.firstChild.nodeValue='✓ Усі три рішення правильні. Готовність: '}}
+});
+
+var answers={q1:'b',q2:'a',q3:'b',q4:'a',q5:'c',q6:'a',q7:'b',q8:'a',q9:'a',q10:'a'};
+quizForm.onsubmit=function(e){e.preventDefault();var score=0,answered=0;Object.keys(answers).forEach(function(q){var x=document.querySelector('input[name="'+q+'"]:checked');if(x){answered++;if(x.value===answers[q])score++}});if(answered<10){quizResult.textContent='Дай відповідь на всі 10 питань. Зараз: '+answered+'/10.';quizResult.style.color='#8a2437';return}var pct=Math.round(score*10);quizResult.textContent='Результат: '+score+'/10 · '+pct+'%'+(pct>=80?' · Модуль 8 засвоєно ✓':' · Потрібно щонайменше 80%.');quizResult.style.color=pct>=80?'#17643f':'#8a2437';if(pct>=80){var key='pe_judge_progress_v1',state=JSON.parse(localStorage.getItem(key)||'{}');state[8]={passed:true,score:pct};localStorage.setItem(key,JSON.stringify(state))}};
+resetQuiz.onclick=function(){quizForm.reset();quizResult.textContent=''};
+</script>
+</body></html>
