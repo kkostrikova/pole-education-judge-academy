@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Перевірка сертифіката · Pole Education</title>
+<link rel="stylesheet" href="certificate-verify.css?v=20260829-cert1">
+</head>
+<body>
+<main class="verify-shell">
+  <section class="verify-card">
+    <div class="verify-logo">PE</div>
+    <div class="mini">POLE EDUCATION · CERTIFICATE VERIFICATION</div>
+    <h1>Перевірка сертифіката</h1>
+    <form id="verifyForm">
+      <input id="certificateInput" placeholder="PEJ-2026-000001" autocomplete="off">
+      <button type="submit">Перевірити</button>
+    </form>
+    <div id="verifyResult" class="result muted">Введіть номер сертифіката або відкрийте сторінку через QR-код.</div>
+    <a class="back" href="index.html">← Pole Education Judge Academy</a>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js?v=20260829-cert1"></script>
+<script src="certificate-verify.js?v=20260829-cert1"></script>
+</body>
+</html>
