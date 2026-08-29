@@ -27,7 +27,8 @@ if(profile?.role==='admin')adminLink.classList.remove('hidden');
 
 const best={};
 (mods||[]).forEach(r=>{if(!best[r.module_id]||r.score>best[r.module_id].score)best[r.module_id]=r});
-modulesDone.textContent=Object.values(best).filter(x=>x.passed).length+'/8';
+const modulesPassedCount=Object.values(best).filter(x=>x.passed).length;
+modulesDone.textContent=modulesPassedCount+'/8';
 moduleBody.innerHTML=Object.keys(best).length
   ?Object.values(best).sort((a,b)=>a.module_id-b.module_id).map(r=>'<tr><td>Модуль '+r.module_id+'</td><td>'+r.score+'%</td><td>'+r.attempt+'</td><td><span class="pill '+(r.passed?'ok':'warn')+'">'+(r.passed?'Складено':'Не складено')+'</span></td></tr>').join('')
   :'<tr><td colspan="4">Поки немає збережених результатів.</td></tr>';
@@ -95,7 +96,32 @@ if(practicalAttempt){
     }
   }
 }else practicalStatus.textContent='—';
-certStatus.textContent=cert?.[0]?cert[0].final_status:'—';
+const theoryPassedFinal=Boolean(theoryAttempt?.result_published&&theoryAttempt?.passed);
+const practicalPassedFinal=Boolean(practicalAttempt?.result_published&&practicalAttempt?.passed);
+const courseComplete=modulesPassedCount===8&&theoryPassedFinal&&practicalPassedFinal;
+certStatus.textContent=courseComplete?'Курс завершено':(cert?.[0]?.final_status||'У процесі');
+
+const ctitle=document.getElementById('courseCompletionTitle');
+const ctext=document.getElementById('courseCompletionText');
+const cbadge=document.getElementById('courseCompletionBadge');
+const csteps=document.getElementById('courseCompletionSteps');
+if(ctitle&&ctext&&cbadge&&csteps){
+  const items=[
+    ['Модулі',modulesPassedCount===8,modulesPassedCount+'/8'],
+    ['Теоретичний іспит',theoryPassedFinal,theoryPassedFinal?'Складено':'Очікується'],
+    ['Практичний іспит',practicalPassedFinal,practicalPassedFinal?'Складено':'Очікується']
+  ];
+  csteps.innerHTML=items.map(x=>'<span class="pill '+(x[1]?'ok':'warn')+'">'+(x[1]?'✓ ':'')+x[0]+' · '+x[2]+'</span>').join('');
+  if(courseComplete){
+    ctitle.textContent='Курс успішно завершено';
+    ctext.textContent='Усі 8 модулів, теоретичний і практичний іспити успішно завершені. Ви виконали всі вимоги Pole Education Judge Academy. Наступний етап — сертифікат.';
+    cbadge.textContent='Завершено';cbadge.className='pill ok';
+  }else{
+    ctitle.textContent='Навчання триває';
+    ctext.textContent='Курс буде завершено автоматично, коли всі 8 модулів та обидві частини фінальної атестації матимуть статус «Складено».';
+    cbadge.textContent='У процесі';cbadge.className='pill warn';
+  }
+}
 msg.textContent='Дані кабінету захищені: ви бачите лише власні результати.';
 msg.className='message ok';
 logoutBtn.onclick=async()=>{await client.auth.signOut();location.href='index.html'};
