@@ -70,11 +70,11 @@ function renderMedia(q){
   els.mediaSlot.classList.remove('hidden');
   if(q.media.kind==='video'&&q.media.url){
     const id=(q.media.url.match(/[?&]v=([^&]+)/)||q.media.url.match(/youtu\.be\/([^?&]+)/)||[])[1]||'';
-    els.mediaSlot.innerHTML='<span>'+esc(q.media.label)+'</span>'+(id?'<div class="youtube-wrap"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?rel=0" title="'+esc(q.media.label)+'" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><a class="youtube-link" href="'+esc(q.media.url)+'" target="_blank" rel="noopener">Відкрити відео на YouTube ↗</a>':'');
+    els.mediaSlot.innerHTML=(id?'<div class="youtube-wrap"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?rel=0" title="'+esc(q.media.label)+'" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><a class="youtube-link" href="'+esc(q.media.url)+'" target="_blank" rel="noopener">Відкрити відео на YouTube ↗</a>':'');
     return;
   }
   if(q.media.kind==='image'&&q.media.url){
-    els.mediaSlot.innerHTML='<span>'+esc(q.media.label)+'</span><div class="exam-image-wrap"><img src="'+esc(q.media.url)+'" alt="'+esc(q.media.label)+'" loading="lazy"></div>';
+    els.mediaSlot.innerHTML='<div class="exam-image-wrap"><img src="'+esc(q.media.url)+'" alt="'+esc(q.media.label)+'" loading="lazy"></div>';
     return;
   }
   els.mediaSlot.innerHTML='<span>'+esc(q.media.label)+'. Оригінальний медіафайл буде підключено перед відкриттям фінального іспиту студентам.</span>';
