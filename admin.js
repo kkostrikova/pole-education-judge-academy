@@ -8,6 +8,35 @@ if(!session){location.href='auth.html';return}
 const {data:me}=await client.from('profiles').select('*').eq('user_id',session.user.id).single();
 if(me?.role!=='admin'){msg.textContent='Доступ заборонено. Ця сторінка доступна лише адміністраторам.';msg.className='message err';return}
 
+const theoryAccessBtn=document.getElementById('theoryAccessBtn');
+const theoryAccessText=document.getElementById('theoryAccessText');
+let theoryOpen=false;
+
+async function refreshTheoryAccess(){
+  const {data,error}=await client.rpc('pe_exam_access_state',{p_exam_key:'theory'});
+  if(error){
+    theoryAccessBtn.disabled=true;
+    theoryAccessText.textContent='Керування доступом стане активним після підключення серверної логіки Supabase.';
+    return;
+  }
+  const state=Array.isArray(data)?data[0]:data;
+  theoryOpen=Boolean(state?.is_open);
+  theoryAccessText.textContent=theoryOpen?'Іспит відкритий для студентів.':'Іспит закритий для студентів.';
+  theoryAccessBtn.textContent=theoryOpen?'Закрити іспит':'Відкрити іспит';
+  theoryAccessBtn.className='btn '+(theoryOpen?'secondary':'primary');
+  theoryAccessBtn.disabled=false;
+}
+
+theoryAccessBtn.onclick=async()=>{
+  theoryAccessBtn.disabled=true;
+  const next=!theoryOpen;
+  const {error}=await client.rpc('pe_set_exam_access',{p_exam_key:'theory',p_open:next});
+  if(error){alert('Не вдалося змінити доступ: '+error.message);theoryAccessBtn.disabled=false;return}
+  await refreshTheoryAccess();
+};
+
+await refreshTheoryAccess();
+
 const [
   {data:profiles,error:profilesError},
   {data:mods},
