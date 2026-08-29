@@ -10,21 +10,31 @@ if(me?.role!=='admin'){msg.textContent='Доступ заборонено. Ця 
 
 const theoryAccessBtn=document.getElementById('theoryAccessBtn');
 const theoryAccessText=document.getElementById('theoryAccessText');
-let theoryOpen=false;
+const practicalAccessBtn=document.getElementById('practicalAccessBtn');
+const practicalAccessText=document.getElementById('practicalAccessText');
+let theoryOpen=false,practicalOpen=false;
 
-async function refreshTheoryAccess(){
-  const {data,error}=await client.rpc('pe_exam_access_state',{p_exam_key:'theory'});
+async function refreshExamAccess(examKey,btn,textEl){
+  const {data,error}=await client.rpc('pe_exam_access_state',{p_exam_key:examKey});
   if(error){
-    theoryAccessBtn.disabled=true;
-    theoryAccessText.textContent='Керування доступом стане активним після підключення серверної логіки Supabase.';
-    return;
+    btn.disabled=true;
+    textEl.textContent='Керування доступом стане активним після підключення серверної логіки Supabase.';
+    return false;
   }
   const state=Array.isArray(data)?data[0]:data;
-  theoryOpen=Boolean(state?.is_open);
-  theoryAccessText.textContent=theoryOpen?'Іспит відкритий для студентів.':'Іспит закритий для студентів.';
-  theoryAccessBtn.textContent=theoryOpen?'Закрити іспит':'Відкрити іспит';
-  theoryAccessBtn.className='btn '+(theoryOpen?'secondary':'primary');
-  theoryAccessBtn.disabled=false;
+  const open=Boolean(state?.is_open);
+  textEl.textContent=open?'Іспит відкритий для студентів.':'Іспит закритий для студентів.';
+  btn.textContent=open?'Закрити іспит':'Відкрити іспит';
+  btn.className='btn '+(open?'secondary':'primary');
+  btn.disabled=false;
+  return open;
+}
+
+async function refreshTheoryAccess(){
+  theoryOpen=await refreshExamAccess('theory',theoryAccessBtn,theoryAccessText);
+}
+async function refreshPracticalAccess(){
+  practicalOpen=await refreshExamAccess('practical',practicalAccessBtn,practicalAccessText);
 }
 
 theoryAccessBtn.onclick=async()=>{
@@ -34,8 +44,15 @@ theoryAccessBtn.onclick=async()=>{
   if(error){alert('Не вдалося змінити доступ: '+error.message);theoryAccessBtn.disabled=false;return}
   await refreshTheoryAccess();
 };
+practicalAccessBtn.onclick=async()=>{
+  practicalAccessBtn.disabled=true;
+  const next=!practicalOpen;
+  const {error}=await client.rpc('pe_set_exam_access',{p_exam_key:'practical',p_open:next});
+  if(error){alert('Не вдалося змінити доступ: '+error.message);practicalAccessBtn.disabled=false;return}
+  await refreshPracticalAccess();
+};
 
-await refreshTheoryAccess();
+await Promise.all([refreshTheoryAccess(),refreshPracticalAccess()]);
 
 const [
   {data:profiles,error:profilesError},
