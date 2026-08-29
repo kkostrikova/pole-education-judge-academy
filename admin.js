@@ -60,14 +60,16 @@ const [
   attemptsResp,
   {data:legacyTheory},
   practicalAttemptsResp,
-  {data:certs}
+  {data:certs},
+  ndaResp
 ]=await Promise.all([
   client.from('profiles').select('*').order('created_at',{ascending:false}),
   client.from('module_results').select('*'),
   client.rpc('pe_admin_theory_attempts'),
   client.from('theory_exam_results').select('*'),
   client.rpc('pe_admin_practical_attempts'),
-  client.from('certifications').select('*')
+  client.from('certifications').select('*'),
+  client.from('course_nda_signatures').select('user_id,agreement_version,signed_at')
 ]);
 
 if(profilesError){msg.textContent='Не вдалося завантажити студентів.';msg.className='message err';return}
@@ -92,6 +94,9 @@ const t=latest(attempts,'completed_at');
 const legacy=latest(legacyTheory);
 const p=latest(practicalAttempts,'completed_at');
 const c=Object.fromEntries((certs||[]).map(x=>[x.user_id,x]));
+const ndaRows=ndaResp.error?[]:(ndaResp.data||[]);
+const ndaByUser={};
+ndaRows.forEach(x=>{if(!ndaByUser[x.user_id]||new Date(x.signed_at)>new Date(ndaByUser[x.user_id].signed_at))ndaByUser[x.user_id]=x});
 
 studentCount.textContent=students.length;
 activeCount.textContent=students.filter(s=>Object.values(byMods[s.user_id]||{}).some(x=>x.passed)).length;
@@ -116,6 +121,9 @@ const theoryLabel=a=>{
 
 studentBody.innerHTML=students.length?students.map(s=>{
   const done=Object.values(byMods[s.user_id]||{}).filter(x=>x.passed).length;
+  const nda=ndaByUser[s.user_id];
+  const ndaLabel=nda?'<span class="pill ok">Підписано ✓</span>':'<span class="pill warn">Не підписано</span>';
+  const ndaAction=nda?'<a class="btn secondary compact" href="nda-record.html?id='+encodeURIComponent(s.user_id)+'">NDA</a>':'';
   const a=t[s.user_id];
   const theory=a?theoryLabel(a):(legacy[s.user_id]?legacy[s.user_id].score+'%':'—');
   const review=a&&a.status!=='in_progress'
@@ -145,13 +153,14 @@ studentBody.innerHTML=students.length?students.map(s=>{
   return '<tr>'+
     '<td>'+(s.full_name||'—')+'</td>'+
     '<td>'+s.email+'</td>'+
+    '<td>'+ndaLabel+'</td>'+
     '<td>'+done+'/8</td>'+
     '<td>'+theory+'</td>'+
     '<td>'+practicalLabel+'</td>'+
     '<td><span class="pill '+(courseComplete?(goldEligible?'gold':'ok'):'warn')+'">'+certLabel+'</span></td>'+
-    '<td><div class="table-actions">'+review+retry+practicalReview+practicalRetry+'</div></td>'+
+    '<td><div class="table-actions">'+ndaAction+review+retry+practicalReview+practicalRetry+'</div></td>'+
   '</tr>';
-}).join(''):'<tr><td colspan="7">Студентів ще немає.</td></tr>';
+}).join(''):'<tr><td colspan="8">Студентів ще немає.</td></tr>';
 
 document.querySelectorAll('.retry-practical').forEach(btn=>btn.onclick=async()=>{
   if(!confirm('Дозволити цьому студенту ще одну спробу практичного іспиту? Попередня спроба залишиться в історії.'))return;
@@ -172,6 +181,7 @@ document.querySelectorAll('.retry-theory').forEach(btn=>btn.onclick=async()=>{
 const errors=[];
 if(attemptsResp.error)errors.push('теорія: '+attemptsResp.error.message);
 if(practicalAttemptsResp.error)errors.push('практика: '+practicalAttemptsResp.error.message);
+if(ndaResp.error)errors.push('NDA: '+ndaResp.error.message);
 msg.textContent=errors.length?'Не вдалося завантажити частину іспитів — '+errors.join(' · '):'Адмін-доступ підтверджено.';
 msg.className=errors.length?'message err':'message ok';
 })();
