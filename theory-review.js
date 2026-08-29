@@ -110,22 +110,23 @@ function renderBlocks(){
 }
 
 async function reload(){
-  const [{data:a,error:ae},{data:b,error:be},{data:s,error:se},{data:ps}]=await Promise.all([
-    client.from('theory_exam_attempts').select('*').eq('id',attemptId).single(),
-    client.from('theory_review_blocks').select('*').order('block_no'),
-    client.from('theory_manual_scores').select('*').eq('attempt_id',attemptId),
-    client.from('profiles').select('user_id,full_name,email,role')
-  ]);
-  if(ae||be||se){
-    msg.textContent='Серверна логіка перевірки ще не активована в Supabase.';
-    msg.className='message err';return;
+  const {data,error}=await client.rpc('pe_admin_theory_review',{p_attempt_id:attemptId});
+  if(error){
+    msg.textContent='Не вдалося завантажити відповіді для перевірки: '+error.message;
+    msg.className='message err';
+    return;
   }
-  attempt=a;blocks=b||[];scores=s||[];
-  profiles=Object.fromEntries((ps||[]).map(p=>[p.user_id,p]));
-  student=profiles[attempt.user_id]||{};
+  const payload=Array.isArray(data)?data[0]:data;
+  attempt=payload?.attempt||{};
+  student=payload?.student||{};
+  scores=payload?.scores||[];
+
   studentName.textContent=student.full_name||student.email||'Студент';
   studentMeta.textContent=(student.email||'')+' · Спроба №'+attempt.attempt_number+' · '+(attempt.status==='timed_out'?'Час вичерпано':attempt.status==='submitted'?'Завершено':'В процесі');
-  renderBlocks();renderSummary();
+
+  renderBlocks();
+  renderSummary();
+
   msg.textContent='Оцінка відкритого питання зберігається одразу після натискання 0, 0,5 або 1 і додається до загального результату.';
   msg.className='message ok';
 }
