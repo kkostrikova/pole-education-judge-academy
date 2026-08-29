@@ -12,17 +12,20 @@
   const key = 'pe_judge_progress_v1';
   const state = JSON.parse(localStorage.getItem(key) || '{}');
   const grid = document.getElementById('moduleGrid');
+  let signedIn = false;
 
   function isDone(n){ return Boolean(state[n]?.passed); }
-  function isUnlocked(n){ const cfg = window.PE_CONFIG || {}; return Boolean(cfg.reviewMode) || n === 1 || isDone(n - 1); }
+  function isUnlocked(n){ if(!signedIn) return false; const cfg = window.PE_CONFIG || {}; return Boolean(cfg.reviewMode) || n === 1 || isDone(n - 1); }
   function renderModules(){
     grid.innerHTML = modules.map(m => {
       const done = isDone(m.n), unlocked = isUnlocked(m.n);
-      const status = done ? 'Завершено ✓' : unlocked ? 'Доступний' : 'Заблоковано 🔒';
-      const cls = done ? 'done' : unlocked ? '' : 'locked';
-      const action = unlocked
-        ? `<a class="module-link" href="module-${m.n}.html">Відкрити модуль</a>`
-        : `<span class="module-link locked-link">Спочатку складіть тест модуля ${m.n-1} на 80%</span>`;
+      const status = !signedIn ? 'Потрібен вхід 🔒' : done ? 'Завершено ✓' : unlocked ? 'Доступний' : 'Заблоковано 🔒';
+      const cls = done && signedIn ? 'done' : unlocked ? '' : 'locked';
+      const action = !signedIn
+        ? '<span class="module-link locked-link">Увійдіть, щоб відкрити модуль</span>'
+        : unlocked
+          ? `<a class="module-link" href="module-${m.n}.html">Відкрити модуль</a>`
+          : `<span class="module-link locked-link">Спочатку складіть тест модуля ${m.n-1} на 80%</span>`;
       return `<article class="module-card ${unlocked?'':'locked'}">
         <div class="module-top"><span class="module-no">0${m.n}</span><span class="module-status ${cls}">${status}</span></div>
         <h3>${m.title}</h3><p>${m.desc}</p>${action}
@@ -30,6 +33,16 @@
     }).join('');
   }
   function renderProgress(){
+    if(!signedIn){
+      document.getElementById('progressPercent').textContent = '—';
+      document.getElementById('progressText').textContent = 'Увійдіть, щоб побачити свій прогрес';
+      document.getElementById('progressRing').style.setProperty('--p','0deg');
+      document.getElementById('routeDots').innerHTML = modules.map(()=>'<i></i>').join('');
+      const btn=document.getElementById('finalExamBtn'),msg=document.getElementById('finalMessage');
+      btn.disabled=true;btn.textContent='Іспит заблоковано';
+      msg.textContent='Увійдіть у свій акаунт, щоб продовжити навчання та зберігати результати.';
+      return;
+    }
     const done = modules.filter(m => isDone(m.n)).length;
     const percent = Math.round(done / modules.length * 100);
     document.getElementById('progressPercent').textContent = `${percent}%`;
@@ -42,10 +55,16 @@
   }
   document.querySelectorAll('.desk-card[data-go]').forEach(btn => btn.addEventListener('click', () => {
     const n=Number(btn.dataset.go);
+    if(!signedIn){ location.href='auth.html'; return; }
     if(isUnlocked(n)) location.href=`module-${n}.html`;
     else alert(`Модуль ${n} заблоковано. Спочатку складіть тест модуля ${n-1} щонайменше на 80%.`);
   }));
   document.getElementById('resetProgress').addEventListener('click',()=>{if(confirm('Скинути локальний прогрес цього браузера?')){localStorage.removeItem(key);location.reload()}});
+  window.addEventListener('pe-auth-ready', e => {
+    signedIn = Boolean(e.detail?.signedIn);
+    renderModules();
+    renderProgress();
+  });
   window.addEventListener('pe-progress-updated', e => {
     const fresh = e.detail || JSON.parse(localStorage.getItem(key) || '{}');
     Object.keys(state).forEach(k => delete state[k]);
