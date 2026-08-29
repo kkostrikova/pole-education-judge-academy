@@ -58,20 +58,33 @@ penReview.innerHTML=protocolBox(pr);
 
 let decision=attempt.result_published_at?Boolean(attempt.passed):null;
 adminComment.value=attempt.admin_comment||'';
+distinctionCheck.checked=Boolean(attempt.distinction);
 function renderDecision(){
  passBtn.classList.toggle('selected',decision===true);failBtn.classList.toggle('selected',decision===false);
  publishBtn.disabled=decision===null;
- if(attempt.result_published_at){reviewState.textContent=attempt.passed?'Складено':'Не складено';reviewState.className='pill '+(attempt.passed?'ok':'warn')}
+ distinctionCheck.disabled=decision!==true;
+ if(decision!==true)distinctionCheck.checked=false;
+ if(attempt.result_published_at){reviewState.textContent=attempt.passed?(attempt.distinction?'Складено · з відзнакою':'Складено'):'Не складено';reviewState.className='pill '+(attempt.passed?'ok':'warn')}
 }
 passBtn.onclick=()=>{decision=true;renderDecision()};failBtn.onclick=()=>{decision=false;renderDecision()};
 publishBtn.onclick=async()=>{
  if(decision===null)return;
  if(!confirm('Надіслати результат практичного іспиту студенту?'))return;
  publishBtn.disabled=true;
- const {data:pub,error:pubErr}=await client.rpc('pe_publish_practical_result',{p_attempt_id:attemptId,p_passed:decision,p_comment:adminComment.value});
- if(pubErr){msg.textContent='Не вдалося надіслати результат: '+pubErr.message;msg.className='message err';publishBtn.disabled=false;return}
- attempt.result_published_at=(Array.isArray(pub)?pub[0]:pub)?.result_published_at||new Date().toISOString();attempt.passed=decision;
- msg.textContent='Результат практичного іспиту надіслано студенту.';msg.className='message ok';renderDecision();
+ const payload={p_attempt_id:attemptId,p_passed:decision,p_comment:adminComment.value,p_distinction:decision===true&&distinctionCheck.checked};
+ let {data:pub,error:pubErr}=await client.rpc('pe_publish_practical_result',payload);
+ if(pubErr){
+   const fallback=await client.rpc('pe_publish_practical_result',{p_attempt_id:attemptId,p_passed:decision,p_comment:adminComment.value});
+   if(fallback.error){msg.textContent='Не вдалося надіслати результат: '+fallback.error.message;msg.className='message err';publishBtn.disabled=false;return}
+   pub=fallback.data;
+   if(payload.p_distinction){msg.textContent='Результат надіслано, але позначку «з відзнакою» ще не збережено. Запустіть supabase-certificates-patch.sql.';msg.className='message err';attempt.distinction=false;renderDecision();return}
+ }
+ const saved=Array.isArray(pub)?pub[0]:pub;
+ attempt.result_published_at=saved?.result_published_at||new Date().toISOString();
+ attempt.passed=decision;
+ attempt.distinction=Boolean(saved?.distinction??payload.p_distinction);
+ msg.textContent=attempt.distinction?'Результат надіслано. Практична частина відзначена як високий рівень.':'Результат практичного іспиту надіслано студенту.';
+ msg.className='message ok';renderDecision();
 };
-renderDecision();msg.textContent='Протоколи завантажено. Оберіть «Складено» або «Не складено» та за потреби додайте коментар.';msg.className='message ok';
+renderDecision();msg.textContent='Протоколи завантажено. Оберіть «Складено» або «Не складено». Для сильного виконання можна додати відзнаку.';msg.className='message ok';
 })();
