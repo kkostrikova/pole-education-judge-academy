@@ -23,6 +23,7 @@ create table if not exists public.practical_exam_attempts (
   review_status text not null default 'pending' check (review_status in ('pending','reviewed')),
   result_score numeric(5,2),
   passed boolean,
+  admin_comment text,
   result_published_at timestamptz,
   result_published_by uuid references auth.users(id),
   created_at timestamptz not null default now(),
@@ -79,8 +80,8 @@ begin
     'protocols',case when v_row.status='in_progress' then v_row.protocols else '{}'::jsonb end,
     'elapsed_seconds',v_row.elapsed_seconds,'review_status',v_row.review_status,
     'result_published',v_row.result_published_at is not null,
-    'result_score',case when v_row.result_published_at is not null then v_row.result_score else null end,
     'passed',case when v_row.result_published_at is not null then v_row.passed else null end,
+    'admin_comment',case when v_row.result_published_at is not null then v_row.admin_comment else null end,
     'attempts_used',v_used,'attempts_allowed',1+v_extra,'can_start_new',v_used<1+v_extra
   );
 end;
@@ -195,3 +196,134 @@ grant execute on function public.pe_start_practical_exam() to authenticated;
 grant execute on function public.pe_save_practical_exam_progress(uuid,jsonb,jsonb) to authenticated;
 grant execute on function public.pe_submit_practical_exam(uuid,jsonb,jsonb,boolean) to authenticated;
 grant execute on function public.pe_admin_practical_attempts() to authenticated;
+
+
+alter table public.practical_exam_attempts add column if not exists admin_comment text;
+
+create or replace function public.pe_admin_practical_review(p_attempt_id uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path=public
+as $pe$
+declare
+  v_attempt public.practical_exam_attempts%rowtype;
+  v_student jsonb;
+begin
+  if not public.pe_is_admin() then raise exception 'ADMIN_REQUIRED'; end if;
+
+  select * into v_attempt
+  from public.practical_exam_attempts
+  where id=p_attempt_id;
+
+  if not found then raise exception 'ATTEMPT_NOT_FOUND'; end if;
+
+  select jsonb_build_object('user_id',p.user_id,'full_name',p.full_name,'email',p.email)
+  into v_student
+  from public.profiles p
+  where p.user_id=v_attempt.user_id;
+
+  return jsonb_build_object(
+    'attempt',to_jsonb(v_attempt),
+    'student',coalesce(v_student,'{}'::jsonb)
+  );
+end;
+$pe$;
+
+create or replace function public.pe_publish_practical_result(p_attempt_id uuid,p_passed boolean,p_comment text default null)
+returns jsonb
+language plpgsql
+security definer
+set search_path=public
+as $pe$
+declare
+  v_attempt public.practical_exam_attempts%rowtype;
+begin
+  if not public.pe_is_admin() then raise exception 'ADMIN_REQUIRED'; end if;
+
+  select * into v_attempt
+  from public.practical_exam_attempts
+  where id=p_attempt_id
+  for update;
+
+  if not found then raise exception 'ATTEMPT_NOT_FOUND'; end if;
+  if v_attempt.status='in_progress' then raise exception 'ATTEMPT_NOT_SUBMITTED'; end if;
+
+  update public.practical_exam_attempts
+  set review_status='reviewed',
+      passed=p_passed,
+      admin_comment=nullif(trim(coalesce(p_comment,'')),''),
+      result_score=null,
+      result_published_at=now(),
+      result_published_by=auth.uid()
+  where id=p_attempt_id
+  returning * into v_attempt;
+
+  return jsonb_build_object(
+    'id',v_attempt.id,
+    'passed',v_attempt.passed,
+    'admin_comment',v_attempt.admin_comment,
+    'result_published_at',v_attempt.result_published_at
+  );
+end;
+$pe$;
+
+create or replace function public.pe_student_practical_result()
+returns jsonb
+language plpgsql
+security definer
+set search_path=public
+as $pe$
+declare
+  v_uid uuid:=auth.uid();
+  v_attempt public.practical_exam_attempts%rowtype;
+begin
+  if v_uid is null then raise exception 'AUTH_REQUIRED'; end if;
+
+  select * into v_attempt
+  from public.practical_exam_attempts
+  where user_id=v_uid
+  order by attempt_number desc
+  limit 1;
+
+  if not found then return jsonb_build_object('exists',false); end if;
+
+  return jsonb_build_object(
+    'exists',true,
+    'attempt_number',v_attempt.attempt_number,
+    'status',v_attempt.status,
+    'review_status',v_attempt.review_status,
+    'result_published',v_attempt.result_published_at is not null,
+    'passed',case when v_attempt.result_published_at is not null then v_attempt.passed else null end,
+    'admin_comment',case when v_attempt.result_published_at is not null then v_attempt.admin_comment else null end,
+    'published_at',v_attempt.result_published_at
+  );
+end;
+$pe$;
+
+create or replace function public.pe_grant_practical_retry(p_user_id uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path=public
+as $pe$
+declare v_extra integer;
+begin
+  if not public.pe_is_admin() then raise exception 'ADMIN_REQUIRED'; end if;
+
+  insert into public.practical_exam_retry_grants(user_id,extra_attempts,updated_at,updated_by)
+  values(p_user_id,1,now(),auth.uid())
+  on conflict(user_id) do update
+  set extra_attempts=public.practical_exam_retry_grants.extra_attempts+1,
+      updated_at=now(),
+      updated_by=auth.uid()
+  returning extra_attempts into v_extra;
+
+  return jsonb_build_object('user_id',p_user_id,'extra_attempts',v_extra);
+end;
+$pe$;
+
+grant execute on function public.pe_admin_practical_review(uuid) to authenticated;
+grant execute on function public.pe_publish_practical_result(uuid,boolean,text) to authenticated;
+grant execute on function public.pe_student_practical_result() to authenticated;
+grant execute on function public.pe_grant_practical_retry(uuid) to authenticated;
