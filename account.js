@@ -15,7 +15,7 @@ const [
 ]=await Promise.all([
   client.from('profiles').select('*').eq('user_id',uid).single(),
   client.from('module_results').select('*').eq('user_id',uid).order('module_id').order('attempt'),
-  client.from('theory_exam_attempts').select('attempt_number,status,score,passed,result_published_at,created_at').eq('user_id',uid).order('attempt_number',{ascending:false}).limit(1),
+  client.rpc('pe_student_theory_result'),
   client.from('theory_exam_results').select('*').eq('user_id',uid).order('attempt',{ascending:false}).limit(1),
   client.from('practical_results').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(1),
   client.from('certifications').select('*').eq('user_id',uid).limit(1)
@@ -32,13 +32,35 @@ moduleBody.innerHTML=Object.keys(best).length
   ?Object.values(best).sort((a,b)=>a.module_id-b.module_id).map(r=>'<tr><td>Модуль '+r.module_id+'</td><td>'+r.score+'%</td><td>'+r.attempt+'</td><td><span class="pill '+(r.passed?'ok':'warn')+'">'+(r.passed?'Складено':'Не складено')+'</span></td></tr>').join('')
   :'<tr><td colspan="4">Поки немає збережених результатів.</td></tr>';
 
-const theoryAttempt=!newTheoryResp.error&&newTheoryResp.data?.[0]?newTheoryResp.data[0]:null;
+const theoryPayload=!newTheoryResp.error
+  ?(Array.isArray(newTheoryResp.data)?newTheoryResp.data[0]:newTheoryResp.data)
+  :null;
+const theoryAttempt=theoryPayload?.exists?theoryPayload:null;
 if(theoryAttempt){
-  theoryScore.textContent=theoryAttempt.result_published_at
+  theoryScore.textContent=theoryAttempt.result_published
     ?theoryAttempt.score+'%'
     :theoryAttempt.status==='in_progress'
       ?'Складається'
       :'На перевірці';
+
+  const box=document.getElementById('theoryResultBox');
+  const title=document.getElementById('theoryResultTitle');
+  const text=document.getElementById('theoryResultText');
+  const badge=document.getElementById('theoryResultBadge');
+  if(box){
+    box.classList.remove('hidden');
+    if(theoryAttempt.result_published){
+      badge.textContent=theoryAttempt.score+'%';
+      badge.className='pill '+(theoryAttempt.passed?'ok':'warn');
+      title.textContent=theoryAttempt.passed?'Теоретичний іспит складено':'Теоретичний іспит не складено';
+      text.textContent='Фінальний результат опубліковано адміністратором. Спроба №'+theoryAttempt.attempt_number+'.';
+    }else{
+      badge.textContent='На перевірці';
+      badge.className='pill warn';
+      title.textContent='Теоретичний іспит перевіряється';
+      text.textContent='Після перевірки відкритих відповідей і натискання адміністратором «Надіслати результат» тут з’явиться фінальний відсоток.';
+    }
+  }
 }else{
   theoryScore.textContent=legacyTheory?.[0]?legacyTheory[0].score+'%':'—';
 }
