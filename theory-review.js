@@ -72,33 +72,21 @@ function renderSummary(){
 }
 
 function renderBlocks(){
-  blocksEl.innerHTML=blocks.map(block=>{
-    const qs=block.question_numbers||[];
-    const questions=qs.map(q=>{
-      const item=OPEN[q]||{text:'Питання '+q};
-      const rec=scoreFor(q);
-      const current=rec?Number(rec.points):null;
-      const reviewer=rec&&profiles[rec.reviewed_by]
-        ?'<span class="reviewed-by">Остання оцінка: '+esc(profiles[rec.reviewed_by].full_name||profiles[rec.reviewed_by].email||'Адміністратор')+'</span>'
-        :'';
+  const ordered=[6,7,11,12,15,16,28,31,47];
+  blocksEl.innerHTML=ordered.map(q=>{
+    const item=OPEN[q]||{text:'Питання '+q};
+    const rec=scoreFor(q);
+    const current=rec?Number(rec.points):null;
+    const controls=!attempt.result_published_at
+      ?'<div class="score-choices" data-q="'+q+'">'+[0,.5,1].map(v=>'<button class="score-btn '+(current===v?'active':'')+'" data-p="'+v+'">'+String(v).replace('.',',')+'</button>').join('')+'</div>'
+      :'<div class="readonly-score">'+(current===null?'—':String(current).replace('.',','))+' / 1</div>';
 
-      const controls=!attempt.result_published_at
-        ?'<div class="score-wrap">'+reviewer+'<div class="score-choices" data-q="'+q+'">'+[0,.5,1].map(v=>'<button class="score-btn '+(current===v?'active':'')+'" data-p="'+v+'">'+String(v).replace('.',',')+'</button>').join('')+'</div></div>'
-        :'<div class="score-wrap">'+reviewer+'<div class="readonly-score">'+(current===null?'—':String(current).replace('.',','))+' / 1</div></div>';
-
-      return '<article class="review-question">'+
-        '<div class="review-qhead"><span>Питання '+q+'</span>'+controls+'</div>'+
-        '<h3>'+esc(item.text)+'</h3>'+
-        mediaHtml(q)+
-        '<div class="student-answer"><span>Відповідь студента</span><p>'+esc((attempt.answers||{})[q]||'—')+'</p></div>'+
-      '</article>';
-    }).join('');
-
-    return '<section class="review-block">'+
-      '<div class="review-block-head"><div><div class="mini">'+esc(block.title||('Блок '+block.block_no))+'</div><h2>Питання '+qs.join(' · ')+'</h2></div>'+
-      '<div class="block-meta"><span class="pill ok">Доступно всім адмінам</span><strong>'+blockStatus(block)+'</strong></div></div>'+
-      questions+
-    '</section>';
+    return '<article class="review-question single-review-question">'+
+      '<div class="review-qhead"><span>Питання '+q+'</span>'+controls+'</div>'+
+      '<h3>'+esc(item.text)+'</h3>'+
+      mediaHtml(q)+
+      '<div class="student-answer"><span>Відповідь студента</span><p>'+esc((attempt.answers||{})[q]||'—')+'</p></div>'+
+    '</article>';
   }).join('');
 
   document.querySelectorAll('.score-btn').forEach(b=>b.onclick=async()=>{
@@ -108,11 +96,16 @@ function renderBlocks(){
     const {error}=await client.rpc('pe_save_theory_manual_score',{
       p_attempt_id:attemptId,p_question_no:q,p_points:points
     });
-    if(error){alert('Не вдалося зберегти оцінку: '+error.message);wrap.querySelectorAll('button').forEach(x=>x.disabled=false);return}
+    if(error){
+      alert('Не вдалося зберегти оцінку: '+error.message);
+      wrap.querySelectorAll('button').forEach(x=>x.disabled=false);
+      return;
+    }
     const existing=scores.find(s=>Number(s.question_no)===q);
     if(existing){existing.points=points;existing.reviewed_by=session.user.id}
     else scores.push({attempt_id:attemptId,question_no:q,points,reviewed_by:session.user.id});
-    renderBlocks();renderSummary();
+    renderBlocks();
+    renderSummary();
   });
 }
 
@@ -133,7 +126,7 @@ async function reload(){
   studentName.textContent=student.full_name||student.email||'Студент';
   studentMeta.textContent=(student.email||'')+' · Спроба №'+attempt.attempt_number+' · '+(attempt.status==='timed_out'?'Час вичерпано':attempt.status==='submitted'?'Завершено':'В процесі');
   renderBlocks();renderSummary();
-  msg.textContent='Усі адміністратори можуть редагувати всі відкриті питання. Зміни зберігаються одразу, а остання оцінка замінює попередню.';
+  msg.textContent='Оцінка відкритого питання зберігається одразу після натискання 0, 0,5 або 1 і додається до загального результату.';
   msg.className='message ok';
 }
 
