@@ -150,3 +150,122 @@ img,video,iframe,canvas{max-width:100%}
 
   .certificate-controls .control-btn{flex:1 1 145px!important;text-align:center!important}
 }
+
+/* Account / admin iPhone fixes */
+@media(max-width:760px){
+  .shell,.dashboard,.dashboard *{min-width:0}
+  .dashboard{overflow:hidden}
+  .dashhead>div:first-child{width:100%;min-width:0}
+  #profileLine{
+    max-width:100%;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+    font-size:15px!important;
+    line-height:1.45;
+  }
+  .dashboard .section h2{
+    font-size:clamp(30px,9vw,40px)!important;
+    line-height:1.05!important;
+    overflow-wrap:anywhere;
+  }
+  .dashboard .card,
+  .dashboard .card>div,
+  .dashboard .card>div>div{
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .dashboard .card p,
+  .dashboard .card strong,
+  .dashboard .card span{
+    overflow-wrap:anywhere;
+    word-break:normal;
+  }
+  #courseCompletionBox .card>div:first-child{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:12px!important;
+    align-items:start!important;
+  }
+  #courseCompletionTitle{font-size:27px!important;line-height:1.1!important}
+  #courseCompletionText{
+    max-width:100%!important;
+    font-size:15px!important;
+    line-height:1.55!important;
+  }
+  #courseCompletionBadge{justify-self:start!important}
+  #courseCompletionSteps{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+    width:100%!important;
+  }
+  #courseCompletionSteps .pill,
+  #courseCompletionSteps>*{
+    width:100%!important;
+    max-width:100%!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+  }
+  #ndaAccountBox .card>div,
+  #theoryResultBox .card>div,
+  #practicalResultBox .card>div{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:12px!important;
+    align-items:start!important;
+  }
+  #ndaAccountBox .btn{width:100%!important;text-align:center!important}
+}
+
+@media(max-width:520px){
+  .shell{padding:8px!important}
+  .dashboard{padding:14px 12px!important;border-radius:18px!important}
+  .dashhead{margin-bottom:16px!important}
+  .dashhead .mini{
+    font-size:10px!important;
+    letter-spacing:.12em!important;
+    white-space:normal!important;
+  }
+  .dashhead h1{font-size:36px!important}
+  .dashhead .actions{
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+  }
+  .dashhead .actions .btn{
+    width:100%!important;
+    max-width:100%!important;
+    display:flex!important;
+    justify-content:center!important;
+    align-items:center!important;
+    text-align:center!important;
+    padding:12px 14px!important;
+  }
+  .cards{gap:10px!important}
+  .cards .card{padding:16px!important}
+  .cards .card strong{font-size:28px!important}
+  .cards .card span{font-size:13px!important}
+  .dashboard .section{margin-top:28px!important}
+  .dashboard .section h2{font-size:34px!important;margin-bottom:12px!important}
+  #courseCompletionBox .card{padding:18px 16px!important}
+  #courseCompletionSteps>*{
+    display:block!important;
+    padding:10px 12px!important;
+    border-radius:14px!important;
+    font-size:13px!important;
+  }
+  .tablewrap{overflow-x:visible!important;border-radius:14px!important}
+  .dashboard .table{min-width:0!important;width:100%!important;table-layout:fixed!important}
+  .dashboard .table th,.dashboard .table td{
+    padding:11px 8px!important;
+    font-size:12px!important;
+    overflow-wrap:anywhere!important;
+  }
+  .dashboard .table th:nth-child(3),
+  .dashboard .table td:nth-child(3),
+  .dashboard .table th:nth-child(4),
+  .dashboard .table td:nth-child(4){
+    display:none!important;
+  }
+}
