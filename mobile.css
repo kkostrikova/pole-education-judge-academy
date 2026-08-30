@@ -1,0 +1,152 @@
+/* Pole Education Judge Academy — shared mobile polish */
+html,body{max-width:100%;overflow-x:hidden}
+img,video,iframe,canvas{max-width:100%}
+
+@media(max-width:900px){
+  .topbar{gap:10px!important;flex-wrap:wrap!important;padding:10px 14px!important}
+  .topbar .brand{flex:1 1 auto!important;min-width:0!important}
+  .topbar .topnav{display:none!important}
+  .brand-logo{width:48px;height:48px;object-fit:contain;flex:0 0 auto}
+  .topbar .ghost-btn{margin-left:0!important;padding:9px 12px!important;font-size:12px!important}
+  #resetProgress{display:none!important}
+
+  .shell{padding:12px!important;place-items:start center!important}
+  .dashboard,.review-dashboard{width:100%!important;border-radius:20px!important;padding:18px!important}
+  .dashhead{align-items:flex-start!important;flex-direction:column!important}
+  .dashhead h1{font-size:36px!important;line-height:1.05!important}
+  .dashhead .actions{width:100%!important}
+  .dashhead .actions .btn{flex:1 1 180px!important;text-align:center!important}
+  .cards,.review-summary{grid-template-columns:1fr 1fr!important}
+  .tablewrap{width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+  .table{min-width:820px!important}
+
+  .exam-topbar{flex-wrap:wrap!important;gap:8px!important;padding:10px 12px!important}
+  .exam-shell{width:min(100% - 18px,1240px)!important}
+  .exam-head,.protocol-head{gap:12px!important}
+  .timer{flex:0 0 auto!important}
+
+  .nda-topbar{flex-wrap:wrap!important;gap:10px!important;padding:10px 14px!important}
+  .nda-shell{width:min(100% - 18px,1080px)!important}
+
+  .certificate-controls{flex-wrap:wrap!important;padding:9px!important}
+}
+
+@media(max-width:760px){
+  body{font-size:15px}
+  .wrap{width:100%!important;max-width:100%!important;padding:10px!important}
+  .card,.lab,.control{padding:18px!important;margin:10px 0!important;border-radius:18px!important}
+  h1,h2{font-size:clamp(29px,9vw,38px)!important;line-height:1.06!important}
+  .lead{font-size:14px!important;line-height:1.55!important}
+  .meta,.pills{gap:6px!important}
+  .pill{font-size:11px!important;padding:7px 9px!important}
+
+  .quicknav,.nav{
+    position:static!important;
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+    gap:7px!important;
+    padding:8px!important;
+  }
+  .quicknav::-webkit-scrollbar,.nav::-webkit-scrollbar{display:none}
+  .quicknav a,.nav a{flex:0 0 auto!important;white-space:nowrap!important;font-size:12px!important;padding:8px 11px!important}
+
+  .core,.keygrid,.inputs4,.inputs5,.casegrid,.theorygrid,.vgrid,.summary,.protocol,.drop-grid,
+  .judgegrid,.criteria,.examples,.glossary,.dutygrid,.scenario-layout,.protocol-fields,.stopgrid,
+  .challenge-grid,.summary-grid,.workbench,.two,.penalties,.cats,.photo-grid,.jc-layout,.jc-zones,
+  .hj-strip,.choicegrid,.performance-grid,.mapping-grid,.result-stats,.rules-grid{
+    grid-template-columns:1fr!important;
+  }
+
+  .labgrid{grid-template-columns:1fr!important}
+  .case-list{
+    display:flex!important;
+    flex-direction:row!important;
+    max-height:none!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    gap:8px!important;
+    padding-bottom:5px!important;
+  }
+  .case-tab{flex:0 0 175px!important;min-width:175px!important}
+
+  .media,.scene,.scene360,.photo-stage{width:100%!important}
+  .media{height:min(64vh,520px)!important}
+  .workbench .capture{position:static!important}
+  .capture{position:static!important}
+
+  .answers,.choices,.options,.challenge-options,.stopchoices{grid-template-columns:1fr!important}
+  .actions{width:100%!important}
+  .actions .btn,.quiz-actions button{flex:1 1 150px!important}
+  .btn,.primary-btn,.secondary-btn{min-height:44px}
+  input,select,textarea{font-size:16px!important}
+
+  .protocol-paper,.sorter,.judge,.scenario-panel,.case{overflow:hidden!important}
+  .proto-head,.proto-head-row{display:none!important}
+  .proto-row,.review-row{grid-template-columns:1fr!important}
+  .proto-row>* , .review-row>*{grid-column:1!important}
+  .protocol-total{width:100%!important;text-align:left!important}
+
+  .panel{grid-template-columns:1fr!important;border-radius:20px!important}
+  .visual{min-height:auto!important;padding:24px!important}
+  .formwrap{padding:24px!important}
+  .visual h1{font-size:44px!important}
+  .grid2{grid-template-columns:1fr!important}
+
+  .review-block-head,.publish-section,.review-head,.exam-control-card,.submit-card{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+  }
+
+  .verify-shell{padding:12px!important}
+  .verify-card{padding:22px!important;border-radius:20px!important}
+  .verify-card h1{font-size:34px!important}
+
+  .certificate-stage{padding:10px!important}
+  .certificate-message{font-size:13px!important}
+}
+
+@media(max-width:520px){
+  .hero{padding:46px 16px!important}
+  .hero h1{font-size:48px!important}
+  .hero-lead{font-size:17px!important}
+  .hero-actions{display:grid!important;grid-template-columns:1fr!important}
+  .hero-actions a{width:100%!important}
+  .section{padding:56px 16px!important}
+  .section-head h2{font-size:38px!important}
+  .module-card{padding:22px!important;border-radius:20px!important}
+  .module-card h3{font-size:25px!important}
+  .module-actions{display:grid!important;grid-template-columns:1fr!important}
+  .module-actions>*{width:100%!important;justify-content:center!important}
+  .lecture-flow{display:grid!important;grid-template-columns:1fr!important}
+  .lecture-flow i{display:none!important}
+  .progress-panel{border-radius:24px!important}
+
+  .dashboard,.review-dashboard{padding:14px!important;border-radius:16px!important}
+  .dashhead h1{font-size:32px!important}
+  .dashhead .actions{display:grid!important;grid-template-columns:1fr!important}
+  .dashhead .actions .btn{width:100%!important}
+  .cards,.review-summary{grid-template-columns:1fr!important}
+  .table{min-width:760px!important}
+
+  .start-card,.exam-card,.result-card{padding:20px 14px!important;border-radius:18px!important}
+  .rules-grid,.result-stats{grid-template-columns:1fr!important}
+  .question-nav{display:grid!important;grid-template-columns:1fr!important}
+  .question-nav .btn{width:100%!important}
+  .navigator{grid-template-columns:repeat(5,1fr)!important}
+
+  .sign-actions{display:grid!important;grid-template-columns:1fr!important}
+  .sign-actions>*{width:100%!important}
+  .signature-block canvas{height:160px!important}
+
+  .case{padding:17px!important}
+  .case-head{display:block!important}
+  .role{display:inline-block!important;margin-top:9px!important;white-space:normal!important}
+  .case-list .case-tab{flex-basis:155px!important;min-width:155px!important}
+  .footer-progress{gap:10px!important;flex-direction:column!important}
+
+  .certificate-controls .control-btn{flex:1 1 145px!important;text-align:center!important}
+}
