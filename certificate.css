@@ -62,8 +62,40 @@ body.gold .certificate{background:linear-gradient(180deg,#fff 0%,#fffefb 100%)}
 }
 @page{size:A4 portrait;margin:0}
 @media print{
-  body{background:#fff}
+  html,body{width:210mm;height:297mm;margin:0!important;padding:0!important;background:#fff!important}
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .certificate-controls,.certificate-message{display:none!important}
-  .certificate-stage{padding:0;display:block;min-height:0}
-  .certificate{width:210mm;height:297mm;aspect-ratio:auto;box-shadow:none;margin:0;padding:7mm 10mm 6mm}
+  .certificate-stage{width:210mm;height:297mm;padding:0!important;margin:0!important;display:block;min-height:0}
+  .certificate{
+    width:210mm!important;height:297mm!important;aspect-ratio:auto!important;box-shadow:none!important;margin:0!important;
+    padding:8mm 11mm 5mm!important;page-break-inside:avoid;break-inside:avoid
+  }
+  .pe-logo-img{width:31mm!important;margin-bottom:3mm!important}
+  .accent-lines{gap:1.1mm!important}
+  .accent-lines i{height:.45mm!important}
+  .certificate h1{font-size:22mm!important;line-height:.98!important;margin:5mm 0 4.5mm!important;letter-spacing:.025em!important}
+  .bottom-lines{margin-bottom:7mm!important}
+  .watermark{width:145mm!important;height:145mm!important;top:49%!important}
+  .watermark strong{font-size:42mm!important}
+  .wm-top{font-size:4.4mm!important;right:8mm!important;top:16mm!important}
+  .wm-bottom{font-size:3.5mm!important;bottom:16mm!important}
+  .confirm{font-size:5.2mm!important;margin-bottom:7mm!important}
+  .holder-name{font-size:12.5mm!important;line-height:1.05!important;margin-bottom:8mm!important;max-width:175mm!important}
+  .course-line{font-size:5.3mm!important;line-height:1.35!important;margin-bottom:6mm!important}
+  .school-line{font-size:5mm!important;margin-bottom:7mm!important}
+  .qualification{font-size:4.7mm!important;line-height:1.35!important}
+  .authors{grid-template-columns:1fr 48mm 1fr!important;gap:5mm!important;padding:0 1mm!important}
+  .author-photo{width:34mm!important;height:34mm!important}
+  .author-name{font-size:4mm!important;line-height:1.25!important;margin-top:2mm!important;min-height:10mm!important}
+  .author-name span{font-size:3.7mm!important}
+  .signature-img{width:34mm!important;height:20mm!important;margin-top:0!important}
+  .signature-lana{width:31mm!important}.signature-kateryna{width:36mm!important}
+  .authors-title{font-size:4.3mm!important;padding-top:42mm!important}
+  .certificate-footer{min-height:15mm!important;padding-top:0!important}
+  .certificate-ident{font-size:2.4mm!important;gap:.7mm!important}
+  .certificate-ident strong{font-size:3mm!important}
+  .issue-date{font-size:3.6mm!important;padding-bottom:1mm!important}
+  .qr-wrap{gap:2mm!important}
+  .qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:14mm!important;height:14mm!important}
+  .qr-wrap small{display:block!important;font-size:2.2mm!important;max-width:18mm!important}
 }
