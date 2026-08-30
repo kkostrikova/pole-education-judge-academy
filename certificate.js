@@ -14,6 +14,7 @@ const formatDate=(value,lang)=>{
 };
 const showError=text=>{msg.textContent=text;msg.className='certificate-message err';certEl.classList.add('hidden');printBtn.disabled=true};
 
+try{
 const {data:{session}}=await client.auth.getSession();
 if(!session){location.href='auth.html?next='+encodeURIComponent('certificate.html'+location.search);return}
 
@@ -46,8 +47,10 @@ if(!cert?.eligible){
 
 document.body.classList.toggle('gold',cert.certificate_type==='gold');
 const languageSwitch=document.getElementById('languageSwitch');
-if(cert.english_version&&cert.holder_name_en)languageSwitch.classList.remove('hidden');
+if(cert.english_version&&cert.holder_name_en)languageSwitch?.classList.remove('hidden');
 else currentLang='uk';
+
+function setText(id,value){const el=document.getElementById(id);if(el)el.textContent=value}
 
 function applyLanguage(lang){
   if(lang==='en'&&(!cert.english_version||!cert.holder_name_en))lang='uk';
@@ -59,42 +62,42 @@ function applyLanguage(lang){
   const gold=cert.certificate_type==='gold';
   if(lang==='en'){
     document.title='Certificate · Pole Education';
-    document.getElementById('certificateTitle').textContent='CERTIFICATE';
-    document.getElementById('logoOrbit').textContent='ONLINE SCHOOL';
-    document.getElementById('watermarkTop').textContent='ONLINE SCHOOL';
-    document.getElementById('confirmText').textContent='certifies that';
-    document.getElementById('holderName').textContent=cert.holder_name_en||cert.holder_name;
-    document.getElementById('courseTitle').textContent='has completed the Judging and Competition Organization Course';
-    document.getElementById('examPhrase').textContent=gold?'and has successfully passed the examination with distinction':'and has passed the examination';
-    document.getElementById('schoolText').textContent='from Pole Education online school';
-    document.getElementById('qualificationLabel').textContent='Qualification:';
-    document.getElementById('qualification').textContent='Pole, Aerial Hoop, Aerial Silks';
-    document.getElementById('durationLabel').textContent='Course duration:';
-    document.getElementById('hoursLabel').textContent='hours';
-    document.getElementById('authorsTitle').textContent='AUTHORS';
-    document.getElementById('certificateNoLabel').textContent='Certificate No.';
-    document.getElementById('verifyLabel').textContent='Verify certificate';
+    setText('certificateTitle','CERTIFICATE');
+    setText('logoOrbit','ONLINE SCHOOL');
+    setText('watermarkTop','ONLINE SCHOOL');
+    setText('confirmText','certifies that');
+    setText('holderName',cert.holder_name_en||cert.holder_name);
+    setText('courseTitle','has completed the Judging and Competition Organization Course');
+    setText('examPhrase',gold?'and has successfully passed the examination with distinction':'and has passed the examination');
+    setText('schoolText','from Pole Education online school');
+    setText('qualificationLabel','Qualification:');
+    setText('qualification','Pole, Aerial Hoop, Aerial Silks');
+    setText('durationLabel','Course duration:');
+    setText('hoursLabel','hours');
+    setText('authorsTitle','AUTHORS');
+    setText('certificateNoLabel','Certificate No.');
+    setText('verifyLabel','Verify certificate');
   }else{
     document.title='Сертифікат · Pole Education';
-    document.getElementById('certificateTitle').textContent='СЕРТИФІКАТ';
-    document.getElementById('logoOrbit').textContent='ОНЛАЙН ШКОЛА';
-    document.getElementById('watermarkTop').textContent='ОНЛАЙН ШКОЛА';
-    document.getElementById('confirmText').textContent='підтверджує що';
-    document.getElementById('holderName').textContent=cert.holder_name||'Студент';
-    document.getElementById('courseTitle').textContent='прослухав(ла) Суддівсько-організаційний курс';
-    document.getElementById('examPhrase').textContent=gold?'та успішно склав(ла) іспит з відзнакою':'та склав(ла) іспит';
-    document.getElementById('schoolText').textContent='від онлайн школи Pole Education';
-    document.getElementById('qualificationLabel').textContent='Кваліфікація:';
-    document.getElementById('qualification').textContent=cert.qualification||'пілон, повітряні кільця, повітряні полотна';
-    document.getElementById('durationLabel').textContent='Тривалість курсу:';
-    document.getElementById('hoursLabel').textContent='годин';
-    document.getElementById('authorsTitle').textContent='АВТОРИ/AUTHORS';
-    document.getElementById('certificateNoLabel').textContent='№ сертифіката';
-    document.getElementById('verifyLabel').textContent='Перевірити сертифікат';
+    setText('certificateTitle','СЕРТИФІКАТ');
+    setText('logoOrbit','ОНЛАЙН ШКОЛА');
+    setText('watermarkTop','ОНЛАЙН ШКОЛА');
+    setText('confirmText','підтверджує що');
+    setText('holderName',cert.holder_name||'Студент');
+    setText('courseTitle','прослухав(ла) Суддівсько-організаційний курс');
+    setText('examPhrase',gold?'та успішно склав(ла) іспит з відзнакою':'та склав(ла) іспит');
+    setText('schoolText','від онлайн школи Pole Education');
+    setText('qualificationLabel','Кваліфікація:');
+    setText('qualification',cert.qualification||'пілон, повітряні кільця, повітряні полотна');
+    setText('durationLabel','Тривалість курсу:');
+    setText('hoursLabel','годин');
+    setText('authorsTitle','АВТОРИ/AUTHORS');
+    setText('certificateNoLabel','№ сертифіката');
+    setText('verifyLabel','Перевірити сертифікат');
   }
-  document.getElementById('durationHours').textContent=cert.duration_hours||10;
-  document.getElementById('certificateNo').textContent=cert.certificate_no||'—';
-  document.getElementById('issueDate').textContent=formatDate(cert.issued_at,lang);
+  setText('durationHours',cert.duration_hours||10);
+  setText('certificateNo',cert.certificate_no||'—');
+  setText('issueDate',formatDate(cert.issued_at,lang));
   const u=new URL(location.href);u.searchParams.set('lang',lang);history.replaceState(null,'',u);
 }
 document.getElementById('langUkBtn')?.addEventListener('click',()=>applyLanguage('uk'));
@@ -103,10 +106,13 @@ applyLanguage(currentLang);
 
 const verifyUrl=new URL('certificate-verify.html',location.href);
 verifyUrl.search='';verifyUrl.searchParams.set('no',cert.certificate_no);
-document.getElementById('verifyLink').href=verifyUrl.href;
-const qr=document.getElementById('qrCode');qr.innerHTML='';
-if(window.QRCode)new QRCode(qr,{text:verifyUrl.href,width:116,height:116,correctLevel:QRCode.CorrectLevel.M});
+const verifyLink=document.getElementById('verifyLink');if(verifyLink)verifyLink.href=verifyUrl.href;
+const qr=document.getElementById('qrCode');if(qr){qr.innerHTML='';if(window.QRCode)new QRCode(qr,{text:verifyUrl.href,width:116,height:116,correctLevel:QRCode.CorrectLevel.M})}
 
 msg.textContent=cert.certificate_type==='gold'?'Золотий сертифікат з відзнакою готовий.':'Сертифікат готовий.';
 msg.className='certificate-message ok';certEl.classList.remove('hidden');printBtn.disabled=false;printBtn.onclick=()=>window.print();
+}catch(error){
+  console.error('Certificate render error',error);
+  showError('Не вдалося відобразити сертифікат. Оновіть сторінку ще раз.');
+}
 })();
