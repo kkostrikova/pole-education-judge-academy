@@ -2,6 +2,7 @@
 const cfg=window.PE_CONFIG||{};
 const client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);
 const params=new URLSearchParams(location.search);
+const previewMode=params.get('preview')==='1';
 const rawNext=params.get('next')||'index.html';
 const safeNext=/^[a-zA-Z0-9._-]+(?:[?#].*)?$/.test(rawNext)?rawNext:'index.html';
 const statusEl=document.getElementById('ndaStatus');
@@ -39,10 +40,13 @@ const doc=Array.isArray(docResp.data)?docResp.data[0]:docResp.data;
 document.getElementById('agreementVersion').textContent=doc?.version||'—';
 document.getElementById('agreementText').textContent=doc?.text||'Не вдалося завантажити текст договору.';
 
-if(status?.required===false){
+if(status?.required===false&&!previewMode){
   location.replace(safeNext);return;
 }
-if(status?.signed){
+if(status?.required===false&&previewMode){
+  statusEl.textContent='ADMIN PREVIEW';
+}
+if(status?.signed&&!previewMode){
   statusEl.textContent='Підписано ✓';
   statusEl.style.background='#e8f3ec';statusEl.style.color='#2d6b45';
   signingCard.classList.add('hidden');signedCard.classList.remove('hidden');
