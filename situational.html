@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ситуаційні тренажери · Pole Education Judge Academy</title>
+<style>
+:root{--bg:#171216;--panel:#211a1f;--panel2:#281f25;--line:#4a3942;--cream:#fffaf4;--ink:#f7f1f3;--muted:#b9adb2;--rose:#d8a2b5;--gold:#caa86f;--green:#73ad80;--red:#c16d79;--plum:#7d3556}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 85% 5%,#4a2436 0,transparent 30%),linear-gradient(145deg,#130f12,#21151b 62%,#171216);color:var(--ink);font:15px Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}.wrap{max-width:1420px;margin:auto;padding:18px}
+.hero{border:1px solid var(--line);border-radius:28px;padding:28px;background:linear-gradient(135deg,#23191f,#321d28);box-shadow:0 24px 80px #0004}
+.back{display:inline-flex;align-items:center;gap:8px;color:#ead4dd;font-weight:800}.ey{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:900;color:var(--rose);margin-top:20px}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;font-weight:500}.hero h1{font-size:clamp(42px,6vw,76px);line-height:.98;margin:9px 0 15px}.hero p{max-width:880px;color:#d2c6cb;line-height:1.65;font-size:17px}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.pill{border:1px solid #654957;background:#ffffff09;border-radius:999px;padding:9px 13px;color:#eadbe1;font-size:13px}
+.notice{margin-top:18px;border-left:4px solid var(--gold);padding:12px 15px;background:#ffffff08;border-radius:12px;color:#d8cfd3;line-height:1.55}
+.lab{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px;margin-top:18px}
+.sidebar,.case{border:1px solid var(--line);background:#1d171b;border-radius:24px;padding:18px}
+.scorecard{padding:17px;border:1px solid #53404a;background:#251d22;border-radius:18px;margin-bottom:14px}.scoreline{display:flex;justify-content:space-between;gap:12px;align-items:end}.scoreline strong{font:500 31px Georgia;color:var(--gold)}.scoreline span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}.meter{height:7px;background:#3b2d34;border-radius:999px;overflow:hidden;margin-top:12px}.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--plum),var(--gold));transition:.25s}
+.case-list{display:flex;flex-direction:column;gap:8px;max-height:760px;overflow:auto;padding-right:3px}.case-tab{border:1px solid #493740;background:#241c21;color:#cfc3c8;border-radius:14px;padding:12px;text-align:left;cursor:pointer;transition:.18s}.case-tab:hover{border-color:#8d6678}.case-tab.active{border-color:var(--gold);background:#30241d;color:#fff}.case-tab.done:after{content:' ✓';color:var(--green);font-weight:900}.case-tab b{display:block;font-size:10px;letter-spacing:.1em;color:var(--rose);margin-bottom:4px}
+.case{padding:24px;min-height:680px;display:flex;flex-direction:column}.case-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:1px solid #41323a;padding-bottom:16px}.case-code{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.14em}.case h2{font-size:37px;margin:5px 0 0}.role{border:1px solid #5b4650;border-radius:999px;padding:8px 11px;font-size:12px;color:#d8cbd1;white-space:nowrap}
+.situation{margin:22px 0 18px;background:#251d22;border:1px solid #493740;border-radius:20px;padding:20px}.situation h3{font-size:22px;margin:0 0 8px}.situation p{margin:0;color:#d5cbd0;line-height:1.7;font-size:16px}
+.prompt{font-weight:800;margin:3px 0 13px;color:#f8f2f4}.choices{display:grid;gap:10px}.choice{border:1px solid #4d3c45;background:#21191e;color:#f4edf0;border-radius:15px;padding:14px 15px;text-align:left;cursor:pointer;line-height:1.45;transition:.18s}.choice:hover{border-color:#8d6678;transform:translateY(-1px)}.choice.selected{border-color:var(--gold);background:#34281d}.choice.correct{border-color:var(--green);background:#1b2b21}.choice.wrong{border-color:var(--red);background:#342027}.choice:disabled{cursor:default;transform:none}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.btn{border:0;border-radius:999px;padding:11px 17px;font-weight:850;cursor:pointer}.primary{background:var(--gold);color:#1d1712}.secondary{background:#2c2228;border:1px solid #5a444f;color:#f5edf0}.btn:disabled{opacity:.45;cursor:not-allowed}
+.feedback{display:none;margin-top:16px;border-radius:18px;padding:18px;border:1px solid #493a41;background:#251e22;line-height:1.6}.feedback.show{display:block}.feedback.good{border-color:#45684e;background:#19231c}.feedback.bad{border-color:#72444d;background:#2c1b20}.feedback strong{display:block;font-size:18px;margin-bottom:5px}.feedback .principle{margin-top:10px;padding-top:10px;border-top:1px solid #ffffff14;color:#cbbfc4}
+.footer-progress{margin-top:auto;padding-top:22px;color:#a99da2;font-size:12px;display:flex;justify-content:space-between}
+.summary{display:none;border:1px solid var(--line);background:#1d171b;border-radius:24px;padding:25px;margin-top:18px}.summary.show{display:block}.summary h2{font-size:38px;margin:4px 0 12px}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:17px}.sum{border:1px solid #4d3b44;border-radius:17px;padding:17px;background:#241c21}.sum strong{display:block;font:500 30px Georgia;color:var(--gold)}.sum span{color:var(--muted);font-size:12px}.summary p{color:#d3c8cc;line-height:1.65}.summary .btn{margin-top:8px}
+@media(max-width:900px){.lab{grid-template-columns:1fr}.case-list{display:grid;grid-template-columns:repeat(2,1fr);max-height:none}.case{min-height:0}}
+@media(max-width:580px){.wrap{padding:10px}.hero,.case,.sidebar,.summary{border-radius:18px;padding:17px}.hero h1{font-size:42px}.case-list{grid-template-columns:1fr}.case-head{display:block}.role{display:inline-block;margin-top:10px}.case h2{font-size:30px}.summary-grid{grid-template-columns:1fr}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js?v=20260829-lectures1"></script>
+<script src="auth-guard.js?v=20260829-nda1"></script>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <a class="back" href="index.html#judge-desk">← Judge Desk</a>
+  <div class="ey">POLE EDUCATION · DECISION LAB</div>
+  <h1>Ситуаційні тренажери</h1>
+  <p>Короткі робочі кейси, у яких потрібно не згадати визначення, а прийняти рішення як суддя або Head Judge. Обери дію, перевір логіку та звір її з професійним принципом.</p>
+  <div class="meta"><span class="pill">10 ситуацій</span><span class="pill">Організація + суддівство</span><span class="pill">Миттєвий розбір</span><span class="pill">Без впливу на сертифікацію</span></div>
+  <div class="notice"><strong>Важливо:</strong> це навчальний тренажер. Він закріплює логіку модулів курсу і не замінює офіційний регламент, Code of Points або протокол конкретних змагань.</div>
+</header>
+
+<div class="lab">
+  <aside class="sidebar">
+    <div class="scorecard">
+      <div class="scoreline"><div><span>ПОТОЧНИЙ РЕЗУЛЬТАТ</span><strong id="scoreText">0 / 0</strong></div><div><span>КЕЙС</span><strong id="caseCount">1/10</strong></div></div>
+      <div class="meter"><i id="meter"></i></div>
+    </div>
+    <div class="case-list" id="caseList"></div>
+  </aside>
+
+  <main class="case">
+    <div class="case-head">
+      <div><div class="case-code" id="caseCode"></div><h2 id="caseTitle"></h2></div>
+      <span class="role" id="caseRole"></span>
+    </div>
+    <div class="situation"><h3>Ситуація</h3><p id="caseText"></p></div>
+    <div class="prompt" id="casePrompt"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="actions">
+      <button class="btn primary" id="checkBtn" disabled>Перевірити рішення</button>
+      <button class="btn secondary" id="nextBtn" disabled>Наступна ситуація →</button>
+      <button class="btn secondary" id="resetBtn">Скинути відповідь</button>
+    </div>
+    <div class="footer-progress"><span id="answeredText">0 із 10 розібрано</span><span>DECISION LAB · JUDGE ACADEMY</span></div>
+  </main>
+</div>
+
+<section class="summary" id="summary">
+  <div class="ey">ПІДСУМОК ТРЕНАЖЕРА</div>
+  <h2 id="summaryTitle">Рішення прийняті</h2>
+  <p id="summaryText"></p>
+  <div class="summary-grid">
+    <div class="sum"><strong id="sumCorrect">0</strong><span>правильних рішень</span></div>
+    <div class="sum"><strong id="sumPercent">0%</strong><span>точність</span></div>
+    <div class="sum"><strong id="sumBest">0%</strong><span>найкращий результат</span></div>
+  </div>
+  <button class="btn primary" id="restartAll">Пройти ще раз</button>
+</section>
+</div>
+
+<script>
+const cases=[
+{code:'CASE 01 · ORGANIZATION',title:'Знаряддя не пройшло перевірку',role:'Організатор / Head Judge',text:'За 10 хвилин до розминки виявлено проблему з кріпленням одного зі знарядь. Спортсмени вже готуються виходити на майданчик.',prompt:'Яке рішення має бути першим?',choices:['Дозволити розминку, але попросити спортсменів бути обережними.','Тимчасово закрити доступ до знаряддя, повідомити відповідальних за технічну частину та відновити роботу лише після перевірки безпеки.','Не змінювати таймінг, якщо проблема здається незначною.'],correct:1,explain:'Безпека має передувати таймінгу. Спочатку усувається ризик і підтверджується готовність обладнання, а вже потім відновлюється робота майданчика.',principle:'Принцип: безпека й технічна готовність майданчика важливіші за дотримання графіка.'},
+{code:'CASE 02 · ETHICS',title:'Конфлікт інтересів',role:'Суддя',text:'У категорії виступає спортсменка з клубу, з яким суддя регулярно співпрацює. Суддя вважає, що зможе залишатися об’єктивним.',prompt:'Що робити?',choices:['Нічого не повідомляти, якщо суддя впевнений у своїй неупередженості.','Повідомити про потенційний конфлікт інтересів і діяти за процедурою відводу або перепризначення.','Судити, але поставити оцінку ближче до середньої, щоб уникнути підозр.'],correct:1,explain:'Конфлікт інтересів не вирішується «обережнішою» оцінкою. Його потрібно прозоро декларувати та врегульовувати процедурно.',principle:'Принцип: неупередженість включає не лише фактичну об’єктивність, а й належне управління конфліктами інтересів.'},
+{code:'CASE 03 · DIFFICULTY',title:'Складність ≠ чистота виконання',role:'Суддя технічної складності',text:'Спортсмен виконує елемент із вираженою силовою та гнучкісною складовою, але вихід з елемента нестабільний.',prompt:'Як мислити судді?',choices:['Не визнавати технічну складність через нестабільний вихід.','Окремо розпізнати складові технічної складності, а помилку виконання оцінювати у відповідному компоненті.','Зарахувати лише гнучкість, бо нестабільність автоматично скасовує силу.'],correct:1,explain:'Різні компоненти оцінювання не слід змішувати. Вид технічної складності визначається за тим, що демонструє елемент, а якість виконання аналізується окремо.',principle:'Принцип: суддя розділяє «що виконано» і «як виконано».'},
+{code:'CASE 04 · EXECUTION',title:'Кілька видимих помилок',role:'Суддя виконання',text:'Упродовж комбінації суддя бачить кілька окремих технічних помилок: втрату лінії, недостатній контроль і неохайний перехід.',prompt:'Який підхід правильний?',choices:['Дати одну загальну збавку «за неохайність».','Фіксувати конкретні помилки за відповідними критеріями протоколу, не замінюючи їх загальним враженням.','Ігнорувати дрібні помилки, якщо загальне враження хороше.'],correct:1,explain:'Суддівська оцінка має спиратися на визначені критерії, а не на нечітке загальне відчуття.',principle:'Принцип: кожне рішення має бути прив’язане до конкретного критерію протоколу.'},
+{code:'CASE 05 · ARTISTRY',title:'Технічно чисто, але без музики',role:'Суддя артистизму',text:'Виступ технічно чистий, але рухи майже не пов’язані з музичними акцентами, а хореографія виглядає механічною.',prompt:'Що оцінюється нижче?',choices:['Технічна складність, тому що номер неемоційний.','Лише ті критерії артистизму, які стосуються музичної інтерпретації, хореографії та сценічної подачі.','Уся оцінка виступу незалежно від суддівського компонента.'],correct:1,explain:'Технічні й артистичні компоненти мають власні критерії. Недолік музичності не повинен автоматично змінювати технічну складність.',principle:'Принцип: оцінюй тільки свій компонент і тільки за його критеріями.'},
+{code:'CASE 06 · COMPULSORY',title:'Схоже — ще не означає виконано',role:'Суддя обов’язкових елементів',text:'Положення спортсмена візуально дуже схоже на заявлений обов’язковий елемент, але один із фіксованих критеріїв позиції не виконаний.',prompt:'Як діяти?',choices:['Зарахувати, бо загальна форма елемента впізнавана.','Порівняти положення з фіксованими критеріями та приймати рішення саме за ними.','Зарахувати половину елемента без перевірки протоколу.'],correct:1,explain:'Обов’язковий елемент визначається не «схожістю», а відповідністю установленим критеріям позиції та виконання.',principle:'Принцип: фіксований критерій перевіряється буквально за протоколом.'},
+{code:'CASE 07 · HEAD JUDGE',title:'Оцінки суддів сильно відрізняються',role:'Head Judge',text:'Після виступу видно значну різницю між оцінками двох суддів. Один із них просить Head Judge сказати, яку оцінку «краще поставити».',prompt:'Яка реакція правильна?',choices:['Назвати середню оцінку й попросити обох суддів наблизитися до неї.','Не диктувати оцінку; перевірити, чи немає процедурної або очевидної помилки, і зберегти незалежність суддівських рішень.','Обрати оцінку досвідченішого судді та замінити нею іншу.'],correct:1,explain:'Head Judge контролює процедуру та коректність роботи колегії, але не повинен підміняти незалежне суддівське рішення просто через різницю оцінок.',principle:'Принцип: контроль суддівства не дорівнює нав’язуванню оцінки.'},
+{code:'CASE 08 · SAFETY',title:'Проблема під час виступу',role:'Head Judge',text:'Під час виступу виникає ситуація, яка може створити небезпеку для спортсмена через стан майданчика або обладнання.',prompt:'Що має пріоритет?',choices:['Дочекатися завершення номера, щоб не впливати на результат.','Безпека: за необхідності зупинити виступ, забезпечити майданчик і далі діяти за процедурою регламенту.','Попросити тренера вирішити проблему самостійно, не втручаючись у хід змагань.'],correct:1,explain:'Коли є реальна загроза безпеці, продовження виступу не може бути важливішим за захист спортсмена.',principle:'Принцип: Head Judge має право й обов’язок реагувати на загрозу безпеці в межах регламенту.'},
+{code:'CASE 09 · APPEAL',title:'Тренер вимагає змінити оцінку',role:'Head Judge',text:'Після виступу тренер підходить безпосередньо до суддівського столу й наполягає на негайній зміні оцінки, не використовуючи формальну процедуру.',prompt:'Що робити?',choices:['Обговорити оцінку біля столу, щоб швидко закрити конфлікт.','Спрямувати звернення через встановлену процедуру скарги або апеляції та не змінювати оцінку неформально.','Змінити оцінку, якщо тренер наводить переконливі аргументи.'],correct:1,explain:'Апеляції мають розглядатися однаково для всіх учасників — через встановлений порядок, а не через особистий тиск біля суддівського столу.',principle:'Принцип: формальна процедура захищає і спортсмена, і суддівську колегію.'},
+{code:'CASE 10 · PROTOCOL',title:'Протокол не завершений',role:'Head Judge / секретаріат',text:'Перед публікацією результатів виявлено, що в одному з суддівських протоколів відсутній обов’язковий реквізит або підтвердження.',prompt:'Яка дія правильна?',choices:['Опублікувати результат, а документ доповнити пізніше.','Призупинити фіналізацію цього результату, перевірити протокол і завершити необхідне оформлення до публікації.','Видалити протокол і використати середнє значення інших оцінок.'],correct:1,explain:'Результат має спиратися на належно оформлену суддівську документацію. Виявлену процедурну прогалину потрібно усунути до фіналізації.',principle:'Принцип: точність протоколу — частина справедливості й відтворюваності результату.'}
+];
+
+const storageKey='pe_situational_lab_v1';
+let state={current:0,answers:{},best:0};
+try{state={...state,...JSON.parse(localStorage.getItem(storageKey)||'{}')}}catch(_){}
+if(!state.answers||typeof state.answers!=='object')state.answers={};
+if(state.current<0||state.current>=cases.length)state.current=0;
+let selected=null;
+
+const list=document.getElementById('caseList'),choices=document.getElementById('choices'),feedback=document.getElementById('feedback');
+function answeredCount(){return Object.keys(state.answers).length}
+function correctCount(){return Object.values(state.answers).filter(a=>a.correct).length}
+function save(){localStorage.setItem(storageKey,JSON.stringify(state))}
+function renderList(){
+ list.innerHTML=cases.map((c,i)=>`<button class="case-tab ${i===state.current?'active':''} ${state.answers[i]?'done':''}" data-i="${i}"><b>${String(i+1).padStart(2,'0')} · ${c.role}</b>${c.title}</button>`).join('');
+ list.querySelectorAll('.case-tab').forEach(b=>b.onclick=()=>{state.current=Number(b.dataset.i);selected=null;save();render()});
+}
+function render(){
+ const i=state.current,c=cases[i],saved=state.answers[i];
+ document.getElementById('caseCode').textContent=c.code;
+ document.getElementById('caseTitle').textContent=c.title;
+ document.getElementById('caseRole').textContent=c.role;
+ document.getElementById('caseText').textContent=c.text;
+ document.getElementById('casePrompt').textContent=c.prompt;
+ document.getElementById('caseCount').textContent=(i+1)+'/'+cases.length;
+ choices.innerHTML=c.choices.map((x,j)=>`<button class="choice" data-i="${j}">${String.fromCharCode(65+j)}. ${x}</button>`).join('');
+ feedback.className='feedback';feedback.innerHTML='';
+ const check=document.getElementById('checkBtn'),next=document.getElementById('nextBtn');
+ if(saved){
+   selected=saved.choice;
+   choices.querySelectorAll('.choice').forEach((b,j)=>{b.disabled=true;if(j===c.correct)b.classList.add('correct');if(j===saved.choice&&j!==c.correct)b.classList.add('wrong')});
+   showFeedback(saved.correct,c);
+   check.disabled=true;next.disabled=false;
+ }else{
+   selected=null;check.disabled=true;next.disabled=true;
+   choices.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+     selected=Number(b.dataset.i);choices.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');check.disabled=false;
+   });
+ }
+ updateScore();renderList();
+}
+function showFeedback(ok,c){
+ feedback.className='feedback show '+(ok?'good':'bad');
+ feedback.innerHTML=`<strong>${ok?'✓ Правильне рішення':'✕ Переглянь логіку рішення'}</strong><div>${c.explain}</div><div class="principle">${c.principle}</div>`;
+}
+document.getElementById('checkBtn').onclick=()=>{
+ if(selected===null)return;
+ const i=state.current,c=cases[i],ok=selected===c.correct;
+ state.answers[i]={choice:selected,correct:ok};
+ choices.querySelectorAll('.choice').forEach((b,j)=>{b.disabled=true;b.classList.remove('selected');if(j===c.correct)b.classList.add('correct');if(j===selected&&j!==c.correct)b.classList.add('wrong')});
+ showFeedback(ok,c);document.getElementById('checkBtn').disabled=true;document.getElementById('nextBtn').disabled=false;
+ updateScore();renderList();save();if(answeredCount()===cases.length)showSummary();
+};
+document.getElementById('nextBtn').onclick=()=>{
+ if(state.current<cases.length-1)state.current++;else{
+   const nextOpen=cases.findIndex((_,i)=>!state.answers[i]);if(nextOpen>=0)state.current=nextOpen;else{showSummary();return}
+ }
+ selected=null;save();render();
+};
+document.getElementById('resetBtn').onclick=()=>{
+ delete state.answers[state.current];selected=null;save();render();
+};
+function updateScore(){
+ const done=answeredCount(),good=correctCount();
+ document.getElementById('scoreText').textContent=good+' / '+done;
+ document.getElementById('answeredText').textContent=done+' із '+cases.length+' розібрано';
+ document.getElementById('meter').style.width=(done/cases.length*100)+'%';
+}
+function showSummary(){
+ const good=correctCount(),pct=Math.round(good/cases.length*100);
+ state.best=Math.max(Number(state.best)||0,pct);save();
+ document.getElementById('sumCorrect').textContent=good+' / '+cases.length;
+ document.getElementById('sumPercent').textContent=pct+'%';
+ document.getElementById('sumBest').textContent=state.best+'%';
+ document.getElementById('summaryTitle').textContent=pct>=80?'Суддівська логіка впевнена':pct>=60?'Хороша база — варто пройти ще раз':'Повернись до ключових модулів';
+ document.getElementById('summaryText').textContent=pct>=80
+ ?'Ти послідовно розділяєш компоненти оцінювання, працюєш через критерії та зберігаєш пріоритет безпеки й процедури.'
+ :pct>=60?'Основна логіка вже є. Повторне проходження допоможе закріпити межі відповідальності судді та Head Judge.'
+ :'Переглянь модулі про етику, виконання, обов’язкові елементи й роботу Head Judge, а потім повтори кейси.';
+ document.getElementById('summary').classList.add('show');document.getElementById('summary').scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.getElementById('restartAll').onclick=()=>{state.answers={};state.current=0;selected=null;save();document.getElementById('summary').classList.remove('show');render();window.scrollTo({top:0,behavior:'smooth'})};
+render();
+if(answeredCount()===cases.length)showSummary();
+</script>
+</body>
+</html>
