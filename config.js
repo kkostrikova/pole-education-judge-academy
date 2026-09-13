@@ -18,7 +18,7 @@ window.PE_CONFIG = {
     if(old) old.remove();
     const l=document.createElement('link');
     l.rel='stylesheet';
-    l.href='premium-global.css?v=20260913-premium-final1';
+    l.href='premium-global.css?v=20260913-premium-final2';
     l.id='pe-premium-theme';
     document.head.appendChild(l);
   };
