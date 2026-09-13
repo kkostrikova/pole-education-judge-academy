@@ -1,0 +1,122 @@
+/* Unified purple-lavender theme for Pole Education Judge Academy modules 1–8 */
+:root{
+  --cream:#f7f4ff!important;
+  --card:#ffffff!important;
+  --ink:#21163d!important;
+  --muted:#756b8e!important;
+  --wine:#6f4bc3!important;
+  --pink:#6f4bc3!important;
+  --line:#e4dcf6!important;
+  --gold:#9b7fe1!important;
+  --dark:#241746!important;
+}
+html,body{background:#f7f4ff!important;color:#21163d!important}
+body{background-image:none!important}
+.wrap{color:#21163d!important}
+
+.card,.validator,.protocol-paper,.protocol-col,.scenario,.quizq,.quiz-q,.quiz-question,.key,.tc,.vc,.criterion,.cat,.pen,.box,.sum,.duty,.stopcase,.casefile,.sort-zone,.freq-pool,.checklist label,.proto-table,.mapping-card,.submit-card{
+  background:#fff!important;
+  border-color:#e4dcf6!important;
+  box-shadow:0 8px 24px rgba(83,58,145,.045)!important;
+}
+
+.ey,.key .n,.key span,.criterion span,.cat span,.pen span,.duty .n,.stopcase .light,.step,.jc-kicker,.performance-no{
+  color:#6f4bc3!important;
+}
+.back,.status strong,.main b,.core-main b,.case strong,.deduct strong,.sum strong,.timeline b,.protocol-paper-head h3,.points,.tc b,.module-link{
+  color:#6f4bc3!important;
+}
+.lead,.small,.key p,.criterion p,.cat p,.pen p,.box p,.scenario p,.duty p,.footer,.muted{
+  color:#756b8e!important;
+}
+
+.pill,.quicknav a,.nav a,.tab,.secondary-btn{
+  background:#fff!important;
+  border-color:#cabcf0!important;
+  color:#5d5178!important;
+}
+.quicknav,.nav{
+  background:rgba(247,244,255,.94)!important;
+  border-color:#e4dcf6!important;
+}
+
+.main,.core-main{
+  background:linear-gradient(135deg,#fbf9ff,#efe8ff)!important;
+  border-color:#ded2f5!important;
+}
+.note,.callout{
+  background:linear-gradient(135deg,#f7f2ff,#eee5ff)!important;
+  border-left-color:#9b7fe1!important;
+  color:#3c315a!important;
+}
+.note strong,.callout strong{color:#34264f!important}
+
+.result,.sort-result,.quiz-result,.total{
+  background:#f2ecff!important;
+  border-left-color:#6f4bc3!important;
+  color:#4e4169!important;
+}
+
+.primary-btn,.btn.wine,.primary,.tab.active,.protocol-tab.active{
+  background:linear-gradient(135deg,#7654d6,#5f3fb4)!important;
+  color:#fff!important;
+  border-color:#6f4bc3!important;
+  box-shadow:0 8px 20px rgba(111,75,195,.18)!important;
+}
+.primary-btn:hover,.btn.wine:hover,.primary:hover{background:linear-gradient(135deg,#6744c4,#5335a4)!important}
+
+input,select,textarea,.opt,.quiz-opt,.answer,.choice,.stopchoices button,.count button{
+  border-color:#d8ccf2!important;
+}
+input:focus,select:focus,textarea:focus{border-color:#6f4bc3!important;outline:none!important}
+input[type="checkbox"],input[type="radio"],input[type="range"]{accent-color:#6f4bc3!important}
+.opt.selected,.quiz-opt.chosen{border-color:#6f4bc3!important;background:#f0e9ff!important}
+
+.protocol th{background:#eee7fb!important;color:#5f43ad!important}
+.protocol td,.protocol th{border-bottom-color:#e7def6!important}
+.criterion-list .criterion,.sort-card{background:#f8f5ff!important;border-color:#e4dcf6!important}
+
+.dark,.lab,.control,.challenge,.scene360,.photoexplorer,.sorter,.judge,.scenario-panel,.calc,.challenge-panel{
+  background:linear-gradient(145deg,#21163d,#302255 58%,#453276)!important;
+  border-color:#5c4a83!important;
+  color:#f8f5ff!important;
+}
+.lab .ey,.dark .ey,.control .ey,.challenge .ey,.scene360 .ey,.photoexplorer .ey{color:#d8ccff!important}
+.lab p,.dark p,.control p,.challenge p,.scene360 p,.photoexplorer>p,.judge p,.calc p{color:#d9d1eb!important}
+
+.case-tab,.scenario-tab,.choice,.answer,.jc-tab,.jc-help,.jc-pool,.jc-zone,.capture,.judgebox,.question,.analysis,.expert,.log-item,.sort-pool,.challenge-step,.challenge-result,.feedback,.sel,.hj-status{
+  border-color:#5b4a80!important;
+}
+.case-tab,.scenario-tab,.jc-tab{background:#2b2048!important;color:#e9e3f7!important}
+.case-tab.active,.scenario-tab.active,.jc-tab.active{background:#6f4bc3!important;border-color:#a98de2!important;color:#fff!important}
+
+.judge,.capture,.judgebox,.question,.analysis,.expert,.log-item,.sort-pool,.challenge-step,.challenge-result,.feedback,.sel,.hj-status,.jc-help,.jc-pool,.jc-zone{
+  background:#281e45!important;
+  color:#eee9f8!important;
+}
+.jc-visual{border-color:#dcd1f1!important}
+.jc-card{background:#f7f4ff!important;color:#2b2045!important}
+
+.photo-tab{background:#2a1d4b!important;border-color:#554375!important;color:#eee9ff!important}
+.photo-tab small{color:#bdb3d6!important}
+.photo-tab.active{background:#6f4bc3!important;border-color:#a98de2!important;color:#fff!important}
+.photo-stage{background:#21183b!important;border-color:#5c4a83!important}
+.photo-note{background:#2a2048!important;border-color:#5c4a83!important}
+.photo-note strong{color:#d9ccff!important}.photo-note span{color:#d8d0eb!important}
+
+.protocol-paper-head{border-bottom-color:#6f4bc3!important}
+.proto-head{background:#6f4bc3!important}
+.proto-row{border-top-color:#ebe3f8!important}
+.protocol-field input{background:#fff!important}
+
+.casefile{color:#2b2045!important}
+.casefile h3,.stamp{color:#6f4bc3!important}.stamp{border-color:#6f4bc3!important}
+.timeline div{border-left-color:#9b7fe1!important;background:#fff!important}
+
+.ok,.result.pass{background:#e8f4ec!important;color:#366447!important}
+.warn{background:#f1ecff!important;color:#67539a!important}
+.bad,.result.fail{background:#fdecef!important;color:#8a3345!important}
+
+@media(max-width:760px){
+  .card,.validator,.protocol-paper,.protocol-col,.scenario,.quizq,.quiz-q,.quiz-question,.key,.tc,.vc,.criterion,.cat,.pen,.box,.sum,.duty,.stopcase,.casefile{box-shadow:none!important}
+}
