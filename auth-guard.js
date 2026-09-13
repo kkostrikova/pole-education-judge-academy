@@ -1,4 +1,9 @@
 (()=>{
+  const theme=document.createElement('link');
+  theme.rel='stylesheet';
+  theme.href='theme-purple.css?v=20260913-purple2';
+  document.head.appendChild(theme);
+
   const style=document.createElement('style');
   style.textContent='html.pe-auth-checking body{visibility:hidden!important}';
   document.head.appendChild(style);
