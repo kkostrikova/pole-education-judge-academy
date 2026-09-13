@@ -13,52 +13,35 @@ window.PE_CONFIG = {
 };
 
 (()=>{
-  const ensureLink=(id,href)=>{
-    let link=document.getElementById(id) || document.querySelector(`link[href^="${href.split('?')[0]}"]`);
-    if(!link){
-      link=document.createElement('link');
-      link.rel='stylesheet';
-      document.head.appendChild(link);
-    }
-    link.id=id;
-    if(link.getAttribute('href')!==href) link.setAttribute('href',href);
-    return link;
-  };
+  if(!document.getElementById('pe-google-fonts')){
+    const pre1=document.createElement('link');
+    pre1.rel='preconnect';
+    pre1.href='https://fonts.googleapis.com';
+    document.head.appendChild(pre1);
 
-  const mountTheme=()=>{
-    ensureLink('pe-premium-theme','premium-global.css?v=20260913-firstpaint2');
-    ensureLink('pe-module-visuals','module-visuals.css?v=20260913-approved3');
+    const pre2=document.createElement('link');
+    pre2.rel='preconnect';
+    pre2.href='https://fonts.gstatic.com';
+    pre2.crossOrigin='anonymous';
+    document.head.appendChild(pre2);
 
-    if(!document.getElementById('pe-google-fonts')){
-      const pre1=document.createElement('link');
-      pre1.rel='preconnect';
-      pre1.href='https://fonts.googleapis.com';
-      document.head.appendChild(pre1);
-      const pre2=document.createElement('link');
-      pre2.rel='preconnect';
-      pre2.href='https://fonts.gstatic.com';
-      pre2.crossOrigin='anonymous';
-      document.head.appendChild(pre2);
-      const f=document.createElement('link');
-      f.rel='stylesheet';
-      f.id='pe-google-fonts';
-      f.href='https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap';
-      document.head.appendChild(f);
-    }
+    const f=document.createElement('link');
+    f.rel='stylesheet';
+    f.id='pe-google-fonts';
+    f.href='https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap';
+    document.head.appendChild(f);
+  }
 
-    if(!document.getElementById('pe-font-system')){
-      const s=document.createElement('style');
-      s.id='pe-font-system';
-      s.textContent=`
-        html,body,button,input,select,textarea{font-family:'Manrope',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important}
-        h1,h2,.hero h1,.section-head h2,.final-copy h2,.completion-copy h2,.lecture-hub h2,.start-card h1,.result-card h1{font-family:'Cormorant Garamond',Georgia,serif!important;letter-spacing:-.02em}
-        .hero h1{font-weight:600!important;line-height:.94!important}
-        .section-head h2,.final-copy h2,.completion-copy h2,.lecture-hub h2{font-weight:600!important}
-        .brand-manifesto-script{font-family:'Allura',cursive!important;font-weight:400!important;letter-spacing:.015em!important;line-height:.95!important}
-      `;
-      document.head.appendChild(s);
-    }
-  };
-
-  mountTheme();
+  if(!document.getElementById('pe-font-system')){
+    const s=document.createElement('style');
+    s.id='pe-font-system';
+    s.textContent=`
+      html,body,button,input,select,textarea{font-family:'Manrope',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important}
+      h1,h2,.hero h1,.section-head h2,.final-copy h2,.completion-copy h2,.lecture-hub h2,.start-card h1,.result-card h1{font-family:'Cormorant Garamond',Georgia,serif!important;letter-spacing:-.02em}
+      .hero h1{font-weight:600!important;line-height:.94!important}
+      .section-head h2,.final-copy h2,.completion-copy h2,.lecture-hub h2{font-weight:600!important}
+      .brand-manifesto-script{font-family:'Allura',cursive!important;font-weight:400!important;letter-spacing:.015em!important;line-height:.95!important}
+    `;
+    document.head.appendChild(s);
+  }
 })();
