@@ -26,7 +26,7 @@ window.PE_CONFIG = {
     if(oldModules) oldModules.remove();
     const mv=document.createElement('link');
     mv.rel='stylesheet';
-    mv.href='module-visuals.css?v=20260913-photos1';
+    mv.href='module-visuals.css?v=20260913-final3';
     mv.id='pe-module-visuals';
     document.head.appendChild(mv);
 
