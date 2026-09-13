@@ -11,3 +11,13 @@ window.PE_CONFIG = {
   supabaseUrl: "https://mffjcqpyfcptwahpxeom.supabase.co",
   supabasePublishableKey: "sb_publishable_G69GdUkmDVVZcAVUhLT9Mw_pADiXZOs"
 };
+
+(()=>{
+  const href='premium-global.css?v=20260913-premium1';
+  if(!document.querySelector(`link[href^="premium-global.css"]`)){
+    const l=document.createElement('link');
+    l.rel='stylesheet';
+    l.href=href;
+    document.head.appendChild(l);
+  }
+})();
