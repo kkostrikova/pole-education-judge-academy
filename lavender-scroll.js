@@ -1,67 +1,92 @@
 (() => {
-  const DESIGN_W=1536, DESIGN_H=864;
-  const scene=document.getElementById('lavenderHero');
-  const canvas=document.getElementById('lavenderCanvas');
-  const bg=document.getElementById('lavenderBg');
-  const text=document.getElementById('lavenderText');
-  if(!scene || !canvas || !window.PE_LAVENDER_ASSETS || !window.PE_LAVENDER_FRAMES?.length) return;
+  const ATLAS='https://cdn.creativeclaw.co/u/931444b3/images/7c245087-ee48-4375-b50b-9f78a1fc349b.webp';
+  const DW=1536, DH=864, FRAME_COUNT=180;
+  const style=document.createElement('style');
+  style.textContent=`
+  :root{--lav-s:1}
+  .topbar{position:fixed!important;top:0;left:0;right:0;z-index:10000!important}
+  .lavender-scroll-scene{position:relative;height:260vh;min-height:calc(100vh + 900px);background:#f5f1ff;overflow:visible}
+  .lavender-sticky{position:sticky;top:0;height:100vh;z-index:8;pointer-events:none;overflow:hidden}
+  .lavender-first-screen{position:relative;height:100vh;margin-top:-100vh;overflow:hidden;z-index:3;background:#f6f3ff}
+  .lavender-scroll-space{height:160vh;background:linear-gradient(180deg,#f6f3ff 0%,#f3effc 100%)}
+  .lavender-plane,.lavender-sticky-plane{position:absolute;left:50%;top:0;width:${DW}px;height:${DH}px;transform-origin:top center;transform:translateX(-50%) scale(var(--lav-s))}
+  .lavender-base{position:absolute;inset:0;background-image:url('${ATLAS}');background-repeat:no-repeat;background-size:8192px 6144px;background-position:0 -864px}
+  .lavender-fallback{position:absolute;left:760px;top:0;width:180px;height:200px;background-image:url('${ATLAS}');background-repeat:no-repeat;background-size:4096px 3072px;background-position:-1024px 0;transform-origin:top left;transform:scale(4.32);opacity:1;transition:opacity .12s linear}
+  .lavender-canvas,.lavender-text-canvas{position:absolute;inset:0;width:${DW}px;height:${DH}px;display:block}
+  .lavender-text-canvas{z-index:3}
+  .lavender-first-screen::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 140px rgba(92,61,154,.06)}
+  body.lavender-ready .hero,body.lavender-ready .brand-manifesto{display:none!important}
+  @media(max-width:700px){.lavender-scroll-scene{height:220vh}.lavender-scroll-space{height:120vh}}
+  @media(prefers-reduced-motion:reduce){.lavender-scroll-scene{height:100vh;min-height:100vh}.lavender-scroll-space{display:none}}
+  `;
+  document.head.appendChild(style);
 
-  const assets=window.PE_LAVENDER_ASSETS;
-  const frameURLs=window.PE_LAVENDER_FRAMES;
-  const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
-  canvas.width=910;
-  canvas.height=512;
+  const hero=document.querySelector('main#top > .hero');
+  if(!hero) return;
+  const scene=document.createElement('section');
+  scene.className='lavender-scroll-scene';
+  scene.id='lavenderHero';
+  scene.innerHTML=`<div class="lavender-sticky" aria-hidden="true"><div class="lavender-sticky-plane"><div class="lavender-fallback"></div><canvas class="lavender-canvas" width="${DW}" height="${DH}"></canvas></div></div><div class="lavender-first-screen" aria-label="More than judging"><div class="lavender-plane"><div class="lavender-base"></div><canvas class="lavender-text-canvas" width="${DW}" height="${DH}"></canvas></div></div><div class="lavender-scroll-space"></div>`;
+  hero.parentNode.insertBefore(scene,hero);
+  document.body.classList.add('lavender-ready');
 
-  const frames=new Array(frameURLs.length);
-  let lastIndex=-1, raf=0;
+  const lavCanvas=scene.querySelector('.lavender-canvas');
+  const textCanvas=scene.querySelector('.lavender-text-canvas');
+  const lavCtx=lavCanvas.getContext('2d',{alpha:true});
+  const textCtx=textCanvas.getContext('2d',{alpha:true});
+  const fallback=scene.querySelector('.lavender-fallback');
+  const img=new Image(); img.decoding='async'; img.crossOrigin='anonymous'; img.src=ATLAS;
+  let atlasReady=false,lastFrame=-1;
 
-  const fit=()=>{
-    const scale=Math.max(window.innerWidth/DESIGN_W, window.innerHeight/DESIGN_H);
-    document.documentElement.style.setProperty('--lav-scale', String(scale));
+  function setScale(){
+    const vw=window.innerWidth,vh=window.innerHeight;
+    const s=vh>vw?Math.min(vw/DW,vh/DH):Math.max(vw/DW,vh/DH);
+    document.documentElement.style.setProperty('--lav-s',String(s));
+  }
+  setScale();
+  window.addEventListener('resize',()=>{setScale();renderFromScroll()},{passive:true});
+
+  function drawLavender(frame){
+    if(!atlasReady) return;
+    frame=Math.max(0,Math.min(FRAME_COUNT-1,frame|0));
+    if(frame===lastFrame) return;
+    lastFrame=frame;
+    lavCtx.clearRect(0,0,DW,DH);
+    const col=frame%15,row=Math.floor(frame/15),sx=1024+col*180,sy=row*200;
+    lavCtx.imageSmoothingEnabled=true;lavCtx.imageSmoothingQuality='high';
+    lavCtx.drawImage(img,sx,sy,180,200,760,0,776,864);
+  }
+
+  function drawText(progress){
+    if(!atlasReady) return;
+    progress=Math.max(.06,Math.min(1,progress));
+    textCtx.clearRect(0,0,DW,DH);
+    const revealX=Math.round(DW*progress);
+    textCtx.save();textCtx.beginPath();textCtx.rect(0,0,revealX,DH);textCtx.clip();
+    textCtx.imageSmoothingEnabled=true;textCtx.imageSmoothingQuality='high';
+    textCtx.drawImage(img,0,864,768,432,0,0,DW,DH);
+    textCtx.restore();
+  }
+
+  function animateText(){
+    const start=performance.now(),dur=1850,from=.08;
+    const tick=now=>{const t=Math.min(1,(now-start)/dur),e=1-Math.pow(1-t,3);drawText(from+(1-from)*e);if(t<1)requestAnimationFrame(tick)};
+    requestAnimationFrame(tick);
+  }
+
+  function renderFromScroll(){
+    if(!atlasReady) return;
+    const rect=scene.getBoundingClientRect(),total=Math.max(1,scene.offsetHeight-window.innerHeight);
+    const p=Math.max(0,Math.min(1,-rect.top/total));
+    drawLavender(Math.round(p*(FRAME_COUNT-1)));
+  }
+
+  let ticking=false;
+  window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(()=>{renderFromScroll();ticking=false})}},{passive:true});
+
+  img.onload=()=>{
+    atlasReady=true;drawLavender(0);drawText(.08);fallback.style.opacity='0';
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){drawText(1);drawLavender(0)}else animateText();
+    renderFromScroll();
   };
-
-  const loadImage=(src)=>new Promise((resolve,reject)=>{
-    const im=new Image();
-    im.decoding='async';
-    im.onload=()=>resolve(im);
-    im.onerror=reject;
-    im.src=src;
-  });
-
-  const drawIndex=(idx)=>{
-    const im=frames[idx];
-    if(!im || idx===lastIndex) return;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.drawImage(im,0,0,canvas.width,canvas.height);
-    lastIndex=idx;
-  };
-
-  const update=()=>{
-    raf=0;
-    const rect=scene.getBoundingClientRect();
-    const travel=Math.max(1, scene.offsetHeight-window.innerHeight);
-    const passed=Math.min(Math.max(-rect.top,0),travel);
-    const progress=passed/travel;
-    drawIndex(Math.round(progress*(frameURLs.length-1)));
-  };
-
-  const schedule=()=>{if(!raf)raf=requestAnimationFrame(update)};
-
-  const init=async()=>{
-    fit();
-    bg.src=assets.background;
-    text.src=assets.text;
-    frames[0]=await loadImage(frameURLs[0]);
-    drawIndex(0);
-    await Promise.allSettled([bg.decode?.()||Promise.resolve(),text.decode?.()||Promise.resolve()]);
-    scene.classList.add('is-ready');
-    schedule();
-    for(let i=1;i<frameURLs.length;i++){
-      try{frames[i]=await loadImage(frameURLs[i])}catch(_){}
-    }
-  };
-
-  window.addEventListener('resize',()=>{fit();schedule()},{passive:true});
-  window.addEventListener('scroll',schedule,{passive:true});
-  init().catch(()=>{});
 })();
