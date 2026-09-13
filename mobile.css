@@ -269,3 +269,67 @@ img,video,iframe,canvas{max-width:100%}
     display:none!important;
   }
 }
+
+/* Shared purple-lavender visual theme for modules 1–8 */
+:root{
+  --cream:#f7f4ff!important;
+  --card:#ffffff!important;
+  --ink:#21163d!important;
+  --wine:#6f4bc3!important;
+  --line:#e4dcf6!important;
+  --gold:#9b7fe1!important;
+  --dark:#241746!important;
+}
+body{background:#f7f4ff!important;color:#21163d!important}
+.wrap{color:#21163d!important}
+.card,.validator,.lab,.control,.case,.judge,.sorter,.protocol-paper,.scenario-panel,.quizq,.tc,.vc,.panel,.result-card,.start-card,.exam-card{
+  background:#fff!important;
+  border-color:#e4dcf6!important;
+  box-shadow:0 10px 28px rgba(83,58,145,.05)!important;
+}
+.ey,.mini,.kicker,.performance-no,.module-no{color:#6f4bc3!important}
+.back,.module-link,.tc b,.core-main b,.protocol-total strong,.timer strong{color:#6f4bc3!important}
+.lead,.small,.muted,.card p,.validator p{color:#756b8e}
+.pill,.quicknav a,.nav a{
+  border-color:#cabcf0!important;
+  background:#fff!important;
+  color:#5d5178!important;
+}
+.quicknav,.nav{
+  background:rgba(247,244,255,.92)!important;
+  border-color:#e4dcf6!important;
+}
+.core-main,.callout,.mapping-card,.submit-card,.proto-section,.protocol-scale{
+  background:linear-gradient(135deg,#fbf9ff,#f0e9ff)!important;
+  border-color:#dfd3f5!important;
+}
+.callout{border-left-color:#9b7fe1!important}
+.btn,.primary-btn,.quiz-actions button,.protocol-tab.active{
+  background:linear-gradient(135deg,#7654d6,#5f3fb4)!important;
+  color:#fff!important;
+  border-color:#6f4bc3!important;
+  box-shadow:0 8px 20px rgba(111,75,195,.18)!important;
+}
+.btn:hover,.primary-btn:hover,.quiz-actions button:hover{background:linear-gradient(135deg,#6744c4,#5335a4)!important}
+.protocol-tab,.case-tab,.choice,.option,.answer,.stopchoice{
+  border-color:#d8ccf2!important;
+}
+input,select,textarea{border-color:#d8ccf2!important}
+input:focus,select:focus,textarea:focus{border-color:#6f4bc3!important;outline:none!important}
+input[type="checkbox"],input[type="radio"]{accent-color:#6f4bc3!important}
+.scene360,.photoexplorer,.lab.dark,.dark-section{
+  background:linear-gradient(145deg,#21163d,#32235b 58%,#4a3482)!important;
+  border-color:#5d4a89!important;
+}
+.scene360 .ey,.photoexplorer .ey{color:#d9ccff!important}
+.scene360 p,.photoexplorer>p{color:#ded6ef!important}
+.photo-tab{background:#2a1d4b!important;border-color:#554375!important;color:#eee9ff!important}
+.photo-tab small{color:#bdb3d6!important}
+.photo-tab.active{background:#6f4bc3!important;border-color:#a98de2!important;color:#fff!important}
+.photo-stage{background:#21183b!important;border-color:#5c4a83!important}
+.photo-note{background:#2a2048!important;border-color:#5c4a83!important}
+.photo-note strong{color:#d9ccff!important}
+.photo-note span{color:#d8d0eb!important}
+.ok{background:#e8f4ec!important;color:#366447!important}
+.warn{background:#f3eeff!important;color:#674ba1!important}
+.bad{background:#f8e9ef!important;color:#8a3654!important}
