@@ -48,7 +48,7 @@ window.PE_CONFIG = {
   if(!document.getElementById('pe-lavender-scroll')){
     const script=document.createElement('script');
     script.id='pe-lavender-scroll';
-    script.src='lavender-scroll.js?v=20260913-exact1';
+    script.src='lavender-scroll.js?v=20260913-exact2';
     document.body.appendChild(script);
   }
 })();
