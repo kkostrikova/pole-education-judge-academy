@@ -13,11 +13,18 @@ window.PE_CONFIG = {
 };
 
 (()=>{
-  const href='premium-global.css?v=20260913-premium1';
-  if(!document.querySelector(`link[href^="premium-global.css"]`)){
+  const addCss=(href,id)=>{
+    if(document.getElementById(id)) return;
     const l=document.createElement('link');
     l.rel='stylesheet';
     l.href=href;
+    l.id=id;
     document.head.appendChild(l);
-  }
+  };
+
+  addCss('premium-global.css?v=20260913-premium2','pe-premium-theme');
+
+  const addContrast=()=>addCss('contrast-fix.css?v=20260913-contrast1','pe-contrast-fix');
+  if(document.readyState==='complete') addContrast();
+  else window.addEventListener('load',addContrast,{once:true});
 })();
