@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#17131d">
   <title>Pole Education · Judge Academy</title>
   <meta name="description" content="Інтерактивний організаційно-суддівський курс Pole Education">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="mobile.css?v=20260913-mobile4">
-  <link rel="stylesheet" href="module-visuals.css?v=20260913-final4">
+  <style>html,body{margin:0;background:#17131d;color:#f8f5fb}</style>
+  <link rel="stylesheet" href="styles.css?v=20260913-base5">
+  <link rel="stylesheet" href="mobile.css?v=20260913-mobile5">
   <style>
     .brand-manifesto{position:relative;overflow:hidden;min-height:240px;display:grid;place-items:center;padding:46px 28px;background:radial-gradient(circle at 22% 30%,rgba(145,76,255,.16),transparent 28%),radial-gradient(circle at 78% 72%,rgba(123,52,239,.18),transparent 34%),linear-gradient(135deg,#17131d 0%,#21152f 52%,#15101b 100%);border-top:1px solid rgba(154,92,255,.24);border-bottom:1px solid rgba(154,92,255,.24);isolation:isolate}
     .brand-manifesto::before{content:"";position:absolute;top:0;left:8%;right:8%;height:2px;background:linear-gradient(90deg,transparent,#914cff 20%,#b979ff 50%,#7b34ef 80%,transparent);box-shadow:0 0 12px rgba(145,76,255,.9),0 0 26px rgba(123,52,239,.55)}
     .brand-manifesto::after{content:"";position:absolute;inset:0;background:linear-gradient(118deg,transparent 0 38%,rgba(255,255,255,.025) 38% 47%,transparent 47% 100%);pointer-events:none;z-index:-1}
     .brand-manifesto-copy{width:min(900px,100%);text-align:center}.brand-manifesto-script{margin:0;font-family:"Brush Script MT","Segoe Script","Snell Roundhand",cursive;font-size:clamp(42px,7vw,78px);font-weight:400;line-height:1.02;letter-spacing:.01em;color:#a96dff;text-shadow:0 0 6px rgba(169,109,255,.92),0 0 16px rgba(145,76,255,.72),0 0 34px rgba(123,52,239,.46);transform:rotate(-1.4deg)}.brand-manifesto-script span{display:block}
-
-    /* 2026-09-13 complete mobile rebuild — original project photos only */
     #modules{background:linear-gradient(180deg,#0b0710 0%,#130a1c 50%,#0d0813 100%);color:#fff;position:relative}
     #modules::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 8%,rgba(179,102,255,.09),transparent 24%),radial-gradient(circle at 88% 72%,rgba(114,53,189,.10),transparent 28%)}
     #modules .section-head{position:relative;z-index:1}#modules .eyebrow{color:#b978ff}#modules .section-head h2{color:#fff}#modules .section-head>p{color:#bfb4c7}
@@ -22,23 +21,19 @@
     .module-card{--photo:none;position:relative;isolation:isolate;overflow:hidden;min-height:410px;padding:22px;border-radius:24px;border:1px solid rgba(186,117,246,.44);background:#100a17;color:#fff;box-shadow:0 12px 34px rgba(0,0,0,.30);display:flex;flex-direction:column;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
     .module-card::before{content:"";position:absolute;left:0;top:0;width:100%;height:48%;z-index:-3;background-image:var(--photo);background-size:cover;background-position:center;filter:saturate(.9) contrast(1.04) brightness(.88);transform:scale(1.01);transition:transform .4s ease}
     .module-card::after{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(9,5,13,.12) 0%,rgba(10,6,15,.22) 28%,rgba(13,7,19,.78) 47%,#100a17 61%,#100a17 100%)}
-    .module-card:nth-child(1){--photo:url('assets/module-photo-1.webp?v=20260913-final4')}.module-card:nth-child(2){--photo:url('assets/module-photo-2.webp?v=20260913-final4')}.module-card:nth-child(3){--photo:url('assets/module-photo-3.webp?v=20260913-final4')}.module-card:nth-child(4){--photo:url('assets/module-photo-4.webp?v=20260913-final4')}.module-card:nth-child(5){--photo:url('assets/module-photo-5.webp?v=20260913-final4')}.module-card:nth-child(6){--photo:url('assets/module-photo-6.webp?v=20260913-final4')}.module-card:nth-child(7){--photo:url('assets/module-photo-7.webp?v=20260913-final4')}.module-card:nth-child(8){--photo:url('assets/module-photo-8.webp?v=20260913-final4')}
+    .module-card:nth-child(1){--photo:url('assets/module-photo-1.webp')}.module-card:nth-child(2){--photo:url('assets/module-photo-2.webp')}.module-card:nth-child(3){--photo:url('assets/module-photo-3.webp')}.module-card:nth-child(4){--photo:url('assets/module-photo-4.webp')}.module-card:nth-child(5){--photo:url('assets/module-photo-5.webp')}.module-card:nth-child(6){--photo:url('assets/module-photo-6.webp')}.module-card:nth-child(7){--photo:url('assets/module-photo-7.webp')}.module-card:nth-child(8){--photo:url('assets/module-photo-8.webp')}
     .module-card:hover{transform:translateY(-3px);border-color:#c27cff;box-shadow:0 18px 46px rgba(0,0,0,.34)}.module-card:hover::before{transform:scale(1.035)}
     .module-card.locked{opacity:.72}.module-card.locked::before{filter:saturate(.55) contrast(1.02) brightness(.66)}.module-card.locked:hover{transform:none}
     .module-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;position:relative;z-index:1}.module-no{font:500 34px/1 Georgia,'Times New Roman',serif;color:#d09aff;text-shadow:0 2px 12px rgba(0,0,0,.42)}.module-status{font-size:11px;text-transform:uppercase;letter-spacing:.07em;padding:8px 12px;border-radius:999px;background:rgba(27,16,38,.84);border:1px solid rgba(190,123,252,.38);color:#d9cde1;backdrop-filter:blur(12px)}.module-status.done{color:#caff38;border-color:rgba(202,255,56,.40);background:rgba(24,17,31,.9)}.module-status.locked{color:#b8acbf}
     .module-card h3{font:500 clamp(28px,2.6vw,38px)/1.03 Georgia,'Times New Roman',serif;margin:126px 0 10px;max-width:100%;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.46)}.module-card p{max-width:100%;margin:0;color:#e8e0ec;font-size:15px;line-height:1.5;text-shadow:0 1px 8px rgba(0,0,0,.35)}
     .module-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:8px;position:relative;z-index:1}.module-actions .module-link{margin:0;min-height:46px;padding:10px 12px;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid rgba(198,131,255,.24);background:rgba(42,24,55,.72);color:#cd8bff;font-size:13px;font-weight:800;backdrop-filter:blur(10px)}.module-actions .module-link:hover{background:rgba(65,34,84,.86);border-color:rgba(207,142,255,.45)}.module-actions .lecture-module-link{background:rgba(36,24,45,.80)!important;border-color:rgba(196,132,246,.20)!important;color:#d397ff!important}.module-actions .locked-link{grid-column:1/-1;color:#bbb0c0;background:rgba(29,21,34,.70)}.module-link::after{margin-left:4px}.module-actions .lecture-module-link::after{content:'→'}
     .desk{background:linear-gradient(135deg,#150b1f,#231033 58%,#32174b)}.desk-card{border-color:#56376d;background:rgba(255,255,255,.035)}.desk-card:hover{border-color:#9860cc;background:rgba(167,95,232,.07)}.desk-card span{color:#c583ff}
-
     @media(max-width:900px){.module-grid{grid-template-columns:1fr}.module-card{min-height:400px}}
-    @media(max-width:600px){
-      .brand-manifesto{min-height:190px;padding:36px 18px}.brand-manifesto-script{font-size:clamp(38px,12vw,58px)}
-      #modules{padding:48px 14px!important}.module-grid{gap:14px}.module-card{min-height:398px;padding:20px;border-radius:22px}.module-card::before{height:47%;background-position:center}.module-card::after{background:linear-gradient(180deg,rgba(8,5,12,.10) 0%,rgba(9,5,14,.18) 26%,rgba(13,7,19,.72) 45%,#100a17 59%,#100a17 100%)}
-      .module-no{font-size:31px}.module-status{font-size:10px;padding:7px 10px}.module-card h3{font-size:29px!important;line-height:1.02;margin:126px 0 9px;max-width:100%}.module-card p{font-size:14px;line-height:1.45;max-width:100%}
-      .module-actions{grid-template-columns:1fr 1fr;gap:7px;padding-top:16px}.module-actions .module-link{min-height:44px;padding:9px 7px;font-size:12px;border-radius:11px}.module-actions .locked-link{grid-column:1/-1}
-    }
+    @media(max-width:600px){.brand-manifesto{min-height:190px;padding:36px 18px}.brand-manifesto-script{font-size:clamp(38px,12vw,58px)}#modules{padding:48px 14px!important}.module-grid{gap:14px}.module-card{min-height:398px;padding:20px;border-radius:22px}.module-card::before{height:47%;background-position:center}.module-card::after{background:linear-gradient(180deg,rgba(8,5,12,.10) 0%,rgba(9,5,14,.18) 26%,rgba(13,7,19,.72) 45%,#100a17 59%,#100a17 100%)}.module-no{font-size:31px}.module-status{font-size:10px;padding:7px 10px}.module-card h3{font-size:29px!important;line-height:1.02;margin:126px 0 9px;max-width:100%}.module-card p{font-size:14px;line-height:1.45;max-width:100%}.module-actions{grid-template-columns:1fr 1fr;gap:7px;padding-top:16px}.module-actions .module-link{min-height:44px;padding:9px 7px;font-size:12px;border-radius:11px}.module-actions .locked-link{grid-column:1/-1}}
     @media(max-width:390px){.module-card{min-height:390px;padding:18px}.module-card h3{font-size:27px!important;margin-top:122px}.module-card p{font-size:13px}.module-status{max-width:46%;text-align:center;line-height:1.15}.module-actions .module-link{font-size:11.5px}}
   </style>
+  <link rel="stylesheet" href="premium-global.css?v=20260913-firstpaint1">
+  <link rel="stylesheet" href="module-visuals.css?v=20260913-approved2">
 </head>
 <body>
   <header class="topbar">
@@ -57,6 +52,6 @@
     <section class="section course-complete" id="course-complete"><div class="completion-mark" id="completionMark">03</div><div class="completion-copy"><p class="eyebrow">POLE EDUCATION · COURSE COMPLETION</p><h2 id="completionTitle">Фінальна сертифікація</h2><p id="completionMessage">Для завершення курсу потрібно пройти всі 8 модулів, скласти теоретичний і практичний іспити.</p><div class="completion-steps" id="completionSteps"></div></div><a class="secondary-btn completion-btn" id="completionAccountBtn" href="account.html">Мій кабінет</a></section>
   </main>
   <footer><span>© Pole Education · Judge Academy</span><a href="certificate-verify.html">Перевірити сертифікат</a><span>Організаційно-суддівський курс</span></footer>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js?v=20260913-final4"></script><script src="site-auth.js?v=20260829-nda1"></script><script src="progress-sync.js"></script><script src="app.js?v=20260829-nda1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js?v=20260913-firstpaint1"></script><script src="site-auth.js?v=20260913-auth2"></script><script src="progress-sync.js?v=20260913-progress2"></script><script src="app.js?v=20260913-app2"></script>
 </body>
 </html>
