@@ -21,10 +21,5 @@ window.PE_CONFIG = {
     l.id=id;
     document.head.appendChild(l);
   };
-
-  addCss('premium-global.css?v=20260913-premium2','pe-premium-theme');
-
-  const addContrast=()=>addCss('contrast-fix.css?v=20260913-contrast1','pe-contrast-fix');
-  if(document.readyState==='complete') addContrast();
-  else window.addEventListener('load',addContrast,{once:true});
+  addCss('premium-global.css?v=20260913-premium3','pe-premium-theme');
 })();
