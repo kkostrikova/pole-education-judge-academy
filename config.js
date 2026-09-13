@@ -44,4 +44,11 @@ window.PE_CONFIG = {
     `;
     document.head.appendChild(s);
   }
+
+  if(!document.getElementById('pe-lavender-scroll')){
+    const script=document.createElement('script');
+    script.id='pe-lavender-scroll';
+    script.src='lavender-scroll.js?v=20260913-exact1';
+    document.body.appendChild(script);
+  }
 })();
