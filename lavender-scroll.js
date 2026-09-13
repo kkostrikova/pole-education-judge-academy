@@ -1,5 +1,6 @@
 (() => {
-  const ATLAS='https://cdn.creativeclaw.co/u/931444b3/images/7c245087-ee48-4375-b50b-9f78a1fc349b.webp';
+  const BASE_ATLAS='https://cdn.creativeclaw.co/u/931444b3/images/7c245087-ee48-4375-b50b-9f78a1fc349b.webp';
+  const FRAME_ATLAS='https://cdn.creativeclaw.co/u/931444b3/images/d49b89e2-eb07-418c-9912-c69e2cad3c9f.webp';
   const DW=1536, DH=864, FRAME_COUNT=180;
   const style=document.createElement('style');
   style.textContent=`
@@ -10,8 +11,8 @@
   .lavender-first-screen{position:relative;height:100vh;margin-top:-100vh;overflow:hidden;z-index:3;background:#f6f3ff}
   .lavender-scroll-space{height:160vh;background:linear-gradient(180deg,#f6f3ff 0%,#f3effc 100%)}
   .lavender-plane,.lavender-sticky-plane{position:absolute;left:50%;top:0;width:${DW}px;height:${DH}px;transform-origin:top center;transform:translateX(-50%) scale(var(--lav-s))}
-  .lavender-base{position:absolute;inset:0;background-image:url('${ATLAS}');background-repeat:no-repeat;background-size:8192px 6144px;background-position:0 -864px}
-  .lavender-fallback{position:absolute;left:760px;top:0;width:180px;height:200px;background-image:url('${ATLAS}');background-repeat:no-repeat;background-size:4096px 3072px;background-position:-1024px 0;transform-origin:top left;transform:scale(4.32);opacity:1;transition:opacity .12s linear}
+  .lavender-base{position:absolute;inset:0;background-image:url('${BASE_ATLAS}');background-repeat:no-repeat;background-size:8192px 6144px;background-position:0 -864px}
+  .lavender-fallback{position:absolute;left:760px;top:0;width:180px;height:200px;background-image:url('${FRAME_ATLAS}');background-repeat:no-repeat;background-size:2700px 2400px;background-position:0 0;transform-origin:top left;transform:scale(4.32);opacity:1;transition:opacity .12s linear}
   .lavender-canvas,.lavender-text-canvas{position:absolute;inset:0;width:${DW}px;height:${DH}px;display:block}
   .lavender-text-canvas{z-index:3}
   .lavender-first-screen::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 140px rgba(92,61,154,.06)}
@@ -35,8 +36,9 @@
   const lavCtx=lavCanvas.getContext('2d',{alpha:true});
   const textCtx=textCanvas.getContext('2d',{alpha:true});
   const fallback=scene.querySelector('.lavender-fallback');
-  const img=new Image(); img.decoding='async'; img.crossOrigin='anonymous'; img.src=ATLAS;
-  let atlasReady=false,lastFrame=-1;
+  const baseImg=new Image(); baseImg.decoding='async'; baseImg.crossOrigin='anonymous'; baseImg.src=BASE_ATLAS;
+  const frameImg=new Image(); frameImg.decoding='async'; frameImg.crossOrigin='anonymous'; frameImg.src=FRAME_ATLAS;
+  let baseReady=false,framesReady=false,lastFrame=-1;
 
   function setScale(){
     const vw=window.innerWidth,vh=window.innerHeight;
@@ -47,24 +49,24 @@
   window.addEventListener('resize',()=>{setScale();renderFromScroll()},{passive:true});
 
   function drawLavender(frame){
-    if(!atlasReady) return;
+    if(!framesReady) return;
     frame=Math.max(0,Math.min(FRAME_COUNT-1,frame|0));
     if(frame===lastFrame) return;
     lastFrame=frame;
     lavCtx.clearRect(0,0,DW,DH);
-    const col=frame%15,row=Math.floor(frame/15),sx=1024+col*180,sy=row*200;
+    const col=frame%15,row=Math.floor(frame/15),sx=col*180,sy=row*200;
     lavCtx.imageSmoothingEnabled=true;lavCtx.imageSmoothingQuality='high';
-    lavCtx.drawImage(img,sx,sy,180,200,760,0,776,864);
+    lavCtx.drawImage(frameImg,sx,sy,180,200,760,0,776,864);
   }
 
   function drawText(progress){
-    if(!atlasReady) return;
+    if(!baseReady) return;
     progress=Math.max(.06,Math.min(1,progress));
     textCtx.clearRect(0,0,DW,DH);
     const revealX=Math.round(DW*progress);
     textCtx.save();textCtx.beginPath();textCtx.rect(0,0,revealX,DH);textCtx.clip();
     textCtx.imageSmoothingEnabled=true;textCtx.imageSmoothingQuality='high';
-    textCtx.drawImage(img,0,864,768,432,0,0,DW,DH);
+    textCtx.drawImage(baseImg,0,864,768,432,0,0,DW,DH);
     textCtx.restore();
   }
 
@@ -75,7 +77,7 @@
   }
 
   function renderFromScroll(){
-    if(!atlasReady) return;
+    if(!framesReady) return;
     const rect=scene.getBoundingClientRect(),total=Math.max(1,scene.offsetHeight-window.innerHeight);
     const p=Math.max(0,Math.min(1,-rect.top/total));
     drawLavender(Math.round(p*(FRAME_COUNT-1)));
@@ -84,9 +86,11 @@
   let ticking=false;
   window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(()=>{renderFromScroll();ticking=false})}},{passive:true});
 
-  img.onload=()=>{
-    atlasReady=true;drawLavender(0);drawText(.08);fallback.style.opacity='0';
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){drawText(1);drawLavender(0)}else animateText();
-    renderFromScroll();
+  baseImg.onload=()=>{
+    baseReady=true;drawText(.08);
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) drawText(1); else animateText();
+  };
+  frameImg.onload=()=>{
+    framesReady=true;drawLavender(0);fallback.style.opacity='0';renderFromScroll();
   };
 })();
