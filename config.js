@@ -35,7 +35,7 @@ window.PE_CONFIG = {
       const f=document.createElement('link');
       f.rel='stylesheet';
       f.id='pe-google-fonts';
-      f.href='https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&family=Sacramento&display=swap';
+      f.href='https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap';
       document.head.appendChild(f);
     }
 
@@ -47,7 +47,7 @@ window.PE_CONFIG = {
         h1,h2,.hero h1,.section-head h2,.final-copy h2,.completion-copy h2,.lecture-hub h2,.start-card h1,.result-card h1{font-family:'Cormorant Garamond',Georgia,serif!important;letter-spacing:-.02em}
         .hero h1{font-weight:600!important;line-height:.94!important}
         .section-head h2,.final-copy h2,.completion-copy h2,.lecture-hub h2{font-weight:600!important}
-        .brand-manifesto-script{font-family:'Sacramento',cursive!important;font-weight:400!important;letter-spacing:.015em!important;line-height:.95!important}
+        .brand-manifesto-script{font-family:'Allura',cursive!important;font-weight:400!important;letter-spacing:.015em!important;line-height:.95!important}
       `;
       document.head.appendChild(s);
     }
