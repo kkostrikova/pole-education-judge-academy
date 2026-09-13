@@ -22,6 +22,14 @@ window.PE_CONFIG = {
     l.id='pe-premium-theme';
     document.head.appendChild(l);
 
+    const oldModules=document.getElementById('pe-module-visuals');
+    if(oldModules) oldModules.remove();
+    const mv=document.createElement('link');
+    mv.rel='stylesheet';
+    mv.href='module-visuals.css?v=20260913-modules1';
+    mv.id='pe-module-visuals';
+    document.head.appendChild(mv);
+
     if(!document.getElementById('pe-google-fonts')){
       const pre1=document.createElement('link');
       pre1.rel='preconnect';
