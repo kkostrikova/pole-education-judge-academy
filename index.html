@@ -6,7 +6,65 @@
   <title>Pole Education · Judge Academy</title>
   <meta name="description" content="Інтерактивний організаційно-суддівський курс Pole Education">
   <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="mobile.css?v=20260830-mobile1">
+  <link rel="stylesheet" href="mobile.css?v=20260830-mobile1">
+  <style>
+    .brand-manifesto{
+      position:relative;
+      overflow:hidden;
+      min-height:240px;
+      display:grid;
+      place-items:center;
+      padding:46px 28px;
+      background:
+        radial-gradient(circle at 22% 30%,rgba(145,76,255,.16),transparent 28%),
+        radial-gradient(circle at 78% 72%,rgba(123,52,239,.18),transparent 34%),
+        linear-gradient(135deg,#17131d 0%,#21152f 52%,#15101b 100%);
+      border-top:1px solid rgba(154,92,255,.24);
+      border-bottom:1px solid rgba(154,92,255,.24);
+      isolation:isolate;
+    }
+    .brand-manifesto::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:8%;
+      right:8%;
+      height:2px;
+      background:linear-gradient(90deg,transparent,#914cff 20%,#b979ff 50%,#7b34ef 80%,transparent);
+      box-shadow:0 0 12px rgba(145,76,255,.9),0 0 26px rgba(123,52,239,.55);
+    }
+    .brand-manifesto::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(118deg,transparent 0 38%,rgba(255,255,255,.025) 38% 47%,transparent 47% 100%);
+      pointer-events:none;
+      z-index:-1;
+    }
+    .brand-manifesto-copy{
+      width:min(900px,100%);
+      text-align:center;
+    }
+    .brand-manifesto-script{
+      margin:0;
+      font-family:"Brush Script MT","Segoe Script","Snell Roundhand",cursive;
+      font-size:clamp(42px,7vw,78px);
+      font-weight:400;
+      line-height:1.02;
+      letter-spacing:.01em;
+      color:#a96dff;
+      text-shadow:
+        0 0 6px rgba(169,109,255,.92),
+        0 0 16px rgba(145,76,255,.72),
+        0 0 34px rgba(123,52,239,.46);
+      transform:rotate(-1.4deg);
+    }
+    .brand-manifesto-script span{display:block}
+    @media(max-width:600px){
+      .brand-manifesto{min-height:190px;padding:36px 18px}
+      .brand-manifesto-script{font-size:clamp(38px,12vw,58px)}
+    }
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -50,6 +108,12 @@
         <div class="route" id="routeDots" aria-label="Маршрут модулів"></div>
         <div class="status-note"><span class="status-dot"></span><span>Фінальний іспит відкривається адміністратором курсу.</span></div>
       </aside>
+    </section>
+
+    <section class="brand-manifesto" aria-label="Pole Education manifesto">
+      <div class="brand-manifesto-copy">
+        <p class="brand-manifesto-script"><span>More than sport.</span><span>About people.</span></p>
+      </div>
     </section>
 
     <section class="section lecture-hub" id="lectures">
