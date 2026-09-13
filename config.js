@@ -13,13 +13,15 @@ window.PE_CONFIG = {
 };
 
 (()=>{
-  const addCss=(href,id)=>{
-    if(document.getElementById(id)) return;
+  const mountTheme=()=>{
+    const old=document.getElementById('pe-premium-theme');
+    if(old) old.remove();
     const l=document.createElement('link');
     l.rel='stylesheet';
-    l.href=href;
-    l.id=id;
+    l.href='premium-global.css?v=20260913-premium-final1';
+    l.id='pe-premium-theme';
     document.head.appendChild(l);
   };
-  addCss('premium-global.css?v=20260913-premium3','pe-premium-theme');
+  if(document.readyState==='complete') mountTheme();
+  else window.addEventListener('load',mountTheme,{once:true});
 })();
