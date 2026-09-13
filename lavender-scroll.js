@@ -1,7 +1,8 @@
 (() => {
   const BASE_ATLAS='https://cdn.creativeclaw.co/u/931444b3/images/7c245087-ee48-4375-b50b-9f78a1fc349b.webp';
   const FRAME_ATLAS='https://cdn.creativeclaw.co/u/931444b3/images/d49b89e2-eb07-418c-9912-c69e2cad3c9f.webp';
-  const DW=1536, DH=864, FRAME_COUNT=180;
+  const TEXT_ATLAS='https://cdn.creativeclaw.co/u/931444b3/images/99cd960e-670f-4e6a-86ba-9bc86d0c348d.webp';
+  const DW=1536, DH=864, FRAME_COUNT=180, TEXT_COUNT=60;
   const style=document.createElement('style');
   style.textContent=`
   :root{--lav-s:1}
@@ -38,7 +39,8 @@
   const fallback=scene.querySelector('.lavender-fallback');
   const baseImg=new Image(); baseImg.decoding='async'; baseImg.crossOrigin='anonymous'; baseImg.src=BASE_ATLAS;
   const frameImg=new Image(); frameImg.decoding='async'; frameImg.crossOrigin='anonymous'; frameImg.src=FRAME_ATLAS;
-  let baseReady=false,framesReady=false,lastFrame=-1;
+  const textImg=new Image(); textImg.decoding='async'; textImg.crossOrigin='anonymous'; textImg.src=TEXT_ATLAS;
+  let baseReady=false,framesReady=false,textReady=false,lastFrame=-1;
 
   function setScale(){
     const vw=window.innerWidth,vh=window.innerHeight;
@@ -59,20 +61,30 @@
     lavCtx.drawImage(frameImg,sx,sy,180,200,760,0,776,864);
   }
 
-  function drawText(progress){
+  function drawExactText(){
     if(!baseReady) return;
-    progress=Math.max(.06,Math.min(1,progress));
     textCtx.clearRect(0,0,DW,DH);
-    const revealX=Math.round(DW*progress);
-    textCtx.save();textCtx.beginPath();textCtx.rect(0,0,revealX,DH);textCtx.clip();
     textCtx.imageSmoothingEnabled=true;textCtx.imageSmoothingQuality='high';
     textCtx.drawImage(baseImg,0,864,768,432,0,0,DW,DH);
-    textCtx.restore();
+  }
+
+  function drawTextFrame(frame){
+    if(!textReady) return;
+    frame=Math.max(0,Math.min(TEXT_COUNT-1,frame|0));
+    const col=frame%10,row=Math.floor(frame/10),sx=col*228,sy=row*128;
+    textCtx.clearRect(0,0,DW,DH);
+    textCtx.imageSmoothingEnabled=true;textCtx.imageSmoothingQuality='high';
+    textCtx.drawImage(textImg,sx,sy,228,128,0,0,DW,DH);
   }
 
   function animateText(){
-    const start=performance.now(),dur=1850,from=.08;
-    const tick=now=>{const t=Math.min(1,(now-start)/dur),e=1-Math.pow(1-t,3);drawText(from+(1-from)*e);if(t<1)requestAnimationFrame(tick)};
+    if(!textReady) return;
+    const start=performance.now(),dur=2600;
+    const tick=now=>{
+      const t=Math.min(1,(now-start)/dur);
+      drawTextFrame(Math.floor(t*(TEXT_COUNT-1)));
+      if(t<1) requestAnimationFrame(tick); else drawExactText();
+    };
     requestAnimationFrame(tick);
   }
 
@@ -87,8 +99,12 @@
   window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(()=>{renderFromScroll();ticking=false})}},{passive:true});
 
   baseImg.onload=()=>{
-    baseReady=true;drawText(.08);
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) drawText(1); else animateText();
+    baseReady=true;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches || !textReady) drawExactText();
+  };
+  textImg.onload=()=>{
+    textReady=true;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) drawExactText(); else animateText();
   };
   frameImg.onload=()=>{
     framesReady=true;drawLavender(0);fallback.style.opacity='0';renderFromScroll();
