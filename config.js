@@ -13,22 +13,21 @@ window.PE_CONFIG = {
 };
 
 (()=>{
-  const mountTheme=()=>{
-    const old=document.getElementById('pe-premium-theme');
-    if(old) old.remove();
-    const l=document.createElement('link');
-    l.rel='stylesheet';
-    l.href='premium-global.css?v=20260913-premium-final2';
-    l.id='pe-premium-theme';
-    document.head.appendChild(l);
+  const ensureLink=(id,href)=>{
+    let link=document.getElementById(id) || document.querySelector(`link[href^="${href.split('?')[0]}"]`);
+    if(!link){
+      link=document.createElement('link');
+      link.rel='stylesheet';
+      document.head.appendChild(link);
+    }
+    link.id=id;
+    if(link.getAttribute('href')!==href) link.setAttribute('href',href);
+    return link;
+  };
 
-    const oldModules=document.getElementById('pe-module-visuals');
-    if(oldModules) oldModules.remove();
-    const mv=document.createElement('link');
-    mv.rel='stylesheet';
-    mv.href='module-visuals.css?v=20260913-final4';
-    mv.id='pe-module-visuals';
-    document.head.appendChild(mv);
+  const mountTheme=()=>{
+    ensureLink('pe-premium-theme','premium-global.css?v=20260913-firstpaint2');
+    ensureLink('pe-module-visuals','module-visuals.css?v=20260913-approved3');
 
     if(!document.getElementById('pe-google-fonts')){
       const pre1=document.createElement('link');
@@ -60,6 +59,6 @@ window.PE_CONFIG = {
       document.head.appendChild(s);
     }
   };
-  if(document.readyState==='complete') mountTheme();
-  else window.addEventListener('load',mountTheme,{once:true});
+
+  mountTheme();
 })();
