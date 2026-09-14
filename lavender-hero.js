@@ -14,7 +14,7 @@
   const STEP = thrifty ? 4 : (narrow ? 2 : 1);
   const N = Math.ceil(72 / STEP);
   const DIR = 'assets/hero/f/';
-  const V = '?v=20260914-hero14';
+  const V = '?v=20260914-hero16';
   const scene = document.querySelector('.lav-scene');
   const canvas = document.querySelector('.lav-canvas');
   if (!scene || !canvas) return;
@@ -214,11 +214,14 @@
     for (let i = 0; i < COUNT; i++) {
       const el = document.createElement('i');
       el.className = 'lav-petal';
-      const size = rnd(9, 26);
+      /* smaller, fainter and always a little out of focus: at the old size
+         and opacity they read as specks of dirt on the photograph rather
+         than as petals drifting past */
+      const size = rnd(7, 17);
       el.style.width = size + 'px';
       el.style.height = (size * rnd(.5, .72)) + 'px';
-      el.style.opacity = String(rnd(.16, .5));
-      el.style.filter = 'blur(' + rnd(0, 2.4).toFixed(1) + 'px)';
+      el.style.opacity = String(rnd(.10, .28));
+      el.style.filter = 'blur(' + rnd(.7, 3).toFixed(1) + 'px)';
       host.appendChild(el);
       petals.push({
         el, size,

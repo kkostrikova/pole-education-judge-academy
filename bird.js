@@ -12,13 +12,16 @@
     happy: 'assets/bird/happy.webp?v=20260914-bird1',
     sad:   'assets/bird/sad.webp?v=20260914-bird1',
     idle:  'assets/bird/idle.webp?v=20260914-bird1',
-    leaf:  'assets/bird/leaf.webp?v=20260914-bird1'
+    /* the "completed" badge used the pose sitting on a leaf, which has
+       drooping brows and reads as downcast — the wrong face entirely on a
+       module the student has just finished. The upright one is cheerful. */
+    badge: 'assets/bird/idle.webp?v=20260914-bird1'
   };
   const ALT = {
     happy: 'Тест складено',
     sad:   'Спробуйте ще раз',
     idle:  '',
-    leaf:  'Модуль завершено'
+    badge: 'Модуль завершено'
   };
 
   /* Both result poses are strips of cells played with steps(), so they move
@@ -104,7 +107,7 @@
   function markCards() {
     document.querySelectorAll('.module-status.done').forEach(s => {
       if (s.querySelector('.pe-bird')) return;
-      s.prepend(make('leaf', 'pe-bird--badge'));
+      s.prepend(make('badge', 'pe-bird--badge'));
     });
   }
   const grid = document.getElementById('moduleGrid');
