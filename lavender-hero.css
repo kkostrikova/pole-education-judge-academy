@@ -170,6 +170,18 @@ body.lav-home{
 }
 
 /* ───────────────────────── petals ───────────────────────── */
+.lav-petals{
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  overflow: hidden;
+}
+.lav-petal{
+  position: absolute; top: 0; left: 0;
+  border-radius: 62% 38% 58% 42% / 58% 62% 38% 42%;
+  background: radial-gradient(120% 120% at 32% 26%,
+              rgba(158,122,226,.95), rgba(116,80,186,.72) 58%, rgba(96,64,162,.30));
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce){ .lav-petals{ display: none; } }
 
 /* ─────────────────────── hero copy ─────────────────────── */
 /* The copy lives on a stage of exactly the reference size, centred like the
