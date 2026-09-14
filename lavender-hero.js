@@ -74,8 +74,22 @@
     topbar.classList.toggle('is-solid', past);
   }
 
+  /* depth: the copy leaves ~35% faster than the scroll, fading as it goes,
+     while the field behind it drifts in slowly. */
+  const copy = document.querySelector('.lav-copy');
+  function parallax(p) {
+    bg.style.setProperty('--lav-zoom', (1 + p * 0.07).toFixed(4));
+    if (!copy) return;
+    const vh = window.innerHeight;
+    const t = Math.min(1, window.scrollY / vh);
+    copy.style.transform = 'translate(-50%,-50%) translateY(' + (-t * vh * 0.35).toFixed(1) + 'px)';
+    copy.style.opacity = String(Math.max(0, 1 - t * 1.25));
+  }
+
   function render() {
-    draw(Math.round(progress() * (N - 1)));
+    const p = progress();
+    draw(Math.round(p * (N - 1)));
+    parallax(p);
     header();
   }
 
@@ -125,4 +139,93 @@
 
   resize();
   loadAll();
+
+  /* ── drifting petals ──────────────────────────────────────
+     A handful of soft shapes on their own slow paths, nudged aside by the
+     pointer. Transform-only, so they never trigger layout. */
+  (() => {
+    const host = document.querySelector('.lav-petals');
+    if (!host || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const COUNT = narrow ? 8 : 16;
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const petals = [];
+    let W = host.clientWidth, H = host.clientHeight;
+    const pointer = { x: -1e4, y: -1e4 };
+
+    for (let i = 0; i < COUNT; i++) {
+      const el = document.createElement('i');
+      el.className = 'lav-petal';
+      const size = rnd(9, 26);
+      el.style.width = size + 'px';
+      el.style.height = (size * rnd(.5, .72)) + 'px';
+      el.style.opacity = String(rnd(.16, .5));
+      el.style.filter = 'blur(' + rnd(0, 2.4).toFixed(1) + 'px)';
+      host.appendChild(el);
+      petals.push({
+        el, size,
+        x: rnd(0, 1), y: rnd(0, 1),
+        vx: rnd(-.010, -.028), vy: rnd(.004, .016),
+        spin: rnd(-26, 26), rot: rnd(0, 360),
+        ox: 0, oy: 0
+      });
+    }
+
+    host.parentElement.style.pointerEvents = 'none';
+    window.addEventListener('pointermove', e => {
+      const r = host.getBoundingClientRect();
+      pointer.x = (e.clientX - r.left) / r.width;
+      pointer.y = (e.clientY - r.top) / r.height;
+    }, { passive: true });
+    window.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1e4; }, { passive: true });
+
+    let last = performance.now();
+    function tick(now) {
+      const dt = Math.min(50, now - last) / 1000;
+      last = now;
+      if (W !== host.clientWidth || H !== host.clientHeight) { W = host.clientWidth; H = host.clientHeight; }
+      for (const p of petals) {
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.x < -.08) { p.x = 1.08; p.y = rnd(0, 1); }
+        if (p.y > 1.08) { p.y = -.08; p.x = rnd(0, 1); }
+        p.rot += p.spin * dt;
+
+        /* pointer pushes petals aside, then they ease back to their path */
+        const dx = p.x - pointer.x, dy = p.y - pointer.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 0.016) {
+          const f = (1 - d2 / 0.016) * 0.10;
+          p.ox += dx * f; p.oy += dy * f;
+        }
+        p.ox *= 0.94; p.oy *= 0.94;
+
+        p.el.style.transform =
+          'translate(' + ((p.x + p.ox) * W).toFixed(1) + 'px,' + ((p.y + p.oy) * H).toFixed(1) + 'px)' +
+          ' rotate(' + p.rot.toFixed(1) + 'deg)';
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+
+  /* ── counters on the rising panel ───────────────────────── */
+  (() => {
+    const nums = document.querySelectorAll('.lav-counts strong[data-count]');
+    if (!nums.length) return;
+    const run = el => {
+      const target = Number(el.dataset.count) || 0;
+      const dur = 900, t0 = performance.now();
+      const step = now => {
+        const t = Math.min(1, (now - t0) / dur);
+        el.textContent = String(Math.round(target * (1 - Math.pow(1 - t, 3))));
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    if (!('IntersectionObserver' in window)) { nums.forEach(n => n.textContent = n.dataset.count); return; }
+    const io = new IntersectionObserver(entries => {
+      for (const e of entries) if (e.isIntersecting) { run(e.target); io.unobserve(e.target); }
+    }, { threshold: .6 });
+    nums.forEach(n => io.observe(n));
+  })();
 })();
