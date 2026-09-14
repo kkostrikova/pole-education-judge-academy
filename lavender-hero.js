@@ -82,7 +82,9 @@
     if (!copy) return;
     const vh = window.innerHeight;
     const t = Math.min(1, window.scrollY / vh);
-    copy.style.transform = 'translate(-50%,-50%) translateY(' + (-t * vh * 0.35).toFixed(1) + 'px)';
+    /* only the shift is written here; the centring differs between the
+       desktop stage and the narrow layout, so CSS composes the transform */
+    copy.style.setProperty('--lav-shift', (-t * vh * 0.35).toFixed(1) + 'px');
     copy.style.opacity = String(Math.max(0, 1 - t * 1.25));
   }
 

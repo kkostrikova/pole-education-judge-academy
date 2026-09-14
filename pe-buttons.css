@@ -26,7 +26,6 @@ body .btn:not(.unlock),
 body .final-btn:not(.unlock),
 body .completion-btn:not(.unlock),
 body .module-actions .module-link,
-body .lecture-launch,
 body .unlock.show{
   display: inline-flex !important;
   align-items: center;
@@ -277,3 +276,11 @@ body .pe-lang button:focus-visible{
   outline: 3px solid var(--peb-ring); outline-offset: 2px; border-radius: 4px;
 }
 @media (max-width: 900px){ .pe-lang{ margin-left: 10px; } }
+
+/* ── footer links need a real touch target ────────────────── */
+@media (max-width: 900px){
+  body footer a{
+    display: inline-flex; align-items: center;
+    min-height: 28px; padding: 4px 2px;
+  }
+}
