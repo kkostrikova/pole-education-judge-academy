@@ -20,7 +20,7 @@
   align-items: center;
   gap: 16px;
   justify-content: space-between;
-  min-height: 116px;
+  min-height: 104px;
 }
 /* a slow breath keeps it alive without pulling the eye off the result */
 @keyframes pe-bird-breathe{
@@ -41,6 +41,19 @@
 }
 @keyframes pe-flap{ to{ background-position-x: right; } }
 
+/* The sympathetic pose is fourteen cells of the eyes-closed take: it only
+   breathes and sways. There is no natural loop in the clip — the camera
+   drifts through it — so the strip is played ping-pong with `alternate`,
+   which has no seam to hide and reads as a slow sway either way. */
+.pe-bird--sway{
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 1400% 100%;
+  aspect-ratio: 160 / 188;
+  animation: pe-sway 1.15s steps(14, jump-none) infinite alternate;
+}
+@keyframes pe-sway{ to{ background-position-x: right; } }
+
 .pe-bird--result{
   width: clamp(64px, 9vw, 96px);
   flex: 0 0 auto;
@@ -53,6 +66,14 @@
 .pe-bird--flap.pe-bird--result{
   animation: pe-bird-in .5s cubic-bezier(.2,1.2,.4,1) both,
              pe-flap .84s steps(10, jump-none) .5s infinite;
+}
+/* the standing pose is a tall portrait, so the same width made it a head
+   taller than the cheering one and it swamped the panel; sized down here so
+   the two read as the same bird */
+.pe-bird--sway.pe-bird--result{
+  width: clamp(54px, 6.6vw, 72px);
+  animation: pe-bird-in .5s cubic-bezier(.2,1.2,.4,1) both,
+             pe-sway 1.15s steps(14, jump-none) .5s infinite alternate;
 }
 /* hover: the cheerful pose hops, the sympathetic one only leans — a bounce
    would read as gloating over a failed test */
@@ -80,7 +101,7 @@
   .pe-bird{ transition: none; }
   .pe-bird--result, .pe-bird--empty{ animation: none; }
   /* frozen on the first cell, which is a complete pose on its own */
-  .pe-bird--flap{ animation: none; background-position-x: left; }
+  .pe-bird--flap, .pe-bird--sway{ animation: none; background-position-x: left; }
   .pe-bird:hover{ translate: none; rotate: none; scale: none; }
 }
 /* on touch there is no hover, so the resting motion is all there is */
@@ -89,5 +110,6 @@
 }
 @media (max-width: 620px){
   .pe-bird--result{ width: 68px; }
+  .pe-bird--sway.pe-bird--result{ width: 56px; }
   .pe-bird--empty{ width: 46px; }
 }

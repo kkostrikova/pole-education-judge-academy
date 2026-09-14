@@ -7,6 +7,7 @@
   if (document.body.dataset.peExam === '1') return;
 
   const FLAP = 'assets/bird/flap.webp?v=20260914-bird8';
+  const SWAY = 'assets/bird/sway.webp?v=20260914-bird9';
   const SRC = {
     happy: 'assets/bird/happy.webp?v=20260914-bird1',
     sad:   'assets/bird/sad.webp?v=20260914-bird1',
@@ -20,15 +21,22 @@
     leaf:  'Модуль завершено'
   };
 
+  /* Both result poses are strips of cells played with steps(), so they move
+     the way they do in the clip instead of sitting there: the cheering one
+     beats its wings, the sympathetic one only breathes and sways. */
+  const STRIP = {
+    happy: { src: FLAP, mod: 'pe-bird--flap' },
+    sad:   { src: SWAY, mod: 'pe-bird--sway' }
+  };
+
   function make(kind, cls) {
-    /* the cheering pose is a ten-cell strip played with steps(), so it flaps
-       its wings the way it does in the clip rather than sitting there */
-    if (kind === 'happy') {
+    const strip = STRIP[kind];
+    if (strip) {
       const el = document.createElement('span');
-      el.className = 'pe-bird pe-bird--flap ' + cls;
-      el.style.backgroundImage = 'url(' + FLAP + ')';
+      el.className = 'pe-bird ' + strip.mod + ' ' + cls;
+      el.style.backgroundImage = 'url(' + strip.src + ')';
       el.setAttribute('role', 'img');
-      el.setAttribute('aria-label', ALT.happy);
+      el.setAttribute('aria-label', ALT[kind]);
       return el;
     }
     const img = document.createElement('img');
