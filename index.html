@@ -34,14 +34,40 @@
   </style>
   <link id="pe-premium-theme" rel="stylesheet" href="premium-global.css?v=20260913-firstpaint2">
   <link id="pe-module-visuals" rel="stylesheet" href="module-visuals.css?v=20260913-clean1">
+  <link rel="stylesheet" href="lavender-hero.css?v=20260914-hero1">
+  <link rel="preload" as="image" href="assets/hero/poster.webp?v=20260914-hero1">
 </head>
-<body>
+<body class="lav-home">
   <header class="topbar">
     <a class="brand" href="#top" aria-label="Pole Education Judge Academy"><span class="brand-mark">PE</span><span><strong>Pole Education</strong><small>Judge Academy</small></span></a>
     <nav class="topnav" aria-label="Головна навігація"><a href="#lectures">Лекції</a><a href="#modules">Модулі</a><a href="#judge-desk">Judge Desk</a><a href="#final">Фінальні іспити</a></nav>
     <a class="ghost-btn" href="certificate-verify.html">Перевірити сертифікат</a><a class="ghost-btn" id="accountLink" href="auth.html">Увійти</a><button class="ghost-btn" id="resetProgress" type="button">Скинути прогрес</button>
   </header>
   <main id="top">
+    <section class="lav-scene" id="lavenderHero">
+      <div class="lav-bg" aria-hidden="true">
+        <img class="lav-poster" src="assets/hero/poster.webp?v=20260914-hero1" alt="" fetchpriority="high" decoding="sync">
+        <canvas class="lav-canvas"></canvas>
+      </div>
+      <div class="lav-first">
+        <div class="lav-copy">
+          <h1 class="lav-title">
+            <img src="assets/hero/headline.svg?v=20260914-hero1" alt="More than judging">
+            <span>More than judging</span>
+          </h1>
+          <div class="lav-stack">
+            <p class="lav-eyebrow">Знання · Професіоналізм · Натхнення</p>
+            <hr class="lav-rule">
+            <p class="lav-lead">Міжнародні стандарти. Реальний досвід. Спільнота, яка розвиває.</p>
+            <div class="lav-actions">
+              <a class="lav-btn lav-btn--primary" href="#modules">Почати навчання</a>
+              <a class="lav-btn lav-btn--ghost" href="#lectures">Дізнатися більше</a>
+            </div>
+          </div>
+          <a class="lav-scroll" href="#lectures"><i></i><b>Scroll down</b><s>⌄</s></a>
+        </div>
+      </div>
+    </section>
     <section class="hero"><div class="hero-copy"><p class="eyebrow">POLE EDUCATION · CERTIFIED LEARNING PATH</p><h1>Організаційно-<br><span>суддівський курс</span></h1><p class="hero-lead">Сучасна інтерактивна система підготовки суддів та організаторів змагань з пілону й повітряних дисциплін.</p><div class="hero-actions"><a class="primary-btn" href="#lectures">Дивитися лекції</a><a class="secondary-btn" href="#judge-desk">Відкрити Judge Desk</a></div><div class="hero-stats" aria-label="Структура курсу"><div><strong>8</strong><span>навчальних модулів</span></div><div><strong>8</strong><span>модульних тестів</span></div><div><strong>1</strong><span>фінальна атестація</span></div></div></div><aside class="progress-panel" aria-label="Прогрес курсу"><div class="progress-kicker">YOUR JUDGE PATH</div><div class="progress-ring" id="progressRing"><span id="progressPercent">0%</span></div><h2>Ваш прогрес</h2><p id="progressText">0 з 8 модулів завершено</p><div class="route" id="routeDots" aria-label="Маршрут модулів"></div><div class="status-note"><span class="status-dot"></span><span>Фінальний іспит відкривається адміністратором курсу.</span></div></aside></section>
     <section class="brand-manifesto" aria-label="Pole Education manifesto"><div class="brand-manifesto-copy"><p class="brand-manifesto-script"><span>More than sport.</span><span>About people.</span></p></div></section>
     <section class="section lecture-hub" id="lectures"><div class="lecture-hub-copy"><p class="eyebrow">VIDEO LECTURES · WESTUDY</p><h2>Спочатку лекція — потім практика</h2><p>Повний лекційний курс Pole Education розміщений на WeStudy. Переглядайте відеолекції там, а на Judge Academy проходьте інтерактивні модулі, тренажери, тести та фінальну атестацію.</p><div class="lecture-flow"><span><b>01</b> Лекція WeStudy</span><i>→</i><span><b>02</b> Інтерактивний модуль</span><i>→</i><span><b>03</b> Тест 80%+</span></div></div><a class="lecture-launch" id="lectureLaunch" href="https://westudy.ua/PoleEducation/course/04332efd-86fe-42a1-beb1-fa4ab6f703bc" target="_blank" rel="noopener"><span class="lecture-launch-kicker">POLE EDUCATION · WESTUDY</span><strong>Відкрити лекційний курс</strong><small>Лекції відкриються в окремій вкладці ↗</small></a></section>
@@ -52,6 +78,6 @@
     <section class="section course-complete" id="course-complete"><div class="completion-mark" id="completionMark">03</div><div class="completion-copy"><p class="eyebrow">POLE EDUCATION · COURSE COMPLETION</p><h2 id="completionTitle">Фінальна сертифікація</h2><p id="completionMessage">Для завершення курсу потрібно пройти всі 8 модулів, скласти теоретичний і практичний іспити.</p><div class="completion-steps" id="completionSteps"></div></div><a class="secondary-btn completion-btn" id="completionAccountBtn" href="account.html">Мій кабінет</a></section>
   </main>
   <footer><span>© Pole Education · Judge Academy</span><a href="certificate-verify.html">Перевірити сертифікат</a><span>Організаційно-суддівський курс</span></footer>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js?v=20260913-lavender3"></script><script src="site-auth.js?v=20260913-auth2"></script><script src="progress-sync.js?v=20260913-progress2"></script><script src="app.js?v=20260913-app2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js?v=20260913-lavender3"></script><script src="site-auth.js?v=20260913-auth2"></script><script src="progress-sync.js?v=20260913-progress2"></script><script src="app.js?v=20260913-app2"></script><script src="lavender-hero.js?v=20260914-hero1" defer></script>
 </body>
 </html>

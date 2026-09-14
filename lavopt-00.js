@@ -1,1 +1,0 @@
-window.PE_LAV_OPT={bg:'',fallback:'',sheets:['','','','']};

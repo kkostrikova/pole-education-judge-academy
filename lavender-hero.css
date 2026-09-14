@@ -1,0 +1,262 @@
+/* Lavender hero — scroll-driven frame sequence.
+   Geometry reference: the design frame is 1672 x 941 (16:9).
+   Every size is expressed in reference pixels and scaled by the single
+   unit --u, so the proportions hold at any viewport width. */
+
+body.lav-home{
+  --u: calc(100vw / 1672);          /* 1 reference pixel */
+  --ink: #4a3a6b;                   /* nav / body ink */
+  --ink-soft: #6a5a94;
+  --ink-script: #5e4c8c;            /* measured from the source frame */
+  --plum: #5a2d91;                  /* primary button */
+  --line: rgba(106, 79, 158, .42);
+  background: #efeafb;
+}
+
+/* Two inherited rules silently kill position:sticky, so both are relaxed on
+   this page: styles.css sets main{overflow:hidden} and mobile.css sets
+   html,body{overflow-x:hidden}. Each turns its element into a scroll
+   container. overflow-x:clip keeps the horizontal clipping without one. */
+html:has(body.lav-home), body.lav-home{ overflow-x: clip !important; overflow-y: visible !important; }
+body.lav-home main{ overflow-x: clip; overflow-y: visible; }
+
+/* the legacy dark hero stays in the DOM (app.js reads its nodes) but is hidden */
+body.lav-home .hero,
+body.lav-home .brand-manifesto{ display: none !important; }
+
+/* ───────────────────────── header ───────────────────────── */
+body.lav-home .topbar{
+  position: fixed; inset: 0 0 auto 0; z-index: 9000;
+  display: flex; align-items: center; gap: calc(28 * var(--u));
+  height: calc(110 * var(--u));
+  padding: 0 calc(72 * var(--u));
+  background: transparent !important; border: 0 !important;
+  box-shadow: none !important; backdrop-filter: none !important;
+}
+body.lav-home .topbar::after{ content: none; }
+
+/* transparent over the hero, solid once the page scrolls past it */
+body.lav-home .topbar.is-solid{
+  background: rgba(250,248,255,.93) !important;
+  backdrop-filter: blur(18px) !important;
+  box-shadow: 0 calc(8 * var(--u)) calc(28 * var(--u)) rgba(86,65,145,.06) !important;
+  border-bottom: 1px solid rgba(111,75,195,.13) !important;
+}
+
+/* the hero sits under the fixed header by design; everything after it must not */
+/* scroll-padding must sit on the scroll container (html), not on body */
+html:has(body.lav-home){ scroll-padding-top: calc(100vw / 1672 * 128); }
+body.lav-home #lectures{ padding-top: calc(150 * var(--u)); }
+
+body.lav-home .brand{
+  display: flex; flex-direction: column; align-items: center;
+  gap: calc(3 * var(--u)); text-decoration: none; color: var(--ink);
+  margin-right: calc(46 * var(--u));
+}
+body.lav-home .brand .brand-mark{ display: none; }
+body.lav-home .brand > span{ display: flex; flex-direction: column; align-items: center; }
+body.lav-home .brand strong{
+  font: 500 calc(21 * var(--u))/1 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: .13em; text-transform: uppercase; color: #3d2f5c;
+}
+body.lav-home .brand small{
+  font: 500 calc(12.5 * var(--u))/1 'Manrope', system-ui, sans-serif;
+  letter-spacing: .42em; text-transform: uppercase; color: #6a5a94;
+  margin-top: calc(7 * var(--u)); padding-left: .42em;
+}
+body.lav-home .brand::after{
+  content: 'by K. Kostrikova';
+  font: 400 calc(14 * var(--u))/1 'Ms Madi', 'Allura', cursive;
+  color: #7a68a6; margin-top: calc(6 * var(--u));
+}
+
+body.lav-home .topnav{
+  display: flex; align-items: center; gap: calc(34 * var(--u));
+  margin-right: auto;
+}
+body.lav-home .topnav a{
+  font: 500 calc(15 * var(--u))/1 'Manrope', system-ui, sans-serif;
+  color: var(--ink); text-decoration: none; white-space: nowrap;
+  transition: color .18s ease;
+}
+body.lav-home .topnav a:hover{ color: var(--plum); }
+
+body.lav-home .topbar .ghost-btn{
+  order: 1;
+  font: 500 calc(14 * var(--u))/1 'Manrope', system-ui, sans-serif;
+  color: var(--ink-soft); background: none !important; border: 0 !important;
+  padding: 0 !important; box-shadow: none !important; border-radius: 0;
+  text-decoration: none !important; white-space: nowrap; cursor: pointer;
+  transition: color .18s ease;
+}
+body.lav-home .topbar .ghost-btn:hover{ color: var(--plum); }
+body.lav-home .topbar #accountLink{
+  order: 2; margin-left: calc(10 * var(--u));
+  display: inline-flex; align-items: center; gap: calc(12 * var(--u));
+  padding: calc(13 * var(--u)) calc(26 * var(--u));
+  border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); font-weight: 600; font-size: calc(15 * var(--u));
+  background: rgba(255,255,255,.28) !important;
+  border: 1px solid var(--line) !important;
+  padding: calc(13 * var(--u)) calc(26 * var(--u)) !important;
+  backdrop-filter: blur(6px) !important;
+}
+body.lav-home .topbar #accountLink::after{
+  content: ''; width: calc(15 * var(--u)); height: calc(15 * var(--u));
+  background: currentColor; opacity: .85;
+  -webkit-mask: var(--user-icon) center/contain no-repeat;
+          mask: var(--user-icon) center/contain no-repeat;
+}
+body.lav-home .topbar #accountLink:hover{
+  border-color: var(--plum); color: var(--plum); background: rgba(255,255,255,.55);
+}
+body.lav-home{
+  --user-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8'/%3E%3C/svg%3E");
+}
+
+/* ───────────────────────── scene ───────────────────────── */
+.lav-scene{ position: relative; height: calc(100svh + 160svh); background: #efeafb; }
+
+.lav-bg{
+  position: sticky; top: 0; height: 100svh; overflow: hidden; z-index: 1;
+  pointer-events: none;
+}
+.lav-bg{ --focus: 50; }          /* horizontal focus of the cover crop, in % */
+.lav-bg img{
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: calc(var(--focus) * 1%) center; display: block;
+}
+.lav-bg canvas{
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+}
+.lav-bg canvas{ opacity: 0; transition: opacity .2s linear; }
+.lav-bg canvas.is-live{ opacity: 1; }
+
+.lav-first{
+  position: relative; z-index: 2;
+  height: 100svh; margin-top: -100svh;
+}
+
+/* ─────────────────────── hero copy ─────────────────────── */
+.lav-copy{ position: absolute; inset: 0; }
+
+/* headline ink box: left 193/1672, top 198/941, width 855/1672.
+   The SVG viewBox is cropped to the ink itself, so the box is the ink. */
+.lav-title{
+  position: absolute; left: 11.542%; top: 21.04%;
+  width: 51.136%; margin: 0;
+}
+.lav-title img{ display: block; width: 100%; height: auto; }
+.lav-title span{
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+.lav-stack{
+  position: absolute; left: 11.542%; width: 51.136%; top: 54.6%;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.lav-eyebrow{
+  margin: 0;
+  font: 500 calc(15 * var(--u))/1 'Manrope', system-ui, sans-serif;
+  letter-spacing: .30em; text-transform: uppercase; color: var(--ink-soft);
+  padding-left: .30em;
+}
+.lav-rule{
+  width: calc(58 * var(--u)); height: 1px; margin: calc(30 * var(--u)) 0 0;
+  background: var(--line); border: 0;
+}
+.lav-lead{
+  margin: calc(30 * var(--u)) 0 0;
+  max-width: calc(470 * var(--u));
+  font: 400 calc(19 * var(--u))/1.55 'Manrope', system-ui, sans-serif;
+  color: #4b3f6d;
+}
+.lav-actions{
+  display: flex; gap: calc(24 * var(--u)); margin-top: calc(42 * var(--u));
+}
+.lav-btn{
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: calc(18 * var(--u));
+  min-width: calc(256 * var(--u)); height: calc(62 * var(--u));
+  padding: 0 calc(34 * var(--u)); border-radius: 999px;
+  font: 700 calc(15 * var(--u))/1 'Manrope', system-ui, sans-serif;
+  text-decoration: none; white-space: nowrap;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.lav-btn::after{ content: '→'; font-weight: 400; }
+.lav-btn--primary{
+  background: var(--plum); color: #fff;
+  box-shadow: 0 calc(10 * var(--u)) calc(28 * var(--u)) rgba(74,32,124,.28);
+}
+.lav-btn--primary:hover{ background: #4a2478; transform: translateY(-1px); }
+.lav-btn--ghost{
+  background: rgba(255,255,255,.34); color: #3f2d63;
+  border: 1px solid var(--line); backdrop-filter: blur(6px);
+}
+.lav-btn--ghost:hover{ border-color: var(--plum); color: var(--plum); }
+
+/* ───────────────────── scroll indicator ───────────────────── */
+.lav-scroll{
+  position: absolute; left: 50%; bottom: 4.4%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center;
+  gap: calc(14 * var(--u)); color: var(--ink-soft); text-decoration: none;
+}
+.lav-scroll i{
+  width: calc(26 * var(--u)); height: calc(42 * var(--u));
+  border: 1px solid var(--line); border-radius: 999px; position: relative;
+}
+.lav-scroll i::after{
+  content: ''; position: absolute; left: 50%; top: calc(9 * var(--u));
+  width: calc(2 * var(--u)); height: calc(8 * var(--u));
+  margin-left: calc(-1 * var(--u));
+  background: currentColor; border-radius: 999px;
+  animation: lav-wheel 1.9s ease-in-out infinite;
+}
+.lav-scroll b{
+  font: 500 calc(11 * var(--u))/1 'Manrope', system-ui, sans-serif;
+  letter-spacing: .28em; text-transform: uppercase; padding-left: .28em;
+}
+.lav-scroll s{ text-decoration: none; font-size: calc(13 * var(--u)); line-height: 1; }
+@keyframes lav-wheel{
+  0%,100%{ transform: translateY(0); opacity: 1 }
+  50%{ transform: translateY(calc(11 * var(--u))); opacity: .35 }
+}
+@media (prefers-reduced-motion: reduce){
+  .lav-scroll i::after{ animation: none }
+}
+
+/* ───────────────────────── narrow ───────────────────────── */
+@media (max-width: 900px){
+  body.lav-home{ --u: calc(100vw / 900); }
+  body.lav-home .topbar{ height: calc(130 * var(--u)); padding: 0 calc(30 * var(--u)); gap: calc(16 * var(--u)); }
+  body.lav-home .topnav{ display: none; }
+  body.lav-home .topbar .ghost-btn:not(#accountLink){ display: none; }
+  body.lav-home .brand{ margin-right: auto; }
+  body.lav-home .brand small{ display: block !important; }
+  html:has(body.lav-home){ scroll-padding-top: calc(100vw / 900 * 150); }
+  body.lav-home #lectures{ padding-top: calc(180 * var(--u)); }
+  .lav-scene{ height: calc(100svh + 120svh); }
+  /* a 16:9 frame cropped to portrait loses the bouquet unless the crop
+     is pulled to the right, where the flowers are */
+  .lav-bg{ --focus: 62; }
+  /* the tighter portrait crop puts copy over the flowers, so a soft veil
+     restores the contrast the wide layout gets for free */
+  .lav-first::before{
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg,
+      rgba(245,241,255,.62) 0%, rgba(245,241,255,.30) 34%,
+      rgba(245,241,255,.56) 62%, rgba(245,241,255,.30) 100%);
+  }
+  .lav-title{ left: 7%; width: 86%; top: 19%; }
+  .lav-stack{ left: 7%; width: 86%; top: 52%; }
+  .lav-lead{ max-width: calc(560 * var(--u)); font-size: calc(26 * var(--u)); }
+  .lav-eyebrow{ font-size: calc(20 * var(--u)); letter-spacing: .22em; }
+  .lav-actions{ flex-direction: column; gap: calc(16 * var(--u)); width: 100%; align-items: center; }
+  .lav-btn{ min-width: calc(330 * var(--u)); height: calc(84 * var(--u)); font-size: calc(21 * var(--u)); }
+  .lav-scroll b{ font-size: calc(16 * var(--u)); }
+  .lav-scroll i{ width: calc(34 * var(--u)); height: calc(56 * var(--u)); }
+}
+@media (prefers-reduced-motion: reduce){
+  .lav-scene{ height: 100svh; }
+}
