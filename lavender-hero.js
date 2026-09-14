@@ -9,7 +9,7 @@
   const STEP = narrow ? 2 : 1;
   const N = Math.ceil(72 / STEP);
   const DIR = 'assets/hero/f/';
-  const V = '?v=20260914-hero1';
+  const V = '?v=20260914-hero14';
   const scene = document.querySelector('.lav-scene');
   const canvas = document.querySelector('.lav-canvas');
   if (!scene || !canvas) return;
