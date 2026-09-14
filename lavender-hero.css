@@ -446,3 +446,22 @@ body.lav-home .topbar .ghost-btn:not(#accountLink):hover{
 }
 /* the switch sits last in the bar, as in the design */
 body.lav-home .topbar .pe-lang{ order: 3; margin-left: calc(22 * var(--u)); }
+
+/* ── lecture card ─────────────────────────────────────────
+   styles.css stretches this card to the height of the copy column and pins
+   its text to the bottom. That read fine while the column was short; the
+   counters made it tall and left the card two-thirds empty. It now hugs its
+   own content and sits centred against the copy. */
+body.lav-home .lecture-hub{ align-items: center; }
+body.lav-home .lecture-launch{
+  align-self: center;
+  min-height: 0 !important;
+  justify-content: center;
+  padding: calc(34 * var(--u)) calc(32 * var(--u));
+  gap: calc(4 * var(--u));
+}
+body.lav-home .lecture-launch strong{ margin: calc(10 * var(--u)) 0 calc(6 * var(--u)); }
+@media (max-width: 900px){
+  body.lav-home .lecture-hub{ align-items: stretch; }
+  body.lav-home .lecture-launch{ padding: calc(24 * var(--u)) calc(22 * var(--u)); }
+}
