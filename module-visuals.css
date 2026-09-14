@@ -32,3 +32,93 @@
 .module-card.locked{opacity:.70!important;filter:none!important;background:linear-gradient(145deg,#fcfbff,#f5f2f9)!important}.module-card:hover{transform:translateY(-4px)!important;border-color:#b29fe9!important;box-shadow:0 22px 58px rgba(76,58,132,.12)!important}
 @media(max-width:760px){.module-card{min-height:286px;padding:23px 21px!important}.module-card::after{right:22px!important;top:22px!important}.module-top{padding-right:50px}.module-card h3{font-size:29px!important;margin:36px 0 10px!important;max-width:16ch!important}.module-card p{font-size:14px!important}.module-card .module-actions{grid-template-columns:1fr 1fr;gap:8px;padding-top:22px}}
 @media(max-width:520px){.module-card{min-height:270px;padding:21px 18px!important;border-radius:22px!important}.module-card h3{font-size:27px!important;max-width:100%!important}.module-card .module-actions{grid-template-columns:1fr!important}.module-card .module-link{font-size:12px!important}.module-card::before{width:145px!important;height:145px!important}.module-card::after{width:38px!important;height:38px!important}}
+
+/* ── one card, eight identities ──────────────────────────────
+   The photographs that used to sit here were dark stock studio shots —
+   eight variations of the same purple-black, which darkened the card
+   without telling the reader anything and fought the light, airy language
+   the rest of the site speaks. (The file they pointed at,
+   module-approved-N.jpg, was not even a decodable image, so the old dark
+   design had been drawing nothing for a while.)
+
+   What separates the cards now is a large serif numeral, a hairline in the
+   module's own accent, and a breath of that accent in the corner. Same
+   family of colour throughout, so eight cards read as one set rather than
+   as a paint chart. */
+.module-card{ --accent:#8b5cf6; padding: 28px !important; }
+.module-card:nth-child(1){ --accent:#7c5cf0 }
+.module-card:nth-child(2){ --accent:#5a7fe0 }
+.module-card:nth-child(3){ --accent:#b45fb0 }
+.module-card:nth-child(4){ --accent:#6a48c4 }
+.module-card:nth-child(5){ --accent:#c07a4a }
+.module-card:nth-child(6){ --accent:#3f9a97 }
+.module-card:nth-child(7){ --accent:#8a63d8 }
+.module-card:nth-child(8){ --accent:#ae5273 }
+
+/* a breath of the accent in the far corner, not a decoration in its own right */
+.module-card::before{
+  inset: auto !important;
+  right: -70px !important; top: -70px !important;
+  left: auto !important; bottom: auto !important;
+  width: 220px !important; height: 220px !important;
+  border-radius: 50% !important;
+  transform: none !important;
+  filter: none !important;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent) 0%, transparent 70%) !important;
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent) 0%, transparent 70%) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+.module-card::after{ display: none !important; }
+
+/* the number and the status share a line, and the accent hairline closes it */
+.module-top{
+  position: static !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 0 0 15px !important;
+  background-image: linear-gradient(90deg, var(--accent), transparent 78%) !important;
+  background-size: 100% 2px !important;
+  background-repeat: no-repeat !important;
+  background-position: left bottom !important;
+}
+.module-card .module-no{
+  font: 600 44px/1 'Cormorant Garamond', Georgia, serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--accent) !important;
+  text-shadow: none !important;
+  margin: 0 !important;
+}
+.module-card .module-status{
+  background: #f7f4ff !important;
+  border: 1px solid #e0d8f7 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  white-space: nowrap !important;   /* "ЗАВЕРШЕНО ✓" broke after the bird */
+  flex: 0 0 auto;
+}
+.module-card h3{ margin: 22px 0 11px !important; padding: 0 !important; }
+.module-card p{ margin: 0 !important; }
+.module-card .module-actions{ margin: auto 0 0 !important; padding-top: 24px !important; }
+
+.module-card:hover{ border-color: var(--accent) !important; }
+.module-card.locked{ --accent:#8f87a9; }  /* 3.31:1 on the card, above the large-text floor */
+
+/* "Відеолекція ↗ →" carried two arrows, and "Інтерактивний модуль" wrapped
+   onto a second line inside a 239px button */
+.module-card .module-link{
+  white-space: nowrap !important;
+  font-size: 12px !important;
+  padding: 11px 10px !important;
+  gap: 6px !important;
+}
+.module-card .lecture-module-link::after{ content: '' !important; display: none !important; }
+.module-card .module-link.locked-link{ white-space: normal !important; }
+
+@media (max-width: 620px){
+  .module-card{ padding: 22px !important; }
+  .module-card .module-no{ font-size: 38px !important; }
+}

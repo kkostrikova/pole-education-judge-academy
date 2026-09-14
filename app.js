@@ -53,7 +53,9 @@
   }
 
   function isDone(n){ return Boolean(state[n]?.passed); }
-  function isUnlocked(n){ if(!signedIn||!courseAccess) return false; const cfg = window.PE_CONFIG || {}; return Boolean(cfg.reviewMode) || n === 1 || isDone(n - 1); }
+  /* pe-role.js answers this: reviewMode for everyone, or an admin account */
+  const openAll = () => (window.PE_openAll ? window.PE_openAll() : Boolean((window.PE_CONFIG||{}).reviewMode));
+  function isUnlocked(n){ if(!signedIn||!courseAccess) return false; return openAll() || n === 1 || isDone(n - 1); }
   function renderModules(){
     grid.innerHTML = modules.map(m => {
       const done = isDone(m.n), unlocked = isUnlocked(m.n);
@@ -74,12 +76,43 @@
       </article>`;
     }).join('');
   }
+  /* The legacy hero — and with it the progress ring — is display:none since
+     the lavender hero replaced it, so the reader never saw how far along
+     they were. This strip sits at the top of the module grid instead. */
+  function setContinue(next, finished, done){
+    const bar = document.getElementById('courseBar');
+    const el = document.getElementById('continueBtn');
+    if(bar){
+      const live = typeof done === 'number';
+      bar.hidden = !live;
+      if(live){
+        const total = modules.length;
+        const txt = document.getElementById('courseBarText');
+        const fill = document.getElementById('courseBarFill');
+        if(txt) txt.textContent = `${done} з ${total} модулів завершено`;
+        if(fill) fill.style.width = Math.round(done / total * 100) + '%';
+      }
+    }
+    if(!el) return;
+    if(next){
+      el.href = `module-${next.n}.html`;
+      el.textContent = `Продовжити · модуль ${next.n}`;
+      el.classList.remove('hidden');
+    } else if(finished){
+      el.href = '#final';
+      el.textContent = 'До фінальної атестації';
+      el.classList.remove('hidden');
+    } else {
+      el.classList.add('hidden');
+    }
+  }
   function renderProgress(){
     if(!signedIn){
       document.getElementById('progressPercent').textContent = '—';
       document.getElementById('progressText').textContent = 'Увійдіть, щоб побачити свій прогрес';
       document.getElementById('progressRing').style.setProperty('--p','0deg');
       document.getElementById('routeDots').innerHTML = modules.map(()=>'<i></i>').join('');
+      setContinue(null);
       const btn=document.getElementById('finalExamBtn'),msg=document.getElementById('finalMessage');
       const pbtn=document.getElementById('practicalExamBtn'),pmsg=document.getElementById('practicalMessage');
       btn.disabled=true;btn.textContent='Іспит заблоковано';
@@ -97,6 +130,7 @@
       document.getElementById('progressText').textContent='Підпишіть договір NDA перед початком навчання';
       document.getElementById('progressRing').style.setProperty('--p','0deg');
       document.getElementById('routeDots').innerHTML=modules.map(()=>'<i></i>').join('');
+      setContinue(null);
       const btn=document.getElementById('finalExamBtn'),msg=document.getElementById('finalMessage');
       const pbtn=document.getElementById('practicalExamBtn'),pmsg=document.getElementById('practicalMessage');
       btn.disabled=true;btn.textContent='Потрібен NDA';msg.textContent='Перед доступом до курсу підпишіть договір про нерозповсюдження інформації.';
@@ -114,8 +148,11 @@
     document.getElementById('progressText').textContent = `${done} з 8 модулів завершено`;
     document.getElementById('progressRing').style.setProperty('--p', `${percent*3.6}deg`);
     document.getElementById('routeDots').innerHTML = modules.map(m => `<i class="${isDone(m.n)?'done':''}" title="Модуль ${m.n}"></i>`).join('');
+    /* straight to wherever the reader stopped, instead of hunting for it in
+       the grid below */
+    setContinue(modules.find(m => !isDone(m.n) && isUnlocked(m.n)) || null, done === modules.length, done);
     const cfg = window.PE_CONFIG || {}, btn = document.getElementById('finalExamBtn'), msg = document.getElementById('finalMessage'), icon=document.querySelector('.final-icon');
-    const eligible = done === 8 || Boolean(cfg.reviewMode);
+    const eligible = done === 8 || openAll();
     btn.onclick = null;
     if(!examAccessLoaded){
       btn.disabled=true;btn.textContent='Перевіряємо доступ…';
@@ -141,7 +178,7 @@
     }
 
     const pbtn=document.getElementById('practicalExamBtn'),pmsg=document.getElementById('practicalMessage'),picon=document.querySelector('.practical-icon');
-    const practicalEligible=Boolean(cfg.reviewMode)||theoryPassed;
+    const practicalEligible=openAll()||theoryPassed;
     pbtn.onclick=null;
     if(!examAccessLoaded){
       pbtn.disabled=true;pbtn.textContent='Перевіряємо доступ…';pmsg.textContent='Перевіряємо доступ до практичного іспиту.';if(picon)picon.textContent='⏳';
@@ -190,6 +227,9 @@
     renderProgress();
     refreshExamAccess();
   });
+  /* the role lands after the first render, so redraw once it does */
+  window.addEventListener('pe-role-ready', () => { renderModules(); renderProgress(); });
+
   window.addEventListener('pe-progress-updated', e => {
     const fresh = e.detail || JSON.parse(localStorage.getItem(key) || '{}');
     Object.keys(state).forEach(k => delete state[k]);

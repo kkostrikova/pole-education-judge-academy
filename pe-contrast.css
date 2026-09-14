@@ -91,3 +91,14 @@ body .module-card.locked .module-status.locked{ color: #5f5680 !important; }
 [data-pe-page="m2"] .photo-tabs .photo-tab.active small{ color: #f0ebff !important; }
 [data-pe-page="m8"] .protocol-fields .protocol-field label{ color: #5c5070 !important; }
 [data-pe-page="situational"] .footer-progress span{ color: #5f5680 !important; }
+
+/* ── sign-in page, dark side panel ────────────────────────
+   Measured from rendered pixels: the heading sat at 1.17:1, dark violet on
+   a near-black gradient, because the theme paints body text dark and the
+   panel never set its own colour. The earlier CSS-only audit could not see
+   this: it skipped anything over a gradient. */
+[data-pe-page="auth"] .visual{ color: #ece7fb !important; }
+[data-pe-page="auth"] .visual :is(h1,h2,h3,strong,b,li,div){ color: inherit !important; }
+[data-pe-page="auth"] .visual p{ color: #c3badf !important; }
+[data-pe-page="auth"] .visual .mini{ color: #c8a6ff !important; }
+[data-pe-page="auth"] .visual a{ color: #e3dbff !important; }

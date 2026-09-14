@@ -1,6 +1,6 @@
 window.PE_CONFIG = {
   passScore: 80,
-  reviewMode: true,
+  reviewMode: false,
   finalExamOpen: false,
   finalExamUrl: "final-theory.html",
   theoryPassScore: 60,

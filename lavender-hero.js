@@ -3,13 +3,18 @@
    step is a single drawImage of an already-decoded bitmap: no seeking, no
    decoder catch-up, and the sequence plays as well backwards as forwards. */
 (() => {
-  /* 72 frames were exported; narrow screens take every second one so the
-     payload halves while the same full-resolution stills are reused. */
   const narrow = window.matchMedia('(max-width: 900px)').matches;
-  const STEP = narrow ? 2 : 1;
+  /* 2.3 MB of stills is nothing on a cable and a lot on a phone plan. The
+     connection decides how many of the 72 get fetched: every frame on a
+     desktop, every second on a narrow screen, every fourth when the browser
+     reports Data Saver or a slow link. The sequence is eased rather than
+     stepped, so a thinner set reads as the same sweep, just softer. */
+  const net = navigator.connection || {};
+  const thrifty = Boolean(net.saveData) || /(^|-)[23]g$/.test(net.effectiveType || '');
+  const STEP = thrifty ? 4 : (narrow ? 2 : 1);
   const N = Math.ceil(72 / STEP);
   const DIR = 'assets/hero/f/';
-  const V = '?v=20260914-hero1';
+  const V = '?v=20260914-hero14';
   const scene = document.querySelector('.lav-scene');
   const canvas = document.querySelector('.lav-canvas');
   if (!scene || !canvas) return;
@@ -59,11 +64,45 @@
     paint(img);
   }
 
+  /* How far the hero has scrolled away — still drives the depth and the
+     header, but no longer the frames. */
   function progress() {
     const travel = scene.offsetHeight - window.innerHeight;
     if (travel <= 0) return 0;
     const y = -scene.getBoundingClientRect().top;
     return Math.min(1, Math.max(0, y / travel));
+  }
+
+  /* ── what moves the lavender ──────────────────────────────
+     The pointer does, where there is one. A cursor sweeping the flowers
+     reads far better than a long scroll that exists only to play frames,
+     and it lets the page below start right after the hero. Touch screens
+     have no cursor, so there the sequence breathes on its own. */
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let target = 0;      // 0..1, where the sequence wants to be
+  let eased = 0;       // 0..1, where it actually is
+  let idle = 0;        // drift phase for touch screens
+
+  function pointerTo(e) {
+    const r = scene.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) return;
+    const x = (e.clientX - r.left) / Math.max(1, r.width);
+    const y = (e.clientY - Math.max(0, r.top)) / Math.max(1, window.innerHeight);
+    /* mostly horizontal, with a little vertical so the whole field responds */
+    target = Math.min(1, Math.max(0, x * 0.78 + y * 0.22));
+  }
+
+  let raf = 0;
+  function loop(now) {
+    if (finePointer && !calm) {
+      eased += (target - eased) * 0.12;          // trails the cursor, never snaps
+    } else if (!calm) {
+      idle += 0.0022;
+      eased = (Math.sin(idle) + 1) / 2;          // slow there-and-back
+    }
+    draw(Math.round(eased * (N - 1)));
+    raf = requestAnimationFrame(loop);
   }
 
   /* the header is transparent while the lavender is behind it, solid after */
@@ -90,14 +129,13 @@
 
   function render() {
     const p = progress();
-    draw(Math.round(p * (N - 1)));
     parallax(p);
     header();
   }
 
   /* ── loading ──────────────────────────────────────────────
      Frame 0 first so the canvas can take over from the poster
-     immediately; the rest stream in behind it, four at a time. */
+     immediately; the rest stream in behind it, three at a time. */
   function load(i) {
     return new Promise(res => {
       const img = new Image();
@@ -114,9 +152,14 @@
     draw(0);
     canvas.classList.add('is-live');
     render();
+    if (!raf) raf = requestAnimationFrame(loop);
+    /* The rest are not needed for the first paint, and while they are in
+       flight they compete with the fonts, the module cards and everything
+       below the hero. They wait for load, then for an idle moment. */
+    await afterLoad();
     const queue = [];
     for (let i = 1; i < N; i++) queue.push(i);
-    const workers = new Array(4).fill(0).map(async () => {
+    const workers = new Array(3).fill(0).map(async () => {
       while (queue.length) {
         await load(queue.shift());
         render();
@@ -124,6 +167,16 @@
     });
     await Promise.all(workers);
     render();
+  }
+
+  function afterLoad() {
+    return new Promise(res => {
+      const idle = () => (window.requestIdleCallback
+        ? requestIdleCallback(res, { timeout: 1200 })
+        : setTimeout(res, 200));
+      if (document.readyState === 'complete') idle();
+      else window.addEventListener('load', idle, { once: true });
+    });
   }
 
   let ticking = false;
@@ -134,6 +187,9 @@
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
+  if (finePointer) {
+    window.addEventListener('pointermove', pointerTo, { passive: true });
+  }
   window.addEventListener('resize', () => { resize(); render(); }, { passive: true });
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', () => { resize(); render(); }, { passive: true });

@@ -51,7 +51,7 @@ body.lav-home .topbar.is-solid{
 html:has(body.lav-home){ scroll-padding-top: calc(100vw / 1672 * 128); }
 body.lav-home #lectures{
   position: relative; z-index: 4;
-  margin-top: -100svh;                       /* rise over the pinned lavender */
+  margin-top: -70svh;                        /* rise over the pinned lavender */
   padding-top: calc(120 * var(--u));
   border-radius: calc(44 * var(--u)) calc(44 * var(--u)) 0 0;
   background: #faf8ff;
@@ -128,10 +128,11 @@ body.lav-home{
 }
 
 /* ───────────────────────── scene ───────────────────────── */
-/* hero screen + a runway the frames advance along. The section that follows
-   is pulled up over the last screen of that runway, so it rises onto the
-   lavender while the lavender is still pinned and still stepping frames. */
-.lav-scene{ position: relative; height: calc(100svh + 210svh); background: #efeafb; }
+/* The frames follow the cursor now, so the long runway that existed only to
+   play them is gone: 210svh of scrolling past a near-static field was the
+   dead stretch. What is left is just enough for the next section to rise
+   onto the lavender, which is the part worth keeping. */
+.lav-scene{ position: relative; height: calc(100svh + 70svh); background: #efeafb; }
 
 .lav-bg{
   position: sticky; top: 0; height: 100svh; overflow: hidden; z-index: 1;
@@ -205,9 +206,9 @@ body.lav-home{
   position: absolute; inset: 0; display: block;
   background: center/100% 100% no-repeat;
 }
-.lav-ink--1{ background-image: url('assets/hero/headline-line1.svg?v=20260914-hero4'); }
-.lav-ink--2{ background-image: url('assets/hero/headline-line2.svg?v=20260914-hero4'); }
-.lav-ink--h{ background-image: url('assets/hero/headline-heart.svg?v=20260914-hero4'); }
+.lav-ink--1{ background-image: url('assets/hero/headline-line1.svg?v=20260914-hero13'); }
+.lav-ink--2{ background-image: url('assets/hero/headline-line2.svg?v=20260914-hero13'); }
+.lav-ink--h{ background-image: url('assets/hero/headline-heart.svg?v=20260914-hero13'); }
 
 /* the reveal edge leans with the rising baseline, so the stroke appears to
    be laid down rather than wiped in */
@@ -382,7 +383,7 @@ body.lav-home{
     margin-top: -70svh; padding-top: calc(74 * var(--u));
     border-radius: calc(26 * var(--u)) calc(26 * var(--u)) 0 0;
   }
-  .lav-scene{ height: calc(100svh + 120svh); }
+  .lav-scene{ height: calc(100svh + 60svh); }
   /* a 16:9 frame cropped to portrait loses the bouquet unless the crop
      is pulled to the right, where the flowers are */
   .lav-bg{ --focus: 62; }
@@ -464,4 +465,39 @@ body.lav-home .lecture-launch strong{ margin: calc(10 * var(--u)) 0 calc(6 * var
 @media (max-width: 900px){
   body.lav-home .lecture-hub{ align-items: stretch; }
   body.lav-home .lecture-launch{ padding: calc(24 * var(--u)) calc(22 * var(--u)); }
+}
+
+/* course progress at the head of the module grid: the old ring lives in the
+   legacy hero, which this redesign hides */
+body .course-bar{
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 0 22px;
+  padding: 18px 22px;
+  border: 1px solid #ded5f6;
+  border-radius: 20px;
+  background: rgba(255,255,255,.72);
+  box-shadow: 0 10px 30px rgba(76,58,132,.07);
+}
+body .course-bar[hidden]{ display: none !important; }
+body .course-bar-copy{ flex: 1 1 300px; min-width: 0; }
+body .course-bar-copy strong{
+  display: block; margin-bottom: 10px;
+  font: 700 15px/1.2 'Manrope', system-ui, sans-serif;
+  color: #3b2d5e;
+}
+body .course-bar-track{
+  height: 8px; border-radius: 99px; background: #e9e2f7; overflow: hidden;
+}
+body .course-bar-track i{
+  display: block; height: 100%; width: 0;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #8b5cf6, #5a2d91);
+  transition: width .5s cubic-bezier(.2,.8,.3,1);
+}
+body .progress-continue{ flex: 0 0 auto; }
+body .progress-continue.hidden{ display: none !important; }
+@media (max-width: 620px){
+  body .course-bar{ gap: 14px; }
+  body .progress-continue{ width: 100%; justify-content: center; }
 }
