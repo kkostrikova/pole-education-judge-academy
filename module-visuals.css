@@ -33,74 +33,79 @@
 @media(max-width:760px){.module-card{min-height:286px;padding:23px 21px!important}.module-card::after{right:22px!important;top:22px!important}.module-top{padding-right:50px}.module-card h3{font-size:29px!important;margin:36px 0 10px!important;max-width:16ch!important}.module-card p{font-size:14px!important}.module-card .module-actions{grid-template-columns:1fr 1fr;gap:8px;padding-top:22px}}
 @media(max-width:520px){.module-card{min-height:270px;padding:21px 18px!important;border-radius:22px!important}.module-card h3{font-size:27px!important;max-width:100%!important}.module-card .module-actions{grid-template-columns:1fr!important}.module-card .module-link{font-size:12px!important}.module-card::before{width:145px!important;height:145px!important}.module-card::after{width:38px!important;height:38px!important}}
 
-/* ── the cards get their faces back ───────────────────────────
-   Eight identical white rectangles told the reader nothing about what was
-   inside them. Each module already had a photograph in the repository; the
-   lavender redesign painted over the dark card those photos were made for
-   and they have been unused since — and the file the cards still pointed at,
-   module-approved-N.jpg, is not a decodable image at all, so even the old
-   design was drawing nothing. The webp of the same name is fine.
+/* ── one card, eight identities ──────────────────────────────
+   The photographs that used to sit here were dark stock studio shots —
+   eight variations of the same purple-black, which darkened the card
+   without telling the reader anything and fought the light, airy language
+   the rest of the site speaks. (The file they pointed at,
+   module-approved-N.jpg, was not even a decodable image, so the old dark
+   design had been drawing nothing for a while.)
 
-   The photo now sits as a band across the head of the card, with the module
-   number and the status on it, and the white body below. */
-.module-card:nth-child(1){--photo:url('assets/module-photo-1.webp?v=20260914-cards1')!important}
-.module-card:nth-child(2){--photo:url('assets/module-photo-2.webp?v=20260914-cards1')!important}
-.module-card:nth-child(3){--photo:url('assets/module-photo-3.webp?v=20260914-cards1')!important}
-.module-card:nth-child(4){--photo:url('assets/module-photo-4.webp?v=20260914-cards1')!important}
-.module-card:nth-child(5){--photo:url('assets/module-photo-5.webp?v=20260914-cards1')!important}
-.module-card:nth-child(6){--photo:url('assets/module-photo-6.webp?v=20260914-cards1')!important}
-.module-card:nth-child(7){--photo:url('assets/module-photo-7.webp?v=20260914-cards1')!important}
-.module-card:nth-child(8){--photo:url('assets/module-photo-8.webp?v=20260914-cards1')!important}
+   What separates the cards now is a large serif numeral, a hairline in the
+   module's own accent, and a breath of that accent in the corner. Same
+   family of colour throughout, so eight cards read as one set rather than
+   as a paint chart. */
+.module-card{ --accent:#8b5cf6; padding: 28px !important; }
+.module-card:nth-child(1){ --accent:#7c5cf0 }
+.module-card:nth-child(2){ --accent:#5a7fe0 }
+.module-card:nth-child(3){ --accent:#b45fb0 }
+.module-card:nth-child(4){ --accent:#6a48c4 }
+.module-card:nth-child(5){ --accent:#c07a4a }
+.module-card:nth-child(6){ --accent:#3f9a97 }
+.module-card:nth-child(7){ --accent:#8a63d8 }
+.module-card:nth-child(8){ --accent:#ae5273 }
 
-.module-card{ padding: 0 0 26px !important; }
-
-/* ::before was a decorative blob and ::after a stray dot in the corner;
-   the band is worth more than either */
+/* a breath of the accent in the far corner, not a decoration in its own right */
 .module-card::before{
-  inset: 0 0 auto 0 !important;
-  right: 0 !important; top: 0 !important;
-  width: auto !important; height: 148px !important;
-  border-radius: 0 !important;
+  inset: auto !important;
+  right: -70px !important; top: -70px !important;
+  left: auto !important; bottom: auto !important;
+  width: 220px !important; height: 220px !important;
+  border-radius: 50% !important;
   transform: none !important;
-  background-image:
-    linear-gradient(180deg, rgba(18,9,28,.10) 0%, rgba(18,9,28,.30) 52%, rgba(255,255,255,.96) 100%),
-    var(--photo) !important;
-  background-size: cover !important;
-  background-position: center !important;
+  filter: none !important;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent) 0%, transparent 70%) !important;
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent) 0%, transparent 70%) !important;
+  pointer-events: none !important;
   z-index: 0 !important;
 }
 .module-card::after{ display: none !important; }
 
+/* the number and the status share a line, and the accent hairline closes it */
 .module-top{
-  position: absolute !important;
-  top: 0; left: 0; right: 0;
-  padding: 18px 22px !important;
-  z-index: 2;
+  position: static !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 0 0 15px !important;
+  background-image: linear-gradient(90deg, var(--accent), transparent 78%) !important;
+  background-size: 100% 2px !important;
+  background-repeat: no-repeat !important;
+  background-position: left bottom !important;
 }
 .module-card .module-no{
-  color: #fff !important;
-  text-shadow: 0 1px 6px rgba(20,10,30,.55) !important;
+  font: 600 44px/1 'Cormorant Garamond', Georgia, serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--accent) !important;
+  text-shadow: none !important;
+  margin: 0 !important;
 }
 .module-card .module-status{
-  background: rgba(255,255,255,.94) !important;
-  border-color: rgba(255,255,255,.7) !important;
-  box-shadow: 0 4px 14px rgba(20,10,30,.18) !important;
+  background: #f7f4ff !important;
+  border: 1px solid #e0d8f7 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  white-space: nowrap !important;   /* "ЗАВЕРШЕНО ✓" broke after the bird */
+  flex: 0 0 auto;
 }
-.module-card h3{ margin: 168px 26px 11px !important; }
-.module-card p{ margin: 0 26px !important; }
-.module-card .module-actions{ margin: auto 26px 0 !important; }
+.module-card h3{ margin: 22px 0 11px !important; padding: 0 !important; }
+.module-card p{ margin: 0 !important; }
+.module-card .module-actions{ margin: auto 0 0 !important; padding-top: 24px !important; }
 
-/* the photo lifts a little as the card does */
-.module-card:hover::before{ transform: scale(1.04) !important; }
-.module-card.locked::before{ filter: grayscale(.55) brightness(.92); }
-
-@media (max-width: 620px){
-  .module-card::before{ height: 128px !important; }
-  .module-card h3{ margin: 146px 20px 10px !important; }
-  .module-card p{ margin: 0 20px !important; }
-  .module-card .module-actions{ margin: auto 20px 0 !important; }
-  .module-top{ padding: 14px 18px !important; }
-}
+.module-card:hover{ border-color: var(--accent) !important; }
+.module-card.locked{ --accent:#8f87a9; }  /* 3.31:1 on the card, above the large-text floor */
 
 /* "Відеолекція ↗ →" carried two arrows, and "Інтерактивний модуль" wrapped
    onto a second line inside a 239px button */
@@ -112,3 +117,8 @@
 }
 .module-card .lecture-module-link::after{ content: '' !important; display: none !important; }
 .module-card .module-link.locked-link{ white-space: normal !important; }
+
+@media (max-width: 620px){
+  .module-card{ padding: 22px !important; }
+  .module-card .module-no{ font-size: 38px !important; }
+}
