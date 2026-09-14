@@ -1,13 +1,31 @@
 /* Pole Education — the bird, in the three places it does work. */
-.pe-bird{ display: block; height: auto; pointer-events: none; user-select: none; }
+.pe-bird{
+  display: block; height: auto; user-select: none;
+  pointer-events: auto;          /* it reacts to the cursor, so it must be hittable */
+  transform-origin: 50% 88%;     /* pivots on its feet, not its middle */
+  /* translate/rotate/scale, not transform: the resting animation drives
+     `transform`, and an animated property always beats a plain declaration,
+     so a `transform` here would simply never apply on hover. These compose
+     with it instead. */
+  transition: translate .32s cubic-bezier(.2,1.3,.4,1),
+              rotate .32s cubic-bezier(.2,1.3,.4,1),
+              scale .32s cubic-bezier(.2,1.3,.4,1);
+}
+/* it is decoration with a job, not a control: no pointer, no focus ring */
+.pe-bird{ cursor: default; }
 
 /* test result: the bird sits at the end of the message, sized to it */
-.result.has-bird, .quiz-result.has-bird, #quizResult.has-bird{
+.has-bird{
   display: flex !important;
   align-items: center;
   gap: 16px;
   justify-content: space-between;
   min-height: 92px;
+}
+/* a slow breath keeps it alive without pulling the eye off the result */
+@keyframes pe-bird-breathe{
+  0%,100%{ transform: translateY(0) rotate(0deg); }
+  50%    { transform: translateY(-3px) rotate(-1.2deg); }
 }
 .pe-bird--result{
   width: clamp(64px, 9vw, 96px);
@@ -15,8 +33,13 @@
   /* no negative margins: they pushed the bird outside the rounded panel.
      The row grows to fit it instead, which reads as intended rather than
      as something escaping its box. */
-  animation: pe-bird-in .5s cubic-bezier(.2,1.2,.4,1) both;
+  animation: pe-bird-in .5s cubic-bezier(.2,1.2,.4,1) both,
+             pe-bird-breathe 3.6s ease-in-out .5s infinite;
 }
+/* hover: the cheerful pose hops, the sympathetic one only leans — a bounce
+   would read as gloating over a failed test */
+.pe-bird--result[data-kind="happy"]:hover{ translate: 0 -7px; rotate: -5deg; scale: 1.06; }
+.pe-bird--result[data-kind="sad"]:hover{ rotate: 3deg; scale: 1.03; }
 @keyframes pe-bird-in{
   from{ opacity: 0; transform: translateY(10px) scale(.82); }
   to  { opacity: 1; transform: none; }
@@ -28,10 +51,21 @@
 
 /* empty states */
 [data-pe-empty]{ display: flex; align-items: center; gap: 14px; }
-.pe-bird--empty{ width: 56px; flex: 0 0 auto; opacity: .92; }
+.pe-bird--empty{
+  width: 56px; flex: 0 0 auto; opacity: .92;
+  animation: pe-bird-breathe 4.4s ease-in-out infinite;
+}
+.pe-bird--empty:hover{ translate: 0 -5px; rotate: -4deg; }
+.pe-bird--badge:hover{ translate: 0 -3px; rotate: -6deg; scale: 1.1; }
 
 @media (prefers-reduced-motion: reduce){
-  .pe-bird--result{ animation: none; }
+  .pe-bird{ transition: none; }
+  .pe-bird--result, .pe-bird--empty{ animation: none; }
+  .pe-bird:hover{ translate: none; rotate: none; scale: none; }
+}
+/* on touch there is no hover, so the resting motion is all there is */
+@media (hover: none){
+  .pe-bird:hover{ translate: none; rotate: none; scale: none; }
 }
 @media (max-width: 620px){
   .pe-bird--result{ width: 68px; }

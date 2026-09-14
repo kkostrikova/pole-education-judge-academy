@@ -206,9 +206,9 @@ body.lav-home{
   position: absolute; inset: 0; display: block;
   background: center/100% 100% no-repeat;
 }
-.lav-ink--1{ background-image: url('assets/hero/headline-line1.svg?v=20260914-hero4'); }
-.lav-ink--2{ background-image: url('assets/hero/headline-line2.svg?v=20260914-hero4'); }
-.lav-ink--h{ background-image: url('assets/hero/headline-heart.svg?v=20260914-hero4'); }
+.lav-ink--1{ background-image: url('assets/hero/headline-line1.svg?v=20260914-hero13'); }
+.lav-ink--2{ background-image: url('assets/hero/headline-line2.svg?v=20260914-hero13'); }
+.lav-ink--h{ background-image: url('assets/hero/headline-heart.svg?v=20260914-hero13'); }
 
 /* the reveal edge leans with the rising baseline, so the stroke appears to
    be laid down rather than wiped in */

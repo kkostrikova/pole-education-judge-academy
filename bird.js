@@ -44,7 +44,11 @@
       // "потрібно щонайменше 80%" states the threshold, not the score
       if (!/потрібн\w*\s*(щонайменше\s*)?$/i.test(t.slice(0, pct.index))) return n >= 80;
     }
-    if (/\bне\s+складено|потрібн|спробу/i.test(t)) return false;
+    /* modules 4 and 5 report a bare score with no percentage at all:
+       "Результат: 0 / 7. Повернися до ключових критеріїв" */
+    const frac = t.match(/(\d{1,3})\s*\/\s*(\d{1,3})/);
+    if (frac && Number(frac[2]) > 0) return Number(frac[1]) / Number(frac[2]) >= 0.8;
+    if (/\bне\s+складено|потрібн|спробу|поверни|повтори/i.test(t)) return false;
     if (/складено|засвоєн|відкрито|зарахован/i.test(t)) return true;
     return null;
   }
@@ -64,7 +68,11 @@
     el.appendChild(img);
   }
 
-  const results = [...document.querySelectorAll('.result, .quiz-result, #quizResult')];
+  /* Each module names its result panel differently — .result, .quiz-result,
+     .resultbox — and two of them use the id #qres rather than #quizResult.
+     Missing .resultbox is why modules 2 and 8 had no bird at all. */
+  const results = [...document.querySelectorAll(
+    '#quizResult, #qres, .result, .quiz-result, .resultbox')];
   if (results.length) {
     const io = new MutationObserver(() => results.forEach(markResult));
     results.forEach(el => {
