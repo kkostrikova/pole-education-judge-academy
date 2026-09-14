@@ -3,10 +3,15 @@
    step is a single drawImage of an already-decoded bitmap: no seeking, no
    decoder catch-up, and the sequence plays as well backwards as forwards. */
 (() => {
-  /* 72 frames were exported; narrow screens take every second one so the
-     payload halves while the same full-resolution stills are reused. */
   const narrow = window.matchMedia('(max-width: 900px)').matches;
-  const STEP = narrow ? 2 : 1;
+  /* 2.3 MB of stills is nothing on a cable and a lot on a phone plan. The
+     connection decides how many of the 72 get fetched: every frame on a
+     desktop, every second on a narrow screen, every fourth when the browser
+     reports Data Saver or a slow link. The sequence is eased rather than
+     stepped, so a thinner set reads as the same sweep, just softer. */
+  const net = navigator.connection || {};
+  const thrifty = Boolean(net.saveData) || /(^|-)[23]g$/.test(net.effectiveType || '');
+  const STEP = thrifty ? 4 : (narrow ? 2 : 1);
   const N = Math.ceil(72 / STEP);
   const DIR = 'assets/hero/f/';
   const V = '?v=20260914-hero14';
@@ -130,7 +135,7 @@
 
   /* ── loading ──────────────────────────────────────────────
      Frame 0 first so the canvas can take over from the poster
-     immediately; the rest stream in behind it, four at a time. */
+     immediately; the rest stream in behind it, three at a time. */
   function load(i) {
     return new Promise(res => {
       const img = new Image();
@@ -148,9 +153,13 @@
     canvas.classList.add('is-live');
     render();
     if (!raf) raf = requestAnimationFrame(loop);
+    /* The rest are not needed for the first paint, and while they are in
+       flight they compete with the fonts, the module cards and everything
+       below the hero. They wait for load, then for an idle moment. */
+    await afterLoad();
     const queue = [];
     for (let i = 1; i < N; i++) queue.push(i);
-    const workers = new Array(4).fill(0).map(async () => {
+    const workers = new Array(3).fill(0).map(async () => {
       while (queue.length) {
         await load(queue.shift());
         render();
@@ -158,6 +167,16 @@
     });
     await Promise.all(workers);
     render();
+  }
+
+  function afterLoad() {
+    return new Promise(res => {
+      const idle = () => (window.requestIdleCallback
+        ? requestIdleCallback(res, { timeout: 1200 })
+        : setTimeout(res, 200));
+      if (document.readyState === 'complete') idle();
+      else window.addEventListener('load', idle, { once: true });
+    });
   }
 
   let ticking = false;
