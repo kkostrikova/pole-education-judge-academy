@@ -6,6 +6,7 @@
 (() => {
   if (document.body.dataset.peExam === '1') return;
 
+  const FLAP = 'assets/bird/flap.webp?v=20260914-bird8';
   const SRC = {
     happy: 'assets/bird/happy.webp?v=20260914-bird1',
     sad:   'assets/bird/sad.webp?v=20260914-bird1',
@@ -20,6 +21,16 @@
   };
 
   function make(kind, cls) {
+    /* the cheering pose is a ten-cell strip played with steps(), so it flaps
+       its wings the way it does in the clip rather than sitting there */
+    if (kind === 'happy') {
+      const el = document.createElement('span');
+      el.className = 'pe-bird pe-bird--flap ' + cls;
+      el.style.backgroundImage = 'url(' + FLAP + ')';
+      el.setAttribute('role', 'img');
+      el.setAttribute('aria-label', ALT.happy);
+      return el;
+    }
     const img = document.createElement('img');
     img.className = 'pe-bird ' + cls;
     img.src = SRC[kind];

@@ -20,13 +20,27 @@
   align-items: center;
   gap: 16px;
   justify-content: space-between;
-  min-height: 92px;
+  min-height: 116px;
 }
 /* a slow breath keeps it alive without pulling the eye off the result */
 @keyframes pe-bird-breathe{
   0%,100%{ transform: translateY(0) rotate(0deg); }
   50%    { transform: translateY(-3px) rotate(-1.2deg); }
 }
+/* Ten cells side by side. The positions that land on a cell are i/9 of the
+   range — 0%, 11.1%, … 100% — because 0% aligns the first cell and 100% the
+   last. Plain steps(10) walks i/10 instead (0%, 10%, … 90%), so every frame
+   sat between two cells and the neighbour's wing showed. jump-none is the
+   one that emits N values from 0% to 100% inclusive. */
+.pe-bird--flap{
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 1000% 100%;
+  aspect-ratio: 200 / 158;
+  animation: pe-flap .84s steps(10, jump-none) infinite;
+}
+@keyframes pe-flap{ to{ background-position-x: right; } }
+
 .pe-bird--result{
   width: clamp(64px, 9vw, 96px);
   flex: 0 0 auto;
@@ -35,6 +49,10 @@
      as something escaping its box. */
   animation: pe-bird-in .5s cubic-bezier(.2,1.2,.4,1) both,
              pe-bird-breathe 3.6s ease-in-out .5s infinite;
+}
+.pe-bird--flap.pe-bird--result{
+  animation: pe-bird-in .5s cubic-bezier(.2,1.2,.4,1) both,
+             pe-flap .84s steps(10, jump-none) .5s infinite;
 }
 /* hover: the cheerful pose hops, the sympathetic one only leans — a bounce
    would read as gloating over a failed test */
@@ -61,6 +79,8 @@
 @media (prefers-reduced-motion: reduce){
   .pe-bird{ transition: none; }
   .pe-bird--result, .pe-bird--empty{ animation: none; }
+  /* frozen on the first cell, which is a complete pose on its own */
+  .pe-bird--flap{ animation: none; background-position-x: left; }
   .pe-bird:hover{ translate: none; rotate: none; scale: none; }
 }
 /* on touch there is no hover, so the resting motion is all there is */
