@@ -1,0 +1,34 @@
+/* Pole Education — module cards matching lavender concept */
+.module-grid{align-items:stretch;gap:18px!important}
+.module-card{
+  position:relative;overflow:hidden;isolation:isolate;min-height:300px;display:flex;flex-direction:column;
+  padding:28px!important;border:1px solid #ded7f3!important;border-radius:26px!important;
+  background:linear-gradient(145deg,#fff 0%,#fdfcff 64%,#f4f0ff 100%)!important;
+  box-shadow:0 16px 44px rgba(76,58,132,.075)!important;
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease!important;
+}
+.module-card::before{
+  content:""!important;position:absolute!important;right:-54px!important;top:-46px!important;left:auto!important;bottom:auto!important;
+  width:180px!important;height:180px!important;border-radius:46% 54% 62% 38%/44% 34% 66% 56%!important;
+  background:linear-gradient(145deg,rgba(155,131,238,.14),rgba(123,92,225,.05))!important;background-image:none!important;
+  filter:none!important;transform:rotate(18deg)!important;pointer-events:none!important;z-index:0!important;
+}
+.module-card::after{
+  content:""!important;position:absolute!important;right:28px!important;top:28px!important;left:auto!important;bottom:auto!important;
+  width:42px!important;height:42px!important;border-radius:50%!important;
+  background:radial-gradient(circle at 36% 32%,#fff 0 16%,#e8e0ff 18% 100%)!important;
+  border:1px solid #d5caf3!important;box-shadow:0 8px 18px rgba(91,67,180,.08)!important;z-index:0!important;
+}
+.module-card>*{position:relative;z-index:1}
+.module-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding-right:54px}
+.module-card .module-no{font:700 12px/1 Inter,system-ui,sans-serif!important;text-transform:uppercase!important;letter-spacing:.16em!important;color:#7561bd!important;text-shadow:none!important;margin-top:2px}
+.module-card .module-status{font:700 10px/1.15 Inter,system-ui,sans-serif!important;text-transform:uppercase;letter-spacing:.07em;padding:8px 10px;border-radius:999px;background:#f2eeff!important;border:1px solid #ddd3f6!important;color:#756d89!important;backdrop-filter:none!important}
+.module-card .module-status.done{color:#397552!important;border-color:#c6dfcf!important;background:#eff8f2!important}.module-card .module-status.locked{color:#8b8497!important;background:#f5f3f8!important}
+.module-card h3{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important;font-size:clamp(25px,2.1vw,34px)!important;font-weight:650!important;letter-spacing:-.035em!important;line-height:1.06!important;margin:42px 0 11px!important;color:#2b2451!important;text-shadow:none!important;max-width:18ch!important}
+.module-card p{max-width:42ch!important;color:#746d8d!important;font-size:14.5px!important;line-height:1.58!important;text-shadow:none!important;margin:0!important}
+.module-card .module-actions{margin-top:auto;padding-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.module-card .module-link{min-height:46px;padding:11px 12px!important;border-radius:13px!important;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid #d7cdf2!important;background:#faf8ff!important;color:#5740ac!important;font-size:12.5px!important;font-weight:750!important;backdrop-filter:none!important;box-shadow:none!important}
+.module-card .module-link:hover{background:#f0ebff!important;border-color:#a995e7!important}.module-card .lecture-module-link{background:#f1ecff!important;border-color:#d0c3f0!important;color:#5740ac!important}
+.module-card.locked{opacity:.70!important;filter:none!important;background:linear-gradient(145deg,#fcfbff,#f5f2f9)!important}.module-card:hover{transform:translateY(-4px)!important;border-color:#b29fe9!important;box-shadow:0 22px 58px rgba(76,58,132,.12)!important}
+@media(max-width:760px){.module-card{min-height:286px;padding:23px 21px!important}.module-card::after{right:22px!important;top:22px!important}.module-top{padding-right:50px}.module-card h3{font-size:29px!important;margin:36px 0 10px!important;max-width:16ch!important}.module-card p{font-size:14px!important}.module-card .module-actions{grid-template-columns:1fr 1fr;gap:8px;padding-top:22px}}
+@media(max-width:520px){.module-card{min-height:270px;padding:21px 18px!important;border-radius:22px!important}.module-card h3{font-size:27px!important;max-width:100%!important}.module-card .module-actions{grid-template-columns:1fr!important}.module-card .module-link{font-size:12px!important}.module-card::before{width:145px!important;height:145px!important}.module-card::after{width:38px!important;height:38px!important}}

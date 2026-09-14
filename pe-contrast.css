@@ -1,0 +1,93 @@
+/* Pole Education — readability fixes.
+   The lavender theme repaints body text to a dark violet with !important.
+   Panels that were built dark never set their own colour, so they inherited
+   it and rendered dark-on-dark. Every rule below is a measured case.
+
+   Fixes are scoped with data-pe-page because the class names involved
+   (.step, .meter, .summary) also exist on light panels in other modules,
+   where a blanket rule turned their text white on white. */
+
+/* ── dark panels need light text ──────────────────────────── */
+[data-pe-page="m3"] .quote,
+[data-pe-page="m3"] .scene .step,
+[data-pe-page="m3"] .scene .progress,
+[data-pe-page="situational"] .sidebar,
+[data-pe-page="situational"] .scorecard,
+[data-pe-page="situational"] .meter,
+[data-pe-page="situational"] .situation,
+[data-pe-page="situational"] .summary,
+[data-pe-page="m2"] .photo-stage,
+[data-pe-page="m2"] .photo-note,
+[data-pe-page="m8"] .scenario-score .meter{
+  color: #ece7fb !important;
+}
+/* plain text inside them follows; controls and badges keep their own colour */
+[data-pe-page="m3"] .quote :is(p,h2,h3,h4,strong,b,small,span,li,div),
+[data-pe-page="m3"] .scene .step :is(p,h2,h3,h4,strong,b,small,span,li,div),
+[data-pe-page="situational"] .sidebar :is(p,h2,h3,h4,strong,b,small,span,li,div),
+[data-pe-page="situational"] .scorecard :is(p,h2,h3,h4,strong,b,small,span,li,div),
+[data-pe-page="situational"] .situation :is(p,h2,h3,h4,strong,b,small,span,li,div),
+[data-pe-page="situational"] .summary :is(p,h2,h3,h4,strong,b,small,span,li,div),
+[data-pe-page="m2"] .photo-stage :is(p,h2,h3,h4,strong,b,small,span,li,div),
+[data-pe-page="m2"] .photo-note :is(p,h2,h3,h4,strong,b,small,span,li,div){
+  color: inherit !important;
+}
+[data-pe-page] .quote :is(button,[class*="tab"],[class*="btn"],.badge),
+[data-pe-page] .sidebar :is(button,[class*="tab"],[class*="btn"],.badge),
+[data-pe-page] .summary :is(button,[class*="tab"],[class*="btn"],.badge),
+[data-pe-page] .situation :is(button,[class*="tab"],[class*="btn"],.badge),
+[data-pe-page] .scorecard :is(button,[class*="tab"],[class*="btn"],.badge){
+  color: revert-layer;
+}
+/* quieter secondary text, still legible on the dark ground */
+[data-pe-page="situational"] .sidebar small,
+[data-pe-page="situational"] .scorecard small,
+[data-pe-page="situational"] .situation small,
+[data-pe-page="situational"] .summary small,
+[data-pe-page="m2"] .photo-note small,
+[data-pe-page="m3"] .scene .step small{
+  color: #bdb3dd !important;
+}
+[data-pe-page="m8"] .challenge-options button{
+  background: #17212f !important;
+  border: 1px solid #33405a !important;
+  box-shadow: none !important;
+  color: #ece7fb !important;
+}
+
+/* ── filled buttons carry white text ──────────────────────── */
+body .btn:not(.secondary):not(.ghost-btn):not([class*="tab"]),
+body form > button:not([class]){
+  background: linear-gradient(150deg, var(--peb-plum-hi) 0%, var(--peb-plum) 52%, var(--peb-plum-lo) 100%) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,.16) !important;
+  box-shadow: 0 10px 26px rgba(74,32,124,.28),
+              inset 0 1px 0 rgba(255,255,255,.26) !important;
+}
+
+/* ── text that measured too pale on white ─────────────────── */
+[data-pe-page="situational"] .prompt{ color: #3b2d5e !important; }
+[data-pe-page="situational"] .role{ color: #6b5c8f !important; }
+[data-pe-page="situational"] .case-code{ color: #5b3cc4 !important; }
+[data-pe-page="m8"] .protocol-form label{ color: #5f5680 !important; }
+body .module-status{ color: #5f5680 !important; }
+body .jc-count{ color: #6b6386 !important; }
+
+/* ── disabled controls ────────────────────────────────────
+   WCAG exempts them, but 2.89:1 was hard to read even so. */
+body .primary-btn:disabled,
+body .final-btn:disabled,
+body .btn:disabled,
+body button:disabled{
+  background: #ded6f0 !important;
+  color: #5d5473 !important;
+  border-color: #cfc4e8 !important;
+}
+
+/* ── the last four pale cases, by measured selector ───────── */
+body .module-card .module-status,
+body .module-card.locked .module-status.locked{ color: #5f5680 !important; }
+[data-pe-page="m2"] .photo-tabs .photo-tab small{ color: #5b5472 !important; }
+[data-pe-page="m2"] .photo-tabs .photo-tab.active small{ color: #f0ebff !important; }
+[data-pe-page="m8"] .protocol-fields .protocol-field label{ color: #5c5070 !important; }
+[data-pe-page="situational"] .footer-progress span{ color: #5f5680 !important; }

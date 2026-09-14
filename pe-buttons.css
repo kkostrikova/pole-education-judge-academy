@@ -1,0 +1,286 @@
+/* Pole Education — one button system for the whole site.
+   The hero set the language: pill shape, plum fill, a soft lift on hover.
+   premium-global.css, lavender-ui.css and mobile.css all repaint buttons
+   with !important, so every rule here carries the same weight plus a body
+   prefix to win on specificity rather than on source order. */
+
+:root{
+  --peb-plum:#5a2d91;
+  --peb-plum-hi:#6f3bad;
+  --peb-plum-lo:#4a2478;
+  --peb-ink:#3b2d5e;
+  --peb-line:rgba(106,79,158,.34);
+  --peb-line-hot:#8b5cf6;
+  --peb-ring:rgba(139,92,246,.38);
+  --peb-r:999px;
+}
+
+/* ── shared shape ─────────────────────────────────────────── */
+/* :not(.unlock) everywhere below — elements carrying both a button class and
+   .unlock are hidden by the page until the test is passed, and a display rule
+   here would out-specify that and reveal them early. */
+body .primary-btn:not(.unlock),
+body .secondary-btn:not(.unlock),
+body .ghost-btn:not(#accountLink),
+body .btn:not(.unlock),
+body .final-btn:not(.unlock),
+body .completion-btn:not(.unlock),
+body .module-actions .module-link,
+body .unlock.show{
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 12px 24px !important;
+  border-radius: var(--peb-r) !important;
+  font: 700 14px/1 'Manrope', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: .01em;
+  text-decoration: none !important;
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  transition: transform .18s cubic-bezier(.2,.8,.3,1),
+              box-shadow .18s ease, background .18s ease,
+              border-color .18s ease, color .18s ease;
+}
+
+/* ── primary ──────────────────────────────────────────────── */
+body .primary-btn,
+body .final-btn,
+body .btn.primary,
+body .btn.wine,
+body .submit-btn,
+body .unlock,
+body .completion-btn.primary{
+  /* no display here on purpose — .unlock stays hidden until .show is added */
+  background: linear-gradient(150deg, var(--peb-plum-hi) 0%, var(--peb-plum) 52%, var(--peb-plum-lo) 100%) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,.16) !important;
+  box-shadow: 0 10px 26px rgba(74,32,124,.28),
+              inset 0 1px 0 rgba(255,255,255,.26) !important;
+}
+body .primary-btn:hover,
+body .final-btn:not(:disabled):hover,
+body .btn.primary:hover,
+body .btn.wine:hover,
+body .submit-btn:hover,
+body .unlock:hover,
+body .completion-btn.primary:hover{
+  background: linear-gradient(150deg, #7c47bd 0%, #5d2f97 52%, #4b2579 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(74,32,124,.34),
+              inset 0 1px 0 rgba(255,255,255,.30) !important;
+}
+
+/* ── secondary / ghost ────────────────────────────────────── */
+body .secondary-btn,
+body .ghost-btn:not(#accountLink),
+body .btn.secondary,
+body .control-btn,
+body .link-btn,
+body .module-actions .module-link,
+body .completion-btn:not(.primary){
+  background: #fff !important;
+  color: var(--peb-ink) !important;
+  border: 1px solid var(--peb-line) !important;
+  box-shadow: 0 2px 10px rgba(76,58,132,.07) !important;
+}
+body .secondary-btn:hover,
+body .ghost-btn:not(#accountLink):hover,
+body .btn.secondary:hover,
+body .control-btn:hover,
+body .link-btn:hover,
+body .module-actions .module-link:hover,
+body .completion-btn:not(.primary):hover{
+  background: #f6f2ff !important;
+  border-color: var(--peb-line-hot) !important;
+  color: var(--peb-plum) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(76,58,132,.14) !important;
+}
+
+/* the arrow leans forward on hover */
+body .module-actions .module-link::after,
+body .primary-btn::after,
+body .secondary-btn::after{ transition: transform .18s cubic-bezier(.2,.8,.3,1); }
+body .module-actions .module-link:hover::after,
+body .primary-btn:hover::after,
+body .secondary-btn:hover::after{ transform: translateX(4px); }
+
+/* ── pressed ──────────────────────────────────────────────── */
+body .primary-btn:active,
+body .secondary-btn:active,
+body .btn:active,
+body .ghost-btn:not(#accountLink):active,
+body .module-actions .module-link:active,
+body .final-btn:not(:disabled):active{
+  transform: translateY(0) scale(.985);
+  box-shadow: 0 4px 12px rgba(74,32,124,.22) !important;
+}
+
+/* ── keyboard focus ───────────────────────────────────────── */
+body .primary-btn:focus-visible,
+body .secondary-btn:focus-visible,
+body .btn:focus-visible,
+body .ghost-btn:focus-visible,
+body .final-btn:focus-visible,
+body .module-actions .module-link:focus-visible,
+body .completion-btn:focus-visible,
+body .pill:focus-visible,
+body .quicknav a:focus-visible{
+  outline: 3px solid var(--peb-ring) !important;
+  outline-offset: 2px;
+}
+
+/* ── disabled ─────────────────────────────────────────────── */
+body .primary-btn:disabled,
+body .final-btn:disabled,
+body .btn:disabled,
+body button:disabled{
+  background: #e7e1f3 !important;
+  color: #8b8199 !important;
+  border-color: #ded6ee !important;
+  box-shadow: none !important;
+  transform: none !important;
+  cursor: not-allowed;
+}
+body .module-actions .locked-link{
+  background: #f3f0f8 !important;
+  color: #8b8199 !important;
+  border-color: #e3ddef !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+}
+body .module-actions .locked-link:hover{
+  transform: none; background: #f3f0f8 !important;
+  border-color: #e3ddef !important; color: #8b8199 !important;
+}
+
+/* ── small pills: quick nav, chips, tabs ──────────────────── */
+body .pill,
+body .quicknav a,
+body .tab, body .case-tab, body .scenario-tab, body .protocol-tab,
+body .jc-tab, body .photo-tab{
+  display: inline-flex !important;
+  align-items: center;
+  min-height: 36px;
+  padding: 8px 16px !important;
+  border-radius: var(--peb-r) !important;
+  font: 600 13px/1 'Manrope', system-ui, sans-serif !important;
+  background: #fff !important;
+  color: #574a7d !important;
+  border: 1px solid var(--peb-line) !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: background .16s ease, border-color .16s ease,
+              color .16s ease, transform .16s ease;
+}
+body .quicknav a:hover,
+body .tab:hover, body .case-tab:hover, body .scenario-tab:hover,
+body .protocol-tab:hover, body .jc-tab:hover, body .photo-tab:hover{
+  background: #f4efff !important;
+  border-color: var(--peb-line-hot) !important;
+  color: var(--peb-plum) !important;
+  transform: translateY(-1px);
+}
+body .tab.active, body .case-tab.active, body .scenario-tab.active,
+body .protocol-tab.active, body .jc-tab.active, body .photo-tab.active,
+body .tab[aria-selected="true"]{
+  background: linear-gradient(150deg, var(--peb-plum-hi), var(--peb-plum)) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 6px 16px rgba(74,32,124,.22) !important;
+}
+
+/* ── back link reads as a button too ──────────────────────── */
+body .back{
+  display: inline-flex !important; align-items: center; gap: 8px;
+  min-height: 40px; padding: 9px 18px !important;
+  border-radius: var(--peb-r) !important;
+  background: #fff !important; color: var(--peb-ink) !important;
+  border: 1px solid var(--peb-line) !important;
+  font: 700 13px/1 'Manrope', system-ui, sans-serif !important;
+  text-decoration: none !important;
+  transition: background .16s ease, border-color .16s ease, transform .16s ease;
+}
+body .back:hover{
+  background: #f6f2ff !important; border-color: var(--peb-line-hot) !important;
+  color: var(--peb-plum) !important; transform: translateX(-2px);
+}
+
+/* ── quiz answers read as choosable cards ─────────────────── */
+body .quiz-question .option{
+  display: flex !important; align-items: center; gap: 12px;
+  padding: 12px 15px !important; margin: 6px 0;
+  border: 1px solid #e6e0f2 !important; border-radius: 14px !important;
+  background: #fff !important; cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+body .quiz-question .option:hover{
+  background: #f7f3ff !important; border-color: #c3aef0 !important;
+  transform: translateX(2px);
+}
+body .quiz-question .option:has(input:checked){
+  background: #f2ebff !important; border-color: var(--peb-line-hot) !important;
+  box-shadow: inset 3px 0 0 var(--peb-plum) !important;
+}
+body .quiz-question .option input{ accent-color: var(--peb-plum); width: 17px; height: 17px; }
+
+@media (prefers-reduced-motion: reduce){
+  body .primary-btn, body .secondary-btn, body .btn, body .ghost-btn,
+  body .module-actions .module-link, body .pill, body .quicknav a,
+  body .back, body .quiz-question .option{ transition: none !important; }
+  body .primary-btn:hover, body .secondary-btn:hover,
+  body .module-actions .module-link:hover, body .back:hover{ transform: none; }
+}
+
+@media (max-width: 620px){
+  body .primary-btn, body .secondary-btn, body .btn, body .final-btn,
+  body .module-actions .module-link{ min-height: 48px; padding: 13px 20px !important; }
+  body .pill, body .quicknav a{ min-height: 38px; padding: 9px 14px !important; }
+}
+
+/* ── hidden states win, always ─────────────────────────────
+   Buttons here are styled by class, and a page may hide one by adding
+   .hidden or by leaving .unlock without .show. The shape rules above are
+   specific enough to out-rank those, so restore them last with a doubled
+   class so nothing this file does can ever reveal a hidden control. */
+body .hidden.hidden,
+body .unlock:not(.show){ display: none !important; }
+
+/* ── language switch ──────────────────────────────────────── */
+.pe-lang{
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-left: 18px; flex: 0 0 auto;
+  font: 600 13px/1 'Manrope', system-ui, sans-serif;
+  color: #6a5a94;
+}
+.pe-lang span{ opacity: .5; }
+body .pe-lang button{
+  all: unset;
+  box-sizing: border-box;
+  padding: 6px 4px;
+  min-height: 0;
+  font: 600 13px/1 'Manrope', system-ui, sans-serif;
+  color: #6a5a94;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .16s ease, border-color .16s ease;
+}
+body .pe-lang button:hover{ color: var(--peb-plum); }
+body .pe-lang button.is-on{
+  color: #382a55; border-bottom-color: var(--peb-plum);
+}
+body .pe-lang button:focus-visible{
+  outline: 3px solid var(--peb-ring); outline-offset: 2px; border-radius: 4px;
+}
+@media (max-width: 900px){ .pe-lang{ margin-left: 10px; } }
+
+/* ── footer links need a real touch target ────────────────── */
+@media (max-width: 900px){
+  body footer a{
+    display: inline-flex; align-items: center;
+    min-height: 28px; padding: 4px 2px;
+  }
+}
