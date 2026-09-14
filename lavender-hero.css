@@ -4,7 +4,10 @@
    unit --u, so the proportions hold at any viewport width. */
 
 body.lav-home{
-  --u: calc(100vw / 1672);          /* 1 reference pixel */
+  /* One unit for the whole composition. It must follow BOTH axes: scaling by
+     width alone grows the type while a short viewport takes away the room for
+     it, which is what made the blocks collide above 16:9. */
+  --u: min(calc(100vw / 1672), calc(100svh / 941));
   --ink: #4a3a6b;                   /* nav / body ink */
   --ink-soft: #6a5a94;
   --ink-script: #5e4c8c;            /* measured from the source frame */
@@ -46,7 +49,14 @@ body.lav-home .topbar.is-solid{
 /* the hero sits under the fixed header by design; everything after it must not */
 /* scroll-padding must sit on the scroll container (html), not on body */
 html:has(body.lav-home){ scroll-padding-top: calc(100vw / 1672 * 128); }
-body.lav-home #lectures{ padding-top: calc(150 * var(--u)); }
+body.lav-home #lectures{
+  position: relative; z-index: 4;
+  margin-top: -100svh;                       /* rise over the pinned lavender */
+  padding-top: calc(120 * var(--u));
+  border-radius: calc(44 * var(--u)) calc(44 * var(--u)) 0 0;
+  background: #faf8ff;
+  box-shadow: 0 calc(-24 * var(--u)) calc(70 * var(--u)) rgba(76, 58, 132, .14);
+}
 
 body.lav-home .brand{
   display: flex; flex-direction: column; align-items: center;
@@ -70,6 +80,7 @@ body.lav-home .brand::after{
   color: #7a68a6; margin-top: calc(6 * var(--u));
 }
 
+body.lav-home .topbar > *{ flex: 0 0 auto; }
 body.lav-home .topnav{
   display: flex; align-items: center; gap: calc(34 * var(--u));
   margin-right: auto;
@@ -115,7 +126,10 @@ body.lav-home{
 }
 
 /* ───────────────────────── scene ───────────────────────── */
-.lav-scene{ position: relative; height: calc(100svh + 160svh); background: #efeafb; }
+/* hero screen + a runway the frames advance along. The section that follows
+   is pulled up over the last screen of that runway, so it rises onto the
+   lavender while the lavender is still pinned and still stepping frames. */
+.lav-scene{ position: relative; height: calc(100svh + 210svh); background: #efeafb; }
 
 .lav-bg{
   position: sticky; top: 0; height: 100svh; overflow: hidden; z-index: 1;
@@ -138,13 +152,20 @@ body.lav-home{
 }
 
 /* ─────────────────────── hero copy ─────────────────────── */
-.lav-copy{ position: absolute; inset: 0; }
+/* The copy lives on a stage of exactly the reference size, centred like the
+   cover crop behind it. Every child is placed in reference pixels, so the
+   layout is one scaled copy of the design and cannot collide at any aspect. */
+.lav-copy{
+  position: absolute; left: 50%; top: 50%;
+  width: calc(1672 * var(--u)); height: calc(941 * var(--u));
+  transform: translate(-50%, -50%);
+}
 
-/* headline ink box: left 193/1672, top 198/941, width 855/1672.
+/* headline ink box: left 193, top 198, width 855 of the reference frame.
    The SVG viewBox is cropped to the ink itself, so the box is the ink. */
 .lav-title{
-  position: absolute; left: 11.542%; top: 21.04%;
-  width: 51.136%; margin: 0;
+  position: absolute; left: calc(193 * var(--u)); top: calc(198 * var(--u));
+  width: calc(855 * var(--u)); margin: 0;
 }
 .lav-title img{ display: block; width: 100%; height: auto; }
 .lav-title span{
@@ -153,7 +174,8 @@ body.lav-home{
 }
 
 .lav-stack{
-  position: absolute; left: 11.542%; width: 51.136%; top: 54.6%;
+  position: absolute; left: calc(193 * var(--u)); width: calc(855 * var(--u));
+  top: calc(514 * var(--u));
   display: flex; flex-direction: column; align-items: center; text-align: center;
 }
 .lav-eyebrow{
@@ -198,7 +220,7 @@ body.lav-home{
 
 /* ───────────────────── scroll indicator ───────────────────── */
 .lav-scroll{
-  position: absolute; left: 50%; bottom: 4.4%; transform: translateX(-50%);
+  position: absolute; left: 50%; bottom: calc(44 * var(--u)); transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center;
   gap: calc(14 * var(--u)); color: var(--ink-soft); text-decoration: none;
 }
@@ -229,13 +251,18 @@ body.lav-home{
 /* ───────────────────────── narrow ───────────────────────── */
 @media (max-width: 900px){
   body.lav-home{ --u: calc(100vw / 900); }
+  .lav-copy{ left: 0; top: 0; width: auto; height: auto; inset: 0; transform: none; }
+  .lav-scroll{ bottom: 4.4%; }
   body.lav-home .topbar{ height: calc(130 * var(--u)); padding: 0 calc(30 * var(--u)); gap: calc(16 * var(--u)); }
   body.lav-home .topnav{ display: none; }
   body.lav-home .topbar .ghost-btn:not(#accountLink){ display: none; }
   body.lav-home .brand{ margin-right: auto; }
   body.lav-home .brand small{ display: block !important; }
   html:has(body.lav-home){ scroll-padding-top: calc(100vw / 900 * 150); }
-  body.lav-home #lectures{ padding-top: calc(180 * var(--u)); }
+  body.lav-home #lectures{
+    margin-top: -70svh; padding-top: calc(140 * var(--u));
+    border-radius: calc(56 * var(--u)) calc(56 * var(--u)) 0 0;
+  }
   .lav-scene{ height: calc(100svh + 120svh); }
   /* a 16:9 frame cropped to portrait loses the bouquet unless the crop
      is pulled to the right, where the flowers are */
