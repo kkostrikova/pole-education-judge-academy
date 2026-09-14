@@ -113,3 +113,9 @@
   .pe-bird--sway.pe-bird--result{ width: 56px; }
   .pe-bird--empty{ width: 46px; }
 }
+
+/* The still poses are lazy-loaded <img> with no dimensions, so until the
+   file arrives the browser reserves a 1px-tall box and the row jumps when
+   it lands. Reserving the real ratio removes the shift. */
+.pe-bird--empty{ aspect-ratio: 279 / 320; }
+.pe-bird--badge{ aspect-ratio: 320 / 306; }
