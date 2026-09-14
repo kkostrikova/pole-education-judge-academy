@@ -205,7 +205,8 @@
     const host = document.querySelector('.lav-petals');
     if (!host || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const COUNT = narrow ? 8 : 16;
+    /* the layer is the whole viewport now, not just the hero */
+    const COUNT = narrow ? 9 : 18;
     const rnd = (a, b) => a + Math.random() * (b - a);
     const petals = [];
     let W = host.clientWidth, H = host.clientHeight;
@@ -214,14 +215,14 @@
     for (let i = 0; i < COUNT; i++) {
       const el = document.createElement('i');
       el.className = 'lav-petal';
-      /* smaller, fainter and always a little out of focus: at the old size
-         and opacity they read as specks of dirt on the photograph rather
-         than as petals drifting past */
-      const size = rnd(7, 17);
+      /* Weight matters more than count here. Faint and blurred, a petal
+         stops being a petal and becomes a mark on the photograph — which is
+         exactly what went wrong when I softened these. */
+      const size = rnd(10, 26);
       el.style.width = size + 'px';
       el.style.height = (size * rnd(.5, .72)) + 'px';
-      el.style.opacity = String(rnd(.10, .28));
-      el.style.filter = 'blur(' + rnd(.7, 3).toFixed(1) + 'px)';
+      el.style.opacity = String(rnd(.22, .55));
+      el.style.filter = 'blur(' + rnd(0, 1.8).toFixed(1) + 'px)';
       host.appendChild(el);
       petals.push({
         el, size,
@@ -232,7 +233,6 @@
       });
     }
 
-    host.parentElement.style.pointerEvents = 'none';
     window.addEventListener('pointermove', e => {
       const r = host.getBoundingClientRect();
       pointer.x = (e.clientX - r.left) / r.width;

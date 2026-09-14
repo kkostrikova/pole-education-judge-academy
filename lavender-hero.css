@@ -170,8 +170,12 @@ body.lav-home{
 }
 
 /* ───────────────────────── petals ───────────────────────── */
+/* The petals used to live inside the hero. They drift over the whole page
+   now — the author wanted them to keep falling as she scrolls — so the
+   layer is fixed to the viewport, above the section backgrounds and below
+   anything you can click. */
 .lav-petals{
-  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  position: fixed; inset: 0; z-index: 3; pointer-events: none;
   overflow: hidden;
 }
 .lav-petal{
