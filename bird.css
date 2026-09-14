@@ -54,6 +54,19 @@
 }
 @keyframes pe-sway{ to{ background-position-x: right; } }
 
+/* The quiet places — the completed badge and the empty states — carry the
+   close-up the author picked: fifteen cells of it tilting its head and
+   looking out of the page. Ping-pong again: the take has no natural loop,
+   and alternate has no seam to hide. */
+.pe-bird--curious{
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 1500% 100%;
+  aspect-ratio: 150 / 167;
+  animation: pe-curious 1.25s steps(15, jump-none) infinite alternate;
+}
+@keyframes pe-curious{ to{ background-position-x: right; } }
+
 .pe-bird--result{
   width: clamp(64px, 9vw, 96px);
   flex: 0 0 auto;
@@ -86,13 +99,13 @@
 
 /* completed badge on a module card */
 .module-status.done{ display: inline-flex !important; align-items: center; gap: 7px; }
-.pe-bird--badge{ width: 26px; flex: 0 0 auto; margin: -4px 0; }
+.pe-bird--badge{ width: 27px; flex: 0 0 auto; margin: -5px 0; }
 
 /* empty states */
 [data-pe-empty]{ display: flex; align-items: center; gap: 14px; }
 .pe-bird--empty{
-  width: 56px; flex: 0 0 auto; opacity: .92;
-  animation: pe-bird-breathe 4.4s ease-in-out infinite;
+  width: 58px; flex: 0 0 auto; opacity: .95;
+  animation: pe-curious 1.25s steps(15, jump-none) infinite alternate;
 }
 .pe-bird--empty:hover{ translate: 0 -5px; rotate: -4deg; }
 .pe-bird--badge:hover{ translate: 0 -3px; rotate: -6deg; scale: 1.1; }
@@ -101,7 +114,7 @@
   .pe-bird{ transition: none; }
   .pe-bird--result, .pe-bird--empty{ animation: none; }
   /* frozen on the first cell, which is a complete pose on its own */
-  .pe-bird--flap, .pe-bird--sway{ animation: none; background-position-x: left; }
+  .pe-bird--flap, .pe-bird--sway, .pe-bird--curious{ animation: none; background-position-x: left; }
   .pe-bird:hover{ translate: none; rotate: none; scale: none; }
 }
 /* on touch there is no hover, so the resting motion is all there is */
@@ -114,8 +127,5 @@
   .pe-bird--empty{ width: 46px; }
 }
 
-/* The still poses are lazy-loaded <img> with no dimensions, so until the
-   file arrives the browser reserves a 1px-tall box and the row jumps when
-   it lands. Reserving the real ratio removes the shift. */
-.pe-bird--empty{ aspect-ratio: 279 / 320; }
-.pe-bird--badge{ aspect-ratio: 279 / 320; }
+/* every pose is a sprite now, so the box is reserved by aspect-ratio on the
+   modifier and nothing jumps when the sheet arrives */

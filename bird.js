@@ -8,15 +8,7 @@
 
   const FLAP = 'assets/bird/flap.webp?v=20260914-bird8';
   const SWAY = 'assets/bird/sway.webp?v=20260914-bird9';
-  const SRC = {
-    happy: 'assets/bird/happy.webp?v=20260914-bird1',
-    sad:   'assets/bird/sad.webp?v=20260914-bird1',
-    idle:  'assets/bird/idle.webp?v=20260914-bird1',
-    /* the "completed" badge used the pose sitting on a leaf, which has
-       drooping brows and reads as downcast — the wrong face entirely on a
-       module the student has just finished. The upright one is cheerful. */
-    badge: 'assets/bird/idle.webp?v=20260914-bird1'
-  };
+  const CURIOUS = 'assets/bird/curious.webp?v=20260914-bird12';
   const ALT = {
     happy: 'Тест складено',
     sad:   'Спробуйте ще раз',
@@ -28,28 +20,27 @@
      the way they do in the clip instead of sitting there: the cheering one
      beats its wings, the sympathetic one only breathes and sways. */
   const STRIP = {
-    happy: { src: FLAP, mod: 'pe-bird--flap' },
-    sad:   { src: SWAY, mod: 'pe-bird--sway' }
+    happy:  { src: FLAP,    mod: 'pe-bird--flap' },
+    sad:    { src: SWAY,    mod: 'pe-bird--sway' },
+    /* the author's favourite: the close-up that tilts its head and looks
+       out of the page. It carries both quiet places — the completed badge
+       and the empty states — so the helper is alive wherever it appears. */
+    idle:   { src: CURIOUS, mod: 'pe-bird--curious' },
+    badge:  { src: CURIOUS, mod: 'pe-bird--curious' }
   };
 
   function make(kind, cls) {
     const strip = STRIP[kind];
-    if (strip) {
-      const el = document.createElement('span');
-      el.className = 'pe-bird ' + strip.mod + ' ' + cls;
-      el.style.backgroundImage = 'url(' + strip.src + ')';
+    const el = document.createElement('span');
+    el.className = 'pe-bird ' + strip.mod + ' ' + cls;
+    el.style.backgroundImage = 'url(' + strip.src + ')';
+    if (ALT[kind]) {
       el.setAttribute('role', 'img');
       el.setAttribute('aria-label', ALT[kind]);
-      return el;
+    } else {
+      el.setAttribute('aria-hidden', 'true');
     }
-    const img = document.createElement('img');
-    img.className = 'pe-bird ' + cls;
-    img.src = SRC[kind];
-    img.alt = ALT[kind];
-    if (!ALT[kind]) img.setAttribute('aria-hidden', 'true');
-    img.decoding = 'async';
-    img.loading = 'lazy';
-    return img;
+    return el;
   }
 
   /* ── module test result ───────────────────────────────────
