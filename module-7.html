@@ -46,7 +46,7 @@
   <div class="jc-layout">
     <div class="jc-visual">
       <span class="jc-code" id="jcCode"></span>
-      <img id="jcImage" alt="">
+      <img id="jcImage" alt=""><p id="jcMissing" class="jc-missing" hidden>Референсне зображення готується</p>
       <h3 id="jcTitle"></h3>
       <p>Референсне зображення елемента · без підсвічування відповіді</p>
     </div>
@@ -86,7 +86,7 @@ const jcCases=[
   ['Положення ніг · розкриті в поздовжньому шпагаті 180°','fixed'],
   ['Утримання · не менше 2 секунд','fixed']
  ]},
- {code:'ПК1',title:'Фенікс у викручений',img:'assets/module7/pk1.b64',cards:[
+ {code:'ПК1',title:'Фенікс у викручений',cards:[
   ['Початкова позиція · на підлозі','fixed'],
   ['Перехід · з звиття в прапор','fixed'],
   ['Перехід · без дедліфту','secondary'],
@@ -136,7 +136,7 @@ function jcCountDraw(){
 function jcDraw(){
   jcTabsDraw();
   const c=jcCases[jcCurrent];
-  jcCode.textContent=c.code;jcTitle.textContent=c.title;jcImage.alt=c.code+' '+c.title;jcImage.removeAttribute('src');jcLoadImage(c.img).catch(()=>{jcImage.alt='Не вдалося завантажити зображення'});
+  jcCode.textContent=c.code;jcTitle.textContent=c.title;jcImage.alt=c.code+' '+c.title;jcImage.removeAttribute('src');jcMissing.hidden=Boolean(c.img);jcImage.hidden=!c.img;if(c.img)jcLoadImage(c.img).catch(()=>{jcImage.hidden=true;jcMissing.hidden=false});
   jcPool.innerHTML='';jcFixed.innerHTML='';jcSecondary.innerHTML='';jcSelected=null;
   jcResult.className='result';jcResult.textContent='';jcLegend.classList.remove('show');
   jcShuffle(c.cards.map((x,i)=>[x[0],x[1],i])).forEach(x=>jcPool.appendChild(jcCard([x[0],x[1]],x[2])));

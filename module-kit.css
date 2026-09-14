@@ -378,3 +378,28 @@ body .proto-row .points{
   max-width: 170px;
   text-align: right;
 }
+
+/* ── module 7: the four reference images ──────────────────── */
+/* They are 166x137, 262x125 and 334x313, drawn at natural size, so the card
+   was a different size for every element. One 300px box for all four.
+   object-fit: scale-down, not contain: contain would blow a 166px photo up
+   to 300 and make it mush; scale-down centres it at its own size. */
+body .jc-visual img{
+  display: block;
+  width: 100%;
+  height: 300px;
+  object-fit: scale-down;
+  margin: 0 auto;
+}
+body .jc-visual img[hidden],
+body .jc-missing[hidden]{ display: none !important; }
+body .jc-missing{
+  display: grid; place-items: center;
+  width: 100%; height: 300px;
+  margin: 0;
+  border: 1px dashed #c9bcef;
+  border-radius: 16px;
+  background: #f8f5ff;
+  color: #7d76a0 !important;
+  font: 600 13px/1.5 'Manrope', system-ui, sans-serif;
+}
