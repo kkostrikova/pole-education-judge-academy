@@ -22,6 +22,6 @@ window.PE_CONFIG = {
     const s=document.createElement('style');s.id='pe-font-system';s.textContent=`html,body,button,input,select,textarea{font-family:'Manrope',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important}h1,h2,.hero h1,.section-head h2,.final-copy h2,.completion-copy h2,.lecture-hub h2,.start-card h1,.result-card h1{font-family:'Cormorant Garamond',Georgia,serif!important;letter-spacing:-.02em}.hero h1{font-weight:600!important;line-height:.94!important}.section-head h2,.final-copy h2,.completion-copy h2,.lecture-hub h2{font-weight:600!important}.brand-manifesto-script{font-family:'Allura',cursive!important;font-weight:400!important;letter-spacing:.015em!important;line-height:.95!important}`;document.head.appendChild(s);
   }
   if(!document.getElementById('pe-lavender-scroll')){
-    const script=document.createElement('script');script.id='pe-lavender-scroll';script.src='lavender-scroll.js?v=20260913-exact3';document.body.appendChild(script);
+    const script=document.createElement('script');script.id='pe-lavender-scroll';script.src='lavender-scroll.js?v=20260914-mobilefix1';document.body.appendChild(script);
   }
 })();
