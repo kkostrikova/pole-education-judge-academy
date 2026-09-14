@@ -466,3 +466,38 @@ body.lav-home .lecture-launch strong{ margin: calc(10 * var(--u)) 0 calc(6 * var
   body.lav-home .lecture-hub{ align-items: stretch; }
   body.lav-home .lecture-launch{ padding: calc(24 * var(--u)) calc(22 * var(--u)); }
 }
+
+/* course progress at the head of the module grid: the old ring lives in the
+   legacy hero, which this redesign hides */
+body .course-bar{
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 0 22px;
+  padding: 18px 22px;
+  border: 1px solid #ded5f6;
+  border-radius: 20px;
+  background: rgba(255,255,255,.72);
+  box-shadow: 0 10px 30px rgba(76,58,132,.07);
+}
+body .course-bar[hidden]{ display: none !important; }
+body .course-bar-copy{ flex: 1 1 300px; min-width: 0; }
+body .course-bar-copy strong{
+  display: block; margin-bottom: 10px;
+  font: 700 15px/1.2 'Manrope', system-ui, sans-serif;
+  color: #3b2d5e;
+}
+body .course-bar-track{
+  height: 8px; border-radius: 99px; background: #e9e2f7; overflow: hidden;
+}
+body .course-bar-track i{
+  display: block; height: 100%; width: 0;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #8b5cf6, #5a2d91);
+  transition: width .5s cubic-bezier(.2,.8,.3,1);
+}
+body .progress-continue{ flex: 0 0 auto; }
+body .progress-continue.hidden{ display: none !important; }
+@media (max-width: 620px){
+  body .course-bar{ gap: 14px; }
+  body .progress-continue{ width: 100%; justify-content: center; }
+}

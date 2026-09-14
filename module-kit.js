@@ -19,6 +19,9 @@
     step: (i, t) => `Модуль ${i} з ${t}`,
     done: 'Складено',
     open: 'Не складено',
+    tried: p => `Спроба · ${p}%`,
+    doneAt: p => `Складено · ${p}%`,
+    lastTry: p => ` Минулого разу — ${p}%.`,
     facts: 'У модулі',
     top: 'Нагору',
     finishDoneTitle: `Модуль ${n} складено`,
@@ -47,6 +50,10 @@
     catch (_) { return {}; }
   }
   const isDone = i => Boolean((progress()[i] || {}).passed);
+  const bestScore = i => {
+    const v = Number((progress()[i] || {}).score);
+    return Number.isFinite(v) && v > 0 ? Math.round(v) : null;
+  };
 
   /* ── hero ───────────────────────────────────────────────── */
   const hero = [...wrap.children].find(el => el.querySelector && el.querySelector('a.back'));
@@ -179,8 +186,11 @@
 
   function paint() {
     const done = isDone(n);
+    const score = bestScore(n);
     if (stateChip) {
-      stateChip.textContent = done ? T.done : T.open;
+      stateChip.textContent = done
+        ? (score ? T.doneAt(score) : T.done)
+        : (score ? T.tried(score) : T.open);
       stateChip.dataset.state = done ? 'done' : 'open';
     }
 
@@ -189,7 +199,7 @@
 
     if (!done) {
       title = T.finishOpenTitle;
-      copy = n < TOTAL ? T.openCopy : T.openCopyLast;
+      copy = (n < TOTAL ? T.openCopy : T.openCopyLast) + (score ? T.lastTry(score) : '');
       actions = `<a class="btn primary" href="#${quiz ? quiz.id : ''}">${T.toQuiz}</a>` +
                 `<span class="mk-hint">${n < TOTAL ? T.hint(n + 1) : T.hintLast}</span>`;
     } else if (n < TOTAL) {
