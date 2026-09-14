@@ -1,0 +1,39 @@
+/* Pole Education — the bird, in the three places it does work. */
+.pe-bird{ display: block; height: auto; pointer-events: none; user-select: none; }
+
+/* test result: the bird sits at the end of the message, sized to it */
+.result.has-bird, .quiz-result.has-bird, #quizResult.has-bird{
+  display: flex !important;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+  min-height: 92px;
+}
+.pe-bird--result{
+  width: clamp(64px, 9vw, 96px);
+  flex: 0 0 auto;
+  /* no negative margins: they pushed the bird outside the rounded panel.
+     The row grows to fit it instead, which reads as intended rather than
+     as something escaping its box. */
+  animation: pe-bird-in .5s cubic-bezier(.2,1.2,.4,1) both;
+}
+@keyframes pe-bird-in{
+  from{ opacity: 0; transform: translateY(10px) scale(.82); }
+  to  { opacity: 1; transform: none; }
+}
+
+/* completed badge on a module card */
+.module-status.done{ display: inline-flex !important; align-items: center; gap: 7px; }
+.pe-bird--badge{ width: 26px; flex: 0 0 auto; margin: -4px 0; }
+
+/* empty states */
+[data-pe-empty]{ display: flex; align-items: center; gap: 14px; }
+.pe-bird--empty{ width: 56px; flex: 0 0 auto; opacity: .92; }
+
+@media (prefers-reduced-motion: reduce){
+  .pe-bird--result{ animation: none; }
+}
+@media (max-width: 620px){
+  .pe-bird--result{ width: 68px; }
+  .pe-bird--empty{ width: 46px; }
+}
