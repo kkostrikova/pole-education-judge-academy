@@ -32,3 +32,83 @@
 .module-card.locked{opacity:.70!important;filter:none!important;background:linear-gradient(145deg,#fcfbff,#f5f2f9)!important}.module-card:hover{transform:translateY(-4px)!important;border-color:#b29fe9!important;box-shadow:0 22px 58px rgba(76,58,132,.12)!important}
 @media(max-width:760px){.module-card{min-height:286px;padding:23px 21px!important}.module-card::after{right:22px!important;top:22px!important}.module-top{padding-right:50px}.module-card h3{font-size:29px!important;margin:36px 0 10px!important;max-width:16ch!important}.module-card p{font-size:14px!important}.module-card .module-actions{grid-template-columns:1fr 1fr;gap:8px;padding-top:22px}}
 @media(max-width:520px){.module-card{min-height:270px;padding:21px 18px!important;border-radius:22px!important}.module-card h3{font-size:27px!important;max-width:100%!important}.module-card .module-actions{grid-template-columns:1fr!important}.module-card .module-link{font-size:12px!important}.module-card::before{width:145px!important;height:145px!important}.module-card::after{width:38px!important;height:38px!important}}
+
+/* ── the cards get their faces back ───────────────────────────
+   Eight identical white rectangles told the reader nothing about what was
+   inside them. Each module already had a photograph in the repository; the
+   lavender redesign painted over the dark card those photos were made for
+   and they have been unused since — and the file the cards still pointed at,
+   module-approved-N.jpg, is not a decodable image at all, so even the old
+   design was drawing nothing. The webp of the same name is fine.
+
+   The photo now sits as a band across the head of the card, with the module
+   number and the status on it, and the white body below. */
+.module-card:nth-child(1){--photo:url('assets/module-photo-1.webp?v=20260914-cards1')!important}
+.module-card:nth-child(2){--photo:url('assets/module-photo-2.webp?v=20260914-cards1')!important}
+.module-card:nth-child(3){--photo:url('assets/module-photo-3.webp?v=20260914-cards1')!important}
+.module-card:nth-child(4){--photo:url('assets/module-photo-4.webp?v=20260914-cards1')!important}
+.module-card:nth-child(5){--photo:url('assets/module-photo-5.webp?v=20260914-cards1')!important}
+.module-card:nth-child(6){--photo:url('assets/module-photo-6.webp?v=20260914-cards1')!important}
+.module-card:nth-child(7){--photo:url('assets/module-photo-7.webp?v=20260914-cards1')!important}
+.module-card:nth-child(8){--photo:url('assets/module-photo-8.webp?v=20260914-cards1')!important}
+
+.module-card{ padding: 0 0 26px !important; }
+
+/* ::before was a decorative blob and ::after a stray dot in the corner;
+   the band is worth more than either */
+.module-card::before{
+  inset: 0 0 auto 0 !important;
+  right: 0 !important; top: 0 !important;
+  width: auto !important; height: 148px !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  background-image:
+    linear-gradient(180deg, rgba(18,9,28,.10) 0%, rgba(18,9,28,.30) 52%, rgba(255,255,255,.96) 100%),
+    var(--photo) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  z-index: 0 !important;
+}
+.module-card::after{ display: none !important; }
+
+.module-top{
+  position: absolute !important;
+  top: 0; left: 0; right: 0;
+  padding: 18px 22px !important;
+  z-index: 2;
+}
+.module-card .module-no{
+  color: #fff !important;
+  text-shadow: 0 1px 6px rgba(20,10,30,.55) !important;
+}
+.module-card .module-status{
+  background: rgba(255,255,255,.94) !important;
+  border-color: rgba(255,255,255,.7) !important;
+  box-shadow: 0 4px 14px rgba(20,10,30,.18) !important;
+}
+.module-card h3{ margin: 168px 26px 11px !important; }
+.module-card p{ margin: 0 26px !important; }
+.module-card .module-actions{ margin: auto 26px 0 !important; }
+
+/* the photo lifts a little as the card does */
+.module-card:hover::before{ transform: scale(1.04) !important; }
+.module-card.locked::before{ filter: grayscale(.55) brightness(.92); }
+
+@media (max-width: 620px){
+  .module-card::before{ height: 128px !important; }
+  .module-card h3{ margin: 146px 20px 10px !important; }
+  .module-card p{ margin: 0 20px !important; }
+  .module-card .module-actions{ margin: auto 20px 0 !important; }
+  .module-top{ padding: 14px 18px !important; }
+}
+
+/* "Відеолекція ↗ →" carried two arrows, and "Інтерактивний модуль" wrapped
+   onto a second line inside a 239px button */
+.module-card .module-link{
+  white-space: nowrap !important;
+  font-size: 12px !important;
+  padding: 11px 10px !important;
+  gap: 6px !important;
+}
+.module-card .lecture-module-link::after{ content: '' !important; display: none !important; }
+.module-card .module-link.locked-link{ white-space: normal !important; }
