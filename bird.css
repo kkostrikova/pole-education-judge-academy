@@ -54,6 +54,7 @@
 }
 @keyframes pe-sway{ to{ background-position-x: right; } }
 
+
 .pe-bird--result{
   width: clamp(64px, 9vw, 96px);
   flex: 0 0 auto;
@@ -86,13 +87,12 @@
 
 /* completed badge on a module card */
 .module-status.done{ display: inline-flex !important; align-items: center; gap: 7px; }
-.pe-bird--badge{ width: 26px; flex: 0 0 auto; margin: -4px 0; }
+.pe-bird--badge{ width: 44px; flex: 0 0 auto; margin: -12px -2px -12px -6px; }
 
 /* empty states */
 [data-pe-empty]{ display: flex; align-items: center; gap: 14px; }
 .pe-bird--empty{
-  width: 56px; flex: 0 0 auto; opacity: .92;
-  animation: pe-bird-breathe 4.4s ease-in-out infinite;
+  width: 76px; flex: 0 0 auto; opacity: .96;
 }
 .pe-bird--empty:hover{ translate: 0 -5px; rotate: -4deg; }
 .pe-bird--badge:hover{ translate: 0 -3px; rotate: -6deg; scale: 1.1; }
@@ -111,11 +111,23 @@
 @media (max-width: 620px){
   .pe-bird--result{ width: 68px; }
   .pe-bird--sway.pe-bird--result{ width: 56px; }
-  .pe-bird--empty{ width: 46px; }
+  .pe-bird--empty{ width: 60px; }
 }
 
-/* The still poses are lazy-loaded <img> with no dimensions, so until the
-   file arrives the browser reserves a 1px-tall box and the row jumps when
-   it lands. Reserving the real ratio removes the shift. */
-.pe-bird--empty{ aspect-ratio: 279 / 320; }
-.pe-bird--badge{ aspect-ratio: 320 / 306; }
+/* every pose is a sprite now, so the box is reserved by aspect-ratio on the
+   modifier and nothing jumps when the sheet arrives */
+
+/* ── one bird per module ──────────────────────────────────── */
+/* Ten cells wide in every sheet; the height differs per pose, so the ratio
+   is set inline where the element is built. Ping-pong again: none of these
+   takes loops on its own, and alternate has no seam to hide. */
+.pe-bird--pose{
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 1000% 100%;
+  animation: pe-pose 1.15s steps(10, jump-none) infinite alternate;
+}
+@keyframes pe-pose{ to{ background-position-x: right; } }
+@media (prefers-reduced-motion: reduce){
+  .pe-bird--pose{ animation: none; background-position-x: left; }
+}

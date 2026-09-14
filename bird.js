@@ -8,17 +8,26 @@
 
   const FLAP = 'assets/bird/flap.webp?v=20260914-bird8';
   const SWAY = 'assets/bird/sway.webp?v=20260914-bird9';
-  const SRC = {
-    happy: 'assets/bird/happy.webp?v=20260914-bird1',
-    sad:   'assets/bird/sad.webp?v=20260914-bird1',
-    idle:  'assets/bird/idle.webp?v=20260914-bird1',
-    leaf:  'assets/bird/leaf.webp?v=20260914-bird1'
+  /* One bird per module, chosen to suit it: settled on a leaf for planning,
+     peering about for the stage survey, eyes closed for the ethics code, in
+     flight for difficulty, the author's favourite close-up for deductions,
+     cheering for artistry, winking for the compulsory elements, and the
+     stern one for the head judge. All ten cells wide, all played ping-pong. */
+  const POSE_H = {
+    1: { h: 97 },
+    2: { h: 125 },
+    3: { h: 139 },
+    4: { h: 96 },
+    5: { h: 123 },
+    6: { h: 121 },
+    7: { h: 125 },
+    8: { h: 93 }
   };
+  const poseSrc = n => 'assets/bird/m' + n + '.webp?v=20260914-bird13';
   const ALT = {
     happy: 'Тест складено',
     sad:   'Спробуйте ще раз',
-    idle:  '',
-    leaf:  'Модуль завершено'
+    badge: 'Модуль завершено'
   };
 
   /* Both result poses are strips of cells played with steps(), so they move
@@ -29,24 +38,32 @@
     sad:   { src: SWAY, mod: 'pe-bird--sway' }
   };
 
+  /* the module a page (or a card) belongs to; 5 is the fallback, which is
+     the pose the author picked as her favourite */
+  const PAGE_MODULE = Number((location.pathname.match(/module-(\d)\.html/) || [])[1]) || 0;
+
+  function pose(n, cls) {
+    const i = n >= 1 && n <= 8 ? n : 5;
+    const el = document.createElement('span');
+    el.className = 'pe-bird pe-bird--pose ' + cls;
+    el.style.backgroundImage = 'url(' + poseSrc(i) + ')';
+    el.style.aspectRatio = '110 / ' + POSE_H[i].h;
+    el.setAttribute('aria-hidden', 'true');
+    return el;
+  }
+
   function make(kind, cls) {
     const strip = STRIP[kind];
-    if (strip) {
-      const el = document.createElement('span');
-      el.className = 'pe-bird ' + strip.mod + ' ' + cls;
-      el.style.backgroundImage = 'url(' + strip.src + ')';
+    const el = document.createElement('span');
+    el.className = 'pe-bird ' + strip.mod + ' ' + cls;
+    el.style.backgroundImage = 'url(' + strip.src + ')';
+    if (ALT[kind]) {
       el.setAttribute('role', 'img');
       el.setAttribute('aria-label', ALT[kind]);
-      return el;
+    } else {
+      el.setAttribute('aria-hidden', 'true');
     }
-    const img = document.createElement('img');
-    img.className = 'pe-bird ' + cls;
-    img.src = SRC[kind];
-    img.alt = ALT[kind];
-    if (!ALT[kind]) img.setAttribute('aria-hidden', 'true');
-    img.decoding = 'async';
-    img.loading = 'lazy';
-    return img;
+    return el;
   }
 
   /* ── module test result ───────────────────────────────────
@@ -104,7 +121,14 @@
   function markCards() {
     document.querySelectorAll('.module-status.done').forEach(s => {
       if (s.querySelector('.pe-bird')) return;
-      s.prepend(make('leaf', 'pe-bird--badge'));
+      const card = s.closest('.module-card');
+      const no = card && card.querySelector('.module-no');
+      const n = no ? parseInt(no.textContent, 10) : 0;
+      const b = pose(n, 'pe-bird--badge');
+      b.removeAttribute('aria-hidden');
+      b.setAttribute('role', 'img');
+      b.setAttribute('aria-label', ALT.badge);
+      s.prepend(b);
     });
   }
   const grid = document.getElementById('moduleGrid');
@@ -116,6 +140,6 @@
   /* ── empty states ─────────────────────────────────────── */
   document.querySelectorAll('[data-pe-empty]').forEach(el => {
     if (el.querySelector('.pe-bird')) return;
-    el.prepend(make('idle', 'pe-bird--empty'));
+    el.prepend(pose(PAGE_MODULE, 'pe-bird--empty'));
   });
 })();
