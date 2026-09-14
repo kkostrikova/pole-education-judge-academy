@@ -59,11 +59,45 @@
     paint(img);
   }
 
+  /* How far the hero has scrolled away — still drives the depth and the
+     header, but no longer the frames. */
   function progress() {
     const travel = scene.offsetHeight - window.innerHeight;
     if (travel <= 0) return 0;
     const y = -scene.getBoundingClientRect().top;
     return Math.min(1, Math.max(0, y / travel));
+  }
+
+  /* ── what moves the lavender ──────────────────────────────
+     The pointer does, where there is one. A cursor sweeping the flowers
+     reads far better than a long scroll that exists only to play frames,
+     and it lets the page below start right after the hero. Touch screens
+     have no cursor, so there the sequence breathes on its own. */
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let target = 0;      // 0..1, where the sequence wants to be
+  let eased = 0;       // 0..1, where it actually is
+  let idle = 0;        // drift phase for touch screens
+
+  function pointerTo(e) {
+    const r = scene.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) return;
+    const x = (e.clientX - r.left) / Math.max(1, r.width);
+    const y = (e.clientY - Math.max(0, r.top)) / Math.max(1, window.innerHeight);
+    /* mostly horizontal, with a little vertical so the whole field responds */
+    target = Math.min(1, Math.max(0, x * 0.78 + y * 0.22));
+  }
+
+  let raf = 0;
+  function loop(now) {
+    if (finePointer && !calm) {
+      eased += (target - eased) * 0.12;          // trails the cursor, never snaps
+    } else if (!calm) {
+      idle += 0.0022;
+      eased = (Math.sin(idle) + 1) / 2;          // slow there-and-back
+    }
+    draw(Math.round(eased * (N - 1)));
+    raf = requestAnimationFrame(loop);
   }
 
   /* the header is transparent while the lavender is behind it, solid after */
@@ -90,7 +124,6 @@
 
   function render() {
     const p = progress();
-    draw(Math.round(p * (N - 1)));
     parallax(p);
     header();
   }
@@ -114,6 +147,7 @@
     draw(0);
     canvas.classList.add('is-live');
     render();
+    if (!raf) raf = requestAnimationFrame(loop);
     const queue = [];
     for (let i = 1; i < N; i++) queue.push(i);
     const workers = new Array(4).fill(0).map(async () => {
@@ -134,6 +168,9 @@
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
+  if (finePointer) {
+    window.addEventListener('pointermove', pointerTo, { passive: true });
+  }
   window.addEventListener('resize', () => { resize(); render(); }, { passive: true });
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', () => { resize(); render(); }, { passive: true });

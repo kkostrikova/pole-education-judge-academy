@@ -51,7 +51,7 @@ body.lav-home .topbar.is-solid{
 html:has(body.lav-home){ scroll-padding-top: calc(100vw / 1672 * 128); }
 body.lav-home #lectures{
   position: relative; z-index: 4;
-  margin-top: -100svh;                       /* rise over the pinned lavender */
+  margin-top: -70svh;                        /* rise over the pinned lavender */
   padding-top: calc(120 * var(--u));
   border-radius: calc(44 * var(--u)) calc(44 * var(--u)) 0 0;
   background: #faf8ff;
@@ -128,10 +128,11 @@ body.lav-home{
 }
 
 /* ───────────────────────── scene ───────────────────────── */
-/* hero screen + a runway the frames advance along. The section that follows
-   is pulled up over the last screen of that runway, so it rises onto the
-   lavender while the lavender is still pinned and still stepping frames. */
-.lav-scene{ position: relative; height: calc(100svh + 210svh); background: #efeafb; }
+/* The frames follow the cursor now, so the long runway that existed only to
+   play them is gone: 210svh of scrolling past a near-static field was the
+   dead stretch. What is left is just enough for the next section to rise
+   onto the lavender, which is the part worth keeping. */
+.lav-scene{ position: relative; height: calc(100svh + 70svh); background: #efeafb; }
 
 .lav-bg{
   position: sticky; top: 0; height: 100svh; overflow: hidden; z-index: 1;
@@ -382,7 +383,7 @@ body.lav-home{
     margin-top: -70svh; padding-top: calc(74 * var(--u));
     border-radius: calc(26 * var(--u)) calc(26 * var(--u)) 0 0;
   }
-  .lav-scene{ height: calc(100svh + 120svh); }
+  .lav-scene{ height: calc(100svh + 60svh); }
   /* a 16:9 frame cropped to portrait loses the bouquet unless the crop
      is pulled to the right, where the flowers are */
   .lav-bg{ --focus: 62; }
