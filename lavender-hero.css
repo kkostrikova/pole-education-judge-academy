@@ -65,7 +65,7 @@ body.lav-home .brand small{
   margin-top: calc(7 * var(--u)); padding-left: .42em;
 }
 body.lav-home .brand::after{
-  content: 'by K. Kostrikova';
+  content: 'by K. Kostrikova & S. Sova';
   font: 400 calc(14 * var(--u))/1 'Ms Madi', 'Allura', cursive;
   color: #7a68a6; margin-top: calc(6 * var(--u));
 }
