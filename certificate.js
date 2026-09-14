@@ -63,8 +63,6 @@ function applyLanguage(lang){
   if(lang==='en'){
     document.title='Certificate · Pole Education';
     setText('certificateTitle','CERTIFICATE');
-    setText('logoOrbit','ONLINE SCHOOL');
-    setText('watermarkTop','ONLINE SCHOOL');
     setText('confirmText','certifies that');
     setText('holderName',cert.holder_name_en||cert.holder_name);
     setText('courseTitle','has completed the Judging and Competition Organization Course');
@@ -80,8 +78,6 @@ function applyLanguage(lang){
   }else{
     document.title='Сертифікат · Pole Education';
     setText('certificateTitle','СЕРТИФІКАТ');
-    setText('logoOrbit','ОНЛАЙН ШКОЛА');
-    setText('watermarkTop','ОНЛАЙН ШКОЛА');
     setText('confirmText','підтверджує що');
     setText('holderName',cert.holder_name||'Студент');
     setText('courseTitle','прослухав(ла) Суддівсько-організаційний курс');

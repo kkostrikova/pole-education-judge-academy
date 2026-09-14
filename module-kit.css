@@ -266,3 +266,115 @@ body .mk-state{ margin-left: auto; }
 /* the pre-existing next-module links (modules 1, 6, 7). Doubled class so it
    outranks `body .unlock.show`, which those pages add when the test passes */
 body .mk-dupe.mk-dupe.mk-dupe{ display: none !important; }
+
+/* ── controls the button system had not reached ───────────── */
+/* Modules 5 and 8 build some controls from bare <button> elements, so
+   pe-buttons.css (which matches on .btn/.primary-btn) never saw them: the
+   scenario choices in module 8 were square dark boxes and the protocol
+   steppers in module 5 were 28px circles. They are answer options and a
+   stepper, so they take the same language as .quiz-opt and .choice rather
+   than the action-button one. */
+body .challenge-options button,
+body .stopchoices button{
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 15px !important;
+  text-align: left;
+  border: 1px solid var(--mk-line) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  color: var(--mk-ink) !important;
+  font: 600 14px/1.4 'Manrope', system-ui, sans-serif !important;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease,
+              transform .18s cubic-bezier(.2,.8,.3,1);
+}
+body .stopchoices button{ text-align: center; }
+body .challenge-options button:hover,
+body .stopchoices button:hover{
+  border-color: #a98bef !important;
+  background: #faf7ff !important;
+  transform: translateY(-1px);
+}
+body .challenge-options button.correct,
+body .challenge-options button.good,
+body .stopchoices button.correct,
+body .stopchoices button.good,
+body .stopchoices button.on{
+  background: #edf8f1 !important; border-color: #9dd0ae !important; color: #2f6b45 !important;
+}
+body .challenge-options button.wrong,
+body .challenge-options button.bad,
+body .stopchoices button.wrong,
+body .stopchoices button.bad,
+body .stopchoices button.alert{
+  background: #fff1f4 !important; border-color: #dba7b4 !important; color: #8c4a5e !important;
+}
+body .challenge-options button:focus-visible,
+body .stopchoices button:focus-visible{ outline: 2px solid #8b5cf6; outline-offset: 2px; }
+
+/* module 5's ± stepper */
+body .count{ display: inline-flex; align-items: center; gap: 8px; }
+body .count button{
+  width: 32px !important; height: 32px !important;
+  border-radius: 50% !important;
+  border: 1px solid var(--mk-line) !important;
+  background: #fff !important;
+  color: var(--mk-plum) !important;
+  font: 800 16px/1 'Manrope', system-ui, sans-serif !important;
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease;
+}
+body .count button:hover{ border-color: #a98bef !important; background: #f6f2ff !important; }
+body .count button:focus-visible{ outline: 2px solid #8b5cf6; outline-offset: 2px; }
+body .count b{ min-width: 20px; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* module 8's penalty list: each row is a clickable label with no affordance
+   at all — the opposite problem to the hero pills. A hover state and a real
+   hit area say it can be pressed without turning the list into buttons. */
+body .proto-row{ border-radius: 12px; transition: background .16s ease; }
+body .proto-row:hover{ background: #f8f5ff; }
+body .proto-row button{
+  color: var(--mk-ink) !important;
+  font: 700 13.5px/1.4 'Manrope', system-ui, sans-serif !important;
+  cursor: pointer;
+}
+body .proto-row:hover button{ color: var(--mk-plum) !important; text-decoration: underline; }
+body .proto-row button:focus-visible{ outline: 2px solid #8b5cf6; outline-offset: 3px; border-radius: 6px; }
+
+/* and the × that removes a recorded penalty */
+body .sel button{
+  width: 24px; height: 24px; flex: 0 0 auto;
+  display: grid; place-items: center;
+  border-radius: 50% !important;
+  background: #fff !important;
+  border: 1px solid var(--mk-line) !important;
+  color: #8c4a5e !important;
+  font: 800 13px/1 'Manrope', system-ui, sans-serif !important;
+  cursor: pointer;
+}
+body .sel button:hover{ border-color: #dba7b4 !important; background: #fff1f4 !important; }
+body .sel button:focus-visible{ outline: 2px solid #8b5cf6; outline-offset: 2px; }
+
+/* Anchor jumps landed with the heading underneath the sticky tab bar.
+   scroll-margin keeps the section title clear of it. */
+body .wrap > section[id],
+body .wrap > div[id],
+body .wrap > article[id]{ scroll-margin-top: 88px; }
+@media (max-width: 760px){
+  body .wrap > section[id],
+  body .wrap > div[id],
+  body .wrap > article[id]{ scroll-margin-top: 78px; }
+}
+
+/* module 8's penalty table clipped its own points column: the grid gave the
+   value a fixed 115px and "-10 або дискваліфікація" is wider than that */
+body .proto-row{ grid-template-columns: 1fr minmax(96px, max-content) !important; }
+body .proto-row .points{
+  white-space: normal;
+  overflow-wrap: anywhere;
+  max-width: 170px;
+  text-align: right;
+}
