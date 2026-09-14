@@ -180,10 +180,25 @@ body.lav-home{
 }
 .lav-petal{
   position: absolute; top: 0; left: 0;
-  border-radius: 62% 38% 58% 42% / 58% 62% 38% 42%;
-  background: radial-gradient(120% 120% at 32% 26%,
-              rgba(158,122,226,.95), rgba(116,80,186,.72) 58%, rgba(96,64,162,.30));
+  /* A real petal, not a blob: the shape comes from a mask so the colour
+     stays in CSS. Round at the base, drawn to a point at the tip, with the
+     slight asymmetry a lavender floret actually has. */
+  -webkit-mask-image: var(--petal);
+          mask-image: var(--petal);
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  background: linear-gradient(150deg,
+              rgba(171,139,234,.98) 0%,
+              rgba(126,88,196,.92) 52%,
+              rgba(96,64,162,.80) 100%);
+  --petal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 34'%3E%3Cpath d='M10 0.6c5.6 6.4 9.4 14.2 9.4 21.3 0 6.6-4.2 11.5-9.4 11.5S0.6 28.5 0.6 21.9C0.6 14.8 4.4 7 10 0.6z' fill='%23000'/%3E%3C/svg%3E");
   will-change: transform;
+}
+/* a second cut so they are not eight copies of one shape */
+.lav-petal.two{
+  --petal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 34'%3E%3Cpath d='M12.4 0.8c3.4 7.4 5.2 15 3.9 21.6-1.2 6.3-5.6 10.6-10.3 9.8C1.3 31.4-1 26 0.6 19.8 2.3 13.2 7 6 12.4 0.8z' fill='%23000'/%3E%3C/svg%3E");
 }
 @media (prefers-reduced-motion: reduce){ .lav-petals{ display: none; } }
 

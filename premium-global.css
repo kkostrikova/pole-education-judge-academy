@@ -2,9 +2,9 @@
 /* Pole Education Judge Academy — lavender concept v2 */
 :root{
   --pe-bg:#f8f7ff;--pe-bg2:#f1edff;--pe-bg3:#e8e1ff;--pe-surface:#fff;--pe-surface2:#fcfbff;
-  --pe-primary:#7b5ce1;--pe-primary2:#9b83ee;--pe-deep:#4f3aa8;--pe-ink:#2b2451;--pe-muted:#746d8d;
+  --pe-primary:#7b5ce1;--pe-primary2:#9b83ee;--pe-deep:#4f3aa8;--pe-ink:#2b2451;--pe-muted:#645d86;
   --pe-line:#ddd5f5;--pe-line2:#cfc3f1;--pe-success:#4f8a67;--pe-shadow:0 18px 48px rgba(76,58,132,.10);
-  --cream:#f8f7ff!important;--card:#fff!important;--ink:#2b2451!important;--muted:#746d8d!important;
+  --cream:#f8f7ff!important;--card:#fff!important;--ink:#2b2451!important;--muted:#645d86!important;
   --wine:#6f52ce!important;--pink:#8f72e7!important;--rose:#9b83ee!important;--line:#ddd5f5!important;
   --gold:#7b5ce1!important;--dark:#f1edff!important;--green:#4f8a67!important;
 }
@@ -14,27 +14,27 @@ body{background-image:radial-gradient(circle at 86% 4%,rgba(155,131,238,.18),tra
 body,button,input,select,textarea{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;color:#2b2451!important}
 .topbar,.exam-topbar,.nda-topbar,.certificate-controls,.quicknav,.nav{background:rgba(252,251,255,.94)!important;border-color:var(--pe-line)!important;color:var(--pe-ink)!important;backdrop-filter:blur(18px)!important;box-shadow:0 8px 28px rgba(76,58,132,.05)!important}
 .brand-mark,.mark,.nda-brand .mark{background:linear-gradient(145deg,#f5f1ff,#e9e1ff)!important;border-color:#ad98e9!important;color:#4f3aa8!important}
-.brand,.brand strong,.exam-brand,.exam-brand strong,.nda-brand,.nda-brand strong{color:#2b2451!important}.brand small,.exam-brand small,.nda-brand small,.topnav a{color:#746d8d!important}.topnav a:hover{color:#4f3aa8!important}
+.brand,.brand strong,.exam-brand,.exam-brand strong,.nda-brand,.nda-brand strong{color:#2b2451!important}.brand small,.exam-brand small,.nda-brand small,.topnav a{color:#645d86!important}.topnav a:hover{color:#4f3aa8!important}
 .hero{background:radial-gradient(circle at 84% 16%,rgba(155,131,238,.25),transparent 31%),linear-gradient(135deg,#ffffff 0%,#f8f5ff 55%,#ede7ff 100%)!important;color:#2b2451!important;position:relative}
 .hero h1{color:#2b2451!important}.hero h1 span{color:#5a43b4!important;font-style:normal!important}.hero-lead{color:#655e7c!important}.eyebrow,.mini,.ey,.kicker{color:#634bb8!important}
-.hero-stats strong{color:#5a43b4!important}.hero-stats span{color:#746d8d!important}
+.hero-stats strong{color:#5a43b4!important}.hero-stats span{color:#645d86!important}
 .progress-panel{background:rgba(255,255,255,.90)!important;border-color:#ddd5f5!important;color:#2b2451!important;box-shadow:0 22px 56px rgba(76,58,132,.10)!important}
-.progress-ring{background:conic-gradient(#7b5ce1 var(--p),#e9e3f7 0)!important}.progress-ring:after{background:#fff!important}.progress-ring span{color:#4f3aa8!important}.progress-panel p,.progress-kicker{color:#746d8d!important}.route i{background:#e8e2f4!important}.route i.done{background:#7b5ce1!important}.status-note{border-color:#e2dcf3!important;color:#746d8d!important}.status-dot{background:#7b5ce1!important}
+.progress-ring{background:conic-gradient(#7b5ce1 var(--p),#e9e3f7 0)!important}.progress-ring:after{background:#fff!important}.progress-ring span{color:#4f3aa8!important}.progress-panel p,.progress-kicker{color:#645d86!important}.route i{background:#e8e2f4!important}.route i.done{background:#7b5ce1!important}.status-note{border-color:#e2dcf3!important;color:#645d86!important}.status-dot{background:#7b5ce1!important}
 .brand-manifesto{min-height:220px!important;background:radial-gradient(circle at 78% 30%,rgba(155,131,238,.22),transparent 28%),linear-gradient(135deg,#fbfaff,#f2edff 58%,#e8e1ff)!important;border-color:#ddd5f5!important}
 .brand-manifesto::before{background:linear-gradient(90deg,transparent,#b19cf0 18%,#7b5ce1 50%,#b19cf0 82%,transparent)!important;box-shadow:none!important}
 .brand-manifesto-script{font-size:0!important;transform:none!important;text-shadow:none!important;margin:0!important}
 .brand-manifesto-script span{display:none!important}
 .brand-manifesto-script::before{content:"More than judging ♡";display:block;font-family:"Segoe Script","Snell Roundhand","Brush Script MT",cursive;font-size:clamp(42px,7vw,76px);font-weight:400;line-height:1.05;color:#735dc9;letter-spacing:.01em;transform:rotate(-2deg)}
-.section{color:#2b2451!important}.section-head h2{color:#2b2451!important}.section-head>p{color:#746d8d!important}
+.section{color:#2b2451!important}.section-head h2{color:#2b2451!important}.section-head>p{color:#645d86!important}
 #modules{background:linear-gradient(180deg,#fbfaff 0%,#f7f5ff 55%,#f1edff 100%)!important;color:#2b2451!important}
 #modules::before{background:radial-gradient(circle at 16% 8%,rgba(155,131,238,.12),transparent 22%),radial-gradient(circle at 88% 72%,rgba(123,92,225,.10),transparent 26%)!important}
-#modules .section-head h2{color:#2b2451!important}#modules .section-head>p{color:#746d8d!important}#modules .eyebrow{color:#634bb8!important}
+#modules .section-head h2{color:#2b2451!important}#modules .section-head>p{color:#645d86!important}#modules .eyebrow{color:#634bb8!important}
 .lecture-hub,.desk{background:linear-gradient(135deg,#f3efff 0%,#ebe5ff 58%,#e1d7fb 100%)!important;color:#2b2451!important}
-.lecture-hub h2,.desk h2{color:#2b2451!important}.lecture-hub .eyebrow,.desk .eyebrow{color:#634bb8!important}.lecture-hub-copy>p:not(.eyebrow),.desk-card small,.lecture-launch small{color:#746d8d!important}
+.lecture-hub h2,.desk h2{color:#2b2451!important}.lecture-hub .eyebrow,.desk .eyebrow{color:#634bb8!important}.lecture-hub-copy>p:not(.eyebrow),.desk-card small,.lecture-launch small{color:#645d86!important}
 .lecture-flow span{background:rgba(255,255,255,.78)!important;border-color:#d9d0f2!important;color:#2b2451!important}.lecture-flow b{color:#5a43b4!important}.lecture-flow i{color:#7b5ce1!important}
 .desk-card,.lecture-launch{background:rgba(255,255,255,.84)!important;border-color:#d5cbf1!important;color:#2b2451!important;box-shadow:0 16px 40px rgba(76,58,132,.08)!important}.desk-card:hover,.lecture-launch:hover{background:#fff!important;border-color:#ae9be9!important}.desk-card span,.lecture-launch-kicker{color:#634bb8!important}
-.final,.course-complete{background:linear-gradient(135deg,#fff,#f1edff)!important;border-color:#ddd5f5!important;color:#2b2451!important}.final-icon,.completion-mark{background:#efeaff!important;border-color:#cfc3f1!important;color:#5a43b4!important}.final-copy p:last-child,.completion-copy>p:not(.eyebrow),.completion-step small{color:#746d8d!important}.completion-step{background:#fff!important;border-color:#ddd5f5!important;color:#2b2451!important}.completion-step>span{background:#eee9fa!important;color:#6b5c8a!important}.completion-step.done>span{background:#e6f3ea!important;color:#3f7957!important}
-footer{background:#fff!important;color:#746d8d!important;border-top:1px solid #ddd5f5!important}
+.final,.course-complete{background:linear-gradient(135deg,#fff,#f1edff)!important;border-color:#ddd5f5!important;color:#2b2451!important}.final-icon,.completion-mark{background:#efeaff!important;border-color:#cfc3f1!important;color:#5a43b4!important}.final-copy p:last-child,.completion-copy>p:not(.eyebrow),.completion-step small{color:#645d86!important}.completion-step{background:#fff!important;border-color:#ddd5f5!important;color:#2b2451!important}.completion-step>span{background:#eee9fa!important;color:#6b5c8a!important}.completion-step.done>span{background:#e6f3ea!important;color:#3f7957!important}
+footer{background:#fff!important;color:#645d86!important;border-top:1px solid #ddd5f5!important}
 .primary-btn,.final-btn,.completion-btn.primary,.btn.primary,.primary,.btn.wine,.submit-btn{background:linear-gradient(135deg,#8d69eb,#6f52ce)!important;color:#fff!important;border-color:#8d69eb!important;box-shadow:0 12px 26px rgba(111,82,206,.20)!important}
 .primary-btn:hover,.final-btn:hover,.btn.primary:hover,.primary:hover,.btn.wine:hover,.submit-btn:hover{background:linear-gradient(135deg,#7f5ee0,#5e43bb)!important}
 .ghost-btn,.secondary-btn,.secondary,.btn.secondary,.control-btn,.link-btn{background:#fff!important;border-color:#cfc3f1!important;color:#5a43b4!important}.ghost-btn:hover,.secondary-btn:hover,.secondary:hover,.btn.secondary:hover,.control-btn:hover,.link-btn:hover{background:#f3efff!important;border-color:#9f89e3!important;color:#4f3aa8!important}
@@ -42,7 +42,7 @@ h1,h2,h3,h4,h5,h6,strong,b,label,.question-panel h3,.review-question h3,.protoco
 p,li,small,.muted,.lead,.question-note,.save-state,.progress-block{opacity:1!important;visibility:visible!important}
 .card,.dashboard,.review-dashboard,.panel,.start-card,.exam-card,.result-card,.verify-card,.nda-card,.validator,.protocol-paper,.protocol-col,.scenario,.quizq,.quiz-q,.quiz-question,.key,.tc,.vc,.criterion,.cat,.pen,.box,.sum,.duty,.stopcase,.casefile,.sort-zone,.freq-pool,.checklist label,.proto-table,.mapping-card,.submit-card,.example,.gloss,.deduct,.case,.review-block,.review-video,.review-protocol,.exam-control-card,.certificate-name-card,.certificate-language-choice,.question-panel,.navigator-wrap,.notice,.rules-grid>div,.result-stats>div,.performance-card,.protocol-panel,.proto-row,.student-answer,.publish-section,.decision-card,.distinction-check,.consent,.signature-block{background:#fff!important;color:#2b2451!important;border-color:#ddd5f5!important;box-shadow:0 14px 38px rgba(76,58,132,.07)!important}
 .dark,.darkbox,.lab,.control,.challenge,.scene360,.photoexplorer,.sorter,.judge,.scenario-panel,.calc,.challenge-panel,.scene,.capture,.judgebox,.question,.analysis,.expert,.log-item,.sort-pool,.challenge-step,.challenge-result,.feedback,.sel,.hj-status,.jc-help,.jc-pool,.jc-zone{background:linear-gradient(145deg,#f4f1ff,#ece6ff)!important;border-color:#d6ccf1!important;color:#2b2451!important;box-shadow:0 12px 32px rgba(76,58,132,.06)!important}
-.dark p,.lab p,.control p,.challenge p,.scene360 p,.judge p,.calc p,.scenario-panel p,.scene p,.card p,.dashboard p,.review-dashboard p,.quizq p,.quiz-q p,.quiz-question p{color:#746d8d!important}
+.dark p,.lab p,.control p,.challenge p,.scene360 p,.judge p,.calc p,.scenario-panel p,.scene p,.card p,.dashboard p,.review-dashboard p,.quizq p,.quiz-q p,.quiz-question p{color:#645d86!important}
 .note,.callout,.notice{background:#f3efff!important;border-left-color:#7b5ce1!important;color:#2b2451!important}.note strong,.callout strong,.notice strong{color:#4f3aa8!important}
 input,select,textarea,.opt,.quiz-opt,.answer,.choice,.option,.open-answer,.score-btn,.pass-btn,.fail-btn,.nav-q,.protocol-tab,.field{background:#fff!important;color:#2b2451!important;border-color:#cfc3f1!important}.option.selected,.opt.selected,.quiz-opt.chosen,.answer.selected,.choice.active{background:#efeaff!important;border-color:#8d69eb!important}
 @media(max-width:600px){.brand-manifesto{min-height:170px!important}.brand-manifesto-script::before{font-size:clamp(38px,12vw,58px)}.hero{padding-top:52px!important}.progress-panel{border-radius:24px!important}}
