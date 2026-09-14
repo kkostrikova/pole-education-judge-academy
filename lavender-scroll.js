@@ -8,17 +8,17 @@
   :root{--lav-s:1}
   .topbar{position:fixed!important;top:0;left:0;right:0;z-index:10000!important}
   .lavender-scroll-scene{position:relative;height:260vh;min-height:calc(100vh + 900px);background:#f5f1ff;overflow:visible}
-  .lavender-sticky{position:sticky;top:0;height:100vh;z-index:8;pointer-events:none;overflow:hidden}
-  .lavender-first-screen{position:relative;height:100vh;margin-top:-100vh;overflow:hidden;z-index:3;background:#f6f3ff}
+  .lavender-sticky{position:sticky;top:0;height:100svh;z-index:8;pointer-events:none;overflow:hidden}
+  .lavender-first-screen{position:relative;height:100svh;margin-top:-100svh;overflow:hidden;z-index:3;background:#f6f3ff}
   .lavender-scroll-space{height:160vh;background:linear-gradient(180deg,#f6f3ff 0%,#f3effc 100%)}
-  .lavender-plane,.lavender-sticky-plane{position:absolute;left:50%;top:0;width:${DW}px;height:${DH}px;transform-origin:top center;transform:translateX(-50%) scale(var(--lav-s))}
+  .lavender-plane,.lavender-sticky-plane{position:absolute;left:50%;top:50%;width:${DW}px;height:${DH}px;transform-origin:center center;transform:translate(-50%,-50%) scale(var(--lav-s))}
   .lavender-base{position:absolute;inset:0;background-image:url('${BASE_ATLAS}');background-repeat:no-repeat;background-size:8192px 6144px;background-position:0 -864px}
   .lavender-fallback{position:absolute;left:760px;top:0;width:180px;height:200px;background-image:url('${FRAME_ATLAS}');background-repeat:no-repeat;background-size:2700px 2400px;background-position:0 0;transform-origin:top left;transform:scale(4.32);opacity:1;transition:opacity .12s linear}
   .lavender-canvas,.lavender-text-canvas{position:absolute;inset:0;width:${DW}px;height:${DH}px;display:block}
   .lavender-text-canvas{z-index:3}
   .lavender-first-screen::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 140px rgba(92,61,154,.06)}
   body.lavender-ready .hero,body.lavender-ready .brand-manifesto{display:none!important}
-  @media(max-width:700px){.lavender-scroll-scene{height:220vh}.lavender-scroll-space{height:120vh}}
+  @media(max-width:700px){.lavender-scroll-scene{height:220vh;min-height:220svh}.lavender-scroll-space{height:120vh}.lavender-sticky,.lavender-first-screen{height:100svh}.lavender-first-screen{margin-top:-100svh}}
   @media(prefers-reduced-motion:reduce){.lavender-scroll-scene{height:100vh;min-height:100vh}.lavender-scroll-space{display:none}}
   `;
   document.head.appendChild(style);
@@ -43,12 +43,14 @@
   let baseReady=false,framesReady=false,textReady=false,lastFrame=-1;
 
   function setScale(){
-    const vw=window.innerWidth,vh=window.innerHeight;
-    const s=vh>vw?Math.min(vw/DW,vh/DH):Math.max(vw/DW,vh/DH);
+    const vw=window.innerWidth;
+    const vh=window.visualViewport?.height || window.innerHeight;
+    const s=Math.max(vw/DW,vh/DH);
     document.documentElement.style.setProperty('--lav-s',String(s));
   }
   setScale();
   window.addEventListener('resize',()=>{setScale();renderFromScroll()},{passive:true});
+  window.visualViewport?.addEventListener('resize',()=>{setScale();renderFromScroll()},{passive:true});
 
   function drawLavender(frame){
     if(!framesReady) return;
@@ -98,15 +100,7 @@
   let ticking=false;
   window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(()=>{renderFromScroll();ticking=false})}},{passive:true});
 
-  baseImg.onload=()=>{
-    baseReady=true;
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches || !textReady) drawExactText();
-  };
-  textImg.onload=()=>{
-    textReady=true;
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) drawExactText(); else animateText();
-  };
-  frameImg.onload=()=>{
-    framesReady=true;drawLavender(0);fallback.style.opacity='0';renderFromScroll();
-  };
+  baseImg.onload=()=>{baseReady=true;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches || !textReady) drawExactText();};
+  textImg.onload=()=>{textReady=true;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) drawExactText(); else animateText();};
+  frameImg.onload=()=>{framesReady=true;drawLavender(0);fallback.style.opacity='0';renderFromScroll();};
 })();
