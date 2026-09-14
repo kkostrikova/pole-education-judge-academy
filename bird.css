@@ -54,18 +54,6 @@
 }
 @keyframes pe-sway{ to{ background-position-x: right; } }
 
-/* The quiet places — the completed badge and the empty states — carry the
-   close-up the author picked: fifteen cells of it tilting its head and
-   looking out of the page. Ping-pong again: the take has no natural loop,
-   and alternate has no seam to hide. */
-.pe-bird--curious{
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: 1500% 100%;
-  aspect-ratio: 150 / 167;
-  animation: pe-curious 1.25s steps(15, jump-none) infinite alternate;
-}
-@keyframes pe-curious{ to{ background-position-x: right; } }
 
 .pe-bird--result{
   width: clamp(64px, 9vw, 96px);
@@ -99,13 +87,12 @@
 
 /* completed badge on a module card */
 .module-status.done{ display: inline-flex !important; align-items: center; gap: 7px; }
-.pe-bird--badge{ width: 27px; flex: 0 0 auto; margin: -5px 0; }
+.pe-bird--badge{ width: 44px; flex: 0 0 auto; margin: -12px -2px -12px -6px; }
 
 /* empty states */
 [data-pe-empty]{ display: flex; align-items: center; gap: 14px; }
 .pe-bird--empty{
-  width: 58px; flex: 0 0 auto; opacity: .95;
-  animation: pe-curious 1.25s steps(15, jump-none) infinite alternate;
+  width: 76px; flex: 0 0 auto; opacity: .96;
 }
 .pe-bird--empty:hover{ translate: 0 -5px; rotate: -4deg; }
 .pe-bird--badge:hover{ translate: 0 -3px; rotate: -6deg; scale: 1.1; }
@@ -114,7 +101,7 @@
   .pe-bird{ transition: none; }
   .pe-bird--result, .pe-bird--empty{ animation: none; }
   /* frozen on the first cell, which is a complete pose on its own */
-  .pe-bird--flap, .pe-bird--sway, .pe-bird--curious{ animation: none; background-position-x: left; }
+  .pe-bird--flap, .pe-bird--sway{ animation: none; background-position-x: left; }
   .pe-bird:hover{ translate: none; rotate: none; scale: none; }
 }
 /* on touch there is no hover, so the resting motion is all there is */
@@ -124,8 +111,23 @@
 @media (max-width: 620px){
   .pe-bird--result{ width: 68px; }
   .pe-bird--sway.pe-bird--result{ width: 56px; }
-  .pe-bird--empty{ width: 46px; }
+  .pe-bird--empty{ width: 60px; }
 }
 
 /* every pose is a sprite now, so the box is reserved by aspect-ratio on the
    modifier and nothing jumps when the sheet arrives */
+
+/* ── one bird per module ──────────────────────────────────── */
+/* Ten cells wide in every sheet; the height differs per pose, so the ratio
+   is set inline where the element is built. Ping-pong again: none of these
+   takes loops on its own, and alternate has no seam to hide. */
+.pe-bird--pose{
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 1000% 100%;
+  animation: pe-pose 1.15s steps(10, jump-none) infinite alternate;
+}
+@keyframes pe-pose{ to{ background-position-x: right; } }
+@media (prefers-reduced-motion: reduce){
+  .pe-bird--pose{ animation: none; background-position-x: left; }
+}
