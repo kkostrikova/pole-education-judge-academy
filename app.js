@@ -53,7 +53,9 @@
   }
 
   function isDone(n){ return Boolean(state[n]?.passed); }
-  function isUnlocked(n){ if(!signedIn||!courseAccess) return false; const cfg = window.PE_CONFIG || {}; return Boolean(cfg.reviewMode) || n === 1 || isDone(n - 1); }
+  /* pe-role.js answers this: reviewMode for everyone, or an admin account */
+  const openAll = () => (window.PE_openAll ? window.PE_openAll() : Boolean((window.PE_CONFIG||{}).reviewMode));
+  function isUnlocked(n){ if(!signedIn||!courseAccess) return false; return openAll() || n === 1 || isDone(n - 1); }
   function renderModules(){
     grid.innerHTML = modules.map(m => {
       const done = isDone(m.n), unlocked = isUnlocked(m.n);
@@ -150,7 +152,7 @@
        the grid below */
     setContinue(modules.find(m => !isDone(m.n) && isUnlocked(m.n)) || null, done === modules.length, done);
     const cfg = window.PE_CONFIG || {}, btn = document.getElementById('finalExamBtn'), msg = document.getElementById('finalMessage'), icon=document.querySelector('.final-icon');
-    const eligible = done === 8 || Boolean(cfg.reviewMode);
+    const eligible = done === 8 || openAll();
     btn.onclick = null;
     if(!examAccessLoaded){
       btn.disabled=true;btn.textContent='Перевіряємо доступ…';
@@ -176,7 +178,7 @@
     }
 
     const pbtn=document.getElementById('practicalExamBtn'),pmsg=document.getElementById('practicalMessage'),picon=document.querySelector('.practical-icon');
-    const practicalEligible=Boolean(cfg.reviewMode)||theoryPassed;
+    const practicalEligible=openAll()||theoryPassed;
     pbtn.onclick=null;
     if(!examAccessLoaded){
       pbtn.disabled=true;pbtn.textContent='Перевіряємо доступ…';pmsg.textContent='Перевіряємо доступ до практичного іспиту.';if(picon)picon.textContent='⏳';
@@ -225,6 +227,9 @@
     renderProgress();
     refreshExamAccess();
   });
+  /* the role lands after the first render, so redraw once it does */
+  window.addEventListener('pe-role-ready', () => { renderModules(); renderProgress(); });
+
   window.addEventListener('pe-progress-updated', e => {
     const fresh = e.detail || JSON.parse(localStorage.getItem(key) || '{}');
     Object.keys(state).forEach(k => delete state[k]);

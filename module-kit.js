@@ -225,14 +225,18 @@
   addEventListener('pe-progress-updated', paint);
   addEventListener('pe-result-synced', paint);
 
-  /* ── gate ───────────────────────────────────────────────── */
-  /* A module opens only once the one before it is passed. The check waits
-     for progress-sync.js to pull the remote record, or 2s, whichever comes
-     first: locking someone out because a network read had not landed yet
-     would be worse than showing the page a moment longer. reviewMode keeps
-     the course fully open, exactly as it does on the home page. */
-  if (n > 1 && !cfg.reviewMode) {
+  /* ── gate ───────────────────────────────────────────────
+     A module opens only once the one before it is passed. The check waits
+     for progress-sync.js to pull the remote record and for pe-role.js to
+     resolve the account's role — or 2.5s, whichever comes first: locking
+     someone out because a network read had not landed yet would be worse
+     than showing the page a moment longer. Admins, and everyone when
+     reviewMode is deliberately on, keep the whole course open. */
+  if (n > 1) {
+    let settled = false, gotProgress = false, gotRole = Boolean(window.PE_ROLE_READY);
+
     const decide = () => {
+      if (window.PE_openAll && window.PE_openAll()) return;
       if (isDone(n - 1)) return;
       document.querySelectorAll('.mk-rail, .mk-top').forEach(el => el.remove());
       wrap.innerHTML =
@@ -244,9 +248,15 @@
         `<a class="btn secondary" href="index.html#modules">${T.all}</a>` +
         `</div></section>`;
     };
-    let settled = false;
-    const once = () => { if (!settled) { settled = true; decide(); } };
-    addEventListener('pe-progress-updated', once, { once: true });
-    setTimeout(once, 2000);
+    const settle = () => { if (!settled) { settled = true; decide(); } };
+    const maybe = () => { if (gotProgress && gotRole) settle(); };
+
+    addEventListener('pe-progress-updated', () => { gotProgress = true; maybe(); }, { once: true });
+    addEventListener('pe-role-ready', () => { gotRole = true; maybe(); }, { once: true });
+    /* Fail open, never shut. If the role has still not resolved — a slow
+       link, Supabase unreachable — gating would lock the author out of her
+       own course, while not gating merely lets a student see a module
+       early. Give it one more window, then leave the page alone. */
+    setTimeout(() => { if (gotRole) settle(); else setTimeout(() => { if (gotRole) settle(); }, 3000); }, 2500);
   }
 })();
