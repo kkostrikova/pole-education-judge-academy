@@ -249,3 +249,31 @@ body .quiz-question .option input{ accent-color: var(--peb-plum); width: 17px; h
    class so nothing this file does can ever reveal a hidden control. */
 body .hidden.hidden,
 body .unlock:not(.show){ display: none !important; }
+
+/* ── language switch ──────────────────────────────────────── */
+.pe-lang{
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-left: 18px; flex: 0 0 auto;
+  font: 600 13px/1 'Manrope', system-ui, sans-serif;
+  color: #6a5a94;
+}
+.pe-lang span{ opacity: .5; }
+body .pe-lang button{
+  all: unset;
+  box-sizing: border-box;
+  padding: 6px 4px;
+  min-height: 0;
+  font: 600 13px/1 'Manrope', system-ui, sans-serif;
+  color: #6a5a94;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .16s ease, border-color .16s ease;
+}
+body .pe-lang button:hover{ color: var(--peb-plum); }
+body .pe-lang button.is-on{
+  color: #382a55; border-bottom-color: var(--peb-plum);
+}
+body .pe-lang button:focus-visible{
+  outline: 3px solid var(--peb-ring); outline-offset: 2px; border-radius: 4px;
+}
+@media (max-width: 900px){ .pe-lang{ margin-left: 10px; } }

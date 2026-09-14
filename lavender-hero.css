@@ -367,3 +367,28 @@ body.lav-home{
 @media (prefers-reduced-motion: reduce){
   .lav-scene{ height: 100svh; }
 }
+
+/* ── header overrides over pe-buttons.css ──────────────────
+   pe-buttons.css turns .ghost-btn into a pill everywhere, which is right on
+   every other page but wrong here: the design calls for flat text links over
+   the photograph. Its selector carries an id inside :not(), so these rules
+   have to out-specify that, not merely come later. */
+body.lav-home .topbar .ghost-btn:not(#accountLink){
+  display: inline !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  font-weight: 500 !important;
+  transform: none !important;
+}
+body.lav-home .topbar .ghost-btn:not(#accountLink):hover{
+  background: none !important;
+  color: var(--plum) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+/* the switch sits last in the bar, as in the design */
+body.lav-home .topbar .pe-lang{ order: 3; margin-left: calc(22 * var(--u)); }
