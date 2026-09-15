@@ -112,7 +112,32 @@ const verifyLink=document.getElementById('verifyLink');if(verifyLink)verifyLink.
 const qr=document.getElementById('qrCode');if(qr){qr.innerHTML='';if(window.QRCode)new QRCode(qr,{text:verifyUrl.href,width:116,height:116,correctLevel:QRCode.CorrectLevel.M})}
 
 msg.textContent=cert.certificate_type==='gold'?'Золотий сертифікат з відзнакою готовий.':'Сертифікат готовий.';
-msg.className='certificate-message ok';certEl.classList.remove('hidden');printBtn.disabled=false;printBtn.onclick=()=>window.print();
+msg.className='certificate-message ok';certEl.classList.remove('hidden');printBtn.disabled=false;
+
+/* The print dialog decides margins, scale and whether to stamp its own
+   header and footer across the sheet, and none of that is reachable from
+   CSS. Building the file here makes every holder's certificate identical.
+   Printing stays available as a fallback if the build fails. */
+const fallbackBtn=document.getElementById('printFallbackBtn');
+if(fallbackBtn)fallbackBtn.onclick=()=>window.print();
+printBtn.onclick=async()=>{
+  if(!window.PE_savePdf){window.print();return}
+  const label=printBtn.textContent;
+  printBtn.disabled=true;printBtn.textContent=currentLang==='en'?'Preparing…':'Готуємо файл…';
+  try{
+    const name=(cert.certificate_no||'certificate')+(currentLang==='en'?'-en':'')+'.pdf';
+    await window.PE_savePdf(certEl,name);
+  }catch(err){
+    console.error('PDF build failed',err);
+    msg.textContent=currentLang==='en'
+      ?'Could not build the file. Use Print and set Margins to None.'
+      :'Не вдалося зібрати файл. Скористайтесь кнопкою «Друк» і поставте Поля → Немає.';
+    msg.className='certificate-message err';
+    if(fallbackBtn)fallbackBtn.hidden=false;
+  }finally{
+    printBtn.disabled=false;printBtn.textContent=label;
+  }
+};
 }catch(error){
   console.error('Certificate render error',error);
   showError('Не вдалося відобразити сертифікат. Оновіть сторінку ще раз.');
