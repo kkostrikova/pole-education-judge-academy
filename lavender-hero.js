@@ -1,22 +1,14 @@
-/* Lavender hero — a still studio plate, live type over it.
+/* Lavender hero — type on lavender, no photograph.
 
-   The frame sequence is gone: the hero is one photograph now, so what moves
-   is the copy (it leaves faster than the scroll), the plate (a slow drift
-   in), the header, and the petals, which answer the cursor. */
+   The plate is gone (see lavender-hero.css for why), so nothing here zooms
+   a picture any more. What moves is the copy, which leaves faster than the
+   scroll, the header, and the petals, which answer the cursor. */
 (() => {
   const scene = document.querySelector('.lav-scene');
   const bg = document.querySelector('.lav-bg');
   if (!scene || !bg) return;
 
   const narrow = window.matchMedia('(max-width: 900px)').matches;
-
-  /* How far the hero has scrolled away — drives the depth and the header. */
-  function progress() {
-    const travel = scene.offsetHeight - window.innerHeight;
-    if (travel <= 0) return 0;
-    const y = -scene.getBoundingClientRect().top;
-    return Math.min(1, Math.max(0, y / travel));
-  }
 
   /* the header is transparent while the plate is behind it, solid after */
   const topbar = document.querySelector('.topbar');
@@ -28,8 +20,7 @@
   /* depth: the copy leaves ~35% faster than the scroll, fading as it goes,
      while the plate behind it drifts in slowly. */
   const copy = document.querySelector('.lav-copy');
-  function parallax(p) {
-    bg.style.setProperty('--lav-zoom', (1 + p * 0.07).toFixed(4));
+  function parallax() {
     if (!copy) return;
     const vh = window.innerHeight;
     const t = Math.min(1, window.scrollY / vh);
@@ -37,7 +28,7 @@
     copy.style.opacity = String(Math.max(0, 1 - t * 1.25));
   }
 
-  function render() { parallax(progress()); header(); }
+  function render() { parallax(); header(); }
 
   let ticking = false;
   window.addEventListener('scroll', () => {

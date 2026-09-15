@@ -7,6 +7,9 @@
   <title>Pole Education · Judge Academy</title>
   <meta name="description" content="Інтерактивний організаційно-суддівський курс Pole Education">
   <style>html,body{margin:0;background:#17131d;color:#f8f5fb}</style>
+  <link rel="stylesheet" href="pe-fonts.css?v=20260915-fonts1">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/CormorantGaramond-600-cyrillic.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/Manrope-400-cyrillic.woff2">
   <link rel="stylesheet" href="styles.css?v=20260913-base6">
   <link rel="stylesheet" href="mobile.css?v=20260913-mobile6">
   <style>
@@ -34,8 +37,7 @@
   </style>
   <link id="pe-premium-theme" rel="stylesheet" href="premium-global.css?v=20260914-pg2">
   <link id="pe-module-visuals" rel="stylesheet" href="module-visuals.css?v=20260914-cards3">
-  <link rel="stylesheet" href="lavender-hero.css?v=20260915-sign3">
-  <link rel="preload" as="image" href="assets/hero/poster.webp?v=20260914-hero16">
+  <link rel="stylesheet" href="lavender-hero.css?v=20260915-typo1">
   <link rel="stylesheet" href="pe-buttons.css?v=20260914-btn4">
   <link rel="stylesheet" href="pe-contrast.css?v=20260914-c9">
   <link rel="stylesheet" href="bird.css?v=20260914-bird14">
@@ -48,27 +50,34 @@
   </header>
   <main id="top">
     <section class="lav-scene" id="lavenderHero">
-      <div class="lav-bg" aria-hidden="true">
-        <picture>
-          <source media="(max-width: 900px)" srcset="assets/hero/studio-m.webp?v=20260915-studio1">
-          <img class="lav-plate" src="assets/hero/studio.webp?v=20260915-studio1" alt="" fetchpriority="high" decoding="sync">
-        </picture>
-      </div>
+      <div class="lav-bg" aria-hidden="true"></div>
       <div class="lav-first">
         <div class="lav-copy">
           <div class="lav-stack">
-            <hr class="lav-rule">
-            <h1 class="lav-head">Спочатку<br>лекція —<br>потім практика</h1>
-            <p class="lav-lead">Освітня платформа для сучасних суддів,<br class="lav-wide">які творять зміни</p>
+            <p class="lav-eyebrow">Pole Education · Judge Academy</p>
+            <h1 class="lav-head">Організаційно-<br>суддівський курс</h1>
+            <p class="lav-lead">Сучасна інтерактивна система підготовки суддів та організаторів змагань з пілону й повітряних дисциплін.</p>
             <div class="lav-actions">
               <a class="lav-btn lav-btn--primary" href="#modules">Розпочати навчання</a>
+              <a class="lav-btn lav-btn--ghost" href="#lectures">Дивитися лекції</a>
             </div>
+            <figure class="lav-quote">
+              <blockquote>«Знання надихає на справедливість»</blockquote>
+            </figure>
           </div>
-          <figure class="lav-quote">
-            <blockquote>«Знання надихає<br>на справедливість»</blockquote>
-          </figure>
-          <a class="lav-scroll" href="#lectures"><i></i><b>Прокрутити вниз</b><s>⌄</s></a>
+          <aside class="lav-card" aria-label="Критерії оцінювання">
+            <p class="lav-card-kicker">Що ви навчитесь оцінювати</p>
+            <ol class="lav-crit">
+              <li><a href="module-4.html"><b>01</b><span>Технічна складність</span></a></li>
+              <li><a href="module-5.html"><b>02</b><span>Збавки та штрафи</span></a></li>
+              <li><a href="module-6.html"><b>03</b><span>Артистизм</span></a></li>
+              <li><a href="module-7.html"><b>04</b><span>Обов’язкові елементи</span></a></li>
+              <li><a href="module-8.html"><b>05</b><span>Head Judge</span></a></li>
+            </ol>
+            <p class="lav-card-foot">8 модулів · 8 тестів · фінальна атестація</p>
+          </aside>
         </div>
+        <a class="lav-scroll" href="#lectures"><i></i><b>Прокрутити вниз</b><s>⌄</s></a>
       </div>
     </section>
     <section class="hero"><div class="hero-copy"><p class="eyebrow">POLE EDUCATION · CERTIFIED LEARNING PATH</p><h1>Організаційно-<br><span>суддівський курс</span></h1><p class="hero-lead">Сучасна інтерактивна система підготовки суддів та організаторів змагань з пілону й повітряних дисциплін.</p><div class="hero-actions"><a class="primary-btn" href="#lectures">Дивитися лекції</a><a class="secondary-btn" href="#judge-desk">Відкрити Judge Desk</a></div><div class="hero-stats" aria-label="Структура курсу"><div><strong>8</strong><span>навчальних модулів</span></div><div><strong>8</strong><span>модульних тестів</span></div><div><strong>1</strong><span>фінальна атестація</span></div></div></div><aside class="progress-panel" aria-label="Прогрес курсу"><div class="progress-kicker">YOUR JUDGE PATH</div><div class="progress-ring" id="progressRing"><span id="progressPercent">0%</span></div><h2>Ваш прогрес</h2><p id="progressText">0 з 8 модулів завершено</p><div class="route" id="routeDots" aria-label="Маршрут модулів"></div><div class="status-note"><span class="status-dot"></span><span>Фінальний іспит відкривається адміністратором курсу.</span></div></aside></section>
@@ -89,7 +98,7 @@
     <section class="section course-complete" id="course-complete"><div class="completion-mark" id="completionMark">03</div><div class="completion-copy"><p class="eyebrow">POLE EDUCATION · COURSE COMPLETION</p><h2 id="completionTitle">Фінальна сертифікація</h2><p id="completionMessage">Для завершення курсу потрібно пройти всі 8 модулів, скласти теоретичний і практичний іспити.</p><div class="completion-steps" id="completionSteps"></div></div><a class="secondary-btn completion-btn" id="completionAccountBtn" href="account.html">Мій кабінет</a></section>
   </main>
   <footer><span>© Pole Education · Judge Academy</span><a href="certificate-verify.html">Перевірити сертифікат</a><span>Організаційно-суддівський курс</span></footer>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js?v=20260914-role1"></script><script src="pe-role.js?v=20260914-role1"></script><script src="site-auth.js?v=20260913-auth2"></script><script src="progress-sync.js?v=20260913-progress2"></script><script src="app.js?v=20260914-app3"></script><script src="lavender-hero.js?v=20260915-sign1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js?v=20260914-role1"></script><script src="pe-role.js?v=20260914-role1"></script><script src="site-auth.js?v=20260913-auth2"></script><script src="progress-sync.js?v=20260913-progress2"></script><script src="app.js?v=20260914-app3"></script><script src="lavender-hero.js?v=20260915-typo1" defer></script>
   <script src="bird.js?v=20260914-bird14" defer></script>
   <div class="lav-petals" aria-hidden="true"></div>
 </body>
