@@ -81,6 +81,10 @@ function applyLanguage(lang){
     setText('authorsTitle','AUTHORS');
     setText('certificateNoLabel','Certificate No.');
     setText('verifyLabel','Verify certificate');
+    /* the authors signed in their own alphabet: Latin on the English
+       sheet, Cyrillic on the Ukrainian one */
+    setText('authorLana','Svitlana Sova');
+    setText('authorKateryna','Kateryna Kostrikova');
   }else{
     document.title='Сертифікат · Pole Education';
     setText('certificateTitle','СЕРТИФІКАТ');
@@ -96,6 +100,8 @@ function applyLanguage(lang){
     setText('authorsTitle','АВТОРИ/AUTHORS');
     setText('certificateNoLabel','№ сертифіката');
     setText('verifyLabel','Перевірити сертифікат');
+    setText('authorLana','Світлана Сова');
+    setText('authorKateryna','Катерина Кострікова');
   }
   setText('durationHours',cert.duration_hours||10);
   setText('certificateNo',cert.certificate_no||'—');
