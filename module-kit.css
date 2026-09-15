@@ -21,7 +21,7 @@
   --mk-plum:#5a2d91;
   --mk-plum-hi:#6f3bad;
   --mk-ink:#2b2451;
-  --mk-muted:#7d76a0;
+  --mk-muted:#645d86;   /* 4.79:1 on the palest card, 5.9 on white */
   --mk-line:#e2daf7;
   --mk-wash:#f6f2ff;
 }
@@ -106,7 +106,7 @@ body .mk-facts-label{
   margin-right: 9px;
   font: 800 11px/1 'Manrope', system-ui, sans-serif;
   letter-spacing: .14em; text-transform: uppercase;
-  color: #a79dc9;
+  color: #645d86;
   vertical-align: 1px;
 }
 
@@ -246,7 +246,7 @@ body .mk-foot{
   text-align: center;
   padding: 10px 0 26px;
   font: 500 12px/1.5 'Manrope', system-ui, sans-serif !important;
-  color: #a79dc9 !important;
+  color: #645d86 !important;
 }
 /* the eyebrow is the brand line, the chip is where the reader stands —
    they must not read as one run-on string */

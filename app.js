@@ -59,7 +59,11 @@
   function renderModules(){
     grid.innerHTML = modules.map(m => {
       const done = isDone(m.n), unlocked = isUnlocked(m.n);
-      const status = !signedIn ? 'Потрібен вхід 🔒' : !courseAccess ? 'Потрібен NDA 🔒' : done ? 'Завершено ✓' : unlocked ? 'Доступний' : 'Заблоковано 🔒';
+      /* the score is already stored; saying it turns a flat "done" into a
+         reason to come back and retake */
+      const best = Math.round(Number(state[m.n]?.score) || 0);
+      const doneLabel = best > 0 ? `Завершено · ${best}%` : 'Завершено ✓';
+      const status = !signedIn ? 'Потрібен вхід 🔒' : !courseAccess ? 'Потрібен NDA 🔒' : done ? doneLabel : unlocked ? 'Доступний' : 'Заблоковано 🔒';
       const cls = done && signedIn ? 'done' : unlocked ? '' : 'locked';
       const cfg = window.PE_CONFIG || {};
       const lectureUrl = cfg.lectureCourseUrl || 'https://westudy.ua/en/PoleEducation/course/519be545-a825-4517-9f7d-a075b071b6e9';

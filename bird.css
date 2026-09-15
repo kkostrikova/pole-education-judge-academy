@@ -85,9 +85,6 @@
   to  { opacity: 1; transform: none; }
 }
 
-/* completed badge on a module card */
-.module-status.done{ display: inline-flex !important; align-items: center; gap: 7px; }
-.pe-bird--badge{ width: 44px; flex: 0 0 auto; margin: -12px -2px -12px -6px; }
 
 /* empty states */
 [data-pe-empty]{ display: flex; align-items: center; gap: 14px; }
@@ -95,7 +92,6 @@
   width: 76px; flex: 0 0 auto; opacity: .96;
 }
 .pe-bird--empty:hover{ translate: 0 -5px; rotate: -4deg; }
-.pe-bird--badge:hover{ translate: 0 -3px; rotate: -6deg; scale: 1.1; }
 
 @media (prefers-reduced-motion: reduce){
   .pe-bird{ transition: none; }

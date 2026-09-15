@@ -1,8 +1,16 @@
 /* Pole Education — the bird reacts where a reaction belongs.
-   Three places only, agreed with the author: the moment a module test is
-   marked, the completed badge on a module card, and the empty states that
-   are otherwise a grey line of text. Not in the hero, not beside headings,
-   and never in the final exam, which stays formal. */
+
+   Two places: the moment a module test is marked, and the empty states that
+   are otherwise a grey line of text. It used to sit on the completed badge
+   of every module card too — eight rendered characters at 44px, each a
+   different height, animating at once inside a chip whose whole job is to
+   state one fact at a glance. The card grid reads as a system; the bird is
+   an illustration. Mixing them made the grid restless and made the bird
+   cheap, and at that size none of what makes it charming is even visible.
+   It earns its place where it arrives once, large, at a moment that has
+   feeling in it.
+
+   Not in the hero, not beside headings, and never in the final exam. */
 (() => {
   if (document.body.dataset.peExam === '1') return;
 
@@ -26,8 +34,7 @@
   const poseSrc = n => 'assets/bird/m' + n + '.webp?v=20260914-bird13';
   const ALT = {
     happy: 'Тест складено',
-    sad:   'Спробуйте ще раз',
-    badge: 'Модуль завершено'
+    sad:   'Спробуйте ще раз'
   };
 
   /* Both result poses are strips of cells played with steps(), so they move
@@ -115,26 +122,6 @@
       markResult(el);
       io.observe(el, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class'] });
     });
-  }
-
-  /* ── completed badge on the module cards ──────────────── */
-  function markCards() {
-    document.querySelectorAll('.module-status.done').forEach(s => {
-      if (s.querySelector('.pe-bird')) return;
-      const card = s.closest('.module-card');
-      const no = card && card.querySelector('.module-no');
-      const n = no ? parseInt(no.textContent, 10) : 0;
-      const b = pose(n, 'pe-bird--badge');
-      b.removeAttribute('aria-hidden');
-      b.setAttribute('role', 'img');
-      b.setAttribute('aria-label', ALT.badge);
-      s.prepend(b);
-    });
-  }
-  const grid = document.getElementById('moduleGrid');
-  if (grid) {
-    markCards();
-    new MutationObserver(markCards).observe(grid, { childList: true, subtree: true });
   }
 
   /* ── empty states ─────────────────────────────────────── */
