@@ -103,10 +103,18 @@ body.lav-home .brand small{
   letter-spacing: .42em; text-transform: uppercase; color: #6a5a94;
   margin-top: calc(7 * var(--u)); padding-left: .42em;
 }
+/* This asked for 'Ms Madi' and 'Allura', neither of which this site loads,
+   so it fell through to the browser's generic cursive — and a system
+   cursive at 12px is the squiggle it looked like. Cormorant Garamond is
+   already loaded and is the brand serif; italic at a readable size says
+   the same thing and can actually be read. The hero already carries the
+   author's real handwriting, so a second script face here only competed
+   with it. */
 body.lav-home .brand::after{
   content: 'by K. Kostrikova & S. Sova';
-  font: 400 calc(14 * var(--u))/1 'Ms Madi', 'Allura', cursive;
-  color: #7a68a6; margin-top: calc(6 * var(--u));
+  font: italic 500 calc(17 * var(--u))/1.2 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: .01em;
+  color: #5f5187; margin-top: calc(7 * var(--u));
 }
 
 body.lav-home .topbar > *{ flex: 0 0 auto; }
@@ -226,9 +234,12 @@ body.lav-home{
 @media (prefers-reduced-motion: reduce){ .lav-petals{ display: none; } }
 
 /* ─────────────────────── hero copy ─────────────────────── */
-/* One centred column on the quiet middle of the plate. The bouquet holds
-   the right edge and a second sprig the bottom left, so the copy stays
-   inside the clear band between them and never needs a scrim. */
+/* Measured on the plate rather than guessed: busyness climbs steadily
+   left to right — 0.031 across x 18-50%, 0.16 at the bouquet on the right
+   edge. Centred in the viewport the copy put its own right edge at ~72%,
+   so the heart of the signature sat on the flowers while the left quarter
+   stayed empty. The block centres on ~35% instead: the quiet band holds
+   the type and the bouquet becomes the frame on its right. */
 .lav-copy{
   height: 100svh; box-sizing: border-box;
   padding: clamp(92px, 12vh, 150px) clamp(20px, 5vw, 64px) clamp(78px, 11vh, 120px);
@@ -352,7 +363,7 @@ body.lav-home{
   body.lav-home .brand strong{ font-size: calc(14 * var(--u)); letter-spacing: .10em; }
   body.lav-home .brand small{ display: block !important; font-size: calc(8 * var(--u));
                               letter-spacing: .3em; margin-top: calc(3 * var(--u)); }
-  body.lav-home .brand::after{ font-size: calc(10 * var(--u)); margin-top: calc(2 * var(--u)); }
+  body.lav-home .brand::after{ font-size: calc(13 * var(--u)); margin-top: calc(3 * var(--u)); }
   /* the three-line lockup plus the pill plus the switch do not fit across a
      phone, so the byline drops and the wordmark tightens */
   @media (max-width: 560px){
@@ -422,6 +433,8 @@ body.lav-home{
    the photograph. Its selector carries an id inside :not(), so these rules
    have to out-specify that, not merely come later. */
 @media (min-width: 901px){
+/* the shift into the quiet band; a phone crop has no room for it */
+body.lav-home .lav-copy{ padding-right: clamp(180px, 30vw, 560px); }
 body.lav-home .topbar .ghost-btn:not(#accountLink){
   display: inline !important;
   min-height: 0 !important;

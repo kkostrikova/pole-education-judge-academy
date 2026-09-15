@@ -138,8 +138,14 @@ body .primary-btn:disabled,
 body .final-btn:disabled,
 body .btn:disabled,
 body button:disabled{
+  /* the pages set opacity .45-.5 of their own on disabled buttons, which
+     this block never undid, so the label measured 1.97:1. Disabled
+     controls are exempt from the contrast rule, but unreadable is
+     unreadable — the muted fill says "off" and the label stays legible.
+     #8b8199 was 2.89:1 on this ground even at full opacity. */
+  opacity: 1 !important;
   background: #e7e1f3 !important;
-  color: #8b8199 !important;
+  color: #67607f !important;
   border-color: #ded6ee !important;
   box-shadow: none !important;
   transform: none !important;
@@ -147,7 +153,7 @@ body button:disabled{
 }
 body .module-actions .locked-link{
   background: #f3f0f8 !important;
-  color: #8b8199 !important;
+  color: #645d86 !important;
   border-color: #e3ddef !important;
   box-shadow: none !important;
   cursor: not-allowed;
