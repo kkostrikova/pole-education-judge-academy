@@ -60,7 +60,6 @@ const [
   attemptsResp,
   {data:legacyTheory},
   practicalAttemptsResp,
-  {data:certs},
   ndaResp
 ]=await Promise.all([
   client.from('profiles').select('*').order('created_at',{ascending:false}),
@@ -68,7 +67,6 @@ const [
   client.rpc('pe_admin_theory_attempts'),
   client.from('theory_exam_results').select('*'),
   client.rpc('pe_admin_practical_attempts'),
-  client.from('certifications').select('*'),
   client.from('course_nda_signatures').select('user_id,agreement_version,signed_at')
 ]);
 
@@ -93,7 +91,6 @@ const latest=(rows,key='completed_at')=>{
 const t=latest(attempts,'completed_at');
 const legacy=latest(legacyTheory);
 const p=latest(practicalAttempts,'completed_at');
-const c=Object.fromEntries((certs||[]).map(x=>[x.user_id,x]));
 const ndaRows=ndaResp.error?[]:(ndaResp.data||[]);
 const ndaByUser={};
 ndaRows.forEach(x=>{if(!ndaByUser[x.user_id]||new Date(x.signed_at)>new Date(ndaByUser[x.user_id].signed_at))ndaByUser[x.user_id]=x});
