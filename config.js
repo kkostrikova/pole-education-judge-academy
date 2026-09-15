@@ -8,6 +8,13 @@ window.PE_CONFIG = {
   practicalExamUrl: "practical.html",
   practicalDurationMinutes: 30,
   lectureCourseUrl: "https://westudy.ua/PoleEducation/course/04332efd-86fe-42a1-beb1-fa4ab6f703bc",
+  /* Live lesson room. Leave it empty and the button stays hidden.
+     NOTE: this file is served to every visitor before any sign-in, so the
+     address here is public even though the button is behind the NDA. Keep
+     Zoom's waiting room on for this room. */
+  zoomUrl: "https://ksu-ks-ua.zoom.us/j/82579877518?pwd=VXi9UhHaE3abGfpCRw9YyS7iaZHyhm.1",
+  zoomNote: "Кімната відкрита постійно ↗",
+  handbookUrl: "https://zenodo.org/records/15861201",
   supabaseUrl: "https://mffjcqpyfcptwahpxeom.supabase.co",
   supabasePublishableKey: "sb_publishable_G69GdUkmDVVZcAVUhLT9Mw_pADiXZOs"
 };
