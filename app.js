@@ -259,12 +259,3 @@
   renderLectureAccess();
   renderModules();renderProgress();if(signedIn&&courseAccess)refreshExamAccess();
 })();
-
-(()=>{
-  if(document.querySelector('script[data-lavender-interactive]')) return;
-  const s=document.createElement('script');
-  s.src='lavender-interactive.js?v=20260913-lav2';
-  s.defer=true;
-  s.dataset.lavenderInteractive='1';
-  document.head.appendChild(s);
-})();
