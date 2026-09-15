@@ -50,7 +50,6 @@ body .primary-btn,
 body .final-btn,
 body .btn.primary,
 body .btn.wine,
-body .submit-btn,
 body .unlock,
 body .completion-btn.primary{
   /* no display here on purpose — .unlock stays hidden until .show is added */
@@ -64,7 +63,6 @@ body .primary-btn:hover,
 body .final-btn:not(:disabled):hover,
 body .btn.primary:hover,
 body .btn.wine:hover,
-body .submit-btn:hover,
 body .unlock:hover,
 body .completion-btn.primary:hover{
   background: linear-gradient(150deg, #7c47bd 0%, #5d2f97 52%, #4b2579 100%) !important;
@@ -262,26 +260,7 @@ body .unlock:not(.show){ display: none !important; }
   font: 600 13px/1 'Manrope', system-ui, sans-serif;
   color: #6a5a94;
 }
-.pe-lang span{ opacity: .5; }
-body .pe-lang button{
-  all: unset;
-  box-sizing: border-box;
-  padding: 6px 4px;
-  min-height: 0;
-  font: 600 13px/1 'Manrope', system-ui, sans-serif;
-  color: #6a5a94;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: color .16s ease, border-color .16s ease;
-}
-body .pe-lang button:hover{ color: var(--peb-plum); }
-body .pe-lang button.is-on{
-  color: #382a55; border-bottom-color: var(--peb-plum);
-}
-body .pe-lang button:focus-visible{
-  outline: 3px solid var(--peb-ring); outline-offset: 2px; border-radius: 4px;
-}
-@media (max-width: 900px){ .pe-lang{ margin-left: 10px; } }
+@media (max-width: 900px){ }
 
 /* ── footer links need a real touch target ────────────────── */
 @media (max-width: 900px){

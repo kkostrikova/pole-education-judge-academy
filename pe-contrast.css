@@ -69,7 +69,6 @@ body form > button:not([class]){
 [data-pe-page="situational"] .prompt{ color: #3b2d5e !important; }
 [data-pe-page="situational"] .role{ color: #6b5c8f !important; }
 [data-pe-page="situational"] .case-code{ color: #5b3cc4 !important; }
-[data-pe-page="m8"] .protocol-form label{ color: #5f5680 !important; }
 body .module-status{ color: #5f5680 !important; }
 body .jc-count{ color: #6b6386 !important; }
 
@@ -116,7 +115,6 @@ body .module-card.locked .module-status.locked{ color: #5f5680 !important; }
 body .sort-result,
 body #sortResult,
 body #freqResult,
-body .freq-result,
 body .sort-result.show{
   background: #f6f2ff !important;
   border: 1px solid #ded5f6 !important;
@@ -170,8 +168,7 @@ body .badge{ color: #8c4a5e !important; }
 /* a disabled primary button still has to be readable */
 body .btn.primary:disabled,
 body .final-btn:disabled,
-body .primary-btn:disabled,
-body .submit-btn:disabled{
+body .primary-btn:disabled{
   background: #6b6490 !important;   /* white on this is 5.45:1 */
   border-color: #6b6490 !important;
   color: #fff !important;
