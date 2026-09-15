@@ -122,3 +122,27 @@
   .module-card{ padding: 22px !important; }
   .module-card .module-no{ font-size: 38px !important; }
 }
+
+/* Signed out, and signed in without the NDA, the whole card is the way
+   through the gate instead of each card repeating the same lock line.
+   It is an <a> in that state, so it needs the link defaults undone. */
+body .module-card--gate{
+  text-decoration: none; color: inherit; cursor: pointer;
+  opacity: .82;
+  transition: transform .2s ease, border-color .2s ease,
+              box-shadow .2s ease, opacity .2s ease;
+}
+body .module-card--gate:hover{
+  transform: translateY(-3px); opacity: 1;
+  border-color: #b19cf0;
+  box-shadow: 0 16px 40px rgba(76,58,132,.16);
+}
+body .module-card--gate:focus-visible{ outline: 2px solid #7b5ce1; outline-offset: 3px; }
+/* the gate bar has no progress to show, so the track is hidden and the
+   message carries the row on its own */
+body .course-bar--gate .course-bar-copy{ gap: 0; }
+/* without the action row the card keeps a height sized for buttons that
+   are not there, so it ends in 120px of nothing */
+body .module-card--gate{ min-height: 0; }
+body .module-card--gate h3{ margin-bottom: 10px; }
+body .module-card--gate p{ margin-bottom: 4px; }

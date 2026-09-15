@@ -63,17 +63,32 @@
          reason to come back and retake */
       const best = Math.round(Number(state[m.n]?.score) || 0);
       const doneLabel = best > 0 ? `Завершено · ${best}%` : 'Завершено ✓';
-      const status = !signedIn ? 'Потрібен вхід 🔒' : !courseAccess ? 'Потрібен NDA 🔒' : done ? doneLabel : unlocked ? 'Доступний' : 'Заблоковано 🔒';
-      const cls = done && signedIn ? 'done' : unlocked ? '' : 'locked';
       const cfg = window.PE_CONFIG || {};
       const lectureUrl = cfg.lectureCourseUrl || 'https://westudy.ua/en/PoleEducation/course/519be545-a825-4517-9f7d-a075b071b6e9';
-      const action = !signedIn
-        ? '<span class="module-link locked-link">Увійдіть, щоб відкрити модуль</span>'
+
+      /* Signed out, and signed in without the NDA, every card used to
+         repeat the same two lines — "Потрібен вхід 🔒" in the chip and
+         "Увійдіть, щоб відкрити модуль" in the action row, eight times
+         each. The gate is one fact about the reader, not eight facts
+         about the modules, so #courseBar states it once above the grid
+         and the whole card becomes the way through. */
+      const gate = !signedIn
+        ? { href: 'auth.html?next=index.html%23modules' }
         : !courseAccess
-          ? '<div class="module-actions"><a class="module-link" href="nda.html?next=index.html%23modules">Підписати договір NDA</a></div>'
-        : unlocked
-          ? `<div class="module-actions"><a class="module-link lecture-module-link" href="${lectureUrl}" target="_blank" rel="noopener">Відеолекція ↗</a><a class="module-link" href="module-${m.n}.html">Інтерактивний модуль</a></div>`
-          : `<div class="module-actions"><a class="module-link lecture-module-link" href="${lectureUrl}" target="_blank" rel="noopener">Відеолекція ↗</a><span class="module-link locked-link">Спочатку складіть тест модуля ${m.n-1} на 80%</span></div>`;
+          ? { href: 'nda.html?next=index.html%23modules' }
+          : null;
+      if (gate) {
+        return `<a class="module-card locked module-card--gate" href="${gate.href}">
+        <div class="module-top"><span class="module-no">0${m.n}</span></div>
+        <h3>${m.title}</h3><p>${m.desc}</p>
+      </a>`;
+      }
+
+      const status = done ? doneLabel : unlocked ? 'Доступний' : 'Заблоковано 🔒';
+      const cls = done ? 'done' : unlocked ? '' : 'locked';
+      const action = unlocked
+        ? `<div class="module-actions"><a class="module-link lecture-module-link" href="${lectureUrl}" target="_blank" rel="noopener">Відеолекція ↗</a><a class="module-link" href="module-${m.n}.html">Інтерактивний модуль</a></div>`
+        : `<div class="module-actions"><a class="module-link lecture-module-link" href="${lectureUrl}" target="_blank" rel="noopener">Відеолекція ↗</a><span class="module-link locked-link">Спочатку складіть тест модуля ${m.n-1} на 80%</span></div>`;
       return `<article class="module-card ${unlocked?'':'locked'}">
         <div class="module-top"><span class="module-no">0${m.n}</span><span class="module-status ${cls}">${status}</span></div>
         <h3>${m.title}</h3><p>${m.desc}</p>${action}
@@ -88,7 +103,23 @@
     const el = document.getElementById('continueBtn');
     if(bar){
       const live = typeof done === 'number';
-      bar.hidden = !live;
+      /* the bar is the one place the sign-in / NDA gate is stated */
+      const gate = !signedIn
+        ? { text: 'Увійдіть, щоб відкрити 8 модулів курсу', cta: 'Увійти', href: 'auth.html?next=index.html%23modules' }
+        : !courseAccess
+          ? { text: 'Підпишіть договір NDA, щоб відкрити модулі', cta: 'Підписати NDA', href: 'nda.html?next=index.html%23modules' }
+          : null;
+      bar.hidden = !live && !gate;
+      bar.classList.toggle('course-bar--gate', Boolean(gate));
+      const track = bar.querySelector('.course-bar-track');
+      if(track) track.hidden = Boolean(gate);
+      if(gate){
+        const txt = document.getElementById('courseBarText');
+        if(txt) txt.textContent = gate.text;
+        const btn = document.getElementById('continueBtn');
+        if(btn){ btn.href = gate.href; btn.textContent = gate.cta; btn.classList.remove('hidden'); }
+        return;
+      }
       if(live){
         const total = modules.length;
         const txt = document.getElementById('courseBarText');
