@@ -49,6 +49,17 @@
   if (window.visualViewport) window.visualViewport.addEventListener('resize', render, { passive: true });
   render();
 
+  /* the signature writes itself the first time the band comes into view */
+  (() => {
+    const sign = document.querySelector('.pe-sign');
+    if (!sign) return;
+    if (!('IntersectionObserver' in window)) { sign.classList.add('is-in'); return; }
+    const io = new IntersectionObserver(es => {
+      for (const e of es) if (e.isIntersecting) { sign.classList.add('is-in'); io.disconnect(); }
+    }, { threshold: .35 });
+    io.observe(sign);
+  })();
+
   /* ── drifting petals ──────────────────────────────────────
      A handful of soft shapes on their own slow paths, nudged aside by the
      pointer. Transform-only, so they never trigger layout. */

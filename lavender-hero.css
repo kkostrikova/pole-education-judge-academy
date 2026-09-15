@@ -24,8 +24,83 @@ html:has(body.lav-home), body.lav-home{ overflow-x: clip !important; overflow-y:
 body.lav-home main{ overflow-x: clip; overflow-y: visible; }
 
 /* the legacy dark hero stays in the DOM (app.js reads its nodes) but is hidden */
-body.lav-home .hero,
-body.lav-home .brand-manifesto{ display: none !important; }
+body.lav-home .hero{ display: none !important; }
+
+/* ── the signature band, right under the hero ──────────────
+   "More than judging" is the phrase the school is known by, and it is not
+   an explanation — it is a conclusion. As a headline it asks a stranger a
+   riddle; one screen down, after the hero has said what the course is, it
+   finally has something to land against. It gets a band of its own so it
+   competes with nothing.
+
+   The lettering is the author's own hand, vectorised from her clip into
+   three layers that share one viewBox — not a system script font. */
+body.lav-home .brand-manifesto{
+  display: grid !important;
+  place-items: center;
+  min-height: clamp(300px, 38svh, 460px) !important;
+  padding: clamp(48px, 6vw, 80px) 24px !important;
+  background: radial-gradient(circle at 20% 24%, rgba(167,139,250,.16), transparent 38%),
+              radial-gradient(circle at 82% 74%, rgba(123,92,225,.13), transparent 42%),
+              linear-gradient(135deg, #fbfaff 0%, #f4f0ff 56%, #ebe4ff 100%) !important;
+  border-top: 1px solid #ded5f6 !important;
+  border-bottom: 1px solid #ded5f6 !important;
+}
+body.lav-home .brand-manifesto-script{ display: none !important; }
+/* the band is sized by the lettering, not the other way round: the copy
+   wrapper must not hand .pe-sign a definite height, or aspect-ratio derives
+   the width from it and the hand shrinks to half the band */
+body.lav-home .brand-manifesto-copy{
+  display: block !important;
+  width: min(720px, 84vw) !important;
+  max-width: none !important;
+  height: auto !important;
+  padding: 0 !important;                     /* lavender-interactive reserved
+                                                34vw on the right for the old
+                                                flower plate; nothing sits
+                                                there now */
+  text-align: center !important;
+  align-self: center; justify-self: center;
+}
+/* the decorative bouquet belonged to the old manifesto; the band is the
+   lettering and nothing else */
+body.lav-home .brand-manifesto::after{ display: none !important; }
+
+.pe-sign{
+  position: relative; display: block;
+  margin: 0 auto;
+  width: 100%; height: auto; aspect-ratio: 648 / 219;
+}
+.pe-ink{
+  position: absolute; inset: 0; display: block;
+  background: center/100% 100% no-repeat;
+}
+.pe-ink--1{ background-image: url('assets/hero/headline-line1.svg?v=20260915-sign1'); }
+.pe-ink--2{ background-image: url('assets/hero/headline-line2.svg?v=20260915-sign1'); }
+.pe-ink--h{ background-image: url('assets/hero/headline-heart.svg?v=20260915-sign1'); }
+
+/* the reveal edge leans with the rising baseline, so the stroke reads as
+   laid down by a pen rather than wiped in — and it waits until the band is
+   actually on screen */
+@keyframes pe-write{
+  from{ clip-path: polygon(-45% 0%, -5% 0%, 7% 100%, -45% 100%); }
+  to  { clip-path: polygon(-45% 0%, 118% 0%, 130% 100%, -45% 100%); }
+}
+@keyframes pe-heart{
+  from{ opacity: 0; transform: scale(.72) rotate(-9deg); }
+  60% { opacity: 1; }
+  to  { opacity: 1; transform: none; }
+}
+.pe-sign .pe-ink{ opacity: 0; }
+.pe-sign.is-in .pe-ink{ opacity: 1; }
+.pe-sign.is-in .pe-ink--1{ animation: pe-write .90s cubic-bezier(.42,0,.35,1) .05s both; }
+.pe-sign.is-in .pe-ink--2{ animation: pe-write 1.20s cubic-bezier(.38,0,.4,1) .85s both; }
+.pe-sign.is-in .pe-ink--h{ animation: pe-heart .55s cubic-bezier(.2,1.3,.4,1) 1.95s both;
+                           transform-origin: 62% 22%; }
+@media (prefers-reduced-motion: reduce){
+  .pe-sign .pe-ink{ opacity: 1; }
+  .pe-sign.is-in .pe-ink{ animation: none; clip-path: none; transform: none; }
+}
 
 /* ───────────────────────── header ───────────────────────── */
 body.lav-home .topbar{
@@ -49,13 +124,19 @@ body.lav-home .topbar.is-solid{
 /* the hero sits under the fixed header by design; everything after it must not */
 /* scroll-padding must sit on the scroll container (html), not on body */
 html:has(body.lav-home){ scroll-padding-top: calc(100vw / 1672 * 128); }
+/* The page below the hero rises over its tail as one sheet. The signature
+   band is the top of that sheet now — it used to be #lectures, which meant
+   the band sat underneath it and was never seen. */
+body.lav-home .brand-manifesto{
+  position: relative; z-index: 4;
+  margin-top: -70svh;                        /* rise over the pinned scene */
+  border-radius: calc(44 * var(--u)) calc(44 * var(--u)) 0 0;
+  box-shadow: 0 calc(-24 * var(--u)) calc(70 * var(--u)) rgba(76, 58, 132, .14);
+}
 body.lav-home #lectures{
   position: relative; z-index: 4;
-  margin-top: -70svh;                        /* rise over the pinned lavender */
-  padding-top: calc(120 * var(--u));
-  border-radius: calc(44 * var(--u)) calc(44 * var(--u)) 0 0;
+  padding-top: calc(60 * var(--u));
   background: #faf8ff;
-  box-shadow: 0 calc(-24 * var(--u)) calc(70 * var(--u)) rgba(76, 58, 132, .14);
 }
 
 body.lav-home .brand{
@@ -373,10 +454,11 @@ body.lav-home{
   }
 
   html:has(body.lav-home){ scroll-padding-top: calc(100vw / 390 * 72); }
-  body.lav-home #lectures{
-    margin-top: -70svh; padding-top: calc(74 * var(--u));
+  body.lav-home .brand-manifesto{
+    margin-top: -70svh;
     border-radius: calc(26 * var(--u)) calc(26 * var(--u)) 0 0;
   }
+  body.lav-home #lectures{ padding-top: calc(40 * var(--u)); }
   .lav-scene{ height: calc(100svh + 60svh); }
   /* a 16:9 frame cropped to portrait loses the bouquet unless the crop
      is pulled to the right, where the flowers are */
