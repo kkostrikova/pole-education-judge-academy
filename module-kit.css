@@ -248,6 +248,17 @@ body .mk-foot{
   font: 500 12px/1.5 'Manrope', system-ui, sans-serif !important;
   color: #645d86 !important;
 }
+
+/* The section labels are <div class="ey">, and a div carries no margin of
+   its own — nothing in any stylesheet gave them one, so every label sat
+   flush against whatever followed it. Measured before the fix: 0px above
+   the .core panel on all seven modules that have one, 4-7px above an h2
+   or h3. The margin collapses with the heading's own, so the headings
+   that already had room (28px) keep it and nothing grows twice.
+
+   The crumb keeps its own reset below: there the label and the step chip
+   share a flex row and must not be pushed apart. */
+body .ey{ margin-bottom: 12px; }
 /* the eyebrow is the brand line, the chip is where the reader stands —
    they must not read as one run-on string */
 body .mk-crumb .ey{ margin: 0 !important; }

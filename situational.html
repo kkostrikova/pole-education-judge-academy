@@ -26,7 +26,9 @@ h1,h2,h3{font-family:Georgia,'Times New Roman',serif;font-weight:500}.hero h1{fo
 .summary{display:none;border:1px solid var(--line);background:#1d171b;border-radius:24px;padding:25px;margin-top:18px}.summary.show{display:block}.summary h2{font-size:38px;margin:4px 0 12px}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:17px}.sum{border:1px solid #4d3b44;border-radius:17px;padding:17px;background:#241c21}.sum strong{display:block;font:500 30px Georgia;color:var(--gold)}.sum span{color:var(--muted);font-size:12px}.summary p{color:#d3c8cc;line-height:1.65}.summary .btn{margin-top:8px}
 @media(max-width:900px){.lab{grid-template-columns:1fr}.case-list{display:grid;grid-template-columns:repeat(2,1fr);max-height:none}.case{min-height:0}}
 @media(max-width:580px){.wrap{padding:10px}.hero,.case,.sidebar,.summary{border-radius:18px;padding:17px}.hero h1{font-size:42px}.case-list{grid-template-columns:1fr}.case-head{display:block}.role{display:inline-block;margin-top:10px}.case h2{font-size:30px}.summary-grid{grid-template-columns:1fr}}
-</style>
+    /* same reason as body .ey in module-kit.css, which this page does not load */
+    .ey{margin-bottom:12px}
+  </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=20260829-lectures1"></script>
 <script src="auth-guard.js?v=20260829-nda1"></script>

@@ -20,11 +20,11 @@ body,button,input,select,textarea{font-family:Inter,ui-sans-serif,system-ui,-app
 .hero-stats strong{color:#5a43b4!important}.hero-stats span{color:#645d86!important}
 .progress-panel{background:rgba(255,255,255,.90)!important;border-color:#ddd5f5!important;color:#2b2451!important;box-shadow:0 22px 56px rgba(76,58,132,.10)!important}
 .progress-ring{background:conic-gradient(#7b5ce1 var(--p),#e9e3f7 0)!important}.progress-ring:after{background:#fff!important}.progress-ring span{color:#4f3aa8!important}.progress-panel p,.progress-kicker{color:#645d86!important}.route i{background:#e8e2f4!important}.route i.done{background:#7b5ce1!important}.status-note{border-color:#e2dcf3!important;color:#645d86!important}.status-dot{background:#7b5ce1!important}
-.brand-manifesto{min-height:220px!important;background:radial-gradient(circle at 78% 30%,rgba(155,131,238,.22),transparent 28%),linear-gradient(135deg,#fbfaff,#f2edff 58%,#e8e1ff)!important;border-color:#ddd5f5!important}
-.brand-manifesto::before{background:linear-gradient(90deg,transparent,#b19cf0 18%,#7b5ce1 50%,#b19cf0 82%,transparent)!important;box-shadow:none!important}
-.brand-manifesto-script{font-size:0!important;transform:none!important;text-shadow:none!important;margin:0!important}
-.brand-manifesto-script span{display:none!important}
-.brand-manifesto-script::before{content:"More than judging ♡";display:block;font-family:"Segoe Script","Snell Roundhand","Brush Script MT",cursive;font-size:clamp(42px,7vw,76px);font-weight:400;line-height:1.05;color:#735dc9;letter-spacing:.01em;transform:rotate(-2deg)}
+
+
+
+
+
 .section{color:#2b2451!important}.section-head h2{color:#2b2451!important}.section-head>p{color:#645d86!important}
 #modules{background:linear-gradient(180deg,#fbfaff 0%,#f7f5ff 55%,#f1edff 100%)!important;color:#2b2451!important}
 #modules::before{background:radial-gradient(circle at 16% 8%,rgba(155,131,238,.12),transparent 22%),radial-gradient(circle at 88% 72%,rgba(123,92,225,.10),transparent 26%)!important}
@@ -45,4 +45,4 @@ p,li,small,.muted,.lead,.question-note,.save-state,.progress-block{opacity:1!imp
 .dark p,.lab p,.control p,.challenge p,.scene360 p,.judge p,.calc p,.scenario-panel p,.scene p,.card p,.dashboard p,.review-dashboard p,.quizq p,.quiz-q p,.quiz-question p{color:#645d86!important}
 .note,.callout,.notice{background:#f3efff!important;border-left-color:#7b5ce1!important;color:#2b2451!important}.note strong,.callout strong,.notice strong{color:#4f3aa8!important}
 input,select,textarea,.opt,.quiz-opt,.answer,.choice,.option,.open-answer,.score-btn,.pass-btn,.fail-btn,.nav-q,.protocol-tab,.field{background:#fff!important;color:#2b2451!important;border-color:#cfc3f1!important}.option.selected,.opt.selected,.quiz-opt.chosen,.answer.selected,.choice.active{background:#efeaff!important;border-color:#8d69eb!important}
-@media(max-width:600px){.brand-manifesto{min-height:170px!important}.brand-manifesto-script::before{font-size:clamp(38px,12vw,58px)}.hero{padding-top:52px!important}.progress-panel{border-radius:24px!important}}
+@media(max-width:600px){.hero{padding-top:52px!important}.progress-panel{border-radius:24px!important}}

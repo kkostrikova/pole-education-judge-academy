@@ -26,34 +26,6 @@ body.lav-home main{ overflow-x: clip; overflow-y: visible; }
 /* the legacy dark hero stays in the DOM (app.js reads its nodes) but is hidden */
 body.lav-home .hero{ display: none !important; }
 
-/* ── the criteria band, right under the hero ──────────────
-   The signature moved back into the hero, where the school is recognised
-   by it, so this band carries what the typographic pass earned instead:
-   the five things a judge actually scores. It is the first thing under
-   the fold, and every tile is a real link into its Judge Desk module. */
-body.lav-home .brand-manifesto{
-  display: grid !important;
-  place-items: center;
-  min-height: 0 !important;
-  padding: clamp(46px, 6vw, 76px) 24px clamp(40px, 5vw, 64px) !important;
-  background: radial-gradient(circle at 20% 24%, rgba(167,139,250,.16), transparent 38%),
-              radial-gradient(circle at 82% 74%, rgba(123,92,225,.13), transparent 42%),
-              linear-gradient(135deg, #fbfaff 0%, #f4f0ff 56%, #ebe4ff 100%) !important;
-  border-top: 1px solid #ded5f6 !important;
-  border-bottom: 1px solid #ded5f6 !important;
-}
-body.lav-home .brand-manifesto-script{ display: none !important; }
-/* lavender-interactive reserved 34vw on the right for a flower plate that
-   no longer sits there, and caps the wrapper at 980px */
-body.lav-home .brand-manifesto-copy{
-  display: block !important;
-  max-width: none !important;
-  height: auto !important;
-  padding: 0 !important;
-  align-self: center; justify-self: center;
-}
-/* the decorative bouquet belonged to the old manifesto */
-body.lav-home .brand-manifesto::after{ display: none !important; }
 
 /* the reveal edge leans with the rising baseline, so the stroke reads as
    laid down by a pen rather than wiped in — and it waits until the band is
@@ -100,19 +72,19 @@ body.lav-home .topbar.is-solid{
 /* the hero sits under the fixed header by design; everything after it must not */
 /* scroll-padding must sit on the scroll container (html), not on body */
 html:has(body.lav-home){ scroll-padding-top: calc(100vw / 1672 * 128); }
-/* The page below the hero rises over its tail as one sheet, and the
-   criteria band is the top of that sheet — it used to be #lectures, which
-   meant the band sat underneath it and was never seen. */
-body.lav-home .brand-manifesto{
-  position: relative; z-index: 4;
+/* The page below the hero rises over its tail as one sheet. The criteria
+   band held that job for a day; it triplicated the module grid and the
+   Judge Desk, so the lecture section has it back. */
+/* every section below the hero, not just the first: the plate is pinned
+   and painted at z-index 1, so a section left at z-index auto shows it
+   through. The band used to cover that gap by being tall enough; without
+   it #modules was see-through for its first 137px. */
+body.lav-home main > section:not(.lav-scene){ position: relative; z-index: 4; }
+body.lav-home #lectures{
   margin-top: -70svh;                        /* rise over the pinned scene */
+  padding-top: calc(78 * var(--u));
   border-radius: calc(44 * var(--u)) calc(44 * var(--u)) 0 0;
   box-shadow: 0 calc(-24 * var(--u)) calc(70 * var(--u)) rgba(76, 58, 132, .14);
-}
-body.lav-home #lectures{
-  position: relative; z-index: 4;
-  padding-top: calc(60 * var(--u));
-  background: #faf8ff;
 }
 
 body.lav-home .brand{
@@ -327,74 +299,6 @@ body.lav-home{
   background: #fff; border-color: #5a2d91; transform: translateY(-1px);
 }
 
-/* ── the criteria band ──
-   What the hero no longer says: the five things a judge actually scores,
-   each row a real link into its Judge Desk module, so the panel is
-   navigation rather than a picture of navigation.
-
-   Five identical boxes in a row read as a stock "our features" strip, and
-   centring them only made the sameness symmetrical. The band is two
-   columns instead: the heading holds the left, the criteria list the
-   right, and the space under the heading is deliberate rather than
-   left over. */
-body.lav-home .lav-crit-band .brand-manifesto-copy{
-  width: min(1180px, 92vw) !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
-  gap: clamp(28px, 5vw, 86px);
-  align-items: start; text-align: left !important;
-}
-.lav-crit-head{ padding-top: clamp(4px, 1vh, 12px); }
-.lav-card-kicker{
-  margin: 0 0 clamp(12px, 1.4vh, 18px);
-  font: 600 clamp(10.5px, .8vw, 12px)/1.3 'Manrope', system-ui, sans-serif;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: #6a48c4 !important;
-}
-.lav-crit-head h2{
-  margin: 0;
-  font: 500 clamp(28px, 3.2vw, 44px)/1.08 'Cormorant Garamond', Georgia, serif;
-  letter-spacing: -.01em; color: #2b2451 !important;
-}
-.lav-card-foot{
-  margin: clamp(18px, 2.2vh, 26px) 0 0;
-  padding-top: clamp(14px, 1.8vh, 20px);
-  border-top: 1px solid #ded5f5;
-  font: 500 clamp(12px, .9vw, 13.5px)/1.4 'Manrope', system-ui, sans-serif;
-  letter-spacing: .04em; color: #645d86 !important;
-}
-
-.lav-crit{ list-style: none; margin: 0; padding: 0; }
-.lav-crit li + li{ border-top: 1px solid #ded5f5; }
-.lav-crit a{
-  display: flex; align-items: center; gap: clamp(14px, 1.6vw, 26px);
-  padding: clamp(13px, 1.6vh, 19px) clamp(6px, .8vw, 12px);
-  text-decoration: none; border-radius: 12px;
-  transition: background .18s ease, padding-left .18s ease;
-}
-.lav-crit b{
-  flex: 0 0 auto;
-  font: 500 clamp(22px, 2vw, 30px)/1 'Cormorant Garamond', Georgia, serif;
-  /* 6.2:1 on the band, sampled from the render. !important because
-     pe-contrast.css paints every <b> on the site #2b2451, which is
-     readable but takes the accent away. */
-  color: #6a48c4 !important; font-variant-numeric: tabular-nums;
-  transition: color .18s ease;
-}
-.lav-crit span{
-  font: 500 clamp(15px, 1.15vw, 18px)/1.35 'Manrope', system-ui, sans-serif;
-  color: #2b2451;
-}
-.lav-crit a::after{
-  content: '→'; margin-left: auto; color: #8d69eb;
-  opacity: 0; transform: translateX(-6px);
-  transition: opacity .18s ease, transform .18s ease;
-}
-.lav-crit a:hover{ background: rgba(255,255,255,.66); padding-left: clamp(12px, 1.4vw, 20px); }
-.lav-crit a:hover b{ color: #4f3aa8 !important; }
-.lav-crit a:hover::after{ opacity: 1; transform: none; color: #4f3aa8; }
-.lav-crit a:focus-visible{ outline: 2px solid #7b5ce1; outline-offset: 3px; }
-
 /* ───────────────────── scroll indicator ───────────────────── */
 .lav-scroll{
   position: absolute; left: 50%; bottom: calc(44 * var(--u)); transform: translateX(-50%);
@@ -476,11 +380,11 @@ body.lav-home .lav-crit-band .brand-manifesto-copy{
   }
 
   html:has(body.lav-home){ scroll-padding-top: calc(100vw / 390 * 72); }
-  body.lav-home .brand-manifesto{
+  body.lav-home #lectures{
     margin-top: -70svh;
+    padding-top: calc(52 * var(--u));
     border-radius: calc(26 * var(--u)) calc(26 * var(--u)) 0 0;
   }
-  body.lav-home #lectures{ padding-top: calc(40 * var(--u)); }
   .lav-scene{ height: calc(100svh + 60svh); }
   .lav-bg{ --focus: 38; }   /* the bouquet holds the right edge of a 16:9
                                frame; a portrait crop keeps the clear side */
@@ -501,17 +405,6 @@ body.lav-home .lav-crit-band .brand-manifesto-copy{
     flex: 1 1 0; min-width: 0; justify-content: center;
     min-height: 48px; padding: 0 12px; font-size: 14px; gap: 8px;
   }
-  /* the band's two columns become one, heading above the list */
-  body.lav-home .lav-crit-band .brand-manifesto-copy{
-    grid-template-columns: 1fr; gap: 22px;
-  }
-  .lav-crit-head h2{ font-size: clamp(26px, 8vw, 34px); }
-  .lav-card-kicker{ font-size: 10px; letter-spacing: .16em; margin-bottom: 10px; }
-  .lav-card-foot{ margin-top: 14px; padding-top: 12px; font-size: 12px; }
-  .lav-crit a{ gap: 14px; padding: 12px 4px; }
-  .lav-crit b{ font-size: 21px; }
-  .lav-crit span{ font-size: 15px; }
-  .lav-crit a::after{ opacity: 1; transform: none; }
   .lav-scroll{ gap: calc(8 * var(--u)); }
   .lav-scroll b{ font-size: calc(10 * var(--u)); letter-spacing: .22em; }
   .lav-scroll i{ width: calc(22 * var(--u)); height: calc(34 * var(--u)); }
