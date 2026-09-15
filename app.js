@@ -277,13 +277,13 @@
     const cfg=window.PE_CONFIG||{};
     if(!signedIn){
       launch.href='auth.html?next='+encodeURIComponent('index.html#lectures');launch.removeAttribute('target');
-      launch.querySelector('strong').textContent='Увійти до курсу';launch.querySelector('small').textContent='Після входу потрібно підписати NDA';
+      launch.querySelector('strong').textContent='Увійти до курсу';
     }else if(!courseAccess){
       launch.href='nda.html?next='+encodeURIComponent('index.html#lectures');launch.removeAttribute('target');
-      launch.querySelector('strong').textContent='Підписати договір NDA';launch.querySelector('small').textContent='Доступ до лекцій відкриється після підпису';
+      launch.querySelector('strong').textContent='Підписати договір NDA';
     }else{
       launch.href=cfg.lectureCourseUrl||'https://westudy.ua/en/PoleEducation/course/519be545-a825-4517-9f7d-a075b071b6e9';launch.target='_blank';launch.rel='noopener';
-      launch.querySelector('strong').textContent='Відкрити лекційний курс';launch.querySelector('small').textContent='Лекції відкриються в окремій вкладці ↗';
+      launch.querySelector('strong').textContent='Відкрити лекційний курс';
     }
     renderLectureExtras();
   }
@@ -300,15 +300,16 @@
       const url=(cfg.zoomUrl||'').trim();
       zoom.hidden=!(open&&url);
       if(url)zoom.href=url;
-      const note=document.getElementById('zoomNote');
-      if(note&&(cfg.zoomNote||'').trim())note.textContent=cfg.zoomNote.trim();
     }
     if(book){
       const url=(cfg.handbookUrl||'').trim();
       book.hidden=!(open&&url);
       if(url)book.href=url;
     }
-    box.hidden=!(open&&((zoom&&!zoom.hidden)||(book&&!book.hidden)));
+    /* the lecture card lives in this row too and is always shown — it is
+       the way in for a visitor who has not signed anything yet, so the
+       row itself never hides */
+    box.hidden=false;
   }
   window.addEventListener('pe-auth-ready',()=>renderLectureAccess());
   renderLectureAccess();
