@@ -285,6 +285,30 @@
       launch.href=cfg.lectureCourseUrl||'https://westudy.ua/en/PoleEducation/course/519be545-a825-4517-9f7d-a075b071b6e9';launch.target='_blank';launch.rel='noopener';
       launch.querySelector('strong').textContent='Відкрити лекційний курс';launch.querySelector('small').textContent='Лекції відкриються в окремій вкладці ↗';
     }
+    renderLectureExtras();
+  }
+  /* The live lesson and the handbook sit behind the NDA, like the modules.
+     Either one hides itself when its address is blank, so the row can be
+     filled in one link at a time from config.js. */
+  function renderLectureExtras(){
+    const box=document.getElementById('lectureExtras');if(!box)return;
+    const cfg=window.PE_CONFIG||{};
+    const open=signedIn&&courseAccess;
+    const zoom=document.getElementById('zoomLink');
+    const book=document.getElementById('handbookLink');
+    if(zoom){
+      const url=(cfg.zoomUrl||'').trim();
+      zoom.hidden=!(open&&url);
+      if(url)zoom.href=url;
+      const note=document.getElementById('zoomNote');
+      if(note&&(cfg.zoomNote||'').trim())note.textContent=cfg.zoomNote.trim();
+    }
+    if(book){
+      const url=(cfg.handbookUrl||'').trim();
+      book.hidden=!(open&&url);
+      if(url)book.href=url;
+    }
+    box.hidden=!(open&&((zoom&&!zoom.hidden)||(book&&!book.hidden)));
   }
   window.addEventListener('pe-auth-ready',()=>renderLectureAccess());
   renderLectureAccess();
