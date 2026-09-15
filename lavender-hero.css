@@ -465,17 +465,12 @@ body.lav-home .topbar .pe-lang{ order: 3; margin-left: calc(22 * var(--u)); }
    filled the section; aligning it to the top gives the two columns one
    shared shoulder */
 body.lav-home .lecture-hub{ align-items: start; }
-body.lav-home .lecture-launch{
-  align-self: start;
-  min-height: 0 !important;
-  justify-content: center;
-  padding: calc(34 * var(--u)) calc(32 * var(--u));
-  gap: calc(4 * var(--u));
-}
-body.lav-home .lecture-launch strong{ margin: calc(10 * var(--u)) 0 calc(6 * var(--u)); }
+/* the lecture card is one of three equal cards in the row now, so it takes
+   their box: align-self:start and a padding of its own were what made it
+   the section's right column, and both now make it the odd one out */
+body.lav-home .lecture-launch{ min-height: 0 !important; }
 @media (max-width: 900px){
   body.lav-home .lecture-hub{ align-items: stretch; }
-  body.lav-home .lecture-launch{ padding: calc(24 * var(--u)) calc(22 * var(--u)); }
 }
 
 /* course progress at the head of the module grid: the old ring lives in the
@@ -513,22 +508,31 @@ body .progress-continue.hidden{ display: none !important; }
   body .progress-continue{ width: 100%; justify-content: center; }
 }
 
-/* ── the live lesson and the handbook ──
-   Both sit behind the NDA with the modules, and each hides itself when
-   its address is blank in config.js, so the row can be filled one link
-   at a time. They share the lecture card's language beside them, a step
-   quieter: this is what you reach for during the course, not the way in
-   to it. */
+/* ── where the course actually lives ──
+   Three doors in one row: the lecture course, the live lesson and the
+   handbook. They were three different sizes before — the WeStudy card
+   was the section's right column while these two sat below it — which
+   read as a mistake rather than a hierarchy. Equal cards, and the
+   section's copy takes the full width above them.
+
+   The lesson and the handbook are behind the NDA and each hides itself
+   when its address is blank in config.js; the lecture card is always
+   there, changing its own text through the three states. */
+body.lav-home .lecture-hub{ grid-template-columns: 1fr !important; }
+body.lav-home .lecture-hub-copy{ max-width: 860px; }
 body.lav-home .lecture-extras{
   grid-column: 1 / -1;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: clamp(10px, 1.2vw, 16px);
-  margin-top: clamp(20px, 2.6vh, 32px);
+  margin-top: clamp(22px, 3vh, 36px);
 }
 body.lav-home .lecture-extra{
-  display: block; padding: clamp(16px, 1.6vw, 22px);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: clamp(120px, 13vw, 152px);
+  padding: clamp(18px, 1.8vw, 24px);
   border: 1px solid #ded5f5; border-radius: 20px;
   background: rgba(255,255,255,.78); backdrop-filter: blur(10px);
+  box-shadow: none;
   text-decoration: none; color: inherit;
   transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
 }
@@ -538,20 +542,17 @@ body.lav-home .lecture-extra:hover{
 }
 body.lav-home .lecture-extra:focus-visible{ outline: 2px solid #7b5ce1; outline-offset: 3px; }
 body.lav-home .lecture-extra-kicker{
-  display: block;
+  display: block; margin: 0;
   font: 600 clamp(10px, .78vw, 11.5px)/1.3 'Manrope', system-ui, sans-serif;
-  letter-spacing: .18em; text-transform: uppercase; color: #6a48c4;
+  letter-spacing: .18em; text-transform: uppercase; color: #6a48c4 !important;
 }
 body.lav-home .lecture-extra strong{
-  display: block; margin: clamp(8px, 1vh, 12px) 0 6px;
-  font: 500 clamp(19px, 1.6vw, 24px)/1.2 'Cormorant Garamond', Georgia, serif;
+  display: block; margin: clamp(10px, 1.2vh, 14px) 0 0;
+  font: 500 clamp(20px, 1.7vw, 26px)/1.2 'Cormorant Garamond', Georgia, serif;
   color: #2b2451 !important;
 }
-body.lav-home .lecture-extra small{
-  display: block;
-  font: 400 clamp(12.5px, .95vw, 14px)/1.45 'Manrope', system-ui, sans-serif;
-  color: #5f5880;
-}
+body.lav-home .lecture-extra strong::after{ content: ' ↗'; font-size: .62em; color: #8d69eb; }
 @media (max-width: 850px){
-  body.lav-home .lecture-extras{ grid-template-columns: 1fr; margin-top: 18px; }
+  body.lav-home .lecture-extras{ grid-template-columns: 1fr; margin-top: 20px; }
+  body.lav-home .lecture-extra{ min-height: 0; }
 }

@@ -13,7 +13,6 @@ window.PE_CONFIG = {
      address here is public even though the button is behind the NDA. Keep
      Zoom's waiting room on for this room. */
   zoomUrl: "https://ksu-ks-ua.zoom.us/j/82579877518?pwd=VXi9UhHaE3abGfpCRw9YyS7iaZHyhm.1",
-  zoomNote: "Кімната відкрита постійно ↗",
   handbookUrl: "https://zenodo.org/records/15861201",
   supabaseUrl: "https://mffjcqpyfcptwahpxeom.supabase.co",
   supabasePublishableKey: "sb_publishable_G69GdUkmDVVZcAVUhLT9Mw_pADiXZOs"
