@@ -38,7 +38,10 @@ body.gold{--accent:#b77a08;--accent-soft:#fff6df}
 .author{text-align:center;display:flex;flex-direction:column;align-items:center}
 .author-photo{width:118px;height:118px;border-radius:50%;object-fit:cover;display:block;background:#f0f0f0}
 .author-name{font-size:14px;line-height:1.35;color:#2c2c2c;margin-top:8px;min-height:38px;font-weight:300}.author-name span{font-size:13px}
-.signature-img{display:block;width:120px;height:76px;object-fit:contain;margin-top:0;mix-blend-mode:multiply}
+/* multiply was how the scans' white paper was made to disappear. The
+   files carry their own alpha now, so it only tints the ink against
+   the gold sheet's cream. */
+.signature-img{display:block;width:120px;height:76px;object-fit:contain;margin-top:0}
 .signature-kateryna{width:128px}.signature-lana{width:112px}
 .authors-title{text-align:center;color:var(--accent);font-size:15px;padding-top:148px;font-weight:300}
 .certificate-footer{position:relative;z-index:3;width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:end;margin-top:10px;padding-top:2px;min-height:52px}
