@@ -556,3 +556,6 @@ body.lav-home .lecture-extra strong::after{ content: ' ↗'; font-size: .62em; c
   body.lav-home .lecture-extras{ grid-template-columns: 1fr; margin-top: 20px; }
   body.lav-home .lecture-extra{ min-height: 0; }
 }
+/* the handbook is a file, not a destination: it says "download" and it
+   downloads, so the arrow that means "opens elsewhere" would be a lie */
+body.lav-home .lecture-extra--file strong::after{ content: ' ↓'; }

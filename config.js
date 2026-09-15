@@ -13,7 +13,10 @@ window.PE_CONFIG = {
      address here is public even though the button is behind the NDA. Keep
      Zoom's waiting room on for this room. */
   zoomUrl: "https://ksu-ks-ua.zoom.us/j/82579877518?pwd=VXi9UhHaE3abGfpCRw9YyS7iaZHyhm.1",
-  handbookUrl: "https://zenodo.org/records/15861201",
+  /* Served from the site itself: the Zenodo record would not load, and
+     a handbook behind a third party is a dead end on the day it is
+     down. Change the path here to point somewhere else. */
+  handbookUrl: "assets/handbook/pole-education-judge-handbook.pdf",
   supabaseUrl: "https://mffjcqpyfcptwahpxeom.supabase.co",
   supabasePublishableKey: "sb_publishable_G69GdUkmDVVZcAVUhLT9Mw_pADiXZOs"
 };
