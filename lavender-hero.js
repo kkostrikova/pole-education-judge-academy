@@ -123,24 +123,4 @@
     requestAnimationFrame(tick);
   })();
 
-  /* ── counters on the rising panel ───────────────────────── */
-  (() => {
-    const nums = document.querySelectorAll('.lav-counts strong[data-count]');
-    if (!nums.length) return;
-    const run = el => {
-      const target = Number(el.dataset.count) || 0;
-      const dur = 900, t0 = performance.now();
-      const step = now => {
-        const t = Math.min(1, (now - t0) / dur);
-        el.textContent = String(Math.round(target * (1 - Math.pow(1 - t, 3))));
-        if (t < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    };
-    if (!('IntersectionObserver' in window)) { nums.forEach(n => n.textContent = n.dataset.count); return; }
-    const io = new IntersectionObserver(entries => {
-      for (const e of entries) if (e.isIntersecting) { run(e.target); io.unobserve(e.target); }
-    }, { threshold: .6 });
-    nums.forEach(n => io.observe(n));
-  })();
 })();

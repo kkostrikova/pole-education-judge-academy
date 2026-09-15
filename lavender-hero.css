@@ -395,26 +395,6 @@ body.lav-home .lav-crit-band .brand-manifesto-copy{
 .lav-crit a:hover::after{ opacity: 1; transform: none; color: #4f3aa8; }
 .lav-crit a:focus-visible{ outline: 2px solid #7b5ce1; outline-offset: 3px; }
 
-/* ── the course counters in the lecture section ──
-   These lost their rules when the hero's reference-pixel block was
-   rewritten: the numbers ran into their labels and the three stacked into
-   a column. They are written in clamp() now rather than the hero's --u,
-   because they do not live in the hero and should not depend on it. */
-.lav-counts{
-  display: flex; flex-wrap: wrap;
-  gap: clamp(26px, 4vw, 56px);
-  margin: clamp(26px, 3.4vh, 38px) 0 clamp(24px, 3vh, 32px);
-}
-.lav-counts div{ display: grid; gap: 6px; }
-.lav-counts strong{
-  font: 500 clamp(36px, 3.6vw, 52px)/1 'Cormorant Garamond', Georgia, serif;
-  color: #5a43b4 !important; font-variant-numeric: tabular-nums;
-}
-.lav-counts span{
-  font: 500 clamp(10.5px, .85vw, 12px)/1.3 'Manrope', system-ui, sans-serif;
-  letter-spacing: .12em; text-transform: uppercase; color: #645d86 !important;
-}
-
 /* ───────────────────── scroll indicator ───────────────────── */
 .lav-scroll{
   position: absolute; left: 50%; bottom: calc(44 * var(--u)); transform: translateX(-50%);
@@ -532,9 +512,6 @@ body.lav-home .lav-crit-band .brand-manifesto-copy{
   .lav-crit b{ font-size: 21px; }
   .lav-crit span{ font-size: 15px; }
   .lav-crit a::after{ opacity: 1; transform: none; }
-  .lav-counts{ gap: 22px; margin: 22px 0 20px; }
-  .lav-counts strong{ font-size: 36px; }
-  .lav-counts span{ font-size: 10px; letter-spacing: .1em; }
   .lav-scroll{ gap: calc(8 * var(--u)); }
   .lav-scroll b{ font-size: calc(10 * var(--u)); letter-spacing: .22em; }
   .lav-scroll i{ width: calc(22 * var(--u)); height: calc(34 * var(--u)); }
@@ -578,9 +555,12 @@ body.lav-home .topbar .pe-lang{ order: 3; margin-left: calc(22 * var(--u)); }
    its text to the bottom. That read fine while the column was short; the
    counters made it tall and left the card two-thirds empty. It now hugs its
    own content and sits centred against the copy. */
-body.lav-home .lecture-hub{ align-items: center; }
+/* the card floated in the middle of its column while the copy beside it
+   filled the section; aligning it to the top gives the two columns one
+   shared shoulder */
+body.lav-home .lecture-hub{ align-items: start; }
 body.lav-home .lecture-launch{
-  align-self: center;
+  align-self: start;
   min-height: 0 !important;
   justify-content: center;
   padding: calc(34 * var(--u)) calc(32 * var(--u));
