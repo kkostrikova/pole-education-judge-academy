@@ -41,10 +41,12 @@ body.gold{--accent:#b77a08;--accent-soft:#fff6df}
 .signature-img{display:block;width:120px;height:76px;object-fit:contain;margin-top:0;mix-blend-mode:multiply}
 .signature-kateryna{width:128px}.signature-lana{width:112px}
 .authors-title{text-align:center;color:var(--accent);font-size:15px;padding-top:148px;font-weight:300}
-.certificate-footer{position:relative;z-index:3;width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:end;margin-top:0;padding-top:2px;min-height:52px}
+.certificate-footer{position:relative;z-index:3;width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:end;margin-top:10px;padding-top:2px;min-height:52px}
 .certificate-ident{display:grid;gap:2px;text-align:left;color:#777;font-size:8px;align-self:end}.certificate-ident strong{font-size:10px;color:#555;letter-spacing:.08em}
 .issue-date{font-size:13px;color:#222;align-self:end;padding-bottom:4px;white-space:nowrap}
-.qr-wrap{justify-self:end;display:flex;align-items:center;gap:6px;text-decoration:none;color:#777}.qr-wrap small{font-size:7px;max-width:55px;line-height:1.2}.qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:48px!important;height:48px!important;display:block}
+/* the label used to sit beside the code, which pushed it against the
+   right edge of the sheet; under it, both stay inside the margin */
+.qr-wrap{justify-self:end;display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:#777}.qr-wrap small{font-size:7px;max-width:76px;line-height:1.2;text-align:center}.qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:72px!important;height:72px!important;display:block}
 body.gold .certificate{background:linear-gradient(180deg,#fff 0%,#fffefb 100%)}
 
 @media(max-width:700px){
@@ -55,7 +57,7 @@ body.gold .certificate{background:linear-gradient(180deg,#fff 0%,#fffefb 100%)}
   .watermark{width:320px;height:320px}
   .authors{grid-template-columns:1fr 110px 1fr;gap:6px}.author-photo{width:78px;height:78px}.author-name{font-size:10px;min-height:28px}.author-name span{font-size:9px}
   .signature-img{width:78px;height:48px}.signature-kateryna{width:82px}.authors-title{font-size:10px;padding-top:98px}
-  .certificate-ident{font-size:6px}.certificate-ident strong{font-size:7px}.issue-date{font-size:9px}.qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:34px!important;height:34px!important}.qr-wrap small{display:none}
+  .certificate-ident{font-size:6px}.certificate-ident strong{font-size:7px}.issue-date{font-size:9px}.qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:52px!important;height:52px!important}.qr-wrap small{display:none}
 }
 @page{size:A4 portrait;margin:0}
 @media print{
@@ -85,11 +87,14 @@ body.gold .certificate{background:linear-gradient(180deg,#fff 0%,#fffefb 100%)}
   .signature-img{width:34mm!important;height:20mm!important;margin-top:0!important}
   .signature-lana{width:31mm!important}.signature-kateryna{width:36mm!important}
   .authors-title{font-size:4.3mm!important;padding-top:42mm!important}
-  .certificate-footer{min-height:15mm!important;padding-top:0!important}
+  /* the enlarged code sat exactly on the signature's baseline above it */
+  .certificate-footer{min-height:15mm!important;padding-top:0!important;margin-top:4mm!important}
   .certificate-ident{font-size:2.4mm!important;gap:.7mm!important}
   .certificate-ident strong{font-size:3mm!important}
   .issue-date{font-size:3.6mm!important;padding-bottom:1mm!important}
   .qr-wrap{gap:2mm!important}
-  .qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:14mm!important;height:14mm!important}
+  /* 14mm put each module of a 33-module code at 0.42mm, which a phone
+     camera reads only up close; 20mm is the size a URL code wants */
+  .qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:20mm!important;height:20mm!important}
   .qr-wrap small{display:block!important;font-size:2.2mm!important;max-width:18mm!important}
 }

@@ -8,9 +8,15 @@ const params=new URLSearchParams(location.search);
 const preview=params.get('preview');
 let currentLang=params.get('lang')==='en'?'en':'uk';
 
+/* 15/09/2026 reads as 15 September to a British holder and as nothing at
+   all to an American one. The Ukrainian certificate keeps the numeric form
+   it has always had; the English one spells the month out. */
 const formatDate=(value,lang)=>{
   if(!value)return '—';
-  return new Intl.DateTimeFormat(lang==='en'?'en-GB':'uk-UA',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date(value));
+  const opts=lang==='en'
+    ?{day:'numeric',month:'long',year:'numeric'}
+    :{day:'2-digit',month:'2-digit',year:'numeric'};
+  return new Intl.DateTimeFormat(lang==='en'?'en-GB':'uk-UA',opts).format(new Date(value));
 };
 const showError=text=>{msg.textContent=text;msg.className='certificate-message err';certEl.classList.add('hidden');printBtn.disabled=true};
 
