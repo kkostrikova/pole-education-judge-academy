@@ -3,249 +3,287 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>UPASF — Федерація пілонного спорту та повітряної акробатики України</title>
-<meta name="description" content="Ukrainian Pole Sport &amp; Aerial Acrobatics Federation (UPASF) — національний член IPSF. Змагання, суддівство, членство, збірна.">
+<title>Федерація поул спорту і повітряної акробатики України</title>
+<meta name="description" content="ГО «Федерація поул спорту і повітряної акробатики України» — керівний орган з поул спорту та повітряної акробатики, член International Pole Sport Federation (IPSF).">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#14224C;          /* геральдичний синій з герба */
-  --navy-2:#22347A;
-  --navy-soft:#5C6892;
-  --yellow:#FFC81E;        /* жовтий з герба */
-  --yellow-2:#FFE07A;
-  --yellow-ink:#7A5800;
-  --paper:#FFFFFF;
-  --tint:#F3F6FC;
-  --tint-2:#E8EEFA;
-  --line:#DDE4F2;
-  --line-2:#C9D4EA;
-  --muted:#5C6892;
+  --navy:#14224C; --navy-2:#22347A; --yellow:#FFC81E; --yellow-2:#FFE07A;
+  --paper:#FFFFFF; --tint:#F3F6FC; --tint-2:#E8EEFA; --line:#DDE4F2; --line-2:#C9D4EA; --muted:#5C6892;
   --display:'Unbounded',Impact,'Arial Black',sans-serif;
   --body:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
-  --gut:clamp(20px,5vw,72px);
-  --r:20px;
-  --sh:0 18px 48px rgba(20,34,76,.08);
-  --sh-lg:0 30px 70px rgba(20,34,76,.13);
+  --gut:clamp(18px,4.5vw,64px); --r:20px;
+  --sh:0 18px 48px rgba(20,34,76,.08); --sh-lg:0 30px 70px rgba(20,34,76,.14);
+  --nav-h:76px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{font-family:var(--body);background:var(--paper);color:var(--navy);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.is-locked{overflow:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
-.wrap{width:min(1280px,100% - var(--gut)*2);margin-inline:auto}
+.wrap{width:min(1300px,100% - var(--gut)*2);margin-inline:auto}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px;border-radius:6px}
 
-.kicker{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--navy-2)}
-.kicker em{font-style:normal;color:var(--yellow-ink)}
-h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.04;letter-spacing:-.02em}
-h2{font-size:clamp(1.9rem,4.8vw,3.6rem)}
-h3{font-size:clamp(1.02rem,1.9vw,1.3rem);line-height:1.22;letter-spacing:-.01em}
-.lead{font-size:clamp(1rem,1.45vw,1.14rem);color:var(--muted);max-width:62ch}
-.mark-hl{background:linear-gradient(180deg,transparent 58%,var(--yellow) 58%);padding:0 .12em}
+.kicker{font-size:.71rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--navy-2)}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.05;letter-spacing:-.02em}
+h2{font-size:clamp(1.8rem,4.4vw,3.3rem)}
+h3{font-size:clamp(1rem,1.8vw,1.26rem);line-height:1.24}
+.lead{font-size:clamp(1rem,1.4vw,1.12rem);color:var(--muted);max-width:64ch}
+.mark-hl{background:linear-gradient(180deg,transparent 58%,var(--yellow) 58%);padding:0 .1em}
 
-.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.95rem 1.65rem;border-radius:999px;font-weight:600;font-size:.94rem;transition:.25s cubic-bezier(.4,0,.2,1);white-space:nowrap}
+.btn{display:inline-flex;align-items:center;gap:.55rem;padding:.92rem 1.6rem;border-radius:999px;font-weight:600;font-size:.93rem;transition:.25s cubic-bezier(.4,0,.2,1);white-space:nowrap}
 .btn--navy{background:var(--navy);color:#fff}
 .btn--navy:hover{background:var(--navy-2);transform:translateY(-2px);box-shadow:0 14px 32px rgba(20,34,76,.24)}
 .btn--yellow{background:var(--yellow);color:#3B2B00}
 .btn--yellow:hover{background:var(--yellow-2);transform:translateY(-2px);box-shadow:0 14px 32px rgba(255,200,30,.4)}
 .btn--line{border:1.5px solid var(--line-2);color:var(--navy);background:#fff}
 .btn--line:hover{border-color:var(--navy);background:var(--tint)}
+.btn--sm{padding:.62rem 1.05rem;font-size:.84rem}
 
-/* nav */
-.nav{position:fixed;inset:0 0 auto;z-index:100;padding:.9rem 0;transition:.3s;background:rgba(255,255,255,.78);backdrop-filter:blur(18px);border-bottom:1px solid transparent}
-.nav.is-stuck{border-bottom-color:var(--line);box-shadow:0 6px 30px rgba(20,34,76,.07);padding:.6rem 0}
-.nav__in{display:flex;align-items:center;gap:1.4rem}
+/* ---------- nav ---------- */
+.nav{position:fixed;inset:0 0 auto;z-index:200;background:rgba(255,255,255,.9);backdrop-filter:blur(18px);border-bottom:1px solid transparent;transition:.3s}
+.nav.is-stuck{border-bottom-color:var(--line);box-shadow:0 6px 30px rgba(20,34,76,.07)}
+.nav__in{display:flex;align-items:center;gap:1.2rem;height:var(--nav-h)}
 .brand{display:flex;align-items:center;gap:.7rem;flex-shrink:0}
-.brand__mark{width:46px;height:46px;border-radius:13px;background:linear-gradient(150deg,var(--navy-2),var(--navy));border:1.5px solid var(--yellow);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:.55rem;color:var(--yellow)}
-.brand__txt{line-height:1.18}
-.brand__txt b{display:block;font-family:var(--display);font-size:.9rem;font-weight:800;letter-spacing:.01em}
-.brand__txt span{font-size:.62rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-.menu{display:flex;gap:1.35rem;margin-left:auto;align-items:center}
-.menu a{font-size:.87rem;font-weight:500;color:var(--navy);position:relative;padding:.3rem 0;opacity:.82}
-.menu a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:2.5px;background:var(--yellow);border-radius:2px;transition:width .25s}
-.menu a:hover{opacity:1}
-.menu a:hover::after{width:100%}
-.nav__cta{display:flex;align-items:center;gap:.7rem}
-.lang{display:flex;border:1px solid var(--line-2);border-radius:999px;padding:.18rem}
-.lang button{padding:.3rem .62rem;border-radius:999px;font-size:.73rem;font-weight:700;color:var(--muted);letter-spacing:.05em}
+.brand__mark{width:46px;height:46px;border-radius:13px;background:linear-gradient(150deg,var(--navy-2),var(--navy));border:1.5px solid var(--yellow);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:.54rem;color:var(--yellow)}
+.brand__txt{line-height:1.2}
+.brand__txt b{display:block;font-family:var(--display);font-size:.84rem;font-weight:800}
+.brand__txt span{font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.menu{display:flex;margin-left:auto;align-items:center;height:100%}
+.mi{position:relative;height:100%;display:flex;align-items:center}
+.mi>a,.mi>button{font-size:.85rem;font-weight:500;padding:.4rem .78rem;border-radius:9px;display:inline-flex;align-items:center;gap:.3rem;transition:.2s}
+.mi>a:hover,.mi>button:hover,.mi:hover>button{background:var(--tint);color:var(--navy-2)}
+.mi>button::after{content:'';width:5px;height:5px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-1px);opacity:.55}
+.drop{position:absolute;top:100%;left:50%;transform:translate(-50%,10px);min-width:290px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh-lg);padding:.55rem;opacity:0;visibility:hidden;transition:.22s}
+.mi:hover .drop,.mi:focus-within .drop{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.drop a{display:block;padding:.55rem .75rem;border-radius:10px;font-size:.855rem;color:var(--navy);transition:.16s}
+.drop a:hover{background:var(--tint);padding-left:1rem}
+.drop hr{border:0;border-top:1px solid var(--line);margin:.4rem .5rem}
+.drop small{display:block;padding:.45rem .75rem .25rem;font-size:.67rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.nav__cta{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.lang{display:flex;border:1px solid var(--line-2);border-radius:999px;padding:.16rem}
+.lang button{padding:.28rem .58rem;border-radius:999px;font-size:.72rem;font-weight:700;color:var(--muted)}
 .lang button.is-on{background:var(--navy);color:#fff}
 .burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line-2);place-items:center;background:#fff}
 .burger span{display:block;width:18px;height:2px;background:var(--navy);position:relative;border-radius:2px}
 .burger span::before,.burger span::after{content:'';position:absolute;left:0;width:18px;height:2px;background:var(--navy);border-radius:2px}
 .burger span::before{top:-6px}.burger span::after{top:6px}
+/* mobile drawer */
+.drawer{position:fixed;inset:var(--nav-h) 0 0;z-index:190;background:#fff;overflow-y:auto;padding:1.2rem var(--gut) 3rem;transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:none}
+.drawer.is-open{transform:none}
+.drawer details{border-bottom:1px solid var(--line)}
+.drawer summary{list-style:none;cursor:pointer;padding:1rem 0;font-family:var(--display);font-weight:600;font-size:1rem;display:flex;justify-content:space-between;align-items:center}
+.drawer summary::-webkit-details-marker{display:none}
+.drawer summary::after{content:'+';font-family:var(--body);font-size:1.3rem;color:var(--muted)}
+.drawer details[open] summary::after{content:'–'}
+.drawer details div{padding-bottom:.9rem;display:grid;gap:.1rem}
+.drawer details div a{padding:.5rem 0;font-size:.92rem;color:var(--muted)}
+.drawer>a{display:block;padding:1rem 0;border-bottom:1px solid var(--line);font-family:var(--display);font-weight:600;font-size:1rem}
+.drawer__cta{display:grid;gap:.6rem;margin-top:1.6rem}
+.drawer__cta .btn{justify-content:center}
 
-/* hero */
-.hero{position:relative;padding:clamp(7.5rem,14vw,10.5rem) 0 0;overflow:hidden;background:
-  radial-gradient(60% 55% at 88% 6%,rgba(255,200,30,.26),transparent 58%),
-  radial-gradient(70% 60% at 2% 42%,rgba(34,52,122,.10),transparent 60%),
+/* ---------- hero ---------- */
+.hero{position:relative;padding:calc(var(--nav-h) + clamp(2.5rem,6vw,5rem)) 0 0;overflow:hidden;background:
+  radial-gradient(58% 52% at 88% 4%,rgba(255,200,30,.28),transparent 58%),
+  radial-gradient(70% 60% at 0% 45%,rgba(34,52,122,.10),transparent 62%),
   linear-gradient(180deg,#fff 0%,var(--tint) 100%)}
 .hero__grid{position:absolute;inset:0;opacity:.6;
   background-image:linear-gradient(rgba(20,34,76,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(20,34,76,.05) 1px,transparent 1px);
   background-size:clamp(60px,9vw,130px) clamp(60px,9vw,130px);
   mask-image:radial-gradient(70% 70% at 50% 35%,#000,transparent)}
-.hero__in{position:relative;z-index:2;display:grid;grid-template-columns:1.12fr .88fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
-.badge{display:inline-flex;align-items:center;gap:.6rem;background:#fff;border:1px solid var(--line);border-radius:999px;padding:.4rem .95rem .4rem .42rem;font-size:.75rem;font-weight:500;color:var(--navy);margin-bottom:1.7rem;box-shadow:var(--sh)}
-.badge b{background:var(--navy);color:var(--yellow);padding:.24rem .6rem;border-radius:999px;font-size:.66rem;font-weight:800;letter-spacing:.09em}
-.hero h1{font-size:clamp(2.3rem,6.6vw,5rem);text-transform:uppercase}
+.hero__in{position:relative;z-index:2;display:grid;grid-template-columns:1.14fr .86fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.badge{display:inline-flex;align-items:center;gap:.55rem;background:#fff;border:1px solid var(--line);border-radius:999px;padding:.38rem .95rem .38rem .4rem;font-size:.745rem;font-weight:500;margin-bottom:1.6rem;box-shadow:var(--sh)}
+.badge b{background:var(--navy);color:var(--yellow);padding:.24rem .58rem;border-radius:999px;font-size:.65rem;font-weight:800;letter-spacing:.09em}
+.hero h1{font-size:clamp(2rem,5.4vw,4.1rem);text-transform:uppercase}
 .hero h1 em{font-style:normal;display:block;color:var(--navy-2)}
-.hero h1 u{text-decoration:none;display:block;color:transparent;-webkit-text-stroke:1.4px var(--navy);}
-.hero .lead{margin:1.5rem 0 2.2rem}
-.hero__cta{display:flex;flex-wrap:wrap;gap:.75rem}
-.hero__art{position:relative;aspect-ratio:4/5;border-radius:240px 240px 26px 26px;background:linear-gradient(200deg,var(--tint-2),#fff);border:1px solid var(--line);display:grid;place-items:center;color:var(--navy-soft);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;box-shadow:var(--sh-lg)}
-.hero__art::after{content:'';position:absolute;inset:auto -14px -14px auto;width:56%;height:32%;background:var(--yellow);border-radius:0 0 26px 0;z-index:-1}
-.hero__stats{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:clamp(2.5rem,6vw,4.5rem);transform:translateY(clamp(1.5rem,4vw,3rem))}
-.stat{background:#fff;padding:1.5rem 1.2rem}
-.stat b{display:block;font-family:var(--display);font-size:clamp(1.5rem,3.2vw,2.5rem);font-weight:800;color:var(--navy);line-height:1}
-.stat span{font-size:.76rem;color:var(--muted);letter-spacing:.04em}
+.hero h1 u{text-decoration:none;display:block;color:transparent;-webkit-text-stroke:1.3px var(--navy)}
+.hero__ua{font-family:var(--body);font-size:clamp(.82rem,1.25vw,1rem);font-weight:600;letter-spacing:.02em;text-transform:none;color:var(--muted);margin-top:1rem;max-width:34ch;line-height:1.45}
+.hero .lead{margin:1.3rem 0 2rem}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.7rem}
+.hero__art{position:relative;aspect-ratio:4/5;border-radius:230px 230px 24px 24px;background:linear-gradient(200deg,var(--tint-2),#fff);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:.73rem;letter-spacing:.14em;text-transform:uppercase;box-shadow:var(--sh-lg)}
+.hero__art::after{content:'';position:absolute;inset:auto -14px -14px auto;width:56%;height:32%;background:var(--yellow);border-radius:0 0 24px 0;z-index:-1}
+.hero__stats{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:clamp(2.5rem,6vw,4rem);transform:translateY(clamp(1.5rem,4vw,2.6rem))}
+.stat{background:#fff;padding:1.4rem 1.2rem}
+.stat b{display:block;font-family:var(--display);font-size:clamp(1.4rem,2.9vw,2.3rem);font-weight:800;line-height:1}
+.stat span{font-size:.75rem;color:var(--muted)}
 
-/* ticker */
-.ticker{background:var(--navy);color:#fff;padding:.95rem 0;overflow:hidden;white-space:nowrap}
-.ticker__row{display:inline-flex;gap:2.4rem;animation:slide 34s linear infinite;font-family:var(--display);font-weight:600;font-size:.84rem;letter-spacing:.06em;text-transform:uppercase}
-.ticker__row span{display:inline-flex;align-items:center;gap:2.4rem}
-.ticker__row span::after{content:'◆';font-size:.55rem;color:var(--yellow)}
+.ticker{background:var(--navy);color:#fff;padding:.9rem 0;overflow:hidden;white-space:nowrap}
+.ticker__row{display:inline-flex;gap:2.3rem;animation:slide 36s linear infinite;font-family:var(--display);font-weight:600;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase}
+.ticker__row span{display:inline-flex;align-items:center;gap:2.3rem}
+.ticker__row span::after{content:'◆';font-size:.52rem;color:var(--yellow)}
 @keyframes slide{to{transform:translateX(-50%)}}
 
-/* sections */
-.sec{padding:clamp(4rem,9vw,8rem) 0}
+.sec{padding:clamp(3.6rem,8vw,7rem) 0}
 .sec--tint{background:var(--tint)}
-.sec__head{max-width:70ch;margin-bottom:clamp(2.2rem,5vw,3.6rem)}
-.sec__head .kicker{display:block;margin-bottom:.9rem}
-.sec__head .lead{margin-top:1.1rem}
+.sec__head{max-width:70ch;margin-bottom:clamp(2rem,4.5vw,3.4rem)}
+.sec__head .kicker{display:block;margin-bottom:.85rem}
+.sec__head .lead{margin-top:1rem}
+.sec__head--row{display:flex;justify-content:space-between;align-items:flex-end;max-width:none;gap:2rem;flex-wrap:wrap}
 
-/* about */
-.about{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,5rem);align-items:start}
-.about__pts{display:grid;gap:1.05rem;margin-top:2rem}
-.pt{display:flex;gap:1rem;align-items:flex-start}
-.pt i{flex-shrink:0;width:36px;height:36px;border-radius:11px;background:var(--yellow);color:#3B2B00;display:grid;place-items:center;font-style:normal;font-family:var(--display);font-size:.78rem;font-weight:800}
-.pt b{display:block;font-size:.99rem;margin-bottom:.15rem}
-.pt p{font-size:.92rem;color:var(--muted)}
-.frame{border:1px solid var(--line);border-radius:var(--r);padding:clamp(1.5rem,3vw,2.2rem);background:#fff;box-shadow:var(--sh)}
-.frame h3{margin-bottom:1.2rem}
-.frame ul{list-style:none;display:grid;gap:.9rem}
-.frame li{display:flex;gap:.8rem;font-size:.92rem;color:var(--muted);padding-bottom:.9rem;border-bottom:1px solid var(--line)}
+/* welcome */
+.welcome{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
+.welcome p+p{margin-top:1rem}
+.welcome p{color:var(--muted);font-size:1rem}
+.crit{background:#fff;border:1px solid var(--line);border-left:4px solid var(--yellow);border-radius:14px;padding:1.3rem 1.5rem;margin-top:1.6rem;box-shadow:var(--sh)}
+.crit b{display:block;margin-bottom:.6rem;font-size:.95rem}
+.crit ul{list-style:none;display:grid;gap:.5rem}
+.crit li{font-size:.92rem;color:var(--muted);padding-left:1.4rem;position:relative}
+.crit li::before{content:'✓';position:absolute;left:0;color:var(--navy-2);font-weight:700}
+.frame{border:1px solid var(--line);border-radius:var(--r);padding:clamp(1.4rem,3vw,2.1rem);background:#fff;box-shadow:var(--sh)}
+.frame h3{margin-bottom:1.1rem}
+.frame ul{list-style:none;display:grid;gap:.85rem}
+.frame li{display:flex;gap:.8rem;font-size:.91rem;color:var(--muted);padding-bottom:.85rem;border-bottom:1px solid var(--line)}
 .frame li:last-child{border:0;padding:0}
 .frame li b{color:var(--navy);font-weight:600}
 
 /* disciplines */
-.discs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
-.disc{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:clamp(1.4rem,2.6vw,2rem);min-height:230px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;transition:.32s;overflow:hidden}
+.discs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.15rem}
+.disc{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:clamp(1.35rem,2.5vw,1.9rem);min-height:210px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;transition:.32s;overflow:hidden}
 .disc::before{content:'';position:absolute;left:0;top:0;width:100%;height:4px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:.35s}
 .disc:hover{transform:translateY(-5px);box-shadow:var(--sh-lg);border-color:var(--line-2)}
 .disc:hover::before{transform:scaleX(1)}
-.disc__n{position:absolute;top:1.2rem;right:1.4rem;font-family:var(--display);font-size:2.4rem;font-weight:800;color:var(--tint-2);line-height:1}
-.disc h3{margin-bottom:.55rem}
-.disc p{font-size:.88rem;color:var(--muted)}
-.disc__more{margin-top:1.1rem;font-size:.78rem;font-weight:700;color:var(--navy-2);letter-spacing:.06em;text-transform:uppercase;opacity:.35;transition:.3s}
+.disc__n{position:absolute;top:1.1rem;right:1.3rem;font-family:var(--display);font-size:2.2rem;font-weight:800;color:var(--tint-2);line-height:1}
+.disc h3{margin-bottom:.5rem}
+.disc p{font-size:.87rem;color:var(--muted)}
+.disc__more{margin-top:1rem;font-size:.76rem;font-weight:700;color:var(--navy-2);letter-spacing:.06em;text-transform:uppercase;opacity:.35;transition:.3s}
 .disc:hover .disc__more{opacity:1}
-.disc--aerial .disc__n{color:#FFF1C4}
+
+/* people */
+.people{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
+.per{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.3s}
+.per:hover{transform:translateY(-5px);box-shadow:var(--sh-lg)}
+.per__ph{aspect-ratio:1/1.08;background:linear-gradient(165deg,var(--tint-2),#fff);border-bottom:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:.68rem;letter-spacing:.13em;text-transform:uppercase}
+.per__tx{padding:1.1rem 1.2rem 1.3rem}
+.per__role{font-size:.67rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--navy-2);display:block;margin-bottom:.35rem}
+.per h3{font-size:1.02rem;margin-bottom:.35rem}
+.per p{font-size:.84rem;color:var(--muted)}
 
 /* paths */
-.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem}
-.path{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:clamp(1.6rem,3vw,2.3rem);display:flex;flex-direction:column;transition:.3s;box-shadow:var(--sh)}
+.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.path{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:clamp(1.5rem,3vw,2.2rem);display:flex;flex-direction:column;transition:.3s;box-shadow:var(--sh)}
 .path:hover{transform:translateY(-6px);box-shadow:var(--sh-lg)}
-.path__ic{width:54px;height:54px;border-radius:15px;background:var(--tint);border:1px solid var(--line);display:grid;place-items:center;font-size:1.5rem;margin-bottom:1.3rem}
-.path h3{margin-bottom:.65rem}
-.path p{font-size:.92rem;color:var(--muted);flex:1}
-.path .btn{margin-top:1.5rem;align-self:flex-start}
+.path__ic{width:52px;height:52px;border-radius:15px;background:var(--tint);border:1px solid var(--line);display:grid;place-items:center;font-size:1.45rem;margin-bottom:1.2rem}
+.path h3{margin-bottom:.6rem}
+.path p{font-size:.91rem;color:var(--muted);flex:1}
+.path .btn{margin-top:1.4rem;align-self:flex-start}
 
 /* events */
 .events{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.ev{background:#fff;display:grid;grid-template-columns:160px 1fr auto auto;gap:1.4rem;align-items:center;padding:1.5rem 1.4rem;transition:.25s}
+.ev{background:#fff;display:grid;grid-template-columns:150px 1fr auto auto;gap:1.3rem;align-items:center;padding:1.45rem 1.4rem;transition:.25s}
 .ev:hover{background:var(--tint)}
-.ev__date{font-family:var(--display);font-weight:600;font-size:.9rem;color:var(--navy)}
-.ev__date span{display:block;font-family:var(--body);font-size:.73rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
-.ev h3{font-size:clamp(1rem,1.6vw,1.24rem)}
-.ev p{font-size:.85rem;color:var(--muted);margin-top:.15rem}
-.tag{font-size:.69rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.36rem .72rem;border-radius:999px;border:1px solid var(--line-2);color:var(--muted);white-space:nowrap}
+.ev__date{font-family:var(--display);font-weight:600;font-size:.88rem}
+.ev__date span{display:block;font-family:var(--body);font-size:.72rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.ev h3{font-size:clamp(.98rem,1.5vw,1.2rem)}
+.ev p{font-size:.84rem;color:var(--muted);margin-top:.15rem}
+.tag{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.34rem .7rem;border-radius:999px;border:1px solid var(--line-2);color:var(--muted);white-space:nowrap}
 .tag--live{background:var(--yellow);border-color:var(--yellow);color:#3B2B00}
-.ev__go{font-size:1.15rem;color:var(--line-2);transition:.25s}
+.ev__go{font-size:1.1rem;color:var(--line-2);transition:.25s}
 .ev:hover .ev__go{color:var(--navy);transform:translateX(4px)}
 
 /* gallery */
-.gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:clamp(130px,17vw,210px);gap:1rem}
-.gal figure{border-radius:16px;background:linear-gradient(165deg,var(--tint-2),#fff);border:1px solid var(--line);display:grid;place-items:center;color:var(--navy-soft);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;overflow:hidden;transition:.32s;cursor:pointer}
+.gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:clamp(125px,16vw,200px);gap:.95rem}
+.gal figure{border-radius:16px;background:linear-gradient(165deg,var(--tint-2),#fff);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:.69rem;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:.6rem;transition:.32s;cursor:pointer}
 .gal figure:hover{transform:scale(1.015);box-shadow:var(--sh-lg);border-color:var(--yellow)}
 .gal figure:nth-child(1){grid-column:span 2;grid-row:span 2}
 .gal figure:nth-child(6){grid-column:span 2}
 
 /* news */
-.news{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.news{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
 .post{display:flex;flex-direction:column}
-.post__img{aspect-ratio:16/11;border-radius:var(--r);background:linear-gradient(160deg,var(--tint-2),#fff);border:1px solid var(--line);margin-bottom:1rem;display:grid;place-items:center;color:var(--navy-soft);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;transition:.35s}
+.post__img{aspect-ratio:16/11;border-radius:var(--r);background:linear-gradient(160deg,var(--tint-2),#fff);border:1px solid var(--line);margin-bottom:.95rem;display:grid;place-items:center;color:var(--muted);font-size:.69rem;letter-spacing:.13em;text-transform:uppercase;transition:.35s}
 .post:hover .post__img{box-shadow:var(--sh-lg);border-color:var(--yellow)}
-.post time{font-size:.75rem;color:var(--muted);letter-spacing:.06em}
-.post h3{margin:.45rem 0 .45rem;font-size:1.08rem}
-.post p{font-size:.89rem;color:var(--muted)}
+.post time{font-size:.74rem;color:var(--muted)}
+.post h3{margin:.4rem 0;font-size:1.05rem}
+.post p{font-size:.88rem;color:var(--muted)}
 
 /* docs */
 .docs{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.doc{background:#fff;padding:1.4rem 1.5rem;display:flex;gap:1rem;align-items:center;transition:.25s}
+.doc{background:#fff;padding:1.35rem 1.45rem;display:flex;gap:1rem;align-items:center;transition:.25s}
 .doc:hover{background:var(--tint)}
-.doc__ic{width:42px;height:42px;border-radius:11px;background:var(--navy);color:var(--yellow);display:grid;place-items:center;font-size:.66rem;font-weight:800;flex-shrink:0}
-.doc b{display:block;font-size:.95rem;font-weight:600}
-.doc span{font-size:.79rem;color:var(--muted)}
-.doc__go{margin-left:auto;color:var(--line-2);font-size:1.1rem}
+.doc__ic{width:42px;height:42px;border-radius:11px;background:var(--navy);color:var(--yellow);display:grid;place-items:center;font-size:.64rem;font-weight:800;flex-shrink:0}
+.doc b{display:block;font-size:.93rem;font-weight:600}
+.doc span{font-size:.78rem;color:var(--muted)}
+.doc__go{margin-left:auto;color:var(--line-2);font-size:1.05rem}
 .doc:hover .doc__go{color:var(--navy)}
 
 /* join */
-.join{background:linear-gradient(150deg,var(--navy),var(--navy-2));color:#fff;border-radius:clamp(20px,3vw,30px);padding:clamp(2.4rem,6vw,4.6rem);position:relative;overflow:hidden;text-align:center}
+.join{background:linear-gradient(150deg,var(--navy),var(--navy-2));color:#fff;border-radius:clamp(20px,3vw,30px);padding:clamp(2.2rem,5.5vw,4.4rem);position:relative;overflow:hidden;text-align:center}
 .join::before{content:'';position:absolute;inset:0;background:radial-gradient(65% 85% at 50% -10%,rgba(255,200,30,.28),transparent 62%)}
 .join>*{position:relative}
 .join .kicker{color:var(--yellow)}
-.join h2{margin-bottom:1.1rem}
-.join .lead{margin:0 auto 2rem;color:rgba(255,255,255,.76)}
-.join__cta{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
+.join h2{margin:.8rem 0 1rem}
+.join .lead{margin:0 auto 1.9rem;color:rgba(255,255,255,.78)}
+.join__cta{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,4vw,3.5rem)}
+.cbox{display:grid;gap:1.4rem}
+.cline{display:flex;gap:1rem;align-items:flex-start}
+.cline i{flex-shrink:0;width:42px;height:42px;border-radius:12px;background:var(--tint);border:1px solid var(--line);display:grid;place-items:center;font-style:normal;font-size:1.1rem}
+.cline b{display:block;font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.25rem}
+.cline p{font-size:1rem}
+.cline a{border-bottom:1.5px solid var(--yellow)}
+.form{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:clamp(1.5rem,3vw,2.2rem);box-shadow:var(--sh);display:grid;gap:.9rem}
+.form h3{margin-bottom:.3rem}
+.form label{font-size:.78rem;font-weight:600;color:var(--muted);display:block;margin-bottom:.35rem}
+.form input,.form textarea{width:100%;padding:.85rem 1rem;border:1.5px solid var(--line);border-radius:12px;font:inherit;font-size:.93rem;color:var(--navy);background:var(--tint);transition:.2s}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--navy-2);background:#fff}
+.form textarea{min-height:110px;resize:vertical}
+.form .btn{justify-content:center;margin-top:.3rem}
 
 /* footer */
-.foot{background:#fff;border-top:1px solid var(--line);color:var(--muted);padding:clamp(3rem,6vw,4.5rem) 0 1.8rem}
-.foot__top{display:grid;grid-template-columns:1.7fr repeat(3,1fr);gap:2.4rem;padding-bottom:2.6rem;border-bottom:1px solid var(--line)}
-.foot h4{font-size:.73rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--navy);margin-bottom:1.1rem}
-.foot ul{list-style:none;display:grid;gap:.65rem;font-size:.89rem}
-.foot a:hover{color:var(--navy)}
-.foot__bot{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.5rem;font-size:.79rem}
-.soc{display:flex;gap:.55rem;margin-top:1.3rem}
-.soc a{width:40px;height:40px;border-radius:12px;border:1px solid var(--line-2);display:grid;place-items:center;font-size:.82rem;font-weight:700;color:var(--navy);transition:.25s}
+.foot{background:var(--navy);color:rgba(255,255,255,.66);padding:clamp(3rem,6vw,4.5rem) 0 1.8rem}
+.foot .brand__txt b{color:#fff}
+.foot .brand__txt span{color:rgba(255,255,255,.55)}
+.foot__top{display:grid;grid-template-columns:1.8fr repeat(4,1fr);gap:2.2rem;padding-bottom:2.4rem;border-bottom:1px solid rgba(255,255,255,.14)}
+.foot h4{font-size:.71rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);margin-bottom:1rem}
+.foot ul{list-style:none;display:grid;gap:.6rem;font-size:.87rem}
+.foot a:hover{color:#fff}
+.foot__bot{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.5rem;font-size:.78rem}
+.soc{display:flex;gap:.55rem;margin-top:1.2rem}
+.soc a{width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.2);display:grid;place-items:center;font-size:.78rem;font-weight:700;color:#fff;transition:.25s}
 .soc a:hover{background:var(--yellow);border-color:var(--yellow);color:#3B2B00}
 
-.rv{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
 .rv.is-in{opacity:1;transform:none}
 
+@media(max-width:1180px){
+  .mi>a,.mi>button{padding:.4rem .58rem;font-size:.81rem}
+  .brand__txt{display:none}
+  .people{grid-template-columns:repeat(2,1fr)}
+  .foot__top{grid-template-columns:1.4fr 1fr 1fr;gap:1.8rem}
+}
 @media(max-width:1024px){
   .hero__in{grid-template-columns:1fr}
   .hero__art{display:none}
-  .about{grid-template-columns:1fr}
+  .welcome,.contact{grid-template-columns:1fr}
   .discs{grid-template-columns:repeat(2,1fr)}
   .paths{grid-template-columns:1fr;gap:1rem}
   .news{grid-template-columns:1fr 1fr}
-  .foot__top{grid-template-columns:1fr 1fr}
   .gal{grid-template-columns:repeat(2,1fr)}
   .gal figure:nth-child(1){grid-column:span 2;grid-row:span 1}
 }
-@media(max-width:760px){
+@media(max-width:860px){
   .menu,.lang{display:none}
   .burger{display:grid}
-  .hero{padding-top:6.5rem}
-  .hero h1{font-size:clamp(2.1rem,10vw,3.2rem)}
-  .hero__stats{grid-template-columns:1fr 1fr;transform:none;margin-top:2.5rem}
-  .stat{padding:1.1rem}
+  .drawer{display:block}
+  .hero h1{font-size:clamp(1.9rem,8.5vw,2.9rem)}
+  .hero__stats{grid-template-columns:1fr 1fr;transform:none;margin-top:2.2rem}
+  .stat{padding:1.05rem}
   .hero__cta .btn{flex:1;justify-content:center}
-  .discs{grid-template-columns:1fr}
+  .discs,.people,.news,.docs{grid-template-columns:1fr}
   .disc{min-height:0}
-  .news{grid-template-columns:1fr}
-  .docs{grid-template-columns:1fr}
-  .ev{grid-template-columns:1fr auto;gap:.45rem 1rem;padding:1.25rem 1rem}
+  .ev{grid-template-columns:1fr auto;gap:.4rem 1rem;padding:1.2rem 1rem}
   .ev__date{grid-column:1/-1}
   .ev__go{display:none}
-  .foot__top{grid-template-columns:1fr;gap:1.9rem}
-  .sec{padding:3.2rem 0}
-  .gal figure:nth-child(6){grid-column:span 2}
+  .foot__top{grid-template-columns:1fr;gap:1.8rem}
+  .sec{padding:3rem 0}
 }
-@media(prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
-  .rv{opacity:1;transform:none}
-}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -254,24 +292,101 @@ h3{font-size:clamp(1.02rem,1.9vw,1.3rem);line-height:1.22;letter-spacing:-.01em}
   <div class="wrap nav__in">
     <a class="brand" href="#top">
       <span class="brand__mark">UPASF</span>
-      <span class="brand__txt"><b>UPASF</b><span>Pole Sport &amp; Aerial Acrobatics</span></span>
+      <span class="brand__txt"><b>UPASF</b><span>Поул спорт і повітряна акробатика</span></span>
     </a>
     <nav class="menu">
-      <a href="#about">Про нас</a>
-      <a href="#disc">Дисципліни</a>
-      <a href="#paths">Навчання і суддівство</a>
-      <a href="#gallery">Галерея</a>
-      <a href="#news">Новини</a>
-      <a href="#events">Календар</a>
-      <a href="#docs">Інформація</a>
+      <div class="mi"><button type="button">Про нас</button>
+        <div class="drop">
+          <a href="#">Бачення та місія</a><a href="#">Історія федерації</a><a href="#">Історичні відомості</a>
+          <a href="#committee">Виконавчий комітет</a><a href="#">Лідери спортивного руху</a>
+          <a href="#">Нагороди та документи</a><a href="#">Поул спорт у медіа</a><a href="#">Партнери</a>
+        </div>
+      </div>
+      <div class="mi"><button type="button">Змагання</button>
+        <div class="drop">
+          <a href="#events">Календар змагань</a><a href="#">Загальна інформація</a>
+          <small>Участь</small>
+          <a href="#">Заявка на участь</a><a href="#">Документи для реєстрації</a><a href="#">Приклади заповнення форм</a>
+          <a href="#">Місце проведення</a><a href="#">Часові рамки</a><a href="#">Музика</a><a href="#">Необхідні речі</a>
+          <small>Регламент старту</small>
+          <a href="#">Kiss &amp; Cry</a><a href="#">Система оскаржень</a><a href="#">Дискваліфікація</a>
+          <a href="#">Клубні спортивні костюми</a><a href="#">Лист-угода</a>
+          <small>Снаряди</small>
+          <a href="#">Технічні характеристики снарядів</a><a href="#">Обладнання та знаряддя</a>
+          <hr><a href="#">Результати змагань</a>
+        </div>
+      </div>
+      <div class="mi"><button type="button">Правила</button>
+        <div class="drop">
+          <a href="#">Міжнародні правила IPSF</a><a href="#">Кодекс етики</a><a href="#">Антидопінг</a>
+          <a href="#">Навчання WADA</a><a href="#">Страхування</a><a href="#">Para Pole</a>
+          <hr><a href="#">Питання / Відповідь</a>
+        </div>
+      </div>
+      <div class="mi"><button type="button">Навчання</button>
+        <div class="drop">
+          <a href="#">Навчання і суддівство</a><a href="#">Національні судді</a>
+          <small>Курси</small>
+          <a href="#">Суддівські курси</a><a href="#">Підготовка за правилами IPSF 2026</a>
+          <a href="#">Курси підвищення кваліфікації</a><a href="#">Повітряний інтенсив</a>
+          <a href="#">Інструкторський курс: повітряні полотна</a>
+          <hr><a href="#">Навчальний посібник</a>
+        </div>
+      </div>
+      <div class="mi"><button type="button">Членство</button>
+        <div class="drop">
+          <a href="#membership">Про членство</a><a href="#membership">Комісія з питань членства</a>
+          <a href="#">Індивідуальне членство</a><a href="#">Спортивні клуби</a>
+          <a href="#">Карта відокремлених підрозділів</a><a href="#">Кваліфікація та збірна команда</a>
+        </div>
+      </div>
+      <div class="mi"><a href="#gallery">Галерея</a></div>
+      <div class="mi"><a href="#news">Новини</a></div>
     </nav>
     <div class="nav__cta">
       <div class="lang"><button class="is-on">UA</button><button>EN</button></div>
-      <a class="btn btn--yellow" href="#join">Членство</a>
-      <button class="burger" aria-label="Меню"><span></span></button>
+      <a class="btn btn--yellow btn--sm" href="#join">Вступити</a>
+      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><span></span></button>
     </div>
   </div>
 </header>
+
+<div class="drawer" id="drawer">
+  <details><summary>Про нас</summary><div>
+    <a href="#">Бачення та місія</a><a href="#">Історія федерації</a><a href="#">Історичні відомості</a>
+    <a href="#committee">Виконавчий комітет</a><a href="#">Лідери спортивного руху</a>
+    <a href="#">Нагороди та документи</a><a href="#">Поул спорт у медіа</a><a href="#">Партнери</a>
+  </div></details>
+  <details><summary>Змагання</summary><div>
+    <a href="#events">Календар змагань</a><a href="#">Загальна інформація</a><a href="#">Заявка на участь</a>
+    <a href="#">Документи для реєстрації</a><a href="#">Приклади заповнення форм</a><a href="#">Місце проведення</a>
+    <a href="#">Часові рамки</a><a href="#">Музика</a><a href="#">Необхідні речі</a><a href="#">Kiss &amp; Cry</a>
+    <a href="#">Система оскаржень</a><a href="#">Дискваліфікація</a><a href="#">Клубні спортивні костюми</a>
+    <a href="#">Лист-угода</a><a href="#">Технічні характеристики снарядів</a><a href="#">Обладнання та знаряддя</a>
+    <a href="#">Результати змагань</a>
+  </div></details>
+  <details><summary>Правила</summary><div>
+    <a href="#">Міжнародні правила IPSF</a><a href="#">Кодекс етики</a><a href="#">Антидопінг</a>
+    <a href="#">Навчання WADA</a><a href="#">Страхування</a><a href="#">Para Pole</a><a href="#">Питання / Відповідь</a>
+  </div></details>
+  <details><summary>Навчання</summary><div>
+    <a href="#">Навчання і суддівство</a><a href="#">Національні судді</a><a href="#">Суддівські курси</a>
+    <a href="#">Підготовка за правилами IPSF 2026</a><a href="#">Курси підвищення кваліфікації</a>
+    <a href="#">Повітряний інтенсив</a><a href="#">Інструкторський курс: повітряні полотна</a><a href="#">Навчальний посібник</a>
+  </div></details>
+  <details><summary>Членство</summary><div>
+    <a href="#membership">Про членство</a><a href="#membership">Комісія з питань членства</a>
+    <a href="#">Індивідуальне членство</a><a href="#">Спортивні клуби</a>
+    <a href="#">Карта відокремлених підрозділів</a><a href="#">Кваліфікація та збірна команда</a>
+  </div></details>
+  <a href="#gallery">Галерея</a>
+  <a href="#news">Новини</a>
+  <a href="#contact">Контакти</a>
+  <div class="drawer__cta">
+    <a class="btn btn--yellow" href="#join">Вступити до Федерації</a>
+    <a class="btn btn--line" href="#events">Календар змагань</a>
+  </div>
+</div>
 
 <main id="top">
 
@@ -280,51 +395,57 @@ h3{font-size:clamp(1.02rem,1.9vw,1.3rem);line-height:1.22;letter-spacing:-.01em}
   <div class="wrap">
     <div class="hero__in">
       <div>
-        <span class="badge"><b>IPSF</b> National Federation · офіційний національний член Міжнародної федерації</span>
-        <h1>Pole Sport<em>&amp; Aerial</em><u>України</u></h1>
-        <p class="lead">Ukrainian Pole Sport &amp; Aerial Acrobatics Federation розвиває пілонний спорт і повітряну акробатику як <span class="mark-hl">визнані види спорту</span>: національний чемпіонат за правилами IPSF, сертифікація суддів і збірна, що представляє Україну у світі.</p>
+        <span class="badge"><b>IPSF</b> Член International Pole Sport Federation</span>
+        <h1>Ukrainian<em>Pole Sport</em><u>&amp; Aerial</u></h1>
+        <p class="hero__ua">Громадська організація «Федерація поул спорту і повітряної акробатики України»</p>
+        <p class="lead">Ми — керівний орган з поул спорту та повітряної акробатики в Україні. Координуємо роботу спортивних клубів, готуємо спортсменів, тренерів і суддів та <span class="mark-hl">відбираємо збірну</span> на чемпіонати світу IPSF.</p>
         <div class="hero__cta">
           <a class="btn btn--navy" href="#events">Календар змагань →</a>
-          <a class="btn btn--line" href="#paths">Навчання і суддівство</a>
+          <a class="btn btn--line" href="#membership">Про членство</a>
         </div>
       </div>
       <div class="hero__art">фото збірної</div>
     </div>
     <div class="hero__stats">
-      <div class="stat"><b>—</b><span>років розвитку</span></div>
-      <div class="stat"><b>—</b><span>атлетів у реєстрі</span></div>
-      <div class="stat"><b>—</b><span>сертифікованих суддів</span></div>
-      <div class="stat"><b>—</b><span>медалей чемпіонатів світу</span></div>
+      <div class="stat"><b>40+</b><span>країн на чемпіонатах світу IPSF</span></div>
+      <div class="stat"><b>4</b><span>змагальні дисципліни</span></div>
+      <div class="stat"><b>2012</b><span>перші національні змагання</span></div>
+      <div class="stat"><b>WADA</b><span>антидопінгові стандарти</span></div>
     </div>
   </div>
 </section>
 
 <div class="ticker">
   <div class="ticker__row">
-    <span>Чемпіонат України</span><span>IPSF World Championship</span><span>Атестація суддів</span><span>Членство 2026</span><span>Повітряна акробатика</span>
-    <span>Чемпіонат України</span><span>IPSF World Championship</span><span>Атестація суддів</span><span>Членство 2026</span><span>Повітряна акробатика</span>
+    <span>Чемпіонат України</span><span>IPSF World Pole Championships</span><span>Суддівські курси</span><span>Комісія з членства</span><span>Para Pole</span><span>Повітряна акробатика</span>
+    <span>Чемпіонат України</span><span>IPSF World Pole Championships</span><span>Суддівські курси</span><span>Комісія з членства</span><span>Para Pole</span><span>Повітряна акробатика</span>
   </div>
 </div>
 
 <section class="sec" id="about">
-  <div class="wrap about">
+  <div class="wrap welcome">
     <div class="rv">
       <span class="kicker">Про нас</span>
-      <h2>Спорт,<br>а не шоу</h2>
-      <p class="lead" style="margin-top:1.2rem">Пілонний спорт і повітряна акробатика мають кодекс оцінювання, вікові категорії та антидопінгові правила. UPASF існує, щоб в Україні вони жили за тими самими стандартами, що й у світі.</p>
-      <div class="about__pts">
-        <div class="pt"><i>01</i><div><b>Єдині правила IPSF</b><p>Національні старти проводяться за чинним Code of Points міжнародної федерації — результати визнаються за кордоном.</p></div></div>
-        <div class="pt"><i>02</i><div><b>Прозоре суддівство</b><p>Кожен суддя проходить сертифікацію та переатестацію. Протоколи відкриті для учасників після кожного старту.</p></div></div>
-        <div class="pt"><i>03</i><div><b>Шлях до збірної</b><p>Відбір у національну збірну — за результатами чемпіонату України, без закритих рішень.</p></div></div>
+      <h2 style="margin:.85rem 0 1.2rem">Професійна спільнота, а не просто організація</h2>
+      <p>Наша Федерація об'єднує провідних спортсменів, тренерів, суддів та експертів у сфері pole &amp; aerial sport. Членство у Федерації є престижним і вибірковим — сюди потрапляють лише ті, хто довів свій професіоналізм, досягнення та відданість розвитку спорту.</p>
+      <p>Федерація визначає стандарти розвитку pole &amp; aerial sport в Україні та інтегрує його у світовий спортивний простір.</p>
+      <div class="crit">
+        <b>Як ми приймаємо нових членів</b>
+        <ul>
+          <li>Ми цінуємо якість понад кількість.</li>
+          <li>Кожна заявка проходить уважний розгляд Комісією з прийняття в члени Федерації.</li>
+          <li>Членами стають спортсмени та фахівці з підтвердженими результатами та міжнародним визнанням.</li>
+        </ul>
       </div>
     </div>
     <aside class="frame rv">
       <h3>Офіційний статус</h3>
       <ul>
-        <li><span>🏛</span><div><b>Членство в IPSF</b><br>National Federation Міжнародної федерації пілонного спорту</div></li>
-        <li><span>📜</span><div><b>Статут і реєстрація</b><br>Громадська спілка, зареєстрована в Україні</div></li>
-        <li><span>⚖️</span><div><b>Антидопінгові правила</b><br>Відповідність кодексу WADA через регламент IPSF</div></li>
-        <li><span>🎓</span><div><b>Освітній напрям</b><br>Судді, тренери та атлети навчаються за єдиною програмою</div></li>
+        <li><span>🏛</span><div><b>Член IPSF</b><br>International Pole Sport Federation — міжнародний керівний орган поул спорту</div></li>
+        <li><span>🌍</span><div><b>GAISF</b><br>IPSF має статус члена-спостерігача Глобальної асоціації міжнародних федерацій</div></li>
+        <li><span>⚖️</span><div><b>WADA</b><br>IPSF підписала Всесвітній антидопінговий кодекс</div></li>
+        <li><span>🏅</span><div><b>Олімпійська перспектива</b><br>Мета — визнання поул спорту Олімпійським комітетом офіційним видом спорту</div></li>
+        <li><span>🤝</span><div><b>Некомерційна організація</b><br>Федерацією керують добровільні члени спільноти активних спортсменів і тренерів України</div></li>
       </ul>
     </aside>
   </div>
@@ -334,74 +455,109 @@ h3{font-size:clamp(1.02rem,1.9vw,1.3rem);line-height:1.22;letter-spacing:-.01em}
   <div class="wrap">
     <div class="sec__head rv">
       <span class="kicker">Дисципліни</span>
-      <h2>Пілон і повітря</h2>
-      <p class="lead">Кожна дисципліна має власний кодекс оцінювання, обов'язкові елементи та вікові категорії — від Novice до Elite.</p>
+      <h2 style="margin:.85rem 0">Пілон і повітря</h2>
+      <p class="lead">Федерація координує підготовку спортсменів і тренерів за спортивними дисциплінами, що входять до системи IPSF. Кожна має власний кодекс оцінювання та вікові категорії.</p>
     </div>
     <div class="discs rv">
-      <article class="disc"><span class="disc__n">01</span><h3>Pole Sport</h3><p>Базова дисципліна: обов'язкові елементи сили, гнучкості та балансу на статичному й обертовому пілоні.</p><span class="disc__more">Правила →</span></article>
-      <article class="disc"><span class="disc__n">02</span><h3>Artistic Pole</h3><p>Акцент на хореографії, музикальності та цілісності образу при збереженні технічних вимог.</p><span class="disc__more">Правила →</span></article>
+      <article class="disc"><span class="disc__n">01</span><h3>Pole Sport</h3><p>Спорт на пілоні: обов'язкові елементи сили, гнучкості та балансу на статичному й обертовому пілоні.</p><span class="disc__more">Правила →</span></article>
+      <article class="disc"><span class="disc__n">02</span><h3>Artistic Pole</h3><p>Спортивний танок: хореографія, музикальність і цілісність образу при збереженні технічних вимог.</p><span class="disc__more">Правила →</span></article>
       <article class="disc"><span class="disc__n">03</span><h3>Ultra Pole</h3><p>Змагання на вибування у форматі батлів: імпровізація, трюки й реакція на суперника в реальному часі.</p><span class="disc__more">Правила →</span></article>
-      <article class="disc disc--aerial"><span class="disc__n">04</span><h3>Aerial Hoop</h3><p>Повітряне кільце: статика, оберти та переходи з оцінюванням техніки й артистизму.</p><span class="disc__more">Правила →</span></article>
-      <article class="disc disc--aerial"><span class="disc__n">05</span><h3>Aerial Pole</h3><p>Підвісний пілон — дисципліна повітряного напряму IPSF з власним набором обов'язкових елементів.</p><span class="disc__more">Правила →</span></article>
-      <article class="disc"><span class="disc__n">06</span><h3>Para Pole</h3><p>Дисципліна для спортсменів з інвалідністю з власною класифікацією — AMP, SEA, VIS та інші категорії.</p><span class="disc__more">Правила →</span></article>
+      <article class="disc"><span class="disc__n">04</span><h3>Para Pole</h3><p>Дисципліна для осіб з інвалідністю — пара поул та пара аеріал спорт з власною класифікацією.</p><span class="disc__more">Правила →</span></article>
+      <article class="disc"><span class="disc__n">05</span><h3>Повітряна акробатика</h3><p>Повітряні дисципліни федерації: кільце та полотна — окремий напрям підготовки й суддівства.</p><span class="disc__more">Правила →</span></article>
+      <article class="disc"><span class="disc__n">06</span><h3>Збірна команда</h3><p>Кращі спортсмени щорічно відбираються на національному чемпіонаті, щоб представляти Україну на чемпіонатах світу IPSF.</p><span class="disc__more">Кваліфікація →</span></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="committee">
+  <div class="wrap">
+    <div class="sec__head rv sec__head--row">
+      <div><span class="kicker">Керівництво</span><h2 style="margin:.85rem 0">Виконавчий комітет</h2>
+        <p class="lead">Виконавчий орган, що забезпечує керівництво та координацію діяльності між засіданнями Правління: Президент, Віцепрезидент, Генеральний секретар та представники ключових рад і комісій.</p></div>
+      <a class="btn btn--line" href="#">Весь склад →</a>
+    </div>
+    <div class="people rv">
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Виконавчий комітет</span><h3>Катерина Кострікова</h3><p>Кандидат педагогічних наук, міжнародний головний суддя IPSF з 2015 року. Авторка першого в Україні посібника з анатомії pole sport.</p></div></article>
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Виконавчий комітет</span><h3>Анастасія Сафонова</h3><p>Членкиня Федерації з 2015 року, засновниця студії повітряної гімнастики Adel, міжнародна суддя IPSF.</p></div></article>
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Медичний супровід</span><h3>Міла Бережна</h3><p>Лікарка ортопед-реабілітолог, засновниця центру «Бережна реабілітація», членкиня Ради з медичного супроводження.</p></div></article>
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Підготовка тренерів</span><h3>Світлана Сова</h3><p>Керівниця школи повітряної акробатики Sova Pole Studio, сертифікована суддя POSA та IPSF.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--tint" id="membership">
+  <div class="wrap">
+    <div class="sec__head rv">
+      <span class="kicker">Членство</span>
+      <h2 style="margin:.85rem 0">Комісія з питань членства</h2>
+      <p class="lead">Відданість. Експертність. Пристрасть. Комісія — це команда експертів, яка формує спільноту Федерації. Процес прийняття нових членів ґрунтується на експертності, професійності, відданості та спільних цінностях.</p>
+    </div>
+    <div class="people rv">
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Голова комісії</span><h3>Світлана Юрчак</h3><p>П'ятиразова чемпіонка України з Exotic Pole Dance, почесна суддя понад 15 міжнародних чемпіонатів.</p></div></article>
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Член комісії</span><h3>Артем Казимов</h3><p>Чемпіон Європи 2014, переможець Mr. Pole Dance, Pole Art France та Pole Art Festival. Суддя понад 10 років.</p></div></article>
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Член комісії</span><h3>Радміла Аітова</h3><p>Професійна балетна солістка, сертифікована міжнародна тренерка POSA, національно акредитована суддя.</p></div></article>
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Член комісії</span><h3>Ірина Ситнікова</h3><p>Майстер спорту України з художньої гімнастики, членкиня Національної збірної 2015–2016, міжнародна суддя POSA.</p></div></article>
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Член комісії</span><h3>Марія Третьякова</h3><p>Чемпіонка Європи з Pole Sport 2014, національна чемпіонка POSA, засновниця студії Atmosfera.</p></div></article>
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Секретар комісії</span><h3>Анастасія Сафронова</h3><p>Адміністраторка Федерації, відповідальна за документообіг та протоколи засідань. Міжнародна суддя IPSF.</p></div></article>
+      <article class="per"><div class="per__ph">фото</div><div class="per__tx"><span class="per__role">Член комісії</span><h3>Крістіна Кіпко</h3><p>Керівниця спортивно-циркової школи KrisStyle, тренерка призерів всеукраїнських і міжнародних чемпіонатів.</p></div></article>
+      <article class="per" style="display:grid;place-items:center;background:var(--navy);border-color:var(--navy)"><div style="padding:1.6rem;text-align:center"><h3 style="color:#fff;margin-bottom:.7rem">Подати заявку на членство</h3><p style="color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:1.2rem">Індивідуальне або почесне членство</p><a class="btn btn--yellow btn--sm" href="#join">Умови та заявка</a></div></article>
     </div>
   </div>
 </section>
 
 <section class="sec" id="events">
   <div class="wrap">
-    <div class="sec__head rv">
-      <span class="kicker">Календар змагань</span>
-      <h2>Сезон 2026</h2>
-      <p class="lead">Національний і міжнародний календар в одному місці. Реєстрація відкривається за 60 днів до старту.</p>
+    <div class="sec__head rv sec__head--row">
+      <div><span class="kicker">Календар змагань</span><h2 style="margin:.85rem 0">Найближчі старти</h2></div>
+      <a class="btn btn--line" href="#">Повний календар →</a>
     </div>
     <div class="events rv">
-      <a class="ev" href="#"><div class="ev__date">12–14 квітня<span>2026</span></div><div><h3>Чемпіонат України UPASF</h3><p>Київ · усі дисципліни · відбір до збірної</p></div><span class="tag tag--live">Реєстрація відкрита</span><span class="ev__go">→</span></a>
-      <a class="ev" href="#"><div class="ev__date">23 травня<span>2026</span></div><div><h3>Кубок регіонів</h3><p>Львів · Novice та Amateur · без відбору</p></div><span class="tag">Скоро</span><span class="ev__go">→</span></a>
-      <a class="ev" href="#"><div class="ev__date">18–21 червня<span>2026</span></div><div><h3>IPSF World Championship</h3><p>Міжнародний старт · національна збірна</p></div><span class="tag">Міжнародний</span><span class="ev__go">→</span></a>
-      <a class="ev" href="#"><div class="ev__date">15 вересня<span>2026</span></div><div><h3>Атестація суддів UPASF</h3><p>Онлайн · теорія + практичний іспит</p></div><span class="tag">Освіта</span><span class="ev__go">→</span></a>
+      <a class="ev" href="#"><div class="ev__date">дата<span>уточнюється</span></div><div><h3>Чемпіонат України з поул спорту</h3><p>Відбір до національної збірної · усі дисципліни</p></div><span class="tag tag--live">Реєстрація</span><span class="ev__go">→</span></a>
+      <a class="ev" href="#"><div class="ev__date">дата<span>уточнюється</span></div><div><h3>IPSF World Pole Championships</h3><p>Чемпіонат світу · понад 40 країн-учасниць</p></div><span class="tag">Міжнародний</span><span class="ev__go">→</span></a>
+      <a class="ev" href="#"><div class="ev__date">2026<span>сезон</span></div><div><h3>Курси підготовки за правилами IPSF 2026</h3><p>Навчання і суддівство</p></div><span class="tag">Освіта</span><span class="ev__go">→</span></a>
+      <a class="ev" href="#"><div class="ev__date">дата<span>уточнюється</span></div><div><h3>Повітряний інтенсив</h3><p>Підготовка за повітряними дисциплінами</p></div><span class="tag">Освіта</span><span class="ev__go">→</span></a>
     </div>
-    <div style="margin-top:2.2rem" class="rv"><a class="btn btn--line" href="#">Повний календар →</a></div>
   </div>
 </section>
 
 <section class="sec sec--tint" id="paths">
   <div class="wrap">
     <div class="sec__head rv">
-      <span class="kicker">Навчання і суддівство</span>
-      <h2>Ваш шлях<br>у федерації</h2>
+      <span class="kicker">З чого почати</span>
+      <h2 style="margin:.85rem 0">Ваш шлях<br>у Федерації</h2>
     </div>
     <div class="paths rv">
-      <article class="path"><div class="path__ic">🤸</div><h3>Спортсменам</h3><p>Зареєструватися в національному реєстрі, обрати категорію та подати заявку на старт. Пояснюємо, як влаштований відбір і що перевіряють судді.</p><a class="btn btn--navy" href="#">Реєстрація атлета</a></article>
-      <article class="path"><div class="path__ic">⚖️</div><h3>Суддям</h3><p>Навчання за програмою IPSF, іспит і сертифікація. Онлайн-курс із теорією, розбором відео та практичним протоколом.</p><a class="btn btn--navy" href="https://judgeacademy.date">Judge Academy →</a></article>
-      <article class="path"><div class="path__ic">🏫</div><h3>Клубам і тренерам</h3><p>Акредитація студії, підготовка спортсменів до змагань, доступ до методичних матеріалів і офіційного календаря.</p><a class="btn btn--navy" href="#">Акредитація клубу</a></article>
+      <article class="path"><div class="path__ic">🤸</div><h3>Спортсменам</h3><p>Заявка на участь, документи для реєстрації, приклади заповнення форм, часові рамки, музика та необхідні речі — усе для виходу на старт.</p><a class="btn btn--navy" href="#">Заявка на участь</a></article>
+      <article class="path"><div class="path__ic">⚖️</div><h3>Суддям</h3><p>Національні судді, суддівські курси, підготовка за правилами IPSF 2026 та курси підвищення кваліфікації.</p><a class="btn btn--navy" href="#">Навчання і суддівство</a></article>
+      <article class="path"><div class="path__ic">🏫</div><h3>Клубам і тренерам</h3><p>Спортивні клуби Федерації, карта відокремлених підрозділів, інструкторські курси та навчальний посібник.</p><a class="btn btn--navy" href="#">Спортивні клуби</a></article>
     </div>
   </div>
 </section>
 
 <section class="sec" id="gallery">
   <div class="wrap">
-    <div class="sec__head rv" style="display:flex;justify-content:space-between;align-items:flex-end;max-width:none;gap:2rem;flex-wrap:wrap">
-      <div><span class="kicker">Галерея</span><h2>Зі змагань</h2></div>
+    <div class="sec__head rv sec__head--row">
+      <div><span class="kicker">Галерея</span><h2 style="margin:.85rem 0">Архів подій</h2>
+      <p class="lead">Чемпіонати Європи, міжнародні старти, табори та фестивалі — від 2013 року до сьогодні.</p></div>
       <a class="btn btn--line" href="#">Уся галерея →</a>
     </div>
     <div class="gal rv">
-      <figure>фото 1</figure><figure>фото 2</figure><figure>фото 3</figure>
-      <figure>фото 4</figure><figure>фото 5</figure><figure>фото 6</figure>
+      <figure>Чемпіонат Європи 2016</figure><figure>Весна 2021</figure><figure>Словакія 2018</figure>
+      <figure>Люблін 2018</figure><figure>Прага 2014</figure><figure>Para Pole</figure>
     </div>
   </div>
 </section>
 
 <section class="sec sec--tint" id="news">
   <div class="wrap">
-    <div class="sec__head rv" style="display:flex;justify-content:space-between;align-items:flex-end;max-width:none;gap:2rem;flex-wrap:wrap">
-      <div><span class="kicker">Новини</span><h2>Що відбувається</h2></div>
+    <div class="sec__head rv sec__head--row">
+      <div><span class="kicker">Новини</span><h2 style="margin:.85rem 0">Що відбувається</h2></div>
       <a class="btn btn--line" href="#">Усі новини →</a>
     </div>
     <div class="news rv">
-      <a class="post" href="#"><div class="post__img">фото</div><time>02 березня 2026</time><h3>Оновлений Code of Points: що змінилось для Elite</h3><p>IPSF опублікувала правки до кодексу оцінювання. Розбираємо, які елементи змінили вартість.</p></a>
-      <a class="post" href="#"><div class="post__img">фото</div><time>24 лютого 2026</time><h3>Збірна України — підсумки сезону</h3><p>Результати наших атлетів на міжнародних стартах і плани підготовки.</p></a>
-      <a class="post" href="#"><div class="post__img">фото</div><time>11 лютого 2026</time><h3>Набір на суддівську атестацію відкрито</h3><p>Курс стартує у вересні. Розповідаємо про вимоги до кандидатів.</p></a>
+      <a class="post" href="#"><div class="post__img">фото</div><time>новина</time><h3>Пара поул та пара аеріал спорт — для людей з особливими можливостями</h3><p>Про розвиток напряму Para Pole у структурі Федерації.</p></a>
+      <a class="post" href="#"><div class="post__img">фото</div><time>медіа</time><h3>Публікації про поул спорт у медіа</h3><p>Добірка матеріалів про пілонний спорт в українських та міжнародних виданнях.</p></a>
+      <a class="post" href="#"><div class="post__img">фото</div><time>навчання</time><h3>Курси підготовки за правилами IPSF 2026</h3><p>Відкрито набір на курси для суддів і тренерів за оновленими правилами.</p></a>
     </div>
   </div>
 </section>
@@ -410,16 +566,18 @@ h3{font-size:clamp(1.02rem,1.9vw,1.3rem);line-height:1.22;letter-spacing:-.01em}
   <div class="wrap">
     <div class="sec__head rv">
       <span class="kicker">Інформація</span>
-      <h2>Відкриті правила</h2>
-      <p class="lead">Регламенти, кодекси оцінювання та протоколи — у вільному доступі, українською та англійською.</p>
+      <h2 style="margin:.85rem 0">Правила і документи</h2>
+      <p class="lead">Правила та оцінка IPSF створені технічним комітетом спільно зі спільнотою спортсменів, щоб забезпечити справедливе й прозоре суддівство.</p>
     </div>
     <div class="docs rv">
-      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Code of Points</b><span>Кодекс оцінювання IPSF · укр/eng</span></div><span class="doc__go">↓</span></a>
-      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Регламент чемпіонату України</b><span>Умови допуску, категорії, апеляції</span></div><span class="doc__go">↓</span></a>
-      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Статут федерації</b><span>Установчі документи UPASF</span></div><span class="doc__go">↓</span></a>
-      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Антидопінгові правила</b><span>Регламент і процедура тестування</span></div><span class="doc__go">↓</span></a>
-      <a class="doc" href="#"><span class="doc__ic">DOC</span><div><b>Заявка на участь</b><span>Форма для клубів і атлетів</span></div><span class="doc__go">↓</span></a>
-      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Протоколи змагань</b><span>Архів результатів за сезонами</span></div><span class="doc__go">↓</span></a>
+      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Міжнародні правила IPSF</b><span>Чинні правила та кодекс оцінювання</span></div><span class="doc__go">↓</span></a>
+      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Кодекс етики</b><span>Норми поведінки членів Федерації</span></div><span class="doc__go">↓</span></a>
+      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Антидопінг</b><span>Регламент і процедура тестування</span></div><span class="doc__go">↓</span></a>
+      <a class="doc" href="#"><span class="doc__ic">WEB</span><div><b>Навчання WADA</b><span>Обов'язковий онлайн-курс для спортсменів</span></div><span class="doc__go">↗</span></a>
+      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Технічні характеристики снарядів</b><span>Пілон, обладнання та знаряддя</span></div><span class="doc__go">↓</span></a>
+      <a class="doc" href="#"><span class="doc__ic">DOC</span><div><b>Заявка на участь</b><span>Форма та приклади заповнення</span></div><span class="doc__go">↓</span></a>
+      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Система оскаржень</b><span>Порядок подання та розгляду апеляцій</span></div><span class="doc__go">↓</span></a>
+      <a class="doc" href="#"><span class="doc__ic">PDF</span><div><b>Страхування</b><span>Вимоги до страхування учасників</span></div><span class="doc__go">↓</span></a>
     </div>
   </div>
 </section>
@@ -428,12 +586,34 @@ h3{font-size:clamp(1.02rem,1.9vw,1.3rem);line-height:1.22;letter-spacing:-.01em}
   <div class="wrap">
     <div class="join rv">
       <span class="kicker">Членство</span>
-      <h2>Приєднуйтесь<br>до UPASF</h2>
-      <p class="lead">Індивідуальне членство для атлетів і суддів, клубне — для студій. Членство дає право виступати на офіційних стартах і входити до національного реєстру.</p>
+      <h2>Приєднуйтесь<br>до Федерації</h2>
+      <p class="lead">Членство є добровільним і може бути індивідуальним або почесним. Індивідуальними членами можуть стати особи з підтвердженими винятковими досягненнями, визнаними на національному чи міжнародному рівні, які поділяють положення Статуту та беруть активну участь у діяльності Організації.</p>
       <div class="join__cta">
         <a class="btn btn--yellow" href="#">Подати заявку</a>
-        <a class="btn btn--line" href="#">Умови членства</a>
+        <a class="btn btn--line" href="#membership">Умови членства</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--tint" id="contact">
+  <div class="wrap">
+    <div class="sec__head rv"><span class="kicker">Контакти</span><h2 style="margin:.85rem 0">Зверніться до нас</h2></div>
+    <div class="contact rv">
+      <div class="cbox">
+        <div class="cline"><i>📍</i><div><b>Адреса</b><p>м. Харків, пр-т Науки 56, к. 37</p></div></div>
+        <div class="cline"><i>✉️</i><div><b>Email</b><p><a href="mailto:federation@polesportua.org">federation@polesportua.org</a></p></div></div>
+        <div class="cline"><i>💬</i><div><b>Viber, Telegram</b><p><a href="tel:+380509246536">+380 50 924 65 36</a></p></div></div>
+        <div class="cline"><i>📞</i><div><b>Телефон</b><p><a href="tel:+380673552420">+380 67 355 24 20</a></p></div></div>
+        <div class="cline"><i>🕘</i><div><b>Графік</b><p>Понеділок – п'ятниця 9:00–18:00<br>Субота – неділя 10:00–16:00</p></div></div>
+      </div>
+      <form class="form" onsubmit="event.preventDefault();this.querySelector('.btn').textContent='Повідомлення надіслано'">
+        <h3>Напишіть нам</h3>
+        <div><label for="f-name">Ім'я</label><input id="f-name" type="text" required></div>
+        <div><label for="f-mail">Email</label><input id="f-mail" type="email" required></div>
+        <div><label for="f-msg">Повідомлення</label><textarea id="f-msg" required></textarea></div>
+        <button class="btn btn--navy" type="submit">Надіслати</button>
+      </form>
     </div>
   </div>
 </section>
@@ -444,38 +624,46 @@ h3{font-size:clamp(1.02rem,1.9vw,1.3rem);line-height:1.22;letter-spacing:-.01em}
   <div class="wrap">
     <div class="foot__top">
       <div>
-        <a class="brand" href="#top" style="margin-bottom:1.1rem">
+        <a class="brand" href="#top" style="margin-bottom:1rem">
           <span class="brand__mark">UPASF</span>
-          <span class="brand__txt"><b>UPASF</b><span>Pole Sport &amp; Aerial Acrobatics</span></span>
+          <span class="brand__txt"><b>UPASF</b><span>Поул спорт і повітряна акробатика</span></span>
         </a>
-        <p style="font-size:.89rem;max-width:40ch">Ukrainian Pole Sport &amp; Aerial Acrobatics Federation — національний член Міжнародної федерації пілонного спорту (IPSF).</p>
-        <div class="soc"><a href="#">IG</a><a href="#">FB</a><a href="#">YT</a><a href="#">TG</a></div>
+        <p style="font-size:.87rem;max-width:42ch">ГО «Федерація поул спорту і повітряної акробатики України» — некомерційна організація, член International Pole Sport Federation (IPSF).</p>
+        <div class="soc"><a href="https://www.facebook.com/federation.polesportua">FB</a><a href="#">IG</a><a href="#">YT</a><a href="#">TG</a></div>
       </div>
-      <div><h4>Федерація</h4><ul><li><a href="#about">Про нас</a></li><li><a href="#">Керівництво</a></li><li><a href="#docs">Статут</a></li><li><a href="#">Партнери</a></li></ul></div>
-      <div><h4>Спорт</h4><ul><li><a href="#disc">Дисципліни</a></li><li><a href="#events">Календар змагань</a></li><li><a href="#">Збірна</a></li><li><a href="#">Результати</a></li></ul></div>
-      <div><h4>Контакти</h4><ul><li><a href="mailto:info@polesportua.org">info@polesportua.org</a></li><li><a href="#">Київ, Україна</a></li><li><a href="#join">Членство</a></li><li><a href="https://judgeacademy.date">Judge Academy</a></li></ul></div>
+      <div><h4>Про нас</h4><ul><li><a href="#">Бачення та місія</a></li><li><a href="#">Історія федерації</a></li><li><a href="#committee">Виконавчий комітет</a></li><li><a href="#">Нагороди та документи</a></li><li><a href="#">Партнери</a></li></ul></div>
+      <div><h4>Спорт</h4><ul><li><a href="#events">Календар змагань</a></li><li><a href="#">Заявка на участь</a></li><li><a href="#">Результати змагань</a></li><li><a href="#">Кваліфікація та збірна</a></li><li><a href="#">Para Pole</a></li></ul></div>
+      <div><h4>Навчання</h4><ul><li><a href="#">Навчання і суддівство</a></li><li><a href="#">Національні судді</a></li><li><a href="#">Суддівські курси</a></li><li><a href="#">Навчальний посібник</a></li></ul></div>
+      <div><h4>Контакти</h4><ul><li><a href="mailto:federation@polesportua.org">federation@polesportua.org</a></li><li><a href="tel:+380509246536">+380 50 924 65 36</a></li><li><a href="tel:+380673552420">+380 67 355 24 20</a></li><li>м. Харків, пр-т Науки 56, к. 37</li></ul></div>
     </div>
     <div class="foot__bot">
-      <span>© 2026 UPASF · Федерація пілонного спорту та повітряної акробатики України</span>
-      <span>Політика конфіденційності · Публічна оферта</span>
+      <span>© 2026 ГО «Федерація поул спорту і повітряної акробатики України»</span>
+      <span>Статут · Кодекс етики · Політика конфіденційності</span>
     </div>
   </div>
 </footer>
 
 <script>
 (function(){
-  var nav=document.getElementById('nav');
-  var onScroll=function(){ nav.classList.toggle('is-stuck', window.scrollY>40); };
+  var nav=document.getElementById('nav'),burger=document.getElementById('burger'),drawer=document.getElementById('drawer');
+  var onScroll=function(){ nav.classList.toggle('is-stuck', window.scrollY>30); };
   onScroll(); addEventListener('scroll',onScroll,{passive:true});
+
+  burger.addEventListener('click',function(){
+    var open=drawer.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded',open);
+    document.body.classList.toggle('is-locked',open);
+  });
+  drawer.addEventListener('click',function(e){
+    if(e.target.tagName==='A'){ drawer.classList.remove('is-open'); document.body.classList.remove('is-locked'); burger.setAttribute('aria-expanded','false'); }
+  });
 
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){
       es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target);} });
-    },{threshold:.1,rootMargin:'0px 0px -6% 0px'});
+    },{threshold:.08,rootMargin:'0px 0px -5% 0px'});
     document.querySelectorAll('.rv').forEach(function(n){ io.observe(n); });
-  } else {
-    document.querySelectorAll('.rv').forEach(function(n){ n.classList.add('is-in'); });
-  }
+  } else { document.querySelectorAll('.rv').forEach(function(n){ n.classList.add('is-in'); }); }
 
   document.querySelectorAll('.lang button').forEach(function(b){
     b.addEventListener('click',function(){
