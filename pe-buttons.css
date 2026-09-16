@@ -260,12 +260,49 @@ body .unlock:not(.show){ display: none !important; }
   font: 600 13px/1 'Manrope', system-ui, sans-serif;
   color: #6a5a94;
 }
-@media (max-width: 900px){ }
-
-/* ── footer links need a real touch target ────────────────── */
+/* ── touch targets ─────────────────────────────────────────
+   Measured on a 390px phone: the footer's certificate link came to 28px
+   tall and the wordmark in the bar to 23px, against the ~44px a fingertip
+   needs. This block had already tried for the footer and stopped at 28.
+   The padding grows the hit area without moving anything: the bar centres
+   its contents and the footer stacks into a column below 580px. */
 @media (max-width: 900px){
   body footer a{
     display: inline-flex; align-items: center;
-    min-height: 28px; padding: 4px 2px;
+    min-height: 44px; padding: 10px 2px;
   }
+  body .topbar .brand{ padding: 11px 4px; margin-left: -4px; }
+
+  /* the rest of what a finger has to hit, measured the same way: the
+     module rail was a deliberate 38, the tabs 36, and the two back links
+     21-23. Only the rail grows the page — six pixels on a sticky bar. */
+  body nav.nav a,
+  body nav.quicknav a{ min-height: 44px !important; }
+  body .tab,
+  body .case-tab,
+  body .scenario-tab,
+  body .link-btn,
+  body .ghost,
+  body .toplink,
+  body .back{
+    display: inline-flex !important; align-items: center;
+    min-height: 44px !important;
+  }
+
+  /* the trainers' own controls: answers, options, apparatus and photo
+     tabs, and the fallback link under a video that would not play */
+  body .answer,
+  body .choice,
+  body .opt,
+  body .option,
+  body .jc-tab,
+  body .photo-tab,
+  body .quiz-opt,
+  body .proto-row button,
+  body .video-fallback{
+    display: inline-flex !important; align-items: center;
+    min-height: 44px !important;
+  }
+  /* answers wrap to several lines, so they need room rather than a floor */
+  body .answer, body .opt, body .option, body .quiz-opt{ padding-top: 11px !important; padding-bottom: 11px !important; }
 }
