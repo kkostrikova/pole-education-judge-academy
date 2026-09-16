@@ -341,6 +341,16 @@ body .count button{
 body .count button:hover{ border-color: #a98bef !important; background: #f6f2ff !important; }
 body .count button:focus-visible{ outline: 2px solid #8b5cf6; outline-offset: 2px; }
 body .count b{ min-width: 20px; text-align: center; font-variant-numeric: tabular-nums; }
+/* The − and + steppers sit in a 100px table cell with the number between
+   them, so two 44px circles do not fit. A transparent ::after overlay was
+   the first attempt and does not work: measured on an isolated page, a
+   point 5px outside the button still resolves to the parent, not the
+   button. 40px is what the cell holds, 8px more than they had. This lives
+   here rather than in pe-buttons.css because module-kit.css loads after it
+   and the 32px rule above would otherwise win on source order. */
+@media (max-width: 900px){
+  body .count button{ width: 40px !important; height: 40px !important; }
+}
 
 /* module 8's penalty list: each row is a clickable label with no affordance
    at all — the opposite problem to the hero pills. A hover state and a real
