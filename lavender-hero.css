@@ -608,7 +608,11 @@ body.lav-home #practical .final-icon{
   background: #efe9fb !important;
   border: 1px solid #b3a0e4 !important;
 }
-/* a quiet step rule so the pair reads top-to-bottom as a progression */
+/* A quiet step rule so the pair reads top-to-bottom as a progression. One
+   hairline sitting close to the text, not a bar held away from it — at 2px
+   and 20px it read as a border around the block rather than an accent on the
+   words. The two exams differ by the rule's colour, so thinning it costs
+   nothing: light lavender for step one, deeper for step two. */
 body.lav-home #final .final-copy,
-body.lav-home #practical .final-copy{ border-left: 2px solid #cdbdf0; padding-left: 20px; }
-body.lav-home #practical .final-copy{ border-left-color: #8f6fe0; }
+body.lav-home #practical .final-copy{ border-left: 1px solid #b9a4ea; padding-left: 14px; }
+body.lav-home #practical .final-copy{ border-left-color: #7c5ad6; }
