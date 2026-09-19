@@ -34,20 +34,28 @@ body.lav-home .hero{ display: none !important; }
   from{ clip-path: polygon(-45% 0%, -5% 0%, 7% 100%, -45% 100%); }
   to  { clip-path: polygon(-45% 0%, 118% 0%, 130% 100%, -45% 100%); }
 }
-@keyframes pe-heart{
-  from{ opacity: 0; transform: scale(.72) rotate(-9deg); }
-  60% { opacity: 1; }
-  to  { opacity: 1; transform: none; }
-}
+/* The heart is drawn, not dropped in. Everything else on this line is laid
+   down by a pen, so a heart that scaled up out of nothing read as a sticker
+   stuck on the end — the author's words: it just pops out. The artwork is
+   the same traced outline as before; what moves is a mask, a fat stroke
+   running along the heart's centreline (skeletonised from that very
+   artwork, so it cannot drift off it). pathLength="1" lets the dash work in
+   fractions instead of a magic number. The stroke starts at the valley
+   between the lobes, goes up and over the left lobe, down to the point, then
+   up the right flank and over the right lobe — the way it is written by
+   hand. */
+@keyframes pe-heart-draw{ to{ stroke-dashoffset: 0; } }
 .pe-sign .pe-ink{ opacity: 0; }
 .pe-sign.is-in .pe-ink{ opacity: 1; }
 .pe-sign.is-in .pe-ink--1{ animation: pe-write .90s cubic-bezier(.42,0,.35,1) .05s both; }
 .pe-sign.is-in .pe-ink--2{ animation: pe-write 1.20s cubic-bezier(.38,0,.4,1) .85s both; }
-.pe-sign.is-in .pe-ink--h{ animation: pe-heart .55s cubic-bezier(.2,1.3,.4,1) 1.95s both;
-                           transform-origin: 62% 22%; }
+.pe-heart{ position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.pe-heart-draw{ stroke-dasharray: 1; stroke-dashoffset: 1; }
+.pe-sign.is-in .pe-heart-draw{ animation: pe-heart-draw 1.05s cubic-bezier(.33,0,.3,1) 1.98s both; }
 @media (prefers-reduced-motion: reduce){
   .pe-sign .pe-ink{ opacity: 1; }
   .pe-sign.is-in .pe-ink{ animation: none; clip-path: none; transform: none; }
+  .pe-heart-draw{ animation: none !important; stroke-dashoffset: 0; }
 }
 
 /* ───────────────────────── header ───────────────────────── */
@@ -200,39 +208,6 @@ body.lav-home{
    slowly. Both values are written by the scroll handler. */
 .lav-copy{ will-change: transform, opacity; }
 
-/* ───────────────────────── petals ───────────────────────── */
-/* The petals used to live inside the hero. They drift over the whole page
-   now — the author wanted them to keep falling as she scrolls — so the
-   layer is fixed to the viewport, above the section backgrounds and below
-   anything you can click. */
-.lav-petals{
-  position: fixed; inset: 0; z-index: 3; pointer-events: none;
-  overflow: hidden;
-}
-.lav-petal{
-  position: absolute; top: 0; left: 0;
-  /* A real petal, not a blob: the shape comes from a mask so the colour
-     stays in CSS. Round at the base, drawn to a point at the tip, with the
-     slight asymmetry a lavender floret actually has. */
-  -webkit-mask-image: var(--petal);
-          mask-image: var(--petal);
-  -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  background: linear-gradient(150deg,
-              rgba(171,139,234,.98) 0%,
-              rgba(126,88,196,.92) 52%,
-              rgba(96,64,162,.80) 100%);
-  --petal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 34'%3E%3Cpath d='M10 0.6c5.6 6.4 9.4 14.2 9.4 21.3 0 6.6-4.2 11.5-9.4 11.5S0.6 28.5 0.6 21.9C0.6 14.8 4.4 7 10 0.6z' fill='%23000'/%3E%3C/svg%3E");
-  will-change: transform;
-}
-/* a second cut so they are not eight copies of one shape */
-.lav-petal.two{
-  --petal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 34'%3E%3Cpath d='M12.4 0.8c3.4 7.4 5.2 15 3.9 21.6-1.2 6.3-5.6 10.6-10.3 9.8C1.3 31.4-1 26 0.6 19.8 2.3 13.2 7 6 12.4 0.8z' fill='%23000'/%3E%3C/svg%3E");
-}
-@media (prefers-reduced-motion: reduce){ .lav-petals{ display: none; } }
-
 /* ─────────────────────── hero copy ─────────────────────── */
 /* Measured on the plate rather than guessed: busyness climbs steadily
    left to right — 0.031 across x 18-50%, 0.16 at the bouquet on the right
@@ -260,7 +235,6 @@ body.lav-home{
 }
 .pe-ink--1{ background-image: url('assets/hero/headline-line1.svg?v=20260915-sign1'); }
 .pe-ink--2{ background-image: url('assets/hero/headline-line2.svg?v=20260915-sign1'); }
-.pe-ink--h{ background-image: url('assets/hero/headline-heart.svg?v=20260915-sign1'); }
 
 .lav-stack{ display: flex; flex-direction: column; align-items: center; }
 .lav-eyebrow{
