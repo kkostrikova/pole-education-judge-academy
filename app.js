@@ -244,7 +244,7 @@
       completionMessage.textContent=courseComplete
         ?'Вітаємо! Усі навчальні модулі та обидві частини фінальної атестації успішно завершені. Ви виконали всі вимоги курсу Pole Education Judge Academy.'
         :'Для завершення курсу потрібно пройти всі 8 модулів, скласти теоретичний і практичний іспити.';
-      if(completionMark){completionMark.textContent=courseComplete?'✓':'03';completionMark.classList.toggle('done',courseComplete)}
+      if(completionMark){completionMark.textContent=courseComplete?'✓':'🔒';completionMark.classList.toggle('done',courseComplete)}
     }
   }
   document.querySelectorAll('.desk-card[data-go]').forEach(btn => btn.addEventListener('click', () => {
