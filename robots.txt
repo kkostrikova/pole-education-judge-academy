@@ -1,0 +1,27 @@
+# Only the landing page and the public certificate check belong in search.
+# Everything else on this site sits behind sign-in or the NDA.
+User-agent: *
+Allow: /$
+Allow: /index.html
+Allow: /certificate-verify.html
+Disallow: /admin.html
+Disallow: /account.html
+Disallow: /auth.html
+Disallow: /certificate.html
+Disallow: /nda.html
+Disallow: /nda-record.html
+Disallow: /final-theory.html
+Disallow: /practical.html
+Disallow: /practical-review.html
+Disallow: /theory-review.html
+Disallow: /situational.html
+Disallow: /module-1.html
+Disallow: /module-2.html
+Disallow: /module-3.html
+Disallow: /module-4.html
+Disallow: /module-5.html
+Disallow: /module-6.html
+Disallow: /module-7.html
+Disallow: /module-8.html
+
+Sitemap: https://judgeacademy.date/sitemap.xml
