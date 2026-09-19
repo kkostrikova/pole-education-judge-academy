@@ -101,6 +101,16 @@ body .module-card.locked .module-status.locked{ color: #5f5680 !important; }
 [data-pe-page="auth"] .visual p{ color: #c3badf !important; }
 [data-pe-page="auth"] .visual .mini{ color: #c8a6ff !important; }
 [data-pe-page="auth"] .visual a{ color: #e3dbff !important; }
+/* That back link sits on the near-black visual panel, where pale lavender is
+   the right colour. Giving it .toplink for a 44px touch target also handed it
+   the white pill from mobile.css, and pale-on-white measured 1.33:1 — the
+   text all but disappeared. Keep the target, drop the pill. */
+[data-pe-page="auth"] .visual .toplink{
+  background: transparent !important;
+  border-color: transparent !important;
+  padding-left: 0 !important; padding-right: 0 !important;
+  min-height: 44px !important; align-items: center;
+}
 
 /* ── second pass: what only appears after an interaction ──────
    The first audit read the page as it loads. Panels that open when a

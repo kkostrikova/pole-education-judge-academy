@@ -571,3 +571,44 @@ body.lav-home .lecture-extra strong::after{ content: ' ↗'; font-size: .62em; c
 /* the handbook is a file, not a destination: it says "download" and it
    downloads, so the arrow that means "opens elsewhere" would be a lie */
 body.lav-home .lecture-extra--file strong::after{ content: ' ↓'; }
+
+/* ───────────── закриття сторінки: ритм секцій і два іспити ───────────── */
+/* Measured down the page, the bands ran lilac, lilac, near-white, lilac, then
+   three near-identical white-to-lilac blocks in a row — the author's "фони
+   секцій трохи стрибають". These set one deliberate alternation instead:
+   the photo plate opens lilac, then white and lilac take turns, and the two
+   exams share a single lilac band so they read as one stage of the course.
+   Loaded after premium-global.css, which is where the !important came from. */
+body.lav-home .lecture-hub{ background: #ffffff !important; }
+body.lav-home #modules{      background: linear-gradient(180deg,#f6f2fd,#f2edfb) !important; }
+body.lav-home .desk{         background: #ffffff !important; }
+/* one flat colour, not a gradient per block: two 180deg gradients stacked
+   put a dark end against a light start and banded at the seam — the same
+   jump this section is meant to remove */
+body.lav-home #final,
+body.lav-home #practical{    background: #f5f1fc !important; }
+body.lav-home .course-complete{ background: #ffffff !important; }
+
+/* the seam between the two exams is a hairline inside one band, not a wall */
+body.lav-home #final{ border-bottom: 0 !important; }
+body.lav-home #practical{ border-top: 1px solid rgba(111,75,195,.13) !important; }
+
+/* Theory and practical were the same block twice: same round mark, same
+   surface, same button label. They are two steps of one sequence — the
+   completion block below them already calls itself 03 — so they are numbered
+   and given marks of different shape and weight. Nothing here changes the
+   palette or the type. */
+body.lav-home #final .final-icon{
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  border: 1px solid #c9bbee !important;
+}
+body.lav-home #practical .final-icon{
+  border-radius: 24px !important;
+  background: #efe9fb !important;
+  border: 1px solid #b3a0e4 !important;
+}
+/* a quiet step rule so the pair reads top-to-bottom as a progression */
+body.lav-home #final .final-copy,
+body.lav-home #practical .final-copy{ border-left: 2px solid #cdbdf0; padding-left: 20px; }
+body.lav-home #practical .final-copy{ border-left-color: #8f6fe0; }
