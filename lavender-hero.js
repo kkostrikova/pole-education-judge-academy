@@ -51,4 +51,76 @@
     io.observe(sign);
   })();
 
+  /* ── drifting petals ──────────────────────────────────────
+     A handful of soft shapes on their own slow paths, nudged aside by the
+     pointer. Transform-only, so they never trigger layout. */
+  (() => {
+    const host = document.querySelector('.lav-petals');
+    if (!host || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    /* the layer is the whole viewport now, not just the hero */
+    const COUNT = narrow ? 9 : 18;
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const petals = [];
+    let W = host.clientWidth, H = host.clientHeight;
+    const pointer = { x: -1e4, y: -1e4 };
+
+    for (let i = 0; i < COUNT; i++) {
+      const el = document.createElement('i');
+      el.className = 'lav-petal' + (Math.random() < 0.5 ? ' two' : '');
+      /* Weight matters more than count here. Faint and blurred, a petal
+         stops being a petal and becomes a mark on the photograph — which is
+         exactly what went wrong when I softened these. */
+      /* taller than wide, the way a petal is */
+      const size = rnd(13, 30);
+      el.style.height = size + 'px';
+      el.style.width = (size * rnd(.42, .62)) + 'px';
+      el.style.opacity = String(rnd(.22, .55));
+      el.style.filter = 'blur(' + rnd(0, 1.8).toFixed(1) + 'px)';
+      host.appendChild(el);
+      petals.push({
+        el, size,
+        x: rnd(0, 1), y: rnd(0, 1),
+        vx: rnd(-.010, -.028), vy: rnd(.004, .016),
+        spin: rnd(-26, 26), rot: rnd(0, 360),
+        ox: 0, oy: 0
+      });
+    }
+
+    window.addEventListener('pointermove', e => {
+      const r = host.getBoundingClientRect();
+      pointer.x = (e.clientX - r.left) / r.width;
+      pointer.y = (e.clientY - r.top) / r.height;
+    }, { passive: true });
+    window.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1e4; }, { passive: true });
+
+    let last = performance.now();
+    function tick(now) {
+      const dt = Math.min(50, now - last) / 1000;
+      last = now;
+      if (W !== host.clientWidth || H !== host.clientHeight) { W = host.clientWidth; H = host.clientHeight; }
+      for (const p of petals) {
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.x < -.08) { p.x = 1.08; p.y = rnd(0, 1); }
+        if (p.y > 1.08) { p.y = -.08; p.x = rnd(0, 1); }
+        p.rot += p.spin * dt;
+
+        /* pointer pushes petals aside, then they ease back to their path */
+        const dx = p.x - pointer.x, dy = p.y - pointer.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 0.016) {
+          const f = (1 - d2 / 0.016) * 0.10;
+          p.ox += dx * f; p.oy += dy * f;
+        }
+        p.ox *= 0.94; p.oy *= 0.94;
+
+        p.el.style.transform =
+          'translate(' + ((p.x + p.ox) * W).toFixed(1) + 'px,' + ((p.y + p.oy) * H).toFixed(1) + 'px)' +
+          ' rotate(' + p.rot.toFixed(1) + 'deg)';
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+
 })();
