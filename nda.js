@@ -90,7 +90,7 @@ signBtn.onclick=async()=>{
     p_consent:true,
     p_user_agent:navigator.userAgent
   });
-  if(error){msg.textContent='Не вдалося підписати договір: '+error.message;msg.className='message err';signBtn.disabled=false;return}
+  if(error){msg.textContent=window.PE_errorText(error,'Не вдалося підписати договір. Спробуйте ще раз.');msg.className='message err';signBtn.disabled=false;return}
   const saved=Array.isArray(data)?data[0]:data;
   msg.textContent='Договір підписано. Доступ до курсу відкрито.';msg.className='message ok';
   statusEl.textContent='Підписано ✓';statusEl.style.background='#e8f3ec';statusEl.style.color='#2d6b45';

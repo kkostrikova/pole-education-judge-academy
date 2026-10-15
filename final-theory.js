@@ -302,7 +302,7 @@ async function finish(timedOut=false){
   });
   if(error){
     finishing=false;
-    alert('Не вдалося зафіксувати спробу: '+error.message);
+    alert(window.PE_errorText(error,'Не вдалося зафіксувати спробу. Спробуйте ще раз.'));
     if(!timedOut)timerId=setInterval(updateTimer,1000);
     return;
   }
@@ -315,11 +315,7 @@ async function startRealAttempt(){
   els.startMessage.className='message';
   const {data,error}=await client.rpc('pe_start_theory_exam');
   if(error){
-    els.startMessage.textContent=error.message.includes('NO_ATTEMPTS_LEFT')
-      ?'Основну спробу вже використано. Повторне складання може дозволити тільки адміністратор.'
-      :error.message.includes('EXAM_CLOSED')
-        ?'Іспит закрито адміністратором.'
-        :'Не вдалося розпочати іспит: '+error.message;
+    els.startMessage.textContent=window.PE_errorText(error,'Не вдалося розпочати іспит. Спробуйте ще раз.');
     els.startMessage.className='message err';
     return;
   }

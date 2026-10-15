@@ -241,14 +241,14 @@ async function submitExam(timedOut=false){
   if(preview){showResult();return}if(!attemptId)return;
   finishing=true;els.submitBtn.disabled=true;clearTimeout(saveTimer);
   const {error}=await client.rpc('pe_submit_practical_exam',{p_attempt_id:attemptId,p_mapping:mapping,p_protocols:protocols,p_timed_out:Boolean(timedOut)});
-  if(error){finishing=false;els.submitBtn.disabled=false;alert('Не вдалося надіслати практичний іспит: '+error.message);return}
+  if(error){finishing=false;els.submitBtn.disabled=false;alert(window.PE_errorText(error,'Не вдалося надіслати практичний іспит. Спробуйте ще раз.'));return}
   showResult();
 }
 
 async function startReal(){
   els.startBtn.disabled=true;els.startMessage.classList.remove('hidden');els.startMessage.textContent='Створюємо практичну спробу…';
   const {data,error}=await client.rpc('pe_start_practical_exam');
-  if(error){els.startMessage.className='message err';els.startMessage.textContent=error.message.includes('EXAM_CLOSED')?'Практичний іспит закритий адміністратором.':error.message.includes('NO_ATTEMPTS_LEFT')?'Основну спробу вже використано.':'Не вдалося розпочати іспит: '+error.message;return}
+  if(error){els.startMessage.className='message err';els.startMessage.textContent=window.PE_errorText(error,'Не вдалося розпочати іспит. Спробуйте ще раз.');return}
   hydrate(asObj(data));begin();
 }
 async function loadState(){

@@ -5,7 +5,7 @@ const {data:{session}}=await client.auth.getSession();if(!session){location.href
 const {data:me}=await client.from('profiles').select('role').eq('user_id',session.user.id).maybeSingle();if(me?.role!=='admin'){status.textContent='Немає доступу';return}
 if(!id){status.textContent='Не вказано студента';return}
 const {data,error}=await client.rpc('pe_admin_nda_record',{p_user_id:id});
-if(error){msg.textContent='Не вдалося завантажити NDA: '+error.message;msg.className='message err';msg.classList.remove('hidden');return}
+if(error){msg.textContent=window.PE_errorText(error,'Не вдалося завантажити договір.');msg.className='message err';msg.classList.remove('hidden');return}
 const r=Array.isArray(data)?data[0]:data;
 if(!r?.exists){status.textContent='Не підписано';return}
 status.textContent='Підписано ✓';status.style.background='#e8f3ec';status.style.color='#2d6b45';
