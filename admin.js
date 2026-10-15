@@ -147,7 +147,16 @@ studentBody.innerHTML=students.length?students.map(s=>{
   const theoryScoreValue=Number(a?.score??legacy[s.user_id]?.score??0);
   const goldEligible=courseComplete&&moduleGold&&theoryScoreValue>80&&Boolean(pa?.distinction);
   const certLabel=courseComplete?(goldEligible?'Золотий сертифікат':'Звичайний сертифікат'):'У процесі';
-  return '<tr>'+
+  /* Архівування закриває доступ, але лишає підписаний NDA і виданий
+     сертифікат на місці. Видалення стирає їх разом з акаунтом, тому воно
+     окремою кнопкою і з іншим підтвердженням. */
+  const archived=Boolean(s.archived_at);
+  const lifecycle=archived
+    ? '<button class="btn secondary compact restore-student" data-user="'+s.user_id+'">Повернути з архіву</button>'
+      +'<button class="btn danger compact wipe-student" data-user="'+s.user_id+'">Видалити</button>'
+    : '<button class="btn secondary compact archive-student" data-user="'+s.user_id+'">В архів</button>';
+
+  return '<tr'+(archived?' class="is-archived"':'')+'>'+
     '<td>'+(s.full_name||'—')+'</td>'+
     '<td>'+s.email+'</td>'+
     '<td>'+ndaLabel+'</td>'+
@@ -155,7 +164,7 @@ studentBody.innerHTML=students.length?students.map(s=>{
     '<td>'+theory+'</td>'+
     '<td>'+practicalLabel+'</td>'+
     '<td><span class="pill '+(courseComplete?(goldEligible?'gold':'ok'):'warn')+'">'+certLabel+'</span></td>'+
-    '<td><div class="table-actions">'+ndaAction+review+retry+practicalReview+practicalRetry+'</div></td>'+
+    '<td><div class="table-actions">'+ndaAction+review+retry+practicalReview+practicalRetry+lifecycle+'</div></td>'+
   '</tr>';
 }).join(''):'<tr><td colspan="8">Студентів ще немає.</td></tr>';
 
@@ -174,6 +183,84 @@ document.querySelectorAll('.retry-theory').forEach(btn=>btn.onclick=async()=>{
   if(error){alert('Не вдалося дозволити повтор: '+error.message);btn.disabled=false;return}
   btn.textContent='Повтор дозволено';
 });
+
+/* ── архів і видалення ─────────────────────────────────────────────────
+   Архівування зворотне: доступ закривається, записи лишаються. Видалення
+   незворотне — воно стирає підписаний договір і виданий сертифікат разом
+   з акаунтом, після чого посилання на перевірку сертифіката вже не
+   відкриється. Тому перед видаленням адмінка питає в бази, що саме в
+   цього студента є, показує список і вимагає ввести імʼя вручну. */
+const fail=(e,fb)=>alert(window.PE_errorText?window.PE_errorText(e,fb):fb);
+
+document.querySelectorAll('.archive-student').forEach(btn=>btn.onclick=async()=>{
+  if(!confirm('Відправити студента в архів? Доступ до курсу закриється, '
+             +'але підписаний договір і виданий сертифікат залишаться. '
+             +'Повернути можна будь-коли.'))return;
+  btn.disabled=true;
+  const {error}=await client.rpc('pe_admin_archive_student',{p_user_id:btn.dataset.user});
+  if(error){fail(error,'Не вдалося архівувати студента.');btn.disabled=false;return}
+  location.reload();
+});
+
+document.querySelectorAll('.restore-student').forEach(btn=>btn.onclick=async()=>{
+  btn.disabled=true;
+  const {error}=await client.rpc('pe_admin_restore_student',{p_user_id:btn.dataset.user});
+  if(error){fail(error,'Не вдалося повернути студента з архіву.');btn.disabled=false;return}
+  location.reload();
+});
+
+const wipeDialog=document.getElementById('wipeDialog');
+const wipeWho=document.getElementById('wipeWho');
+const wipeList=document.getElementById('wipeList');
+const wipeName=document.getElementById('wipeName');
+const wipeMsg=document.getElementById('wipeMsg');
+const wipeConfirm=document.getElementById('wipeConfirm');
+let wipeTarget=null;
+
+document.querySelectorAll('.wipe-student').forEach(btn=>btn.onclick=async()=>{
+  btn.disabled=true;
+  const {data,error}=await client.rpc('pe_admin_student_footprint',{p_user_id:btn.dataset.user});
+  btn.disabled=false;
+  if(error){fail(error,'Не вдалося прочитати дані студента.');return}
+  const f=Array.isArray(data)?data[0]:data;
+  wipeTarget=f;
+  wipeWho.textContent='Акаунт «'+(f.full_name||f.email)+'» буде стерто повністю. '
+                     +'Це неможливо скасувати.';
+  const lost=[];
+  if(f.nda)lost.push('підписаний договір NDA — з підписом, іменем і датою');
+  if(f.certificate)lost.push('виданий сертифікат '+(f.certificate_no||'')
+                            +' — посилання на його перевірку перестане працювати');
+  if(f.modules)lost.push('результати модулів: '+f.modules);
+  if(f.theory)lost.push('спроби теоретичного іспиту: '+f.theory);
+  if(f.practical)lost.push('спроби практичного іспиту: '+f.practical);
+  if(!lost.length)lost.push('жодних результатів — студент нічого не починав');
+  wipeList.innerHTML=lost.map(x=>'<li>'+x+'</li>').join('');
+  wipeName.value='';
+  wipeMsg.style.display='none';
+  wipeDialog.showModal();
+});
+
+if(wipeConfirm)wipeConfirm.onclick=async()=>{
+  if(!wipeTarget)return;
+  wipeConfirm.disabled=true;
+  wipeMsg.style.display='none';
+  const {error}=await client.rpc('pe_admin_delete_student',{
+    p_user_id:wipeTarget.user_id,
+    p_confirm_name:wipeName.value
+  });
+  wipeConfirm.disabled=false;
+  if(error){
+    const txt=String(error.message||'');
+    wipeMsg.textContent=txt.includes('NAME_MISMATCH')
+      ?'Імʼя не збігається з тим, що записане в профілі. Перевірте й спробуйте ще раз.'
+      :(window.PE_errorText?window.PE_errorText(error,'Не вдалося видалити студента.')
+                           :'Не вдалося видалити студента.');
+    wipeMsg.style.display='';
+    return;
+  }
+  wipeDialog.close();
+  location.reload();
+};
 
 const errors=[];
 if(attemptsResp.error)errors.push('теорія: '+attemptsResp.error.message);

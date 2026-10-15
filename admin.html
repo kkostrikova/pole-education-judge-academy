@@ -2,13 +2,32 @@
   <meta name="description" content="Адміністрування курсу Pole Education Judge Academy."><link rel="stylesheet" href="auth.css?v=20260915-auth4"><link rel="stylesheet" href="mobile.css?v=20260916-touch1">
   <link rel="stylesheet" href="pe-fonts.css?v=20260915-fonts1">
   <link rel="stylesheet" href="pe-buttons.css?v=20260916-touch6">
-  <link rel="stylesheet" href="pe-contrast.css?v=20260919-c10">
+  <link rel="stylesheet" href="pe-contrast.css?v=20260929-c12">
   <link rel="canonical" href="https://judgeacademy.date/admin.html">
   <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
   <meta name="robots" content="noindex,follow">
   <!-- GA4: вставити тег тут -->
   <!-- Meta Pixel: вставити тут -->
+<style>
+/* архів і видалення студента */
+.pill.archived{background:#ece7f2;color:#5d5570}
+tr.is-archived td{opacity:.72}
+tr.is-archived td:first-child::after{content:' · в архіві';color:#6f6485;font-size:12px}
+
+#wipeDialog{border:0;border-radius:18px;padding:0;max-width:520px;width:calc(100% - 32px);
+  box-shadow:0 30px 80px rgba(60,40,90,.28)}
+#wipeDialog::backdrop{background:rgba(40,28,60,.45)}
+.wipe-body{padding:26px 26px 22px;background:#fff;border-radius:18px}
+.wipe-body h3{font:500 25px Georgia,serif;margin:0 0 10px}
+.wipe-body p{margin:0 0 14px;line-height:1.55;color:#554c62}
+.wipe-list{margin:0 0 16px;padding:14px 16px;border-radius:12px;background:#fbf4f4;
+  border:1px solid #ecd6d6;list-style:none}
+.wipe-list li{padding:3px 0;font-size:14px;color:#7a3b3b}
+.wipe-body label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.wipe-body input{width:100%;padding:11px 12px;border:1px solid #d7cbe6;border-radius:10px;font:inherit}
+.wipe-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+</style>
 </head><body data-pe-exam="1"><div class="shell"><main class="dashboard">
 <div class="dashhead"><div><div class="mini">ADMIN · POLE EDUCATION</div><h1>Студенти</h1><div style="color:#756a70">Закрита панель для адміністраторів курсу</div></div><div class="actions"><a class="btn secondary" href="final-theory.html">Перегляд теорії</a><a class="btn secondary" href="practical.html">Preview практики</a><a class="btn secondary" href="certificate.html?preview=standard">Preview сертифіката</a><a class="btn secondary" href="certificate.html?preview=gold">Preview золотого</a><a class="btn secondary" href="account.html">Мій кабінет</a><a class="btn secondary" href="index.html">До курсу</a></div></div>
 <section class="section exam-control-section">
@@ -31,5 +50,17 @@
 </section>
 <div class="cards"><div class="card"><strong id="studentCount">0</strong><span>зареєстровано студентів</span></div><div class="card"><strong id="activeCount">0</strong><span>мають результати модулів</span></div><div class="card"><strong id="theoryPassed">0</strong><span>склали теорію</span></div><div class="card"><strong id="certPassed">0</strong><span>сертифіковано</span></div></div>
 <section class="section"><h2>Зведена таблиця</h2><div class="tablewrap"><table class="table"><thead><tr><th>Студент</th><th>Email</th><th>NDA</th><th>Модулі</th><th>Теорія</th><th>Практика</th><th>Статус</th><th>Дії</th></tr></thead><tbody id="studentBody"></tbody></table></div></section><div id="adminMessage" class="message" style="margin-top:18px">Перевірка доступу…</div>
-</main></div><script src="vendor/supabase.umd.js?v=2.116.0"></script><script src="config.js?v=20260829-2"></script><script src="admin.js?v=20260915-admin2"></script>
+<dialog id="wipeDialog"><form method="dialog" class="wipe-body">
+  <h3>Видалити назавжди?</h3>
+  <p id="wipeWho"></p>
+  <ul class="wipe-list" id="wipeList"></ul>
+  <label for="wipeName">Щоб підтвердити, введіть імʼя студента повністю</label>
+  <input id="wipeName" autocomplete="off" placeholder="Імʼя та прізвище">
+  <div id="wipeMsg" class="message err" style="display:none;margin-top:12px"></div>
+  <div class="wipe-actions">
+    <button class="btn secondary" value="cancel">Скасувати</button>
+    <button class="btn danger" id="wipeConfirm" value="wipe" type="button">Видалити назавжди</button>
+  </div>
+</form></dialog>
+</main></div><script src="vendor/supabase.umd.js?v=2.116.0"></script><script src="config.js?v=20260829-2"></script><script src="pe-errors.js?v=20260929-err1"></script><script src="admin.js?v=20260929-wipe1"></script>
 </body></html>

@@ -56,7 +56,9 @@
 }
 
 /* ── filled buttons carry white text ──────────────────────── */
-body .btn:not(.secondary):not(.ghost-btn):not([class*="tab"]),
+/* .danger малює сама себе: незворотна дія не має виглядати як
+   звичайна головна кнопка */
+body .btn:not(.secondary):not(.ghost-btn):not(.danger):not([class*="tab"]),
 body form > button:not([class]){
   background: linear-gradient(150deg, var(--peb-plum-hi) 0%, var(--peb-plum) 52%, var(--peb-plum-lo) 100%) !important;
   color: #fff !important;
@@ -205,3 +207,28 @@ body .main p, body .main div{ color: #5f5880 !important; }
 
 /* "або через email" on the sign-in form */
 body .auth-divider, body .auth-divider span{ color: #645d86 !important; }
+
+/* ── незворотна дія ───────────────────────────────────────── */
+/* Видалення студента не має виглядати як звичайна головна кнопка: у рядку
+   таблиці воно тихе, у вікні підтвердження — помітне. Обидва кольори
+   заміряні на контраст, бо глобальне правило на button перефарбовує текст. */
+body .btn.danger{
+  background: #fff !important;
+  border: 1px solid #cf8d8d !important;
+  color: #8c2f2f !important;
+  box-shadow: none !important;
+}
+body .btn.danger:hover{
+  background: #fbeeee !important;
+  border-color: #a94848 !important;
+  color: #7a2626 !important;
+}
+body #wipeConfirm{
+  background: #9a3030 !important;
+  border-color: #9a3030 !important;
+  color: #fff !important;
+}
+body #wipeConfirm:hover{
+  background: #822525 !important;
+  border-color: #822525 !important;
+}
