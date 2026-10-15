@@ -20,12 +20,12 @@
     googleBtn.disabled=true;setMsg('Відкриваємо Google…');
     const redirectTo=new URL(ndaNext,location.href).href;
     const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo,queryParams:{prompt:'select_account'}}});
-    if(error){googleBtn.disabled=false;setMsg('Не вдалося увійти через Google: '+error.message,'err');}
+    if(error){googleBtn.disabled=false;setMsg(window.PE_errorText(error,'Не вдалося увійти через Google.'),'err');}
   });
   login?.addEventListener('submit',async e=>{
     e.preventDefault();setMsg('Входимо…');
     const {error}=await client.auth.signInWithPassword({email:loginEmail.value.trim(),password:loginPassword.value});
-    if(error)return setMsg(error.message,'err');
+    if(error)return setMsg(window.PE_errorText(error,'Не вдалося виконати дію. Спробуйте ще раз.'),'err');
     await routeAfterAuth();
   });
   signup?.addEventListener('submit',async e=>{
@@ -38,7 +38,7 @@
         emailRedirectTo:new URL(ndaNext,location.href).href
       }
     });
-    if(error)return setMsg(error.message,'err');
+    if(error)return setMsg(window.PE_errorText(error,'Не вдалося виконати дію. Спробуйте ще раз.'),'err');
     if(data.session){
       setMsg('Акаунт створено. Переходимо до договору…','ok');
       setTimeout(()=>location.href=ndaNext,500);
