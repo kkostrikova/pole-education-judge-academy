@@ -232,3 +232,23 @@ body #wipeConfirm:hover{
   background: #822525 !important;
   border-color: #822525 !important;
 }
+
+/* ── відповідь правильна чи ні ─────────────────────────────── */
+/* mobile.css фарбує .answer і .choice у біле з !important, і станів
+   correct/wrong не знає. Через це в модулі 4 та в ситуаційних тренажерах
+   правильна й неправильна відповідь після перевірки виглядали однаково —
+   підсвічування просто не було видно. Кольори ті самі, що й у Judge Check:
+   зелений для правильного, червоний для помилки. */
+body .answer.correct, body .choice.correct,
+body .opt.correct, body .option.correct{
+  background: #e9f7ee !important;
+  border-color: #7fbd97 !important;
+  color: #1d5a33 !important;
+}
+body .answer.wrong, body .choice.wrong,
+body .opt.wrong, body .option.wrong{
+  background: #fdecec !important;
+  border-color: #cf8d8d !important;
+  color: #8c2f2f !important;
+}
+

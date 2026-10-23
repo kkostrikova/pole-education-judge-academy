@@ -30,15 +30,16 @@
 .jc-legend{display:none;margin-top:10px;font-size:12px;color:#c7ccd6}
 .jc-legend.show{display:block}
 .jc-dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin:0 5px 0 12px;vertical-align:-1px}.jc-dot:first-child{margin-left:0}
-.jc-dot.fixed{background:#b8f38f}.jc-dot.secondary{background:#ffb4b4}
+.jc-dot.fixed{background:#e9f7ee;border:1px solid #7fbd97}.jc-dot.secondary{background:#fdeef1;border:1px solid #d9939f}
+.jc-dot.wrong{background:#fdf2cf;border:1px solid #d9b14c}
 @media(max-width:900px){.jc-layout{grid-template-columns:1fr}.jc-visual{min-height:330px}}
 @media(max-width:600px){.jc-zones{grid-template-columns:1fr}.jc-visual img{max-height:250px}}
 </style><script src="vendor/supabase.umd.js?v=2.116.0"></script><script src="config.js?v=20260914-role1"></script><script src="auth-guard.js?v=20260929-gate1"></script><script src="pe-role.js?v=20260914-role1"></script><link rel="stylesheet" href="mobile.css?v=20260916-touch1">
   <link rel="stylesheet" href="pe-fonts.css?v=20260915-fonts1">
   <link rel="stylesheet" href="pe-buttons.css?v=20260916-touch6">
-  <link rel="stylesheet" href="pe-contrast.css?v=20260929-c12">
+  <link rel="stylesheet" href="pe-contrast.css?v=20261023-c13">
   <link rel="stylesheet" href="bird.css?v=20260914-bird14">
-  <link rel="stylesheet" href="module-kit.css?v=20260916-kit7">
+  <link rel="stylesheet" href="module-kit.css?v=20261023-jc2">
   <link rel="canonical" href="https://judgeacademy.date/module-7.html">
   <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
@@ -73,7 +74,7 @@
         <button class="btn secondary" id="jcNext">Наступний елемент →</button>
       </div>
       <div class="result" id="jcResult"></div>
-      <div class="jc-legend" id="jcLegend"><span class="jc-dot fixed"></span>салатовий = фіксований <span class="jc-dot secondary"></span>червоний = другорядний</div>
+      <div class="jc-legend" id="jcLegend"><span class="jc-dot fixed"></span>зелений = фіксований <span class="jc-dot secondary"></span>рожевий = другорядний <span class="jc-dot wrong"></span>жовтий = стоїть не у своїй групі</div>
     </div>
   </div>
 </section><section class="card" id="examples"><div class="ey">КЛЮЧОВІ ПРИКЛАДИ</div><h2>Коли один критерій вирішує все</h2><div class="examples"><div class="example"><strong>Поздовжній шпагат</strong><p>Якщо в мінімальних критеріях зазначений саме поздовжній шпагат, поперечний варіант не замінює його — навіть коли інші вимоги виконані.</p></div><div class="example"><strong>Фенікс</strong><p>Якщо вихід у прапор має відбутися на інерції обертання, зупинка з подальшим виходом дедліфтом не відповідає заданому способу виконання.</p></div><div class="example"><strong>Утримання</strong><p>Правильна позиція без необхідної фіксації не гарантує зарахування елемента.</p></div></div></section><section class="card" id="glossary"><div class="ey">ГЛОСАРІЙ</div><h2>Точка фіксації має означати одне й те саме для всіх</h2><p class="lead">Глосарій потрібен судді та спортсмену як спільний орієнтир: яку саме частину тіла організатор має на увазі, коли описує точки зчеплення або фіксації.</p><div class="glossary"><div class="gloss"><strong>Голова та шия</strong><p>Череп, скроні, підборіддя, шия.</p></div><div class="gloss"><strong>Плечі та руки</strong><p>Плечові суглоби, лікті, зап’ястя, пальці.</p></div><div class="gloss"><strong>Тулуб</strong><p>Груди, спина, абдомінальна область.</p></div><div class="gloss"><strong>Ноги</strong><p>Стегна, коліна, щиколотки, гомілки, стопи.</p></div><div class="gloss"><strong>Фіксовані критерії</strong><p>Помітні вимоги, на які суддя зазвичай звертає увагу першими.</p></div><div class="gloss"><strong>Другорядні критерії</strong><p>Вимоги, які легше пропустити, але вони так само мають бути перевірені.</p></div></div></section><section class="card" id="quiz"><div class="ey">КОНТРОЛЬ ЗНАНЬ</div><h2>Тест модуля 7</h2><p class="lead">Для проходження потрібно щонайменше 80%. Після успішного результату відкривається модуль 8.</p><div class="quiz-grid" id="quizGrid"></div><div class="actions"><button class="btn primary" id="finishQuiz">Перевірити тест</button><button class="btn secondary" id="resetQuiz">Пройти ще раз</button></div><div class="result" id="quizResult"></div><a class="btn primary unlock" id="nextModule" href="module-8.html">Перейти до модуля 8 →</a></section><section class="card"><div class="ey">ПІДСУМОК</div><h2>Алгоритм судді</h2><div class="summary"><div class="box"><strong>1. Прочитай критерії.</strong><p>Не відновлюй вимоги з пам’яті — працюй з визначенням конкретного елемента.</p></div><div class="box"><strong>2. Перевір кожну вимогу.</strong><p>Тіло, точки зчеплення, руки, ноги, намот, старт і фіксацію.</p></div><div class="box"><strong>3. Прийми рішення.</strong><p>Зарахування базується на відповідності мінімальним критеріям, а не на загальному враженні.</p></div></div></section></div>

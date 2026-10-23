@@ -483,3 +483,24 @@ body .drag-card.good, body .sort-card.good, body .jc-card.good{
 body .drag-card.bad, body .sort-card.bad, body .jc-card.bad{
   background: #fff1f4 !important; border-color: #dba7b4 !important;
 }
+
+/* Judge Check підсвічує картки трьома станами, яких цей шар не знав:
+   дві правильні групи і третій — «стоїть не там». Без них правило вище
+   залишало всі картки білими, і підказка «жовті картки» показувала на
+   колір, якого на екрані не було. */
+body .jc-card.correct-fixed{
+  background: #e9f7ee !important; border-color: #7fbd97 !important;
+  color: #1d5a33 !important;
+}
+body .jc-card.correct-secondary{
+  background: #fdeef1 !important; border-color: #d9939f !important;
+  color: #7b2130 !important;
+}
+body .jc-card.wrong{
+  background: #fdf2cf !important; border-color: #d9b14c !important;
+  color: #6b4d10 !important;
+}
+/* Підпис під картками лишався світло-сірим з темної версії: на світлій
+   панелі це 1.49:1, тобто його просто не видно — а саме він пояснює,
+   що означає жовтий. */
+body .jc-legend{ color: #5b5273 !important; }
