@@ -3,9 +3,9 @@ const cfg=window.PE_CONFIG||{};
 const DURATION_MS=(cfg.practicalDurationMinutes||30)*60*1000;
 
 const PERFORMANCES=[
-  {id:'silks',name:'Зайцева Злата',discipline:'Повітряні полотна',category:'18+ · Еліт',youtube:'bRK7oVL3474'},
-  {id:'pole',name:'Патій Злата',discipline:'Пілон',category:'14–17 · Професіонали',youtube:'9OYEcM3mZ8o'},
-  {id:'hoop',name:'Лучко Олеся',discipline:'Повітряне кільце',category:'7–9 · Напівпрофесіонали',youtube:'8GkX_6-vH2I'}
+  {id:'silks',name:'Власюк Дана',discipline:'Повітряні полотна',category:'',youtube:'bRK7oVL3474'},
+  {id:'pole',name:'Дарія Баб’яр',discipline:'Пілон',category:'',youtube:'9OYEcM3mZ8o'},
+  {id:'hoop',name:'Малоокова Кіра',discipline:'Повітряне кільце',category:'',youtube:'8GkX_6-vH2I'}
 ];
 
 const TECHNIQUE_PROTOCOLS={
@@ -99,7 +99,7 @@ function ensureShape(){
 }
 
 function renderVideos(){
-  els.performanceGrid.innerHTML=PERFORMANCES.map((p,i)=>'<article class="performance-card"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/'+p.youtube+'?rel=0" title="'+esc(p.name)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="performance-copy"><span class="performance-no">ВИСТУП 0'+(i+1)+'</span><h4>'+esc(p.name)+'</h4><p>'+esc(p.discipline)+'</p><p>'+esc(p.category)+'</p></div></article>').join('');
+  els.performanceGrid.innerHTML=PERFORMANCES.map((p,i)=>'<article class="performance-card"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/'+p.youtube+'?rel=0" title="'+esc(p.name)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="performance-copy"><span class="performance-no">ВИСТУП 0'+(i+1)+'</span><h4>'+esc(p.name)+'</h4><p>'+esc(p.discipline)+'</p>'+(p.category?'<p>'+esc(p.category)+'</p>':'')+'</div></article>').join('');
 }
 
 function renderSelectors(){
@@ -164,7 +164,7 @@ function renderMapping(){
   els.mappingState.textContent=unique.size+' / 3 призначено';els.mappingState.classList.toggle('ok',uniqueMapping());
   els.mappingNote.textContent=duplicate?'Один виступ не можна використовувати у двох протоколах.':'Кожен із трьох виступів має бути використаний рівно один раз.';
   els.mappingNote.style.color=duplicate?'#8a2d3e':'';
-  [[els.techVideoLabel,mapping.technique],[els.artVideoLabel,mapping.artistry],[els.penVideoLabel,mapping.penalties]].forEach(([el,id])=>{const p=perf(id);el.textContent=p?(p.name+' · '+p.discipline+' · '+p.category):'Спочатку оберіть виступ.'});
+  [[els.techVideoLabel,mapping.technique],[els.artVideoLabel,mapping.artistry],[els.penVideoLabel,mapping.penalties]].forEach(([el,id])=>{const p=perf(id);el.textContent=p?[p.name,p.discipline,p.category].filter(Boolean).join(' · '):'Спочатку оберіть виступ.'});
 }
 
 function techSum(){

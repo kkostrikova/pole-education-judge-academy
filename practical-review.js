@@ -4,9 +4,9 @@ const params=new URLSearchParams(location.search),attemptId=params.get('id'),msg
 if(!attemptId){msg.textContent='Не вказано спробу практичного іспиту.';msg.className='message err';return}
 
 const PERFORMANCES={
-  silks:{name:'Зайцева Злата',discipline:'Повітряні полотна',category:'18+ · Еліт',youtube:'bRK7oVL3474'},
-  pole:{name:'Патій Злата',discipline:'Пілон',category:'14–17 · Професіонали',youtube:'9OYEcM3mZ8o'},
-  hoop:{name:'Лучко Олеся',discipline:'Повітряне кільце',category:'7–9 · Напівпрофесіонали',youtube:'8GkX_6-vH2I'}
+  silks:{name:'Власюк Дана',discipline:'Повітряні полотна',category:'',youtube:'bRK7oVL3474'},
+  pole:{name:'Дарія Баб’яр',discipline:'Пілон',category:'',youtube:'9OYEcM3mZ8o'},
+  hoop:{name:'Малоокова Кіра',discipline:'Повітряне кільце',category:'',youtube:'8GkX_6-vH2I'}
 };
 const TECH={
   pole:{label:'pole sport',dynamic:[['rotation','Обертання 360 та 720 та комбінації'],['dynamic','Динамічні елементи та їх комбінації'],['jumps','Стрибки на пілон та з пілону'],['contact_salto','Контактні сальто'],['salto','Сальто'],['wheels','Колеса та перевороти на пілоні та з пілоном'],['switch','Switch'],['drops','Зриви'],['cascades','Каскади'],['regrips','Перехвати']],general:[['strength','Сила'],['flexibility','Гнучкість'],['coordination','Спритність та координація'],['stands','Стійки та баланси'],['fixation','Фіксація елементів'],['entries','Виходи на пілон'],['mastery','Рівень володіння пілоном']]},
@@ -28,7 +28,7 @@ studentMeta.textContent=(student.email||'')+' · Спроба №'+(attempt.atte
 
 const assignmentByPerf={};
 Object.entries(mapping).forEach(([k,v])=>{if(v)assignmentByPerf[v]=k==='technique'?'Технічна складність':k==='artistry'?'Артистизм та хореографія':'Штрафи'});
-videoReviewGrid.innerHTML=Object.entries(PERFORMANCES).map(([id,p])=>'<article class="review-video"><div class="frame"><iframe src="https://www.youtube-nocookie.com/embed/'+p.youtube+'?rel=0" allowfullscreen></iframe></div><div class="copy"><h3>'+esc(p.name)+'</h3><p>'+esc(p.discipline)+' · '+esc(p.category)+'</p><span class="assignment">'+esc(assignmentByPerf[id]||'Не призначено')+'</span></div></article>').join('');
+videoReviewGrid.innerHTML=Object.entries(PERFORMANCES).map(([id,p])=>'<article class="review-video"><div class="frame"><iframe src="https://www.youtube-nocookie.com/embed/'+p.youtube+'?rel=0" allowfullscreen></iframe></div><div class="copy"><h3>'+esc(p.name)+'</h3><p>'+esc([p.discipline,p.category].filter(Boolean).join(' · '))+'</p><span class="assignment">'+esc(assignmentByPerf[id]||'Не призначено')+'</span></div></article>').join('');
 
 function protocolBox(rows){
   return '<div class="review-protocol"><div class="review-protocol-head"><span>Критерій</span><span>Макс./списання</span><span>Оцінка</span><span>Коментар</span></div>'+rows+'</div>';
