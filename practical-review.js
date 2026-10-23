@@ -4,9 +4,9 @@ const params=new URLSearchParams(location.search),attemptId=params.get('id'),msg
 if(!attemptId){msg.textContent='Не вказано спробу практичного іспиту.';msg.className='message err';return}
 
 const PERFORMANCES={
-  silks:{name:'Зайцева Злата',discipline:'Повітряні полотна',category:'18+ · Еліт',youtube:'ZuPyocdi5Wk'},
-  pole:{name:'Патій Злата',discipline:'Пілон',category:'14–17 · Професіонали',youtube:'PnuPJB1xDt4'},
-  hoop:{name:'Лучко Олеся',discipline:'Повітряне кільце',category:'7–9 · Напівпрофесіонали',youtube:'IcdLNwSfLMk'}
+  silks:{name:'Зайцева Злата',discipline:'Повітряні полотна',category:'18+ · Еліт',youtube:'bRK7oVL3474'},
+  pole:{name:'Патій Злата',discipline:'Пілон',category:'14–17 · Професіонали',youtube:'9OYEcM3mZ8o'},
+  hoop:{name:'Лучко Олеся',discipline:'Повітряне кільце',category:'7–9 · Напівпрофесіонали',youtube:'8GkX_6-vH2I'}
 };
 const TECH={
   pole:{label:'pole sport',dynamic:[['rotation','Обертання 360 та 720 та комбінації'],['dynamic','Динамічні елементи та їх комбінації'],['jumps','Стрибки на пілон та з пілону'],['contact_salto','Контактні сальто'],['salto','Сальто'],['wheels','Колеса та перевороти на пілоні та з пілоном'],['switch','Switch'],['drops','Зриви'],['cascades','Каскади'],['regrips','Перехвати']],general:[['strength','Сила'],['flexibility','Гнучкість'],['coordination','Спритність та координація'],['stands','Стійки та баланси'],['fixation','Фіксація елементів'],['entries','Виходи на пілон'],['mastery','Рівень володіння пілоном']]},

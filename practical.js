@@ -3,9 +3,9 @@ const cfg=window.PE_CONFIG||{};
 const DURATION_MS=(cfg.practicalDurationMinutes||30)*60*1000;
 
 const PERFORMANCES=[
-  {id:'silks',name:'Зайцева Злата',discipline:'Повітряні полотна',category:'18+ · Еліт',youtube:'ZuPyocdi5Wk'},
-  {id:'pole',name:'Патій Злата',discipline:'Пілон',category:'14–17 · Професіонали',youtube:'PnuPJB1xDt4'},
-  {id:'hoop',name:'Лучко Олеся',discipline:'Повітряне кільце',category:'7–9 · Напівпрофесіонали',youtube:'IcdLNwSfLMk'}
+  {id:'silks',name:'Зайцева Злата',discipline:'Повітряні полотна',category:'18+ · Еліт',youtube:'bRK7oVL3474'},
+  {id:'pole',name:'Патій Злата',discipline:'Пілон',category:'14–17 · Професіонали',youtube:'9OYEcM3mZ8o'},
+  {id:'hoop',name:'Лучко Олеся',discipline:'Повітряне кільце',category:'7–9 · Напівпрофесіонали',youtube:'8GkX_6-vH2I'}
 ];
 
 const TECHNIQUE_PROTOCOLS={
