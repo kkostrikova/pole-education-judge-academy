@@ -43,7 +43,7 @@ const best={};
 const modulesPassedCount=Object.values(best).filter(x=>x.passed).length;
 modulesDone.textContent=modulesPassedCount+'/8';
 moduleBody.innerHTML=Object.keys(best).length
-  ?Object.values(best).sort((a,b)=>a.module_id-b.module_id).map(r=>'<tr><td>Модуль '+r.module_id+'</td><td>'+r.score+'%</td><td>'+r.attempt+'</td><td><span class="pill '+(r.passed?'ok':'warn')+'">'+(r.passed?'Складено':'Не складено')+'</span></td></tr>').join('')
+  ?Object.values(best).sort((a,b)=>a.module_id-b.module_id).map(r=>'<tr><td data-label="Модуль">Модуль '+r.module_id+'</td><td data-label="Бали">'+r.score+'%</td><td data-label="Спроба">'+r.attempt+'</td><td data-label="Статус"><span class="pill '+(r.passed?'ok':'warn')+'">'+(r.passed?'Складено':'Не складено')+'</span></td></tr>').join('')
   :'<tr><td colspan="4">Поки немає збережених результатів.</td></tr>';
 
 const theoryPayload=!newTheoryResp.error

@@ -1,0 +1,113 @@
+/* Адмінка з телефону
+ * ===================
+ * Дві різні речі, які виглядали як одна.
+ *
+ * 1. Вміст був недосяжний. `.shell` — це grid із place-items:center, тож
+ *    картка панелі розтягувалась під ширину свого вмісту, а таблиця на
+ *    вісім колонок має 906px. На екрані 390 панель ставала 970px, і все
+ *    праворуч від 390 просто зникало: html і body мають overflow-x:hidden,
+ *    який не лагодить переповнення, а ховає його. Кнопки в рядках не було
+ *    як не те що натиснути — побачити.
+ *
+ * 2. Навіть досяжною таблиця на вісім колонок у телефоні незручна. Нижче
+ *    760px кожен рядок стає карткою: імʼя і пошта зверху, далі підписані
+ *    значення, під ними кнопки.
+ */
+
+/* ── 1. панель більше не ширша за екран ──────────────────── */
+body[data-pe-page] .shell,
+body .shell{ grid-template-columns: minmax(0, 1fr); }
+body .dashboard{ max-width: 100%; min-width: 0; }
+body .tablewrap{ max-width: 100%; }
+
+@media (max-width: 760px){
+  /* ── 2. рядок таблиці як картка ─────────────────────────── */
+  body .tablewrap{
+    border: 0 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+  }
+  body .tablewrap .table,
+  body .tablewrap .table tbody,
+  body .tablewrap .table tr,
+  body .tablewrap .table td{ display: block; width: auto; }
+
+  /* шапка непотрібна: назву колонки несе сам рядок */
+  body .tablewrap .table thead{
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  body .tablewrap .table{ background: transparent !important; border-collapse: separate; }
+
+  body .tablewrap .table tr{
+    background: #fff;
+    border: 1px solid var(--line, #e2d5ce);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(76, 58, 132, .06);
+  }
+  body .tablewrap .table tr:last-child{ margin-bottom: 0; }
+
+  body .tablewrap .table td{
+    border: 0 !important;
+    padding: 7px 0 !important;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+  body .tablewrap .table td::before{
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #7d7392;
+  }
+
+  /* Імʼя — заголовок картки, тож без підпису і крупніше. Пошта одразу під
+     ним, теж без підпису: обидва зрозумілі без пояснень. У кабінеті
+     студента перша колонка — це «Модуль 3», звичайне значення, і там
+     цього правила немає: воно звужене до колонки «Студент». */
+  body .tablewrap .table td[data-label="Студент"]{
+    display: block;
+    font: 600 17px/1.3 'Manrope', system-ui, sans-serif;
+    padding-top: 0 !important;
+  }
+  body .tablewrap .table td[data-label="Студент"]::before{ content: none; }
+  body .tablewrap .table td[data-label="Email"]{ display: block; padding-top: 2px !important; }
+  body .tablewrap .table td[data-label="Email"]::before{ content: none; }
+  body .tablewrap .table td[data-label="Email"] a,
+  body .tablewrap .table td[data-label="Email"]{
+    font-size: 13px; color: #6a5f85; word-break: break-all;
+  }
+
+  /* межа між «хто» і «як іде навчання» */
+  body .tablewrap .table td[data-label="NDA"]{
+    margin-top: 10px;
+    padding-top: 12px !important;
+    border-top: 1px solid #efe9f7 !important;
+  }
+
+  /* кнопки — на всю ширину картки, під усім іншим */
+  body .tablewrap .table td[data-label="Дії"]{
+    display: block;
+    margin-top: 10px;
+    padding-top: 12px !important;
+    border-top: 1px solid #efe9f7 !important;
+  }
+  body .tablewrap .table td[data-label="Дії"]::before{ content: none; }
+  body .tablewrap .table td[data-label="Дії"] .table-actions{
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  body .tablewrap .table td[data-label="Дії"] .btn{ flex: 1 1 auto; justify-content: center; }
+
+  /* порожня таблиця: «Студентів ще немає» без підпису колонки */
+  body .tablewrap .table td[colspan]::before{ content: none; }
+  body .tablewrap .table td[colspan]{ display: block; text-align: center; color: #7d7392; }
+}
