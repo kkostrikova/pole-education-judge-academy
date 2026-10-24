@@ -157,14 +157,14 @@ studentBody.innerHTML=students.length?students.map(s=>{
     : '<button class="btn secondary compact archive-student" data-user="'+s.user_id+'">В архів</button>';
 
   return '<tr'+(archived?' class="is-archived"':'')+'>'+
-    '<td>'+(s.full_name||'—')+'</td>'+
-    '<td>'+s.email+'</td>'+
-    '<td>'+ndaLabel+'</td>'+
-    '<td>'+done+'/8</td>'+
-    '<td>'+theory+'</td>'+
-    '<td>'+practicalLabel+'</td>'+
-    '<td><span class="pill '+(courseComplete?(goldEligible?'gold':'ok'):'warn')+'">'+certLabel+'</span></td>'+
-    '<td><div class="table-actions">'+ndaAction+review+retry+practicalReview+practicalRetry+lifecycle+'</div></td>'+
+    '<td data-label="Студент">'+(s.full_name||'—')+'</td>'+
+    '<td data-label="Email">'+s.email+'</td>'+
+    '<td data-label="NDA">'+ndaLabel+'</td>'+
+    '<td data-label="Модулі">'+done+'/8</td>'+
+    '<td data-label="Теорія">'+theory+'</td>'+
+    '<td data-label="Практика">'+practicalLabel+'</td>'+
+    '<td data-label="Статус"><span class="pill '+(courseComplete?(goldEligible?'gold':'ok'):'warn')+'">'+certLabel+'</span></td>'+
+    '<td data-label="Дії"><div class="table-actions">'+ndaAction+review+retry+practicalReview+practicalRetry+lifecycle+'</div></td>'+
   '</tr>';
 }).join(''):'<tr><td colspan="8">Студентів ще немає.</td></tr>';
 
