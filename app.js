@@ -213,18 +213,18 @@
     }
 
     const pbtn=document.getElementById('practicalExamBtn'),pmsg=document.getElementById('practicalMessage'),picon=document.querySelector('.practical-icon');
-    const practicalEligible=openAll()||theoryPassed;
+    /* Практику навмисне не привʼязано до теорії: обидві частини складаються
+       незалежно, щоб потім оцінювати їх разом і порівнювати. Єдині умови —
+       іспит відкритий адміністратором і лишились спроби. */
     pbtn.onclick=null;
     if(!examAccessLoaded){
       pbtn.disabled=true;pbtn.textContent='Перевіряємо доступ…';pmsg.textContent='Перевіряємо доступ до практичного іспиту.';if(picon)picon.textContent='⏳';
-    }else if(practicalOpen&&practicalEligible&&cfg.practicalExamUrl){
+    }else if(practicalOpen&&cfg.practicalExamUrl){
       pbtn.disabled=false;pbtn.textContent='Розпочати практичний іспит';pbtn.onclick=()=>location.href=cfg.practicalExamUrl;
-      pmsg.textContent=theoryPassed?'Теоретичний етап складено. Практичний іспит відкритий.':'Практичний іспит відкритий адміністратором для тестування.';
+      pmsg.textContent='Практичний іспит відкритий. Його можна складати незалежно від теоретичного.';
       if(picon)picon.textContent='✓';
-    }else if(!practicalOpen){
-      pbtn.disabled=true;pbtn.textContent='Іспит заблоковано';pmsg.textContent='Практичний іспит зараз закритий адміністратором.';if(picon)picon.textContent='🔒';
     }else{
-      pbtn.disabled=true;pbtn.textContent='Іспит заблоковано';pmsg.textContent='Спочатку потрібно успішно завершити теоретичний іспит.';if(picon)picon.textContent='🔒';
+      pbtn.disabled=true;pbtn.textContent='Іспит заблоковано';pmsg.textContent='Практичний іспит зараз закритий адміністратором.';if(picon)picon.textContent='🔒';
     }
 
     const completionTitle=document.getElementById('completionTitle');
