@@ -254,7 +254,21 @@ async function startReal(){
 async function loadState(){
   const {data,error}=await client.rpc('pe_practical_state');
   if(error){els.startBtn.disabled=true;els.agree.disabled=true;els.startMessage.classList.remove('hidden');els.startMessage.className='message err';els.startMessage.textContent='Серверна логіка практичного іспиту ще не активована в Supabase.';return}
-  const state=asObj(data);if(state.exists&&state.status==='in_progress'){hydrate(state);begin();return}if(state.exists){showResult();return}
+  const state=asObj(data);
+  if(state.exists&&state.status==='in_progress'){hydrate(state);begin();return}
+  /* Дозволена повторна спроба. Без цієї гілки сторінка бачила, що спроба
+     вже була, показувала старий результат — і на цьому все: дозвіл
+     адміністратора нікуди не дівався з бази, але студентка його не бачила.
+     База рахує спроби сама й віддає can_start_new; теоретичний іспит це
+     давно враховує, практичний — ні. */
+  if(state.exists&&state.can_start_new){
+    els.startMessage.classList.remove('hidden');
+    els.startMessage.className='message ok';
+    els.startMessage.textContent='Адміністратор дозволив повторне складання. Доступна спроба №'
+      +(Number(state.attempts_used||0)+1)+'. Час — 30 хвилин.';
+    return;
+  }
+  if(state.exists){showResult();return}
   els.startMessage.classList.remove('hidden');els.startMessage.textContent='Доступна одна основна практична спроба. Час — 30 хвилин.';
 }
 
