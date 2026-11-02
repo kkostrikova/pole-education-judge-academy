@@ -52,15 +52,34 @@ body.gold{--accent:#b77a08;--accent-soft:#fff6df}
 .qr-wrap{justify-self:end;display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:#777}.qr-wrap small{font-size:7px;max-width:76px;line-height:1.2;text-align:center}.qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:72px!important;height:72px!important;display:block}
 body.gold .certificate{background:linear-gradient(180deg,#fff 0%,#fffefb 100%)}
 
+/* Телефон: аркуш лишається A4 (210/297) і overflow:hidden, бо PDF малює
+   саме цей елемент у фіксовану рамку A4 — дати аркушу вирости означало б
+   розтягнутий документ. Отже вміст має вмістися в рамку, а не рамка під
+   вміст: на 390px він просив 665px при наявних 523, і нижні 142px —
+   «АВТОРИ» з підписами — просто зрізались.
+   Розміри тут задані у частках ширини екрана, а не в пікселях. Висота
+   аркуша дорівнює його ширині × 297/210, тобто теж залежить від ширини, —
+   тож усе, що всередині, має масштабуватись разом із нею. Фіксовані
+   пікселі цього не робили: підтиснуті під 390px, вони знову не влазили на
+   320–375px. Перевірено на 300–700px. */
 @media(max-width:700px){
-  .certificate-stage{padding:10px}.certificate{padding:18px 18px 16px}
-  .pe-logo-img{width:78px}.certificate h1{font-size:46px;margin:12px 0}.bottom-lines{margin-bottom:16px}
-  .confirm{font-size:13px;margin-bottom:18px}.holder-name{font-size:28px;margin-bottom:18px}
-  .course-line{font-size:14px;margin-bottom:15px}.school-line{font-size:13px;margin-bottom:18px}.qualification{font-size:12px}
-  .watermark{width:320px;height:320px}
-  .authors{grid-template-columns:1fr 110px 1fr;gap:6px}.author-photo{width:78px;height:78px}.author-name{font-size:10px;min-height:28px}.author-name span{font-size:9px}
-  .signature-img{width:78px;height:48px}.signature-kateryna{width:82px}.authors-title{font-size:10px;padding-top:98px}
-  .certificate-ident{font-size:6px}.certificate-ident strong{font-size:7px}.issue-date{font-size:9px}.qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:52px!important;height:52px!important}.qr-wrap small{display:none}
+  .certificate-stage{padding:2vw}.certificate{padding:3.4vw 3.9vw 2.2vw}
+  .pe-logo-img{width:13.5vw;margin-bottom:1.4vw}
+  .certificate h1{font-size:9.2vw;margin:1.5vw 0}.bottom-lines{margin-bottom:2.2vw}
+  .confirm{font-size:2.9vw;margin-bottom:2.2vw}
+  .holder-name{font-size:5.8vw;margin-bottom:2.2vw}
+  .course-line{font-size:3.1vw;margin-bottom:1.9vw}
+  .school-line{font-size:2.9vw;margin-bottom:2.2vw}
+  .qualification{font-size:2.65vw}
+  .watermark{width:72vw;height:72vw}
+  .authors{grid-template-columns:1fr 25vw 1fr;gap:1.4vw}
+  .author-photo{width:14.5vw;height:14.5vw}
+  .author-name{font-size:2.4vw;min-height:6.3vw;margin-top:1vw}.author-name span{font-size:2.2vw}
+  .signature-img{width:16.9vw;height:8.2vw}.signature-kateryna{width:17.8vw}
+  .authors-title{font-size:2.4vw;padding-top:17.8vw}
+  .certificate-footer{margin-top:1vw}
+  .certificate-ident{font-size:1.45vw}.certificate-ident strong{font-size:1.7vw}.issue-date{font-size:2.2vw}
+  .qr-wrap #qrCode img,.qr-wrap #qrCode canvas{width:11vw!important;height:11vw!important}.qr-wrap small{display:none}
 }
 @page{size:A4 portrait;margin:0}
 @media print{
