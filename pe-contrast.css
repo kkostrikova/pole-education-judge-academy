@@ -252,3 +252,27 @@ body .opt.wrong, body .option.wrong{
   color: #8c2f2f !important;
 }
 
+/* ── натиснутий вибір під час перевірки та іспиту ──────────── */
+/* mobile.css і premium-global.css фарбують .score-btn, .nav-q, .pass-btn і
+   .fail-btn у біле з !important і про їхні стани не знають. Через це
+   вибраний бал виглядав так само, як невибраний, рішення «зараховано» не
+   відрізнялося від «не зараховано», а студент під час іспиту не бачив, на
+   які питання вже відповів. Стани описані у своїх файлах — тут вони просто
+   повертаються з тією ж вагою, якою їх перебило. */
+body .score-btn.active,
+body .nav-q.answered{
+  background: #6f4bc3 !important;
+  border-color: #6f4bc3 !important;
+  color: #fff !important;
+}
+body .pass-btn.selected{
+  background: #e0efe6 !important;
+  border-color: #7fae92 !important;
+  color: #1d5a33 !important;
+}
+body .fail-btn.selected{
+  background: #fbeaec !important;
+  border-color: #cf8d99 !important;
+  color: #8c2f3e !important;
+}
+
