@@ -13,3 +13,18 @@
 .result-card{text-align:center}.result-badge{width:112px;height:112px;border-radius:50%;margin:0 auto 20px;display:grid;place-items:center;background:#e3efe7;font:500 36px Georgia;color:var(--good)}.result-card p{color:var(--muted);line-height:1.6;max-width:800px;margin-left:auto;margin-right:auto}footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
 @media(max-width:980px){.performance-grid,.mapping-grid{grid-template-columns:1fr}.proto-head-row,.proto-row{grid-template-columns:minmax(180px,1fr) 82px 92px}.proto-head-row span:last-child{display:none}.proto-row textarea{grid-column:1/-1}}
 @media(max-width:620px){.exam-shell{width:min(100% - 18px,1240px);margin-top:18px}.start-card,.exam-card,.result-card{padding:22px 16px;border-radius:22px}.rules-grid{grid-template-columns:1fr 1fr}.exam-head,.protocol-head{align-items:flex-start;flex-direction:column}.protocol-total{width:100%;text-align:left}.proto-head-row{display:none}.proto-row{grid-template-columns:1fr 76px}.proto-row .max,.proto-row .deduct{grid-column:2}.proto-row input{grid-column:2}.proto-row textarea{grid-column:1/-1}.exam-brand small{display:none}.timer{min-width:116px}.timer strong{font-size:20px}}
+
+/* Таблиця штрафів має на одну колонку більше за інші протоколи — «Разом»,
+ * де збавка вже помножена на кількість. Решта протоколів лишаються на
+ * чотирьох колонках, тому правило звужене до #penaltyTable. */
+#penaltyTable .proto-head-row,#penaltyTable .proto-row{grid-template-columns:minmax(220px,1.5fr) 96px 96px 84px minmax(190px,1fr)}
+#penaltyTable .pen-sum{text-align:center;font-weight:850;font-size:14px;color:#9a93ad}
+#penaltyTable .pen-sum.active{color:#b85b78}
+@media(max-width:980px){#penaltyTable .proto-head-row,#penaltyTable .proto-row{grid-template-columns:minmax(150px,1fr) 76px 84px 72px}}
+@media(max-width:620px){
+  #penaltyTable .proto-row{grid-template-columns:1fr 1fr 1fr}
+  #penaltyTable .proto-row strong{grid-column:1/-1}
+  #penaltyTable .proto-row .deduct,#penaltyTable .proto-row input,#penaltyTable .pen-sum{grid-column:auto}
+  /* шапку таблиці на телефоні сховано, тож клітинка має пояснити себе сама */
+  #penaltyTable .pen-sum::before{content:"= "}
+}
