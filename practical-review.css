@@ -4,3 +4,18 @@
 
 .distinction-check{display:flex;gap:12px;align-items:flex-start;padding:15px 16px;border:1px solid #dcc99a;border-radius:16px;background:linear-gradient(135deg,#fffaf0,#f9efd7);cursor:pointer}
 .distinction-check input{width:19px;height:19px;margin-top:2px;accent-color:#b88a31}.distinction-check span{display:block}.distinction-check strong{display:block;color:#8a6420;margin-bottom:4px}.distinction-check small{display:block;color:#756a70;line-height:1.45}.distinction-check:has(input:disabled){opacity:.58;cursor:not-allowed}
+/* Протокол штрафів показує ще й «Разом» — збавку, помножену на кількість.
+ * Решта протоколів лишаються на чотирьох колонках. */
+.penalty-protocol .review-protocol-head,.penalty-protocol .review-row{grid-template-columns:minmax(220px,1.6fr) 92px 86px 86px minmax(190px,1fr)}
+.penalty-protocol .pen-sum{text-align:center;font-weight:850;color:#9a93ad}
+.penalty-protocol .pen-sum.active{color:#8a2d3e}
+.penalty-protocol .penalty-total{background:#fbf6f2;border-top:2px solid #e0d4ce;grid-template-columns:1fr auto!important}
+.penalty-protocol .penalty-total strong{color:#6e2748}
+@media(max-width:900px){.penalty-protocol .review-protocol-head,.penalty-protocol .review-row{grid-template-columns:1fr 72px 68px 72px}}
+@media(max-width:600px){
+  .penalty-protocol .review-row{grid-template-columns:1fr 1fr 1fr}
+  .penalty-protocol .review-row strong{grid-column:1/-1}
+  .penalty-protocol .review-row .muted,.penalty-protocol .review-row .answer,.penalty-protocol .pen-sum{grid-column:auto}
+  .penalty-protocol .pen-sum::before{content:"= "}
+  .penalty-protocol .penalty-total strong{grid-column:auto}
+}

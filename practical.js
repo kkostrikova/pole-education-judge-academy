@@ -90,6 +90,11 @@ const asObj=d=>Array.isArray(d)?(d[0]||{}):(d||{});
 const perf=id=>PERFORMANCES.find(x=>x.id===id);
 const fmt=n=>Number(n||0).toLocaleString('uk-UA',{maximumFractionDigits:1});
 const scoreVal=v=>Math.max(0,Math.min(5,Number(v||0)));
+/* Клітинка «Разом» у таблиці штрафів. Збавка за кожен випадок множиться на
+   кількість: три неправильні лінії по -0,2 це -0,6, а не «3». Рахунок був у
+   коді й раніше, але його результат не показувався ніде, крім підсумку вгорі
+   сторінки, — суддя бачив тільки введену кількість і мав множити в голові. */
+const penText=n=>n?fmt(n):'0';
 
 function ensureShape(){
   protocols.technique??={byApparatus:{}};protocols.technique.byApparatus??={};
@@ -148,10 +153,10 @@ function renderArtistry(){
 
 function renderPenalties(){
   ensureShape();
-  let html='<div class="proto-section">Збавки за кожен випадок</div><div class="proto-head-row"><span>Критерій оцінки</span><span>Балів за кожен раз</span><span>Кількість</span><span>Коментар</span></div>';
-  html+=PENALTIES.map(([id,label,ded])=>'<div class="proto-row"><strong>'+esc(label)+'</strong><span class="deduct">'+ded+'</span><input type="number" min="0" max="50" step="1" value="'+esc(protocols.penalties.counts[id]??0)+'" data-pen-count="'+id+'"><textarea data-pen-comment="'+id+'" placeholder="Коментар">'+esc(protocols.penalties.comments[id]||'')+'</textarea></div>').join('');
-  html+='<div class="proto-section">Загальне зниження балів · одноразово</div><div class="proto-head-row"><span>Критерій</span><span>Зниження</span><span>Застосувати</span><span>Коментар</span></div>';
-  html+=PENALTY_ONCE.map(([id,label,ded])=>'<div class="proto-row"><strong>'+esc(label)+'</strong><span class="deduct">'+ded+'</span><input type="checkbox" '+(protocols.penalties.once[id]?'checked':'')+' data-pen-once="'+id+'"><textarea data-pen-once-comment="'+id+'" placeholder="Коментар">'+esc(protocols.penalties.onceComments[id]||'')+'</textarea></div>').join('');
+  let html='<div class="proto-section">Збавки за кожен випадок</div><div class="proto-head-row"><span>Критерій оцінки</span><span>Балів за кожен раз</span><span>Кількість</span><span>Разом</span><span>Коментар</span></div>';
+  html+=PENALTIES.map(([id,label,ded])=>'<div class="proto-row"><strong>'+esc(label)+'</strong><span class="deduct">'+ded+'</span><input type="number" min="0" max="50" step="1" value="'+esc(protocols.penalties.counts[id]??0)+'" data-pen-count="'+id+'"><span class="pen-sum" data-pen-sum="'+id+'">'+penText(ded*Math.max(0,Number(protocols.penalties.counts[id]||0)))+'</span><textarea data-pen-comment="'+id+'" placeholder="Коментар">'+esc(protocols.penalties.comments[id]||'')+'</textarea></div>').join('');
+  html+='<div class="proto-section">Загальне зниження балів · одноразово</div><div class="proto-head-row"><span>Критерій</span><span>Зниження</span><span>Застосувати</span><span>Разом</span><span>Коментар</span></div>';
+  html+=PENALTY_ONCE.map(([id,label,ded])=>'<div class="proto-row"><strong>'+esc(label)+'</strong><span class="deduct">'+ded+'</span><input type="checkbox" '+(protocols.penalties.once[id]?'checked':'')+' data-pen-once="'+id+'"><span class="pen-sum" data-pen-once-sum="'+id+'">'+penText(protocols.penalties.once[id]?ded:0)+'</span><textarea data-pen-once-comment="'+id+'" placeholder="Коментар">'+esc(protocols.penalties.onceComments[id]||'')+'</textarea></div>').join('');
   els.penaltyTable.innerHTML=html;
   bindDynamicInputs();renderTotals();
 }
@@ -183,7 +188,20 @@ function penaltySum(){
   total+=PENALTY_ONCE.reduce((t,[id,,d])=>t+(protocols.penalties.once[id]?d:0),0);
   return Math.round(total*10)/10;
 }
+function penaltyCells(){
+  document.querySelectorAll('[data-pen-sum]').forEach(el=>{
+    const row=PENALTIES.find(([id])=>id===el.dataset.penSum);if(!row)return;
+    const n=row[2]*Math.max(0,Number(protocols.penalties.counts[row[0]]||0));
+    el.textContent=penText(n);el.classList.toggle('active',n!==0);
+  });
+  document.querySelectorAll('[data-pen-once-sum]').forEach(el=>{
+    const row=PENALTY_ONCE.find(([id])=>id===el.dataset.penOnceSum);if(!row)return;
+    const n=protocols.penalties.once[row[0]]?row[2]:0;
+    el.textContent=penText(n);el.classList.toggle('active',n!==0);
+  });
+}
 function renderTotals(){
+  penaltyCells();
   const tm=techMax();els.techTotal.textContent=fmt(techSum())+(tm?' / '+tm:'');
   els.artTotal.textContent=fmt(artSum())+' / 60';els.penaltyTotal.textContent=fmt(penaltySum());
   els.submitHint.textContent=uniqueMapping()?'Перевірте три заповнені протоколи перед остаточним надсиланням.':'Призначте кожному протоколу окремий виступ.';

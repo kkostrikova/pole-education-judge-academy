@@ -15,8 +15,12 @@ const TECH={
 };
 const ART=[['overall','Загальне враження від усієї постановки'],['flow','Потік, легкість та віртуозність переходів між рухами'],['creative','Креативні переходи на предметі і в партері'],['originality','Оригінальність та збалансованість хореографічної постановки'],['music','Інтерпретація музики тілом, заповнення музичних акцентів'],['charisma','Харизма, володіння сценою, впевненість'],['eye','Зоровий контакт з глядачем, міміка, виразність та емоційність'],['harmony','Гармонійність усієї постановки'],['balance','Баланс трюків на предметі'],['acro','Складність акробатичних рухів'],['stage','Використання сцени'],['costume','Костюм та сценічний образ']];
 const AR=[['start_end','Відсутність логічного початку чи кінця','-3'],['costume_image','Невідповідність костюма образу','-3'],['rig_touch','Торкання системи тросів та кріплення знаряддя під час виступу','-3']];
-const PEN=[['lines','Неправильні лінії','-0,2'],['transitions','Погане виконання переходів','-0,5'],['angle','Неправильний кут руху','-0,5'],['slip','Зісковзування','-0,5'],['balance','Втрата балансу','-1'],['tangle','Заплутування (тільки полотно)','-1'],['apparatus_loss','Втрата предмету (тільки кільце)','-1'],['wipe','Витирання рук, поправляння костюма, зачіски, підспівування','-1'],['fall','Падіння','-5'],['erotic','Відверті чи еротичні рухи та позиції','-5']];
-const PO=[['repeat','Надмірна повторюваність рухів','-2'],['apparatus_use','Нерівноцінне використання обох пілонів та незаповнення висоти','-2'],['costume','Проблеми з костюмом та зачіскою','-5']];
+/* Четвертим числом іде та сама збавка, але числом, а не підписом: протокол
+   показував лише кількість випадків, і скільки це балів, адміністратор мав
+   рахувати в голові — три неправильні лінії по -0,2 це -0,6. */
+const PEN=[['lines','Неправильні лінії','-0,2',-0.2],['transitions','Погане виконання переходів','-0,5',-0.5],['angle','Неправильний кут руху','-0,5',-0.5],['slip','Зісковзування','-0,5',-0.5],['balance','Втрата балансу','-1',-1],['tangle','Заплутування (тільки полотно)','-1',-1],['apparatus_loss','Втрата предмету (тільки кільце)','-1',-1],['wipe','Витирання рук, поправляння костюма, зачіски, підспівування','-1',-1],['fall','Падіння','-5',-5],['erotic','Відверті чи еротичні рухи та позиції','-5',-5]];
+const PO=[['repeat','Надмірна повторюваність рухів','-2',-2],['apparatus_use','Нерівноцінне використання обох пілонів та незаповнення висоти','-2',-2],['costume','Проблеми з костюмом та зачіскою','-5',-5]];
+const penFmt=n=>n?Number(Math.round(n*10)/10).toLocaleString('uk-UA',{maximumFractionDigits:1}):'0';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const {data:{session}}=await client.auth.getSession();if(!session){location.href='auth.html';return}
 const {data:me}=await client.from('profiles').select('role').eq('user_id',session.user.id).single();if(me?.role!=='admin'){msg.textContent='Доступ лише для адміністратора.';msg.className='message err';return}
@@ -32,6 +36,10 @@ videoReviewGrid.innerHTML=Object.entries(PERFORMANCES).map(([id,p])=>'<article c
 
 function protocolBox(rows){
   return '<div class="review-protocol"><div class="review-protocol-head"><span>Критерій</span><span>Макс./списання</span><span>Оцінка</span><span>Коментар</span></div>'+rows+'</div>';
+}
+/* Протокол штрафів має зайву колонку «Разом», тому в нього власна шапка. */
+function penaltyBox(rows){
+  return '<div class="review-protocol penalty-protocol"><div class="review-protocol-head"><span>Критерій</span><span>Балів за раз</span><span>Кількість</span><span>Разом</span><span>Коментар</span></div>'+rows+'</div>';
 }
 const app=mapping.technique,tech=TECH[app],tstore=protocols.technique?.byApparatus?.[app]||{scores:{},comments:{}};
 let tr='';
@@ -50,11 +58,19 @@ ar+=AR.map(([id,label,ded])=>'<div class="review-row"><strong>'+esc(label)+'</st
 artReview.innerHTML=protocolBox(ar);
 
 const p=protocols.penalties||{};
+let penTotal=0;
 let pr='<div class="review-section">Збавки за кожен випадок</div>';
-pr+=PEN.map(([id,label,ded])=>'<div class="review-row"><strong>'+esc(label)+'</strong><span class="muted">'+ded+'</span><span class="answer">'+esc(p.counts?.[id]??0)+'</span><span class="comment">'+esc(p.comments?.[id]||'—')+'</span></div>').join('');
+pr+=PEN.map(([id,label,ded,val])=>{
+  const n=Math.max(0,Number(p.counts?.[id]||0)),sum=val*n;penTotal+=sum;
+  return '<div class="review-row"><strong>'+esc(label)+'</strong><span class="muted">'+ded+'</span><span class="answer">'+n+'</span><span class="pen-sum'+(sum?' active':'')+'">'+penFmt(sum)+'</span><span class="comment">'+esc(p.comments?.[id]||'—')+'</span></div>';
+}).join('');
 pr+='<div class="review-section">Загальне зниження балів · одноразово</div>';
-pr+=PO.map(([id,label,ded])=>'<div class="review-row"><strong>'+esc(label)+'</strong><span class="muted">'+ded+'</span><span class="answer">'+(p.once?.[id]?'Так':'Ні')+'</span><span class="comment">'+esc(p.onceComments?.[id]||'—')+'</span></div>').join('');
-penReview.innerHTML=protocolBox(pr);
+pr+=PO.map(([id,label,ded,val])=>{
+  const on=Boolean(p.once?.[id]),sum=on?val:0;penTotal+=sum;
+  return '<div class="review-row"><strong>'+esc(label)+'</strong><span class="muted">'+ded+'</span><span class="answer">'+(on?'Так':'Ні')+'</span><span class="pen-sum'+(sum?' active':'')+'">'+penFmt(sum)+'</span><span class="comment">'+esc(p.onceComments?.[id]||'—')+'</span></div>';
+}).join('');
+pr+='<div class="review-row penalty-total"><strong>Разом штрафів</strong><span class="pen-sum active">'+penFmt(Math.round(penTotal*10)/10)+'</span></div>';
+penReview.innerHTML=penaltyBox(pr);
 
 let decision=attempt.result_published_at?Boolean(attempt.passed):null;
 adminComment.value=attempt.admin_comment||'';
