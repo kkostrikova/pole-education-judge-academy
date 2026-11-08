@@ -112,9 +112,14 @@ if(practicalAttempt){
 const theoryPassedFinal=Boolean(theoryAttempt?.result_published&&theoryAttempt?.passed);
 const practicalPassedFinal=Boolean(practicalAttempt?.result_published&&practicalAttempt?.passed);
 const courseComplete=modulesPassedCount===8&&theoryPassedFinal&&practicalPassedFinal;
+/* Опублікований результат «не складено» — підстава для сертифіката про
+   проходження курсу, тож функцію сертифіката треба питати і в цьому разі,
+   а не лише за повного завершення курсу. */
+const examFailed=Boolean((theoryAttempt?.result_published&&!theoryAttempt?.passed)
+  ||(practicalAttempt?.result_published&&!practicalAttempt?.passed));
 let issuedCertificate=null;
 let certificatePayload=null;
-if(courseComplete){
+if(courseComplete||examFailed){
   const certResp=await client.rpc('pe_student_certificate');
   if(!certResp.error){
     certificatePayload=Array.isArray(certResp.data)?certResp.data[0]:certResp.data;
@@ -133,11 +138,12 @@ if(englishCertificateWanted){
   englishCertificateWanted.onchange=()=>englishNameWrap?.classList.toggle('hidden',!englishCertificateWanted.checked);
 }
 
+const attendanceOnly=issuedCertificate?.certificate_type==='attendance';
 if(issuedCertificate){
-  certStatus.textContent=issuedCertificate.certificate_type==='gold'?'Золотий':'Сертифікат';
-  if(certificateBtn){certificateBtn.classList.remove('hidden');certificateBtn.textContent=issuedCertificate.certificate_type==='gold'?'Відкрити золотий сертифікат':'Відкрити сертифікат';}
+  certStatus.textContent=issuedCertificate.certificate_type==='gold'?'Золотий':attendanceOnly?'Про проходження':'Сертифікат';
+  if(certificateBtn){certificateBtn.classList.remove('hidden');certificateBtn.textContent=issuedCertificate.certificate_type==='gold'?'Відкрити золотий сертифікат':attendanceOnly?'Відкрити сертифікат про проходження курсу':'Відкрити сертифікат';}
   if(certificateNameBox)certificateNameBox.classList.add('hidden');
-}else if(courseComplete&&certificatePayload?.name_confirmation_required){
+}else if((courseComplete||examFailed)&&certificatePayload?.name_confirmation_required){
   certStatus.textContent='Підтвердьте ім’я';
   if(certificateBtn)certificateBtn.classList.add('hidden');
   if(certificateNameBox){
@@ -146,7 +152,7 @@ if(issuedCertificate){
     if(englishNameInput)englishNameInput.value=certificatePayload.suggested_name_en||session.user.user_metadata?.full_name||session.user.user_metadata?.name||'';
   }
 }else{
-  certStatus.textContent=courseComplete?'Сертифікат готується':(cert?.[0]?.final_status||'У процесі');
+  certStatus.textContent=(courseComplete||examFailed)?'Сертифікат готується':(cert?.[0]?.final_status||'У процесі');
   if(certificateBtn)certificateBtn.classList.add('hidden');
   if(certificateNameBox)certificateNameBox.classList.add('hidden');
 }
@@ -207,17 +213,26 @@ if(ctitle&&ctext&&cbadge&&csteps){
     ['Практичний іспит',practicalPassedFinal,practicalPassedFinal?'Складено':'Очікується']
   ];
   csteps.innerHTML=items.map(x=>'<span class="pill '+(x[1]?'ok':'warn')+'">'+(x[1]?'✓ ':'')+x[0]+' · '+x[2]+'</span>').join('');
-  if(courseComplete){
+  if(courseComplete||examFailed){
     if(certificatePayload?.name_confirmation_required&&!issuedCertificate){
-      ctitle.textContent='Курс завершено — підтвердьте ім’я';
-      ctext.textContent='Усі вимоги курсу виконані. Перед видачею сертифіката перевірте ПІБ нижче та підтвердьте точне написання.';
+      /* Ту саму форму бачить і той, хто іспит не склав: текст не може
+         вітати його із завершенням курсу. */
+      const forAttendance=!courseComplete;
+      ctitle.textContent=forAttendance?'Курс прослухано — підтвердьте ім’я':'Курс завершено — підтвердьте ім’я';
+      ctext.textContent=forAttendance
+        ?'Іспит цього разу не складено, але курс ви прослухали. Перед видачею сертифіката про проходження курсу перевірте ПІБ нижче та підтвердьте точне написання.'
+        :'Усі вимоги курсу виконані. Перед видачею сертифіката перевірте ПІБ нижче та підтвердьте точне написання.';
       cbadge.textContent='Потрібне підтвердження';cbadge.className='pill warn';
     }else{
-      ctitle.textContent=issuedCertificate?.certificate_type==='gold'?'Курс завершено з відзнакою':'Курс успішно завершено';
-      ctext.textContent=issuedCertificate?.certificate_type==='gold'
+      ctitle.textContent=attendanceOnly?'Курс прослухано'
+        :issuedCertificate?.certificate_type==='gold'?'Курс завершено з відзнакою':'Курс успішно завершено';
+      ctext.textContent=attendanceOnly
+        ?'Іспит цього разу не складено, але курс ви прослухали — вам доступний сертифікат про проходження курсу. Якщо згодом перескладете іспит, цей самий сертифікат стане повним, з тим самим номером.'
+        :issuedCertificate?.certificate_type==='gold'
         ?'Усі вимоги виконані на високому рівні: модульні тести та фінальна теорія — понад 80%, практична частина відзначена адміністраторами. Вам видано золотий сертифікат.'
         :'Усі 8 модулів, теоретичний і практичний іспити успішно завершені. Вам доступний сертифікат Pole Education Judge Academy.';
-      cbadge.textContent=issuedCertificate?.certificate_type==='gold'?'З відзнакою':'Завершено';cbadge.className='pill '+(issuedCertificate?.certificate_type==='gold'?'gold':'ok');
+      cbadge.textContent=attendanceOnly?'Прослухано':issuedCertificate?.certificate_type==='gold'?'З відзнакою':'Завершено';
+      cbadge.className='pill '+(attendanceOnly?'warn':issuedCertificate?.certificate_type==='gold'?'gold':'ok');
     }
   }else{
     ctitle.textContent='Навчання триває';
