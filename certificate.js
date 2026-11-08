@@ -25,7 +25,7 @@ const {data:{session}}=await client.auth.getSession();
 if(!session){location.href='auth.html?next='+encodeURIComponent('certificate.html'+location.search);return}
 
 let cert=null;
-if(preview==='standard'||preview==='gold'){
+if(preview==='standard'||preview==='gold'||preview==='attendance'){
   const {data:profile}=await client.from('profiles').select('role,full_name').eq('user_id',session.user.id).single();
   if(profile?.role==='admin'){
     cert={
@@ -47,11 +47,12 @@ if(!cert){
 
 if(!cert?.eligible){
   if(cert?.name_confirmation_required)showError('Перед видачею сертифіката підтвердьте ПІБ і потрібну мову сертифіката у кабінеті.');
-  else showError('Сертифікат ще недоступний. Потрібно завершити 8 модулів і успішно скласти теоретичну та практичну частини.');
+  else showError('Сертифікат ще недоступний. Він з’явиться після завершення 8 модулів та обох частин іспиту, або після публікації результату іспиту, якщо його не складено.');
   return;
 }
 
 document.body.classList.toggle('gold',cert.certificate_type==='gold');
+document.body.classList.toggle('attendance',cert.certificate_type==='attendance');
 const languageSwitch=document.getElementById('languageSwitch');
 if(cert.english_version&&cert.holder_name_en)languageSwitch?.classList.remove('hidden');
 else currentLang='uk';
@@ -66,13 +67,19 @@ function applyLanguage(lang){
   document.getElementById('langEnBtn')?.classList.toggle('active',lang==='en');
 
   const gold=cert.certificate_type==='gold';
+  /* Сертифікат про проходження курсу видається тому, хто іспит складав і не
+     склав. Він не має права стверджувати ні про іспит, ні про кваліфікацію:
+     рядок про іспит замінений прямою назвою документа, а рядок
+     «Кваліфікація» прибраний зовсім — лишається тривалість курсу. */
+  const attendance=cert.certificate_type==='attendance';
+  document.getElementById('qualificationLine')?.classList.toggle('hidden',attendance);
   if(lang==='en'){
     document.title='Certificate · Pole Education';
     setText('certificateTitle','CERTIFICATE');
     setText('confirmText','certifies that');
     setText('holderName',cert.holder_name_en||cert.holder_name);
-    setText('courseTitle','has completed the Judging and Competition Organization Course');
-    setText('examPhrase',gold?'and has successfully passed the examination with distinction':'and has passed the examination');
+    setText('courseTitle',attendance?'has attended the Judging and Competition Organization Course':'has completed the Judging and Competition Organization Course');
+    setText('examPhrase',attendance?'Certificate of course attendance':gold?'and has successfully passed the examination with distinction':'and has passed the examination');
     setText('schoolText','from Pole Education online school');
     setText('qualificationLabel','Qualification:');
     setText('qualification','Pole, Aerial Hoop, Aerial Silks');
@@ -91,7 +98,7 @@ function applyLanguage(lang){
     setText('confirmText','підтверджує що');
     setText('holderName',cert.holder_name||'Студент');
     setText('courseTitle','прослухав(ла) Суддівсько-організаційний курс');
-    setText('examPhrase',gold?'та успішно склав(ла) іспит з відзнакою':'та склав(ла) іспит');
+    setText('examPhrase',attendance?'Сертифікат про проходження курсу':gold?'та успішно склав(ла) іспит з відзнакою':'та склав(ла) іспит');
     setText('schoolText','від онлайн школи Pole Education');
     setText('qualificationLabel','Кваліфікація:');
     setText('qualification',cert.qualification||'пілон, повітряні кільця, повітряні полотна');
@@ -117,7 +124,9 @@ verifyUrl.search='';verifyUrl.searchParams.set('no',cert.certificate_no);
 const verifyLink=document.getElementById('verifyLink');if(verifyLink)verifyLink.href=verifyUrl.href;
 const qr=document.getElementById('qrCode');if(qr){qr.innerHTML='';if(window.QRCode)new QRCode(qr,{text:verifyUrl.href,width:116,height:116,correctLevel:QRCode.CorrectLevel.M})}
 
-msg.textContent=cert.certificate_type==='gold'?'Золотий сертифікат з відзнакою готовий.':'Сертифікат готовий.';
+msg.textContent=cert.certificate_type==='gold'?'Золотий сертифікат з відзнакою готовий.'
+  :cert.certificate_type==='attendance'?'Сертифікат про проходження курсу готовий. Після успішного перескладання іспиту він автоматично зміниться на повний, з тим самим номером.'
+  :'Сертифікат готовий.';
 msg.className='certificate-message ok';certEl.classList.remove('hidden');printBtn.disabled=false;
 
 /* The print dialog decides margins, scale and whether to stamp its own

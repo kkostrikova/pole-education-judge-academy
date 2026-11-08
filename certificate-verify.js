@@ -15,7 +15,7 @@ async function verify(no){
   const englishName=r.english_version&&r.holder_name_en?'<div style="margin-top:4px"><b>English:</b> '+esc(r.holder_name_en)+'</div>':'';
   box.innerHTML='<div>✓ Дійсний сертифікат</div><strong>'+esc(r.holder_name)+'</strong>'+englishName+'<dl>'+
     '<dt>Номер</dt><dd>'+esc(r.certificate_no)+'</dd>'+
-    '<dt>Тип</dt><dd>'+(r.certificate_type==='gold'?'Золотий · з відзнакою':'Звичайний')+'</dd>'+
+    '<dt>Тип</dt><dd>'+(r.certificate_type==='gold'?'Золотий · з відзнакою':r.certificate_type==='attendance'?'Про проходження курсу · без іспиту':'Звичайний')+'</dd>'+
     '<dt>Курс</dt><dd>'+esc(r.course_title)+'</dd>'+
     '<dt>Кваліфікація</dt><dd>'+esc(r.qualification)+'</dd>'+
     '<dt>Тривалість</dt><dd>'+esc(r.duration_hours)+' годин</dd>'+
