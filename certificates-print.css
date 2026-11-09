@@ -14,7 +14,13 @@
 .print-missing ul{margin:8px 0 0;padding-left:18px}
 .print-missing li{margin:3px 0}
 .sheet-wrap{display:grid;gap:10px;justify-items:center;width:100%}
-.sheet-label{width:min(794px,100%);display:flex;justify-content:space-between;gap:12px;align-items:baseline;color:#6a5f85;font-size:13px}
+.sheet-label{width:min(794px,100%);display:flex;justify-content:space-between;gap:12px;align-items:center;color:#6a5f85;font-size:13px}
+.sheet-pick{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-weight:700;color:#2b2451}
+.sheet-pick input{width:18px;height:18px;accent-color:#7c4fea;cursor:pointer}
+/* Знятий аркуш лишається видимим, але явно відсунутим: так одразу видно,
+   що саме не піде на друк, і галочку легко повернути. */
+.sheet-wrap.excluded .certificate{opacity:.4;filter:grayscale(.6)}
+.sheet-wrap.excluded .sheet-pick{color:#8d85a3;font-weight:500}
 .sheet-label strong{color:#2b2451;font-size:15px}
 .hidden{display:none!important}
 
@@ -26,4 +32,6 @@
   .print-stage{display:block!important;width:auto!important;margin:0!important;padding:0!important}
   .sheet-wrap{display:block!important;gap:0!important;page-break-after:always;break-after:page}
   .sheet-wrap:last-child{page-break-after:auto;break-after:auto}
+  /* Знято галочку — аркуш не друкується і не займає сторінки. */
+  .sheet-wrap.excluded{display:none!important}
 }
