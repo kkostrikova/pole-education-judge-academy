@@ -21,6 +21,8 @@ const missingBox=document.getElementById('missingBox');
 const printAllBtn=document.getElementById('printAllBtn');
 const pdfAllBtn=document.getElementById('pdfAllBtn');
 const countEl=document.getElementById('printCount');
+const selectAllBtn=document.getElementById('selectAllBtn');
+const selectNoneBtn=document.getElementById('selectNoneBtn');
 const errText=err=>window.PE_errorText?window.PE_errorText(err):'Не вдалося виконати дію.';
 const fail=text=>{msg.textContent=text;msg.className='certificate-message err'};
 
@@ -137,12 +139,25 @@ certs.forEach(cert=>{
     wrap.className='sheet-wrap';
     const label=document.createElement('div');
     label.className='sheet-label';
-    label.innerHTML='<strong>'+esc(cert.holder_name)+'</strong><span>'+esc(cert.certificate_no)
-      +' · '+typeName(cert.certificate_type)+' · '+(lang==='en'?'англійською':'українською')+'</span>';
+    /* Галочка керує і друком, і збіркою PDF: на папір і у файли йде рівно
+       те, що позначено. Типово позначено все. */
+    const pick=document.createElement('label');
+    pick.className='sheet-pick';
+    const box=document.createElement('input');
+    box.type='checkbox';box.checked=true;
+    const pickText=document.createElement('span');
+    pickText.textContent=esc(cert.holder_name);
+    pick.append(box,pickText);
+    const meta=document.createElement('span');
+    meta.textContent=cert.certificate_no+' · '+typeName(cert.certificate_type)
+      +' · '+(lang==='en'?'англійською':'українською');
+    label.append(pick,meta);
     const sheet=buildSheet(cert,lang);
     wrap.append(label,sheet);
     sheets.appendChild(wrap);
-    built.push({cert,lang,sheet});
+    const entry={cert,lang,sheet,wrap,box};
+    box.onchange=()=>{wrap.classList.toggle('excluded',!box.checked);refresh()};
+    built.push(entry);
   });
 });
 
@@ -155,26 +170,48 @@ if(without.length){
 }
 
 msg.classList.add('hidden');
-countEl.textContent='Аркушів: '+built.length+' · сертифікатів: '+certs.length;
-printAllBtn.disabled=false;
-pdfAllBtn.disabled=false;
+
+const chosen=()=>built.filter(x=>x.box.checked);
+function refresh(){
+  const n=chosen().length;
+  countEl.textContent='Вибрано '+n+' з '+built.length+' аркушів · сертифікатів: '+certs.length;
+  printAllBtn.disabled=!n;
+  pdfAllBtn.disabled=!n;
+  printAllBtn.textContent=n===built.length?'Друкувати всі':'Друкувати вибрані ('+n+')';
+  pdfAllBtn.textContent=n===built.length?'Завантажити всі PDF':'Завантажити вибрані PDF ('+n+')';
+}
+function setAll(on){
+  built.forEach(x=>{x.box.checked=on;x.wrap.classList.toggle('excluded',!on)});
+  refresh();
+}
+selectAllBtn.disabled=false;selectNoneBtn.disabled=false;
+selectAllBtn.onclick=()=>setAll(true);
+selectNoneBtn.onclick=()=>setAll(false);
+refresh();
 printAllBtn.onclick=()=>window.print();
 
 const safeName=s=>String(s||'certificate').replace(/[^\p{L}\p{N}]+/gu,'-').replace(/^-|-$/g,'');
 pdfAllBtn.onclick=async()=>{
-  if(!window.PE_savePdf){fail('Збірка PDF недоступна — скористайтесь кнопкою «Друкувати всі».');return}
+  if(!window.PE_savePdf){fail('Збірка PDF недоступна — скористайтесь кнопкою друку.');return}
+  const list=chosen();
+  if(!list.length)return;
   pdfAllBtn.disabled=true;printAllBtn.disabled=true;
-  for(let i=0;i<built.length;i++){
-    const {cert,lang,sheet}=built[i];
-    countEl.textContent='Готую PDF '+(i+1)+' з '+built.length+'…';
+  selectAllBtn.disabled=true;selectNoneBtn.disabled=true;
+  let done=0;
+  for(let i=0;i<list.length;i++){
+    const {cert,lang,sheet}=list[i];
+    countEl.textContent='Готую PDF '+(i+1)+' з '+list.length+'…';
     try{
       await window.PE_savePdf(sheet,safeName(cert.holder_name)+'-'+cert.certificate_no+(lang==='en'?'-en':'')+'.pdf');
+      done++;
     }catch(err){console.warn('[PE] PDF не зібрався',cert.certificate_no,err)}
     /* Браузер не встигає зберегти десяток файлів поспіль без паузи. */
     await new Promise(r=>setTimeout(r,650));
   }
-  countEl.textContent='Готово: '+built.length+' PDF. Аркушів: '+built.length+' · сертифікатів: '+certs.length;
-  pdfAllBtn.disabled=false;printAllBtn.disabled=false;
+  selectAllBtn.disabled=false;selectNoneBtn.disabled=false;
+  refresh();
+  if(done<list.length)countEl.textContent='Збережено '+done+' з '+list.length+' PDF. Решта не зібралась — подивіться консоль браузера.';
+  else countEl.textContent='Збережено '+done+' PDF. '+countEl.textContent;
 };
 }catch(err){
   fail('Не вдалося підготувати сертифікати: '+errText(err));

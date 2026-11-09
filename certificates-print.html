@@ -10,15 +10,17 @@
 <link rel="stylesheet" href="mobile.css?v=20260916-touch1">
 <link rel="stylesheet" href="pe-buttons.css?v=20260916-touch6">
 <link rel="stylesheet" href="pe-contrast.css?v=20261102-c14">
-<link rel="stylesheet" href="certificates-print.css?v=20261109-print1">
+<link rel="stylesheet" href="certificates-print.css?v=20261109-print2">
 <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
 <meta name="robots" content="noindex,nofollow">
 </head>
 <body data-pe-exam="1">
 <div class="certificate-controls print-controls">
   <a href="admin.html" class="control-btn secondary">← Адмін-панель</a>
-  <button id="printAllBtn" class="control-btn primary" disabled>Друкувати всі</button>
-  <button id="pdfAllBtn" class="control-btn secondary" disabled>Завантажити всі PDF</button>
+  <button id="selectAllBtn" class="control-btn secondary" type="button" disabled>Вибрати всі</button>
+  <button id="selectNoneBtn" class="control-btn secondary" type="button" disabled>Зняти всі</button>
+  <button id="printAllBtn" class="control-btn primary" disabled>Друкувати вибрані</button>
+  <button id="pdfAllBtn" class="control-btn secondary" disabled>Завантажити вибрані PDF</button>
   <span id="printCount" class="print-count"></span>
 </div>
 
@@ -34,6 +36,6 @@
 <script src="certificate-pdf.js?v=20260915-pdf1"></script>
 <script src="config.js?v=20260829-cert1"></script>
 <script src="pe-errors.js?v=20260929-err2"></script>
-<script src="certificates-print.js?v=20261109-print3"></script>
+<script src="certificates-print.js?v=20261109-print4"></script>
 </body>
 </html>
