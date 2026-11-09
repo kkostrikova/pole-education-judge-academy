@@ -6,30 +6,74 @@
  * той клас у друку має height:297mm, і друга та наступні сторінки були б
  * обрізані.
  */
-.print-stage{width:min(100% - 24px,860px);margin:0 auto;padding:18px 0 60px;display:grid;gap:26px;justify-items:center}
+/* На екрані аркуші показані дрібно, щоб усі були перед очима й вибирати
+ * було швидко. Зменшення зроблене через transform: аркуш малюється у своєму
+ * справжньому розмірі 794px і лише візуально стискається, тож шрифти,
+ * відступи й верстка лишаються рівно такими, якими підуть на папір.
+ * Зменшувати ширину самого аркуша не можна: на ширині понад 700px розміри
+ * всередині задані в пікселях і не стискаються разом із ним, тож вміст
+ * просто обрізало б. */
+:root{--pe-thumb:0.3}
+.print-stage{width:min(100% - 24px,1400px);margin:0 auto;padding:18px 0 60px;display:grid;gap:18px}
+/* Сітка мініатюр живе на #sheets, а не на .print-stage: усі аркуші лежать
+   усередині нього, тож сітка на батькові ставила б у ряд не аркуші, а
+   повідомлення, список без сертифіката й цей контейнер. */
+#sheets{display:grid;grid-template-columns:repeat(auto-fill,minmax(calc(794px * var(--pe-thumb)),1fr));
+  gap:22px 18px;align-items:start;justify-items:start}
+.sheet-thumb{width:calc(794px * var(--pe-thumb));height:calc(1123px * var(--pe-thumb));overflow:hidden}
+/* Аркуш має верстатися у своєму повному розмірі, а не по ширині рамки:
+   інакше width:min(794px,100%) робить його завширшки з мініатюру, і
+   стиснення накладається вдруге. */
+.sheet-thumb .certificate{width:794px!important;max-width:none!important;flex:none;
+  transform:scale(var(--pe-thumb));transform-origin:top left}
+/* Клік по самому аркушу теж вмикає й вимикає галочку — цілитись у маленький
+   квадратик не потрібно. */
+.sheet-wrap{cursor:pointer}
+.sheet-wrap:hover .sheet-thumb .certificate{box-shadow:0 10px 30px rgba(76,58,132,.26)}
 .print-controls{flex-wrap:wrap}
 .print-count{align-self:center;color:#6a5f85;font-size:13px}
 .print-missing{width:100%;border:1px solid #e3d8f2;border-radius:16px;background:#fff;padding:16px 18px;color:#5b5273;font-size:14px}
 .print-missing strong{display:block;margin-bottom:6px;color:#2b2451}
 .print-missing ul{margin:8px 0 0;padding-left:18px}
 .print-missing li{margin:3px 0}
-.sheet-wrap{display:grid;gap:10px;justify-items:center;width:100%}
-.sheet-label{width:min(794px,100%);display:flex;justify-content:space-between;gap:12px;align-items:center;color:#6a5f85;font-size:13px}
+/* Золотий колір у certificate.css живе на body.gold — одна сторінка, один
+ * сертифікат. Тут аркушів багато і вони різних типів, тож ті самі змінні
+ * задаються на самому аркуші: кожен фарбується окремо. Значення взяті з
+ * certificate.css рядок у рядок, щоб надрукований золотий не відрізнявся
+ * від того, який бачить студентка. */
+.certificate.gold-sheet{--accent:#b77a08;--accent-soft:#fff6df;background:linear-gradient(180deg,#fff 0%,#fffefb 100%)}
+.sheet-wrap{display:grid;gap:8px;justify-items:center;width:auto}
+/* Сталa висота підпису, щоб довгий тип («про проходження курсу») не
+   переносився у другий рядок і не зсував свою мініатюру нижче за сусідні. */
+.sheet-label{width:calc(794px * var(--pe-thumb));min-height:40px;align-content:start;display:grid;gap:2px;color:#6a5f85;font-size:11px;text-align:left}
 .sheet-pick{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-weight:700;color:#2b2451}
-.sheet-pick input{width:18px;height:18px;accent-color:#7c4fea;cursor:pointer}
+.sheet-pick input{width:17px;height:17px;flex:none;accent-color:#7c4fea;cursor:pointer}
 /* Знятий аркуш лишається видимим, але явно відсунутим: так одразу видно,
    що саме не піде на друк, і галочку легко повернути. */
 .sheet-wrap.excluded .certificate{opacity:.4;filter:grayscale(.6)}
 .sheet-wrap.excluded .sheet-pick{color:#8d85a3;font-weight:500}
-.sheet-label strong{color:#2b2451;font-size:15px}
+.sheet-label strong{color:#2b2451;font-size:13px}
 .hidden{display:none!important}
 
+/* Під час збірки PDF аркуш на мить виймається з мініатюри у справжній
+   розмір за межі екрана: html2canvas малює елемент разом із його
+   transform, і зі стисненого аркуша вийшов би стиснений PDF. */
+.sheet-wrap.capturing .sheet-thumb{width:auto;height:auto;overflow:visible;position:fixed;left:-20000px;top:0}
+.sheet-wrap.capturing .sheet-thumb .certificate{transform:none}
+
 @media print{
+  /* Папір — завжди повний A4: мініатюри існують лише на екрані. */
+  .sheet-thumb{width:auto!important;height:auto!important;overflow:visible!important}
+  .sheet-thumb .certificate{width:min(794px,100%)!important;transform:none!important}
   /* certificate.css фіксує висоту сторінки під один аркуш; тут аркушів
      багато, тож висота має бути вільною, інакше друкується лише перший. */
   html,body{height:auto!important;width:auto!important}
   .print-controls,.print-missing,.sheet-label,#printMessage{display:none!important}
   .print-stage{display:block!important;width:auto!important;margin:0!important;padding:0!important}
+  /* Сітка мініатюр — тільки для екрана. На папері розрив сторінки на
+     елементі grid браузер ігнорує, і кілька сертифікатів злипались в одну
+     сторінку; звичайний блоковий потік розриви поважає. */
+  #sheets{display:block!important}
   .sheet-wrap{display:block!important;gap:0!important;page-break-after:always;break-after:page}
   .sheet-wrap:last-child{page-break-after:auto;break-after:auto}
   /* Знято галочку — аркуш не друкується і не займає сторінки. */
