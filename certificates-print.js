@@ -44,11 +44,22 @@ if(!page.ok){fail('Не вдалося завантажити шаблон се�
 const tpl=new DOMParser().parseFromString(await page.text(),'text/html').querySelector('.certificate');
 if(!tpl){fail('У шаблоні сертифіката не знайдено аркуша.');return}
 
-const [{data:certs,error:certErr},{data:people}]=await Promise.all([
-  client.from('issued_certificates').select('*').order('issued_at'),
-  client.from('profiles').select('user_id,full_name,email,role')
-]);
-if(certErr){fail('Не вдалося завантажити сертифікати: '+errText(certErr));return}
+/* Через функцію, а не прямим читанням таблиці: ролі authenticated ніколи
+   не видавали дозволу на issued_certificates, і запит із браузера падав із
+   «permission denied». Решта сайту так само ходить сюди через функції. */
+const {data:payload,error:certErr}=await client.rpc('pe_admin_certificates');
+if(certErr){
+  /* Доки патч не запущено, функції в базі немає. Загальне «запустіть
+     SQL-патч» не каже який — а файл тут рівно один. */
+  const raw=[certErr.message,certErr.code,certErr.details,certErr.hint].filter(Boolean).join(' ');
+  fail(/PGRST202|42883|could not find the function|does not exist/i.test(raw)
+    ? 'Список сертифікатів ще не підключено до бази. Запустіть у Supabase → SQL Editor файл supabase-certificates-print-patch.sql, потім оновіть цю сторінку.'
+    : 'Не вдалося завантажити сертифікати: '+errText(certErr));
+  return;
+}
+const bundle=Array.isArray(payload)?payload[0]:payload;
+const certs=bundle?.certificates||[];
+const without=bundle?.without_certificate||[];
 if(!certs||!certs.length){
   msg.textContent='Виданих сертифікатів ще немає. Сертифікат створюється тоді, коли студентка вперше відкриває його у своєму кабінеті.';
   msg.className='certificate-message';
@@ -135,10 +146,7 @@ certs.forEach(cert=>{
   });
 });
 
-/* Хто сертифіката ще не має. Студентка могла все скласти, але жодного разу
-   не відкрити кабінет — тоді запису немає і друкувати нема чого. */
-const withCert=new Set(certs.map(c=>c.user_id));
-const without=(people||[]).filter(p=>p.role!=='admin'&&!withCert.has(p.user_id));
+/* Хто сертифіката ще не має — список рахує сама функція в базі. */
 if(without.length){
   missingBox.classList.remove('hidden');
   missingBox.innerHTML='<strong>Без сертифіката: '+without.length+'</strong>'
