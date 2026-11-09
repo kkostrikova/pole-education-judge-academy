@@ -153,10 +153,21 @@ certs.forEach(cert=>{
       +' · '+(lang==='en'?'англійською':'українською');
     label.append(pick,meta);
     const sheet=buildSheet(cert,lang);
-    wrap.append(label,sheet);
+    const thumb=document.createElement('div');
+    thumb.className='sheet-thumb';
+    thumb.appendChild(sheet);
+    wrap.append(label,thumb);
     sheets.appendChild(wrap);
-    const entry={cert,lang,sheet,wrap,box};
+    const entry={cert,lang,sheet,wrap,thumb,box};
     box.onchange=()=>{wrap.classList.toggle('excluded',!box.checked);refresh()};
+    /* Клік будь-де по картці — те саме, що клік по галочці. Сам <label>
+       уже перемикає її, тож повторно його не чіпаємо. */
+    wrap.onclick=e=>{
+      if(e.target.closest('.sheet-pick'))return;
+      box.checked=!box.checked;
+      wrap.classList.toggle('excluded',!box.checked);
+      refresh();
+    };
     built.push(entry);
   });
 });
@@ -199,12 +210,15 @@ pdfAllBtn.onclick=async()=>{
   selectAllBtn.disabled=true;selectNoneBtn.disabled=true;
   let done=0;
   for(let i=0;i<list.length;i++){
-    const {cert,lang,sheet}=list[i];
+    const {cert,lang,sheet,wrap}=list[i];
     countEl.textContent='Готую PDF '+(i+1)+' з '+list.length+'…';
+    /* Мініатюра існує лише для ока: у файл має піти аркуш у повному розмірі. */
+    wrap.classList.add('capturing');
     try{
       await window.PE_savePdf(sheet,safeName(cert.holder_name)+'-'+cert.certificate_no+(lang==='en'?'-en':'')+'.pdf');
       done++;
     }catch(err){console.warn('[PE] PDF не зібрався',cert.certificate_no,err)}
+    finally{wrap.classList.remove('capturing')}
     /* Браузер не встигає зберегти десяток файлів поспіль без паузи. */
     await new Promise(r=>setTimeout(r,650));
   }
