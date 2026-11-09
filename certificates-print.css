@@ -1,0 +1,29 @@
+/* Сторінка друку всіх сертифікатів
+ * ================================
+ * Аркуш малюється тією самою розміткою і тим самим certificate.css, що й
+ * особистий сертифікат студента, — сторінка лише складає їх один за одним.
+ * Контейнер навмисно НЕ називається .certificate-stage: у certificate.css
+ * той клас у друку має height:297mm, і друга та наступні сторінки були б
+ * обрізані.
+ */
+.print-stage{width:min(100% - 24px,860px);margin:0 auto;padding:18px 0 60px;display:grid;gap:26px;justify-items:center}
+.print-controls{flex-wrap:wrap}
+.print-count{align-self:center;color:#6a5f85;font-size:13px}
+.print-missing{width:100%;border:1px solid #e3d8f2;border-radius:16px;background:#fff;padding:16px 18px;color:#5b5273;font-size:14px}
+.print-missing strong{display:block;margin-bottom:6px;color:#2b2451}
+.print-missing ul{margin:8px 0 0;padding-left:18px}
+.print-missing li{margin:3px 0}
+.sheet-wrap{display:grid;gap:10px;justify-items:center;width:100%}
+.sheet-label{width:min(794px,100%);display:flex;justify-content:space-between;gap:12px;align-items:baseline;color:#6a5f85;font-size:13px}
+.sheet-label strong{color:#2b2451;font-size:15px}
+.hidden{display:none!important}
+
+@media print{
+  /* certificate.css фіксує висоту сторінки під один аркуш; тут аркушів
+     багато, тож висота має бути вільною, інакше друкується лише перший. */
+  html,body{height:auto!important;width:auto!important}
+  .print-controls,.print-missing,.sheet-label,#printMessage{display:none!important}
+  .print-stage{display:block!important;width:auto!important;margin:0!important;padding:0!important}
+  .sheet-wrap{display:block!important;gap:0!important;page-break-after:always;break-after:page}
+  .sheet-wrap:last-child{page-break-after:auto;break-after:auto}
+}
