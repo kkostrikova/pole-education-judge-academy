@@ -1,6 +1,6 @@
 import { supabase } from '../data/client.js';
 import { makeApi } from '../data/api.js';
-import { requireSession, signOut, ensureSessionForSync } from './session.js';
+import { requireSession, signOut, ensureSessionForSync, ensureName } from './session.js';
 import { h, mount, fmt, toast, retryCard } from './dom.js';
 import { uaError } from './errors.js';
 import { getProtocol, protocolKeyFor, PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS } from '../protocols/index.js';
@@ -99,6 +99,7 @@ async function reload({ force = false } = {}) {
   st.names = new Map(people.map(p => [p.email, p.full_name]));
   if (st.view === 'board') showBoard();
   if (st.view === 'ranking') showRanking();
+  if (st.view === 'judges') showJudges();
   if (st.view === 'perf' && st.perf) {
     if (!force && editorHasFocus()) { deferRenderUntilBlur(); return true; }
     clearDeferred();
@@ -128,6 +129,7 @@ function header(active) {
     h('h1', {}, st.cat.name),
     h('div', { class: 'tabs' },
       h('button', { 'aria-selected': String(active === 'board'), onclick: () => { st.view = 'board'; showBoard(); } }, 'Виступи'),
+      h('button', { 'aria-selected': String(active === 'judges'), onclick: () => { st.view = 'judges'; showJudges(); } }, 'Судді'),
       h('button', { 'aria-selected': String(active === 'ranking'), onclick: () => { st.view = 'ranking'; showRanking(); } }, 'Рейтинг'),
       h('a', { class: 'button', href: `print.html?category=${st.cat.id}`, target: '_blank' }, 'Друк / PDF')),
   ];
@@ -248,12 +250,41 @@ function showPerf(perf, { keepScroll = false } = {}) {
   if (keepScroll) window.scrollTo(0, y);
 }
 
+// Who sits where: the Head Judge changes it during the event, no organizer needed.
+function showJudges() {
+  const order = PANELS_BY_KIND[st.cat.kind];
+  const datalist = h('datalist', { id: 'people-list' }, [...st.names.keys()].map(e => h('option', { value: e }, st.names.get(e))));
+  const row = (seat) => {
+    const who = st.names.get(seat.email);
+    const locked = seat.panel === 'head' && !st.isAdmin;
+    const email = h('input', { type: 'email', required: true, list: 'people-list', placeholder: 'пошта судді', value: seat.email });
+    const name = h('input', { placeholder: 'Імʼя та прізвище (для нової людини)', autocomplete: 'off' });
+    const form = h('form', { class: 'stack card', hidden: true, onsubmit: async (e) => {
+      e.preventDefault();
+      if (!confirm('Поставити ' + email.value.trim() + ' на місце «' + PANEL_LABELS[seat.panel] + ' №' + seat.seat_no + '»?')) return;
+      try { await api.assignSeat(seat.id, email.value, name.value); await reload({ force: true }); showJudges(); }
+      catch (err) { toast(uaError(err)); }
+    } }, h('label', {}, 'Пошта', email), h('label', {}, 'Імʼя', name), h('button', { class: 'primary' }, 'Зберегти'));
+    return h('div', { class: 'proto-row' },
+      h('div', { class: 'counter' },
+        h('strong', {}, SHORT[seat.panel] + seat.seat_no + ' · ' + (who || 'без імені')), h('span', { class: 'muted' }, seat.email),
+        locked ? null : h('button', { class: 'link', onclick: () => { form.hidden = !form.hidden; } }, 'Змінити суддю')),
+      form);
+  };
+  mount(app, header('judges'), datalist,
+    h('p', { class: 'muted' }, 'Нову людину можна поставити на місце просто за поштою. Якщо вона ще не заходила, вона увійде кодом і впише своє імʼя.'),
+    order.map(panel => st.seats.some(s => s.panel === panel)
+      ? h('section', { class: 'card' }, h('h3', {}, PANEL_LABELS[panel]), st.seats.filter(s => s.panel === panel).map(row))
+      : null));
+}
+
 function showRanking() {
   mount(app, header('ranking'), rankingTable(st.cat.kind, st.perfs, st.results));
 }
 
 (async () => {
   st.email = await requireSession(supabase);
+  await ensureName(api, st.email, app);
   queue = makeQueue(st.email);
   document.getElementById('signout').onclick = () => signOut(supabase, queue);
   window.addEventListener('online', () => { queue.flush(); reload(); });
@@ -263,6 +294,7 @@ function showRanking() {
   const start = async () => {
     try {
       const [person, seats] = await Promise.all([api.person(st.email), api.mySeats(st.email)]);
+      st.isAdmin = Boolean(person?.is_admin);
       st.categories = person?.is_admin
         ? await api.allCategories()
         : seats.filter(s => s.panel === 'head').map(s => s.categories);
