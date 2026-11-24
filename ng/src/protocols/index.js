@@ -24,8 +24,8 @@ export const PANELS_BY_KIND = {
 export const PANEL_LABELS = {
   technical: 'Технічна складність',
   mandatory: 'Обовʼязкові елементи',
-  artistry: 'Артистизм',
-  deductions: 'Збавки',
+  artistry: 'Артистизм і хореографія',
+  deductions: 'Штрафи',
   art: 'Арт',
   head: 'Head Judge',
 };
