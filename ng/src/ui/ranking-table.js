@@ -14,6 +14,7 @@ export function rankingTable(kind, performances, results) {
     h('thead', {}, h('tr', {},
       h('th', {}, 'Місце'), h('th', {}, '№'), h('th', {}, 'Учасниця / склад'), h('th', {}, 'Клуб'),
       sport ? [h('th', { class: 'num' }, 'Техніка'), h('th', { class: 'num' }, 'Обовʼязкові'), h('th', { class: 'num' }, 'Артистизм'), h('th', { class: 'num' }, 'Збавки'), h('th', { class: 'num' }, 'Штрафи HJ')] : null,
+      sport ? null : h('th', { class: 'num' }, 'Штрафи HJ'),
       h('th', { class: 'num' }, 'Підсумок'))),
     h('tbody', {}, rows.map(r => h('tr', {},
       h('td', {}, r.place ?? (r.status === 'dsq' ? 'DSQ' : '—')),
@@ -21,6 +22,6 @@ export function rankingTable(kind, performances, results) {
       h('td', {}, r.perf.athlete_name, r.perf.members ? h('div', { class: 'muted' }, r.perf.members) : null),
       h('td', {}, r.perf.club),
       sport ? [n(r.result?.technical), n(r.result?.mandatory), n(r.result?.artistry), n(r.result?.deductions), n(r.result?.head_penalties)]
-        .map(v => h('td', { class: 'num' }, fmt(v))) : null,
+        .map(v => h('td', { class: 'num' }, fmt(v))) : h('td', { class: 'num' }, fmt(n(r.result?.head_penalties))),
       h('td', { class: 'num' }, h('strong', {}, r.status === 'dsq' ? '—' : fmt(r.final))))))));
 }

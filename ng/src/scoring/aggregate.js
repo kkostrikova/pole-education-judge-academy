@@ -18,9 +18,11 @@ export function performanceResult(kind, sheets) {
 
   if (kind === 'art') {
     const art = sheets.filter(s => s.panel === 'art');
+    const headPenalties = mean(totals('head')) ?? 0;
+    const artMean = mean(art.map(s => s.total));
     return {
-      technical: null, mandatory: null, artistry: null, deductions: null, headPenalties: null,
-      final: round6(mean(art.map(s => s.total))),
+      technical: null, mandatory: null, artistry: null, deductions: null, headPenalties: round6(headPenalties),
+      final: round6(artMean == null ? null : artMean + headPenalties),
       tiebreak: round6(mean(art.map(s => Number(s.data?.values?.difficulty ?? 0)))),
       dsq,
     };

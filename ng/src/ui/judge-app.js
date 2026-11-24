@@ -3,7 +3,7 @@ import { makeApi } from '../data/api.js';
 import { requireSession, signOut, ensureSessionForSync } from './session.js';
 import { h, mount, toast, retryCard } from './dom.js';
 import { uaError } from './errors.js';
-import { getProtocol, protocolKeyFor, PANEL_LABELS, APPARATUS_LABELS, seatHasProtocol } from '../protocols/index.js';
+import { getProtocol, protocolKeyFor, PANEL_LABELS, APPARATUS_LABELS } from '../protocols/index.js';
 import { createSaveQueue } from '../sync/offline-queue.js';
 import { sheetEditor, sheetKey } from './sheet-editor.js';
 
@@ -153,7 +153,7 @@ async function refresh() {
   api.subscribe(['score_sheets', 'performances'], () => refresh());
   const start = async () => {
     try {
-      st.seats = (await api.mySeats(email)).filter(s => s.panel !== 'head' && seatHasProtocol(s.categories.kind, s.panel));
+      st.seats = (await api.mySeats(email)).filter(s => s.panel !== 'head');
     } catch { mount(app, retryCard(start)); return; }
     if (st.seats.length === 1) await openSeat(st.seats[0]);
     else showSeats();

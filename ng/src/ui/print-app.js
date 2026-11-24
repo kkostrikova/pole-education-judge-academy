@@ -3,7 +3,7 @@ import { makeApi } from '../data/api.js';
 import { requireSession } from './session.js';
 import { h, mount, fmt } from './dom.js';
 import { uaError } from './errors.js';
-import { getProtocol, protocolKeyFor, PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS, ENTRY_TYPE_LABELS, seatHasProtocol } from '../protocols/index.js';
+import { getProtocol, protocolKeyFor, PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS, ENTRY_TYPE_LABELS } from '../protocols/index.js';
 import { sheetTable } from './sheet-table.js';
 import { rankingTable } from './ranking-table.js';
 
@@ -32,7 +32,6 @@ const app = document.getElementById('app');
     const ctx = { apparatus: cat.apparatus };
     const order = PANELS_BY_KIND[cat.kind];
     const seatsSorted = seats
-      .filter(s => seatHasProtocol(cat.kind, s.panel))
       .sort((a, b) => order.indexOf(a.panel) - order.indexOf(b.panel) || a.seat_no - b.seat_no);
     const when = (ts) => (ts ? new Date(ts).toLocaleString('uk-UA') : '—');
 

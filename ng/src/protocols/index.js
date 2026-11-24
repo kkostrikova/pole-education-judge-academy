@@ -60,6 +60,3 @@ export function protocolItems(protocol, apparatus) {
     .filter(i => !apparatus || !i.only || i.only.includes(apparatus));
 }
 
-export function seatHasProtocol(kind, panel) {
-  return !(kind === 'art' && panel === 'head');
-}
