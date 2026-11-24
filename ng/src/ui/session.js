@@ -23,6 +23,25 @@ export async function ensureName(api, email, root) {
   });
 }
 
+// "Імʼя: …" in the header: a judge fixes or changes their own name (e.g. when another person takes the phone).
+export async function showNameEditor(api, email, doc = document) {
+  const anchor = doc.getElementById('signout');
+  let person;
+  try { person = await api.person(email); } catch { return; }
+  if (!anchor || !person) return;
+  const btn = h('button', { class: 'link', type: 'button', id: 'myname' });
+  const label = () => { btn.textContent = (person.full_name || 'Вкажіть імʼя') + ' ✎'; };
+  label();
+  btn.addEventListener('click', async () => {
+    const answer = window.prompt('Імʼя та прізвище того, хто зараз судить:', person.full_name || '');
+    if (answer == null) return;
+    const name = answer.trim().replace(/\s+/g, ' ');
+    if (!/\S+\s+\S+/.test(name)) return toast('Напишіть імʼя та прізвище.');
+    try { person = await api.setMyName(name); label(); toast('Імʼя збережено'); } catch { toast('Не вдалося зберегти. Спробуйте ще раз.'); }
+  });
+  anchor.before(btn);
+}
+
 export async function requireSession(sb) {
   const { data } = await sb.auth.getSession();
   const email = data.session?.user?.email;
