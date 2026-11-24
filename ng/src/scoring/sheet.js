@@ -34,12 +34,6 @@ export function valueErrors(protocol, data, ctx = {}) {
     const e = itemError(item, v);
     if (e) errors.push(e);
   }
-  const allowed = new Set((ctx.mandatoryElements ?? []).map(e => e.id));
-  for (const [id, v] of Object.entries(data?.mandatory ?? {})) {
-    if (!protocol.mandatory) errors.push(`${id}: невідомий обов'язковий елемент`);
-    else if (!allowed.has(id)) continue; // element deleted after it was marked: ignored, like the server does
-    else if (typeof v !== 'boolean') errors.push(`${id}: має бути «зараховано» або «не зараховано»`);
-  }
   return errors;
 }
 
@@ -48,6 +42,7 @@ export function submitErrors(protocol, data, ctx = {}) {
   const values = data?.values ?? {};
   for (const item of protocolItems(protocol, ctx.apparatus)) {
     if (item.type === 'score' && values[item.key] === undefined) errors.push(`${item.label}: не виставлено бал`);
+    if (item.type === 'once' && item.choice && values[item.key] === undefined) errors.push(`${item.label}: оберіть «зараховано» або «не зараховано»`);
     if (item.requiresComment && Number(values[item.key] ?? 0) !== 0 && !(data?.comments?.[item.key] ?? '').trim()) {
       errors.push(`${item.label}: потрібен коментар`);
     }
@@ -72,16 +67,10 @@ export function sheetTotal(protocol, data, ctx = {}) {
       else if (v === 'dsq') dsq = true;
     }
   }
-  if (protocol.mandatory) {
-    const allowed = new Set((ctx.mandatoryElements ?? []).map(e => e.id));
-    total += Object.entries(data?.mandatory ?? {}).filter(([id, v]) => allowed.has(id) && v === true).length;
-  }
   return { total: round6(total) + 0, dsq };
 }
 
 export function protocolMax(protocol, ctx = {}) {
-  const scores = protocolItems(protocol, ctx.apparatus)
-    .filter(i => i.type === 'score')
-    .reduce((s, i) => s + i.max, 0);
-  return scores + (protocol.mandatory ? (ctx.mandatoryElements ?? []).length : 0);
+  return protocolItems(protocol, ctx.apparatus).reduce(
+    (s, i) => s + (i.type === 'score' ? i.max : i.type === 'once' && i.choice ? i.points : 0), 0);
 }

@@ -2,12 +2,14 @@ import { techPole, techHoop, techSilks } from './sport-technical.js';
 import { artistry } from './sport-artistry.js';
 import { deductions } from './sport-deductions.js';
 import { head } from './head.js';
+import { mandatory } from './mandatory.js';
 import { art } from './art.js';
 
 export const PROTOCOLS = {
   tech_pole: techPole,
   tech_hoop: techHoop,
   tech_silks: techSilks,
+  mandatory,
   artistry,
   deductions,
   head,
@@ -15,12 +17,13 @@ export const PROTOCOLS = {
 };
 
 export const PANELS_BY_KIND = {
-  sport: ['technical', 'artistry', 'deductions', 'head'],
+  sport: ['technical', 'mandatory', 'artistry', 'deductions', 'head'],
   art: ['art', 'head'],
 };
 
 export const PANEL_LABELS = {
   technical: 'Технічна складність',
+  mandatory: 'Обовʼязкові елементи',
   artistry: 'Артистизм',
   deductions: 'Збавки',
   art: 'Арт',
@@ -40,6 +43,7 @@ export function getProtocol(key) {
 export function protocolKeyFor(panel, apparatus) {
   switch (panel) {
     case 'technical': return `tech_${apparatus}`;
+    case 'mandatory':
     case 'artistry':
     case 'deductions':
     case 'head':

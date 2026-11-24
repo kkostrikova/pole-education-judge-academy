@@ -17,7 +17,7 @@ const STATUS = {
 };
 const isLocked = (s) => s === 'queued' || s === 'submitted' || s === 'confirmed' || s === 'dsq';
 
-const st = { seats: [], seat: null, perfs: [], elements: [], sheets: new Map(), view: 'seats', current: null, currentLocked: false };
+const st = { seats: [], seat: null, perfs: [], sheets: new Map(), view: 'seats', current: null, currentLocked: false };
 
 let queue = null; // created after sign-in: the storage key is per user
 
@@ -66,9 +66,8 @@ function showSeats() {
 
 async function loadSeat() {
   const c = st.seat.categories;
-  const [perfs, elements, sheets] = await Promise.all([api.performances(c.id), api.elements(c.id), api.sheetsForSeat(st.seat.id)]);
+  const [perfs, sheets] = await Promise.all([api.performances(c.id), api.sheetsForSeat(st.seat.id)]);
   st.perfs = perfs;
-  st.elements = elements;
   st.sheets = new Map(sheets.map(s => [s.performance_id, s]));
 }
 
@@ -118,7 +117,7 @@ function openPerf(perf) {
     h('p', { class: 'muted' }, [perf.members, perf.club, STATUS[s]].filter(Boolean).join(' · ')),
     s === 'reopened' ? h('p', { class: 'errors' }, 'Head Judge повернув протокол на виправлення.') : null,
     sheetEditor({
-      protocol, ctx: { apparatus: c.apparatus, mandatoryElements: st.elements }, perf, seatId: st.seat.id,
+      protocol, ctx: { apparatus: c.apparatus }, perf, seatId: st.seat.id,
       queue, data, locked: st.currentLocked, onSubmitted: goNext,
     }));
   window.scrollTo(0, 0);

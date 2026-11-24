@@ -15,9 +15,9 @@ const api = makeApi(supabase);
 const app = document.getElementById('app');
 const syncEl = document.getElementById('sync');
 
-const SHORT = { technical: 'Т', artistry: 'А', deductions: 'З', art: 'Арт', head: 'HJ' };
+const SHORT = { technical: 'Т', mandatory: 'О', artistry: 'А', deductions: 'З', art: 'Арт', head: 'HJ' };
 const st = {
-  email: null, categories: [], cat: null, perfs: [], seats: [], sheets: [], results: [], elements: [],
+  email: null, categories: [], cat: null, perfs: [], seats: [], sheets: [], results: [],
   names: new Map(), view: 'cats', perf: null, open: new Set(),
 };
 
@@ -43,7 +43,7 @@ const makeQueue = (email) => createSaveQueue({
 
 const needsSheet = (seat) => seatHasProtocol(st.cat.kind, seat.panel);
 const sheetOf = (perfId, seatId) => st.sheets.find(s => s.performance_id === perfId && s.seat_id === seatId);
-const ctx = () => ({ apparatus: st.cat.apparatus, mandatoryElements: st.elements });
+const ctx = () => ({ apparatus: st.cat.apparatus });
 const seatName = (seat) => st.names.get(seat.email) || seat.email;
 const mySeat = () => st.seats.find(s => s.panel === 'head' && s.email === st.email);
 
@@ -92,11 +92,11 @@ async function reload({ force = false } = {}) {
   let data;
   try {
     data = await Promise.all([
-      api.performances(id), api.seats(id), api.categorySheets(id), api.results(id), api.elements(id), api.people(),
+      api.performances(id), api.seats(id), api.categorySheets(id), api.results(id), api.people(),
     ]);
   } catch (e) { toast(uaError(e)); return false; }
-  const [perfs, seats, sheets, results, elements, people] = data;
-  Object.assign(st, { perfs, seats, sheets, results, elements });
+  const [perfs, seats, sheets, results, people] = data;
+  Object.assign(st, { perfs, seats, sheets, results });
   st.names = new Map(people.map(p => [p.email, p.full_name]));
   if (st.view === 'board') showBoard();
   if (st.view === 'ranking') showRanking();
@@ -193,7 +193,7 @@ function resultBlock(perf) {
     return h('section', { class: 'card' },
       h('h3', {}, perf.status === 'dsq' ? 'Результат: DSQ' : `Результат: ${fmt(Number(stored.final))}`),
       st.cat.kind === 'sport'
-        ? h('p', {}, `Техніка ${fmt(Number(stored.technical))} · Артистизм ${fmt(Number(stored.artistry))} · Збавки ${fmt(Number(stored.deductions))} · Штрафи HJ ${fmt(Number(stored.head_penalties))}`)
+        ? h('p', {}, `Техніка ${fmt(Number(stored.technical))} · Обовʼязкові ${fmt(Number(stored.mandatory))} · Артистизм ${fmt(Number(stored.artistry))} · Збавки ${fmt(Number(stored.deductions))} · Штрафи HJ ${fmt(Number(stored.head_penalties))}`)
         : null,
       h('button', { class: 'danger', onclick: () => unconfirm(perf) }, 'Зняти підтвердження'));
   }

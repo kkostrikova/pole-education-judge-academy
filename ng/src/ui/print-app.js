@@ -25,11 +25,11 @@ const app = document.getElementById('app');
         h('a', { class: 'button', href: 'index.html' }, 'На головну'));
       return;
     }
-    const [cat, perfs, seats, sheets, results, elements, people] = await Promise.all([
-      api.category(id), api.performances(id), api.seats(id), api.categorySheets(id), api.results(id), api.elements(id), api.people(),
+    const [cat, perfs, seats, sheets, results, people] = await Promise.all([
+      api.category(id), api.performances(id), api.seats(id), api.categorySheets(id), api.results(id), api.people(),
     ]);
     const names = new Map(people.map(p => [p.email, p.full_name || p.email]));
-    const ctx = { apparatus: cat.apparatus, mandatoryElements: elements };
+    const ctx = { apparatus: cat.apparatus };
     const order = PANELS_BY_KIND[cat.kind];
     const seatsSorted = seats
       .filter(s => seatHasProtocol(cat.kind, s.panel))

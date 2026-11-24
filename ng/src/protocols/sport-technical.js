@@ -11,7 +11,7 @@ const general = (entries, mastery) => [
 ];
 
 const tech = (key, title, dynamic, entries, mastery) => ({
-  key, title, hint: SCALE_HINT, mandatory: true,
+  key, title, hint: SCALE_HINT,
   sections: [
     { title: 'Динамічна складність', items: dynamic },
     { title: 'Загальні фізичні критерії', items: general(entries, mastery) },

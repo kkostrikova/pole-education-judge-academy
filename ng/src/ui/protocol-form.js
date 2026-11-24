@@ -10,17 +10,17 @@ export function steps(from, to, step) {
 const signed = (p) => (p > 0 ? `+${num(p)}` : num(p));
 const visible = (item, apparatus) => !item.only || !apparatus || item.only.includes(apparatus);
 
-export function renderProtocolForm(root, { protocol, apparatus, mandatoryElements = [], data, readOnly = false, onChange = () => {} }) {
+export function renderProtocolForm(root, { protocol, apparatus, data, readOnly = false, onChange = () => {} }) {
   const src = structuredClone(data ?? {});
-  const state = { comment: '', ...src, values: { ...src.values }, comments: { ...src.comments }, mandatory: { ...src.mandatory } };
-  const ctx = { apparatus, mandatoryElements };
+  const state = { comment: '', ...src, values: { ...src.values }, comments: { ...src.comments } };
+  const ctx = { apparatus };
 
   const emit = (rerender = true) => { onChange(structuredClone(state)); if (rerender) render(); };
   const setValue = (key, v) => { state.values[key] = v; emit(); };
 
   const chip = (label, attrs, onclick) => h('button', {
     type: 'button', class: `chip${attrs.on ? ' is-on' : ''}`, disabled: readOnly, 'aria-pressed': attrs.on ? 'true' : 'false',
-    'data-item': attrs.item, 'data-value': attrs.value, 'data-action': attrs.action, 'data-element': attrs.element, onclick,
+    'data-item': attrs.item, 'data-value': attrs.value, 'data-action': attrs.action, onclick,
   }, label);
 
   function control(item) {
@@ -41,6 +41,11 @@ export function renderProtocolForm(root, { protocol, apparatus, mandatoryElement
           h('span', { class: 'muted' }, `${signed(item.points)} × ${n} = ${fmt(item.points * n)}`));
       }
       case 'once':
+        if (item.choice) {
+          return h('div', { class: 'chips' },
+            chip('Зараховано', { on: v === true, item: item.key, value: 'true' }, () => setValue(item.key, true)),
+            chip('Не зараховано', { on: v === false, item: item.key, value: 'false' }, () => setValue(item.key, false)));
+        }
         return chip(v ? `Застосовано ${signed(item.points)}` : `Ні (${signed(item.points)})`,
           { on: v === true, item: item.key, action: 'toggle' }, () => setValue(item.key, !v));
       case 'dsq_or':
@@ -59,22 +64,6 @@ export function renderProtocolForm(root, { protocol, apparatus, mandatoryElement
       h('textarea', { rows: 2, disabled: readOnly, oninput: (e) => { state.comments[item.key] = e.target.value; emit(false); } },
         state.comments[item.key] ?? '')));
 
-  function mandatoryBlock() {
-    if (!protocol.mandatory || !mandatoryElements.length) return null;
-    return h('section', { class: 'proto-section' },
-      h('h3', {}, 'Обовʼязкові елементи · +1 за кожен зарахований'),
-      mandatoryElements.map(el => {
-        const v = state.mandatory[el.id];
-        const set = (val) => () => { state.mandatory[el.id] = val; emit(); };
-        return h('div', { class: 'proto-row' },
-          h('div', { class: 'proto-label' }, el.name,
-            el.criteria?.length ? h('ul', { class: 'criteria' }, el.criteria.map(c => h('li', {}, c))) : null),
-          h('div', { class: 'chips' },
-            chip('Зараховано', { on: v === true, element: el.id, value: 'true' }, set(true)),
-            chip('Не зараховано', { on: v === false, element: el.id, value: 'false' }, set(false))));
-      }));
-  }
-
   function totalText() {
     try { return fmt(sheetTotal(protocol, state, ctx).total); } catch { return '—'; }
   }
@@ -86,7 +75,6 @@ export function renderProtocolForm(root, { protocol, apparatus, mandatoryElement
         const items = sec.items.filter(i => visible(i, apparatus));
         return items.length ? h('section', { class: 'proto-section' }, h('h3', {}, sec.title), items.map(row)) : null;
       }),
-      mandatoryBlock(),
       h('label', { class: 'proto-comment' }, 'Загальний коментар',
         h('textarea', { rows: 3, disabled: readOnly, oninput: (e) => { state.comment = e.target.value; emit(false); } }, state.comment ?? '')),
       h('div', { class: 'total-bar' }, 'Разом: ', h('strong', { 'data-testid': 'total' }, totalText())));
