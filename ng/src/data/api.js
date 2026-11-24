@@ -37,6 +37,8 @@ export function makeApi(sb) {
     insertMany: (table, rows) => q(sb.from(table).insert(rows).select()),
     update: (table, id, patch, key = 'id') => q(sb.from(table).update(patch).eq(key, id).select().single()),
     remove: (table, id, key = 'id') => q(sb.from(table).delete().eq(key, id)),
+    setMyName: (name) => q(sb.rpc('set_my_name', { p_name: name })),
+    assignSeat: (seatId, email, name = '') => q(sb.rpc('assign_seat', { p_seat: seatId, p_email: email, p_name: name })),
     upsertPerson: (row) => q(sb.from('people').upsert(row).select().single()),
     subscribe(tables, onChange) {
       const channel = sb.channel(`ng-${Math.random().toString(36).slice(2)}`);
