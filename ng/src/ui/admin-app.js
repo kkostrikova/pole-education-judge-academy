@@ -11,7 +11,7 @@ const api = makeApi(supabase);
 const app = document.getElementById('app');
 document.getElementById('signout').onclick = () => signOut(supabase);
 
-const EXPECTED = { technical: 5, artistry: 5, deductions: 1, art: 5, head: 1 };
+const EXPECTED = { technical: 5, mandatory: 1, artistry: 5, deductions: 1, art: 5, head: 1 };
 const TSTATUS = { draft: 'Підготовка', live: 'Триває', finished: 'Завершено' };
 const st = { tournament: null, category: null, tab: 'performances' };
 
@@ -114,13 +114,13 @@ async function showTournament(t) {
 // category ------------------------------------------------------------------
 
 async function showCategory(c, requested) {
-  const tabs = [['performances', 'Учасниці'], ...(c.kind === 'sport' ? [['elements', 'Обовʼязкові елементи']] : []), ['seats', 'Судді'], ['results', 'Результати']];
+  const tabs = [['performances', 'Учасниці'], ['seats', 'Судді'], ['results', 'Результати']];
   // Same category keeps its tab; a different category starts on Учасниці; an unavailable tab falls back.
   const wanted = requested ?? (st.category?.id === c.id ? st.tab : 'performances');
   const tab = tabs.some(([key]) => key === wanted) ? wanted : 'performances';
   st.category = c;
   st.tab = tab;
-  const body = await ({ performances: perfTab, elements: elementsTab, seats: seatsTab, results: resultsTab }[tab] ?? perfTab)(c);
+  const body = await ({ performances: perfTab, seats: seatsTab, results: resultsTab }[tab] ?? perfTab)(c);
   mount(app, nav(),
     h('h1', {}, c.name),
     h('p', { class: 'muted' }, [KIND_LABELS[c.kind], APPARATUS_LABELS[c.apparatus], c.age_group, c.level, ENTRY_TYPE_LABELS[c.entry_type]].filter(Boolean).join(' · ')),
@@ -172,33 +172,6 @@ async function perfTab(c) {
           if (!confirm(`Видалити №${p.start_no} ${p.athlete_name} разом з протоколами?`)) return;
           await api.remove('performances', p.id); await showCategory(c);
         }) }, 'Видалити'))))))),
-  ];
-}
-
-async function elementsTab(c) {
-  const els = await api.elements(c.id);
-  return [
-    h('form', {
-      class: 'grid-form card',
-      onsubmit: (e) => run(async () => {
-        e.preventDefault();
-        const d = formData(e.target);
-        const criteria = d.criteria.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-        await api.insert('mandatory_elements', { category_id: c.id, name: d.name.trim(), criteria, sort_order: els.length + 1 });
-        await showCategory(c);
-      }),
-    },
-    field('Елемент', h('input', { name: 'name', required: true, placeholder: 'Фенікс' })),
-    field('Мінімальні критерії (кожен з нового рядка)', h('textarea', { name: 'criteria', rows: 4 })),
-    h('button', { class: 'primary' }, 'Додати елемент')),
-    h('p', { class: 'muted' }, 'Кожен зарахований технічним суддею елемент дає +1 до його технічної оцінки.'),
-    h('ul', { class: 'perf-list' }, els.map(el => h('li', { class: 'card' },
-      h('strong', {}, el.name),
-      el.criteria.length ? h('ul', { class: 'criteria' }, el.criteria.map(x => h('li', {}, x))) : null,
-      h('button', { class: 'danger', onclick: () => run(async () => {
-        if (!confirm(`Видалити елемент «${el.name}»?`)) return;
-        await api.remove('mandatory_elements', el.id); await showCategory(c);
-      }) }, 'Видалити')))),
   ];
 }
 

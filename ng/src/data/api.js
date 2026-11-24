@@ -21,7 +21,6 @@ export function makeApi(sb) {
     allCategories: () => q(sb.from('categories').select('*, tournaments(*)').order('sort_order').order('name')),
     categories: (tournamentId) => q(sb.from('categories').select('*').eq('tournament_id', tournamentId).order('sort_order').order('name')),
     category: (id) => q(sb.from('categories').select('*, tournaments(*)').eq('id', id).single()),
-    elements: (categoryId) => q(sb.from('mandatory_elements').select('*').eq('category_id', categoryId).order('sort_order').order('name')),
     performances: (categoryId) => q(sb.from('performances').select('*').eq('category_id', categoryId).order('start_no')),
     seats: (categoryId) => q(sb.from('panel_seats').select('*').eq('category_id', categoryId).order('panel').order('seat_no')),
     sheetsForSeat: (seatId) => q(sb.from('score_sheets').select('*').eq('seat_id', seatId)),

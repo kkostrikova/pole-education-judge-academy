@@ -3,7 +3,7 @@ import { makeApi } from '../data/api.js';
 import { requireSession, signOut, ensureSessionForSync } from './session.js';
 import { h, mount, toast, retryCard } from './dom.js';
 import { uaError } from './errors.js';
-import { getProtocol, protocolKeyFor, PANEL_LABELS, APPARATUS_LABELS, seatHasProtocol } from '../protocols/index.js';
+import { getProtocol, protocolKeyFor, PANEL_LABELS, APPARATUS_LABELS } from '../protocols/index.js';
 import { createSaveQueue } from '../sync/offline-queue.js';
 import { sheetEditor, sheetKey } from './sheet-editor.js';
 
@@ -17,7 +17,7 @@ const STATUS = {
 };
 const isLocked = (s) => s === 'queued' || s === 'submitted' || s === 'confirmed' || s === 'dsq';
 
-const st = { seats: [], seat: null, perfs: [], elements: [], sheets: new Map(), view: 'seats', current: null, currentLocked: false };
+const st = { seats: [], seat: null, perfs: [], sheets: new Map(), view: 'seats', current: null, currentLocked: false };
 
 let queue = null; // created after sign-in: the storage key is per user
 
@@ -66,9 +66,8 @@ function showSeats() {
 
 async function loadSeat() {
   const c = st.seat.categories;
-  const [perfs, elements, sheets] = await Promise.all([api.performances(c.id), api.elements(c.id), api.sheetsForSeat(st.seat.id)]);
+  const [perfs, sheets] = await Promise.all([api.performances(c.id), api.sheetsForSeat(st.seat.id)]);
   st.perfs = perfs;
-  st.elements = elements;
   st.sheets = new Map(sheets.map(s => [s.performance_id, s]));
 }
 
@@ -118,7 +117,7 @@ function openPerf(perf) {
     h('p', { class: 'muted' }, [perf.members, perf.club, STATUS[s]].filter(Boolean).join(' · ')),
     s === 'reopened' ? h('p', { class: 'errors' }, 'Head Judge повернув протокол на виправлення.') : null,
     sheetEditor({
-      protocol, ctx: { apparatus: c.apparatus, mandatoryElements: st.elements }, perf, seatId: st.seat.id,
+      protocol, ctx: { apparatus: c.apparatus }, perf, seatId: st.seat.id,
       queue, data, locked: st.currentLocked, onSubmitted: goNext,
     }));
   window.scrollTo(0, 0);
@@ -154,7 +153,7 @@ async function refresh() {
   api.subscribe(['score_sheets', 'performances'], () => refresh());
   const start = async () => {
     try {
-      st.seats = (await api.mySeats(email)).filter(s => s.panel !== 'head' && seatHasProtocol(s.categories.kind, s.panel));
+      st.seats = (await api.mySeats(email)).filter(s => s.panel !== 'head');
     } catch { mount(app, retryCard(start)); return; }
     if (st.seats.length === 1) await openSeat(st.seats[0]);
     else showSeats();

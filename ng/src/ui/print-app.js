@@ -3,7 +3,7 @@ import { makeApi } from '../data/api.js';
 import { requireSession } from './session.js';
 import { h, mount, fmt } from './dom.js';
 import { uaError } from './errors.js';
-import { getProtocol, protocolKeyFor, PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS, ENTRY_TYPE_LABELS, seatHasProtocol } from '../protocols/index.js';
+import { getProtocol, protocolKeyFor, PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS, ENTRY_TYPE_LABELS } from '../protocols/index.js';
 import { sheetTable } from './sheet-table.js';
 import { rankingTable } from './ranking-table.js';
 
@@ -25,14 +25,13 @@ const app = document.getElementById('app');
         h('a', { class: 'button', href: 'index.html' }, 'На головну'));
       return;
     }
-    const [cat, perfs, seats, sheets, results, elements, people] = await Promise.all([
-      api.category(id), api.performances(id), api.seats(id), api.categorySheets(id), api.results(id), api.elements(id), api.people(),
+    const [cat, perfs, seats, sheets, results, people] = await Promise.all([
+      api.category(id), api.performances(id), api.seats(id), api.categorySheets(id), api.results(id), api.people(),
     ]);
     const names = new Map(people.map(p => [p.email, p.full_name || p.email]));
-    const ctx = { apparatus: cat.apparatus, mandatoryElements: elements };
+    const ctx = { apparatus: cat.apparatus };
     const order = PANELS_BY_KIND[cat.kind];
     const seatsSorted = seats
-      .filter(s => seatHasProtocol(cat.kind, s.panel))
       .sort((a, b) => order.indexOf(a.panel) - order.indexOf(b.panel) || a.seat_no - b.seat_no);
     const when = (ts) => (ts ? new Date(ts).toLocaleString('uk-UA') : '—');
 

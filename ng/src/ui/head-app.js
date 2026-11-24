@@ -3,7 +3,7 @@ import { makeApi } from '../data/api.js';
 import { requireSession, signOut, ensureSessionForSync } from './session.js';
 import { h, mount, fmt, toast, retryCard } from './dom.js';
 import { uaError } from './errors.js';
-import { getProtocol, protocolKeyFor, PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS, seatHasProtocol } from '../protocols/index.js';
+import { getProtocol, protocolKeyFor, PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS } from '../protocols/index.js';
 import { protocolMax } from '../scoring/sheet.js';
 import { performanceResult, isDivergent } from '../scoring/aggregate.js';
 import { createSaveQueue } from '../sync/offline-queue.js';
@@ -15,9 +15,9 @@ const api = makeApi(supabase);
 const app = document.getElementById('app');
 const syncEl = document.getElementById('sync');
 
-const SHORT = { technical: 'Т', artistry: 'А', deductions: 'З', art: 'Арт', head: 'HJ' };
+const SHORT = { technical: 'Т', mandatory: 'О', artistry: 'А', deductions: 'З', art: 'Арт', head: 'HJ' };
 const st = {
-  email: null, categories: [], cat: null, perfs: [], seats: [], sheets: [], results: [], elements: [],
+  email: null, categories: [], cat: null, perfs: [], seats: [], sheets: [], results: [],
   names: new Map(), view: 'cats', perf: null, open: new Set(),
 };
 
@@ -41,14 +41,13 @@ const makeQueue = (email) => createSaveQueue({
   },
 });
 
-const needsSheet = (seat) => seatHasProtocol(st.cat.kind, seat.panel);
 const sheetOf = (perfId, seatId) => st.sheets.find(s => s.performance_id === perfId && s.seat_id === seatId);
-const ctx = () => ({ apparatus: st.cat.apparatus, mandatoryElements: st.elements });
+const ctx = () => ({ apparatus: st.cat.apparatus });
 const seatName = (seat) => st.names.get(seat.email) || seat.email;
 const mySeat = () => st.seats.find(s => s.panel === 'head' && s.email === st.email);
 
 function allSubmitted(perf) {
-  return st.seats.filter(needsSheet).every(seat => sheetOf(perf.id, seat.id)?.status === 'submitted');
+  return st.seats.every(seat => sheetOf(perf.id, seat.id)?.status === 'submitted');
 }
 
 let reloadTimer = null;
@@ -92,11 +91,11 @@ async function reload({ force = false } = {}) {
   let data;
   try {
     data = await Promise.all([
-      api.performances(id), api.seats(id), api.categorySheets(id), api.results(id), api.elements(id), api.people(),
+      api.performances(id), api.seats(id), api.categorySheets(id), api.results(id), api.people(),
     ]);
   } catch (e) { toast(uaError(e)); return false; }
-  const [perfs, seats, sheets, results, elements, people] = data;
-  Object.assign(st, { perfs, seats, sheets, results, elements });
+  const [perfs, seats, sheets, results, people] = data;
+  Object.assign(st, { perfs, seats, sheets, results });
   st.names = new Map(people.map(p => [p.email, p.full_name]));
   if (st.view === 'board') showBoard();
   if (st.view === 'ranking') showRanking();
@@ -135,7 +134,6 @@ function header(active) {
 }
 
 function cellFor(perf, seat) {
-  if (!needsSheet(seat)) return h('td', { class: 'cell-empty' }, '—');
   const s = sheetOf(perf.id, seat.id);
   const kind = s?.status ?? 'empty';
   const label = { submitted: '✓', draft: '✎', reopened: '↺', empty: '·' }[kind];
@@ -143,7 +141,7 @@ function cellFor(perf, seat) {
 }
 
 function showBoard() {
-  const seats = st.seats.filter(needsSheet);
+  const seats = st.seats;
   mount(app, header('board'),
     h('div', { class: 'table-wrap' }, h('table', {},
       h('thead', {}, h('tr', {}, h('th', {}, '№'), h('th', {}, 'Учасниця'),
@@ -158,7 +156,7 @@ function showBoard() {
 }
 
 function panelBlock(perf, panel) {
-  const seats = st.seats.filter(s => s.panel === panel && needsSheet(s));
+  const seats = st.seats.filter(s => s.panel === panel);
   if (!seats.length) return null;
   const protocol = getProtocol(protocolKeyFor(panel, st.cat.apparatus));
   const submitted = seats.map(s => sheetOf(perf.id, s.id)).filter(s => s?.status === 'submitted');
@@ -193,8 +191,8 @@ function resultBlock(perf) {
     return h('section', { class: 'card' },
       h('h3', {}, perf.status === 'dsq' ? 'Результат: DSQ' : `Результат: ${fmt(Number(stored.final))}`),
       st.cat.kind === 'sport'
-        ? h('p', {}, `Техніка ${fmt(Number(stored.technical))} · Артистизм ${fmt(Number(stored.artistry))} · Збавки ${fmt(Number(stored.deductions))} · Штрафи HJ ${fmt(Number(stored.head_penalties))}`)
-        : null,
+        ? h('p', {}, `Техніка ${fmt(Number(stored.technical))} · Обовʼязкові ${fmt(Number(stored.mandatory))} · Артистизм ${fmt(Number(stored.artistry))} · Збавки ${fmt(Number(stored.deductions))} · Штрафи HJ ${fmt(Number(stored.head_penalties))}`)
+        : h('p', {}, `Штрафи HJ ${fmt(Number(stored.head_penalties))}`),
       h('button', { class: 'danger', onclick: () => unconfirm(perf) }, 'Зняти підтвердження'));
   }
   const sheets = st.sheets
@@ -230,7 +228,7 @@ function showPerf(perf, { keepScroll = false } = {}) {
     h('h2', {}, `№${perf.start_no} · ${perf.athlete_name}`),
     h('p', { class: 'muted' }, [perf.members, perf.club, perf.coach].filter(Boolean).join(' · ')),
     PANELS_BY_KIND[st.cat.kind].map(panel => panelBlock(perf, panel)),
-    st.cat.kind === 'sport' && me
+    me
       ? h('section', { class: 'card' }, h('h3', {}, 'Мої штрафи (Head Judge)'),
         sheetEditor({
           protocol: getProtocol('head'), ctx: ctx(), perf, seatId: me.id, queue,

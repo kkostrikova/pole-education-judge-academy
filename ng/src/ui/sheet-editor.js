@@ -10,10 +10,8 @@ export function sheetEditor({ protocol, ctx, perf, seatId, queue, data, locked, 
   let timer;
   const formEl = h('div', { class: 'protocol' });
   renderProtocolForm(formEl, {
-    protocol, apparatus: ctx.apparatus, mandatoryElements: ctx.mandatoryElements ?? [], data: latest, readOnly: locked,
+    protocol, apparatus: ctx.apparatus, data: latest, readOnly: locked,
     onChange: (d) => {
-      const known = new Set((ctx.mandatoryElements ?? []).map(e => e.id));
-      d.mandatory = Object.fromEntries(Object.entries(d.mandatory ?? {}).filter(([k]) => known.has(k))); // drop stale ids
       latest = d;
       queue.stage({ id, performanceId: perf.id, seatId, data: d, submit: false });
       clearTimeout(timer);
