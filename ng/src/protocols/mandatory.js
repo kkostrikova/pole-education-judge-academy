@@ -1,6 +1,6 @@
 import { once } from './items.js';
 
-// Separate protocol, judged by its own panel: five fixed rows, +1 for every counted element.
+// Separate protocol, judged by its own panel (one judge, sport categories only): five fixed rows, +1 for every counted element.
 export const MANDATORY_ELEMENT_COUNT = 5;
 
 export const mandatory = {

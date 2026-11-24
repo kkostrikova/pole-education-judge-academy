@@ -27,7 +27,7 @@ export function performanceResult(kind, sheets) {
   }
 
   const technical = trimmedMean(totals('technical')) ?? 0;
-  const mandatory = trimmedMean(totals('mandatory')) ?? 0;
+  const mandatory = mean(totals('mandatory')) ?? 0; // one judge
   const artistry = trimmedMean(totals('artistry')) ?? 0;
   const deductions = mean(totals('deductions')) ?? 0;
   const headPenalties = mean(totals('head')) ?? 0;

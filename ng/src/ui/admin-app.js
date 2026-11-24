@@ -11,7 +11,7 @@ const api = makeApi(supabase);
 const app = document.getElementById('app');
 document.getElementById('signout').onclick = () => signOut(supabase);
 
-const EXPECTED = { technical: 5, mandatory: 5, artistry: 5, deductions: 1, art: 5, head: 1 };
+const EXPECTED = { technical: 5, mandatory: 1, artistry: 5, deductions: 1, art: 5, head: 1 };
 const TSTATUS = { draft: 'Підготовка', live: 'Триває', finished: 'Завершено' };
 const st = { tournament: null, category: null, tab: 'performances' };
 
