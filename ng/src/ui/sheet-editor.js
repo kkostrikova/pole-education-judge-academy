@@ -4,7 +4,7 @@ import { submitErrors } from '../scoring/sheet.js';
 
 export const sheetKey = (perfId, seatId) => `${perfId}:${seatId}`;
 
-export function sheetEditor({ protocol, ctx, perf, seatId, queue, data, locked, onSubmitted = () => {} }) {
+export function sheetEditor({ protocol, ctx, perf, seatId, queue, data, locked, lockedNote = null, onSubmitted = () => {} }) {
   const id = sheetKey(perf.id, seatId);
   let latest = data ?? {};
   let timer;
@@ -36,6 +36,6 @@ export function sheetEditor({ protocol, ctx, perf, seatId, queue, data, locked, 
 
   return h('div', { class: 'sheet-editor' }, formEl, errorsEl,
     locked
-      ? h('p', { class: 'locked-note' }, 'Протокол надіслано. Змінити його може лише Head Judge.')
+      ? h('div', { class: 'locked-note' }, lockedNote ?? 'Протокол надіслано. Змінити його може лише Head Judge.')
       : h('button', { type: 'button', class: 'primary big', onclick: submit }, 'Надіслати протокол'));
 }

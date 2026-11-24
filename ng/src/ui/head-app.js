@@ -216,6 +216,15 @@ async function unconfirm(perf) {
   try { await api.unconfirm(perf.id); await reload(); } catch (e) { toast(uaError(e)); }
 }
 
+// The head's own sheet: nobody else reopens it, so the way back is right here.
+function headLockedNote(perf, headSheet, me, queued) {
+  if (perf.status !== 'pending') return 'Результат підтверджено. Щоб змінити свій протокол, спочатку зніміть підтвердження внизу.';
+  if (queued?.submit && headSheet?.status !== 'submitted') return 'Протокол надсилається…';
+  return h('div', {},
+    h('p', {}, 'Ваш протокол надіслано.'),
+    h('button', { class: 'danger', onclick: () => reopen(headSheet, me) }, 'Змінити мій протокол'));
+}
+
 function showPerf(perf, { keepScroll = false } = {}) {
   st.view = 'perf';
   st.perf = perf;
@@ -232,7 +241,7 @@ function showPerf(perf, { keepScroll = false } = {}) {
       ? h('section', { class: 'card' }, h('h3', {}, 'Мої штрафи (Head Judge)'),
         sheetEditor({
           protocol: getProtocol('head'), ctx: ctx(), perf, seatId: me.id, queue,
-          data: queued?.data ?? headSheet?.data ?? {}, locked: headLocked, onSubmitted: () => reload({ force: true }),
+          data: queued?.data ?? headSheet?.data ?? {}, locked: headLocked, lockedNote: headLockedNote(perf, headSheet, me, queued), onSubmitted: () => reload({ force: true }),
         }))
       : null,
     resultBlock(perf));
