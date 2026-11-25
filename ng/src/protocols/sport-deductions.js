@@ -1,4 +1,4 @@
-import { count, once } from './items.js';
+import { count, once, range } from './items.js';
 
 export const deductions = {
   key: 'deductions',
@@ -24,7 +24,7 @@ export const deductions = {
       items: [
         once('repeat', 'Надмірна повторюваність рухів', -2),
         once('apparatus_use', 'Нерівноцінне використання обох пілонів та незаповнення висоти', -2, ['pole']),
-        once('costume', 'Проблеми з костюмом та зачіскою', -5),
+        range('costume', 'Проблеми з костюмом та зачіскою', -5), // judged in steps of 0,5 down to -5
       ],
     },
   ],
