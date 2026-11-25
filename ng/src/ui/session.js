@@ -42,6 +42,19 @@ export async function showNameEditor(api, email, doc = document) {
   anchor.before(btn);
 }
 
+// A person who sits on several protocols (e.g. head judge + deductions) switches pages from the header.
+export async function showPageSwitch(api, email, page, doc = document) {
+  const anchor = doc.getElementById('signout');
+  let person; let seats;
+  try { [person, seats] = await Promise.all([api.person(email), api.mySeats(email)]); } catch { return; }
+  const target = page === 'judge'
+    ? (person?.is_admin || seats.some(s => s.panel === 'head')) && ['head.html', 'Head Judge']
+    : seats.some(s => s.panel !== 'head') && ['judge.html', 'Мої протоколи'];
+  if (!anchor || !target) return;
+  const link = h('a', { class: 'switch', href: target[0] }, target[1] + ' →');
+  (doc.getElementById('myname') ?? anchor).before(link);
+}
+
 export async function requireSession(sb) {
   const { data } = await sb.auth.getSession();
   const email = data.session?.user?.email;

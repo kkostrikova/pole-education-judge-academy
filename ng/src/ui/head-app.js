@@ -1,6 +1,6 @@
 import { supabase } from '../data/client.js';
 import { makeApi } from '../data/api.js';
-import { requireSession, signOut, ensureSessionForSync, ensureName, showNameEditor } from './session.js';
+import { requireSession, signOut, ensureSessionForSync, ensureName, showNameEditor, showPageSwitch } from './session.js';
 import { h, mount, fmt, toast, retryCard } from './dom.js';
 import { uaError } from './errors.js';
 import { getProtocol, protocolKeyFor, PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS } from '../protocols/index.js';
@@ -256,6 +256,7 @@ function showRanking() {
   st.email = await requireSession(supabase);
   await ensureName(api, st.email, app);
   showNameEditor(api, st.email);
+  showPageSwitch(api, st.email, 'head');
   queue = makeQueue(st.email);
   document.getElementById('signout').onclick = () => signOut(supabase, queue);
   window.addEventListener('online', () => { queue.flush(); reload(); });

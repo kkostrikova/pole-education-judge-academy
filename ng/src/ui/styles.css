@@ -14,6 +14,8 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 Inte
 #sync { font-size: 13px; margin-left: auto; opacity: .9; } /* status text, deliberately not shaped like a button */
 #sync:empty { display: none; }
 #sync[data-kind="offline"] { background: var(--warn); padding: 4px 8px; border-radius: 4px; opacity: 1; }
+.topbar { flex-wrap: wrap; }
+.topbar .switch { color: inherit; border: 1px solid rgba(255,255,255,.5); border-radius: 999px; padding: 6px 12px; text-decoration: none; }
 .page { max-width: 1100px; margin: 0 auto; padding: 16px; }
 .page.narrow { max-width: 480px; padding-top: 12vh; }
 h1 { font-size: 24px; margin: 8px 0 4px; } h2 { font-size: 20px; margin: 16px 0 8px; } h3 { font-size: 16px; margin: 16px 0 8px; }
