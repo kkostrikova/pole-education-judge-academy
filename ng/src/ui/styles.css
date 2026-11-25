@@ -58,7 +58,8 @@ button:disabled { opacity: .55; cursor: default; }
 .chip { min-width: 52px; min-height: 44px; padding: 6px 10px; border-radius: 10px; font-variant-numeric: tabular-nums; }
 .chip.is-on { background: var(--pink); color: #fff; border-color: var(--pink); font-weight: 700; }
 .counter { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.counter .count { font-size: 22px; font-weight: 800; min-width: 2ch; text-align: center; }
+.counter .count { font-size: 22px; font-weight: 800; font-family: inherit; width: 5.5ch; min-width: 76px; min-height: var(--tap); text-align: center;
+  border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); padding: 4px; }
 .criteria { margin: 4px 0 0; padding-left: 18px; font-weight: 400; color: var(--muted); }
 .proto-note summary { color: var(--muted); cursor: pointer; font-size: 14px; }
 .proto-comment { margin: 12px 0; }
