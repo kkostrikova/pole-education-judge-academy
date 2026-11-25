@@ -617,6 +617,6 @@ body.lav-home #final .final-copy,
 body.lav-home #practical .final-copy{ border-left: 1px solid #b9a4ea; padding-left: 14px; }
 body.lav-home #practical .final-copy{ border-left-color: #7c5ad6; }
 
-/* entry to the New Generation judging platform (/ng/), on its own row under the two main actions */
+/* entry to the judging platform (/ng/), on its own row under the two main actions */
 body.lav-home .lav-actions--ng{ margin-top: 10px; }
 body.lav-home .lav-actions--ng .lav-btn{ flex: 0 1 auto; }
