@@ -1,5 +1,5 @@
 import { h, mount, fmt, num } from './dom.js';
-import { sheetTotal } from '../scoring/sheet.js';
+import { sheetTotal, MAX_COUNT } from '../scoring/sheet.js';
 
 export function steps(from, to, step) {
   const n = Math.round(Math.abs(to - from) / step);
@@ -34,11 +34,31 @@ export function renderProtocolForm(root, { protocol, apparatus, data, readOnly =
       }
       case 'count': {
         const n = v ?? 0;
+        const calc = (k) => `${signed(item.points)} × ${k} = ${fmt(item.points * k + 0)}`;
+        const note = h('span', { class: 'muted' }, calc(n));
+        const clamp = (k) => Math.min(MAX_COUNT, Math.max(0, k));
+        // Typed by hand: update in place, because re-rendering would drop the keyboard focus.
+        const input = h('input', {
+          class: 'count', type: 'text', inputmode: 'numeric', pattern: '[0-9]*', maxlength: String(MAX_COUNT).length,
+          'aria-label': `${item.label}: кількість`, 'data-item': item.key, 'data-action': 'type', disabled: readOnly, value: String(n),
+          onfocus: (e) => e.target.select(),
+          oninput: (e) => {
+            const k = clamp(Number(e.target.value.replace(/\D/g, '') || 0));
+            if (e.target.value !== '') e.target.value = String(k);
+            state.values[item.key] = k;
+            note.textContent = calc(k);
+            root.querySelector('[data-testid="total"]').textContent = totalText();
+            emit(false);
+          },
+          onblur: (e) => { if (e.target.value === '') e.target.value = String(state.values[item.key] ?? 0); },
+        });
+        // The buttons read the current value, which may have been typed since this row was drawn.
+        const step = (d) => () => setValue(item.key, clamp((state.values[item.key] ?? 0) + d));
         return h('div', { class: 'counter' },
-          chip('−', { item: item.key, action: 'dec' }, () => setValue(item.key, Math.max(0, n - 1))),
-          h('output', { class: 'count' }, String(n)),
-          chip('+', { item: item.key, action: 'inc' }, () => setValue(item.key, Math.min(50, n + 1))),
-          h('span', { class: 'muted' }, `${signed(item.points)} × ${n} = ${fmt(item.points * n)}`));
+          chip('−', { item: item.key, action: 'dec' }, step(-1)),
+          input,
+          chip('+', { item: item.key, action: 'inc' }, step(1)),
+          note);
       }
       case 'once':
         if (item.choice) {

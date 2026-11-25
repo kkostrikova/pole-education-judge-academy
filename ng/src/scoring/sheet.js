@@ -1,7 +1,7 @@
 import { protocolItems } from '../protocols/index.js';
 
 const EPS = 1e-9;
-const MAX_COUNT = 50;
+export const MAX_COUNT = 9999;
 const onStep = (v, step) => Math.abs(v / step - Math.round(v / step)) < 1e-6;
 const round6 = (x) => Math.round(x * 1e6) / 1e6;
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
