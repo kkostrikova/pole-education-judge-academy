@@ -30,7 +30,9 @@ export const PANEL_LABELS = {
   head: 'Head Judge',
 };
 
-export const APPARATUS_LABELS = { pole: 'Pole sport', hoop: 'Aerial hoop', silks: 'Aerial silk' };
+export const APPARATUS_LABELS = { pole: 'Pole sport', hoop: 'Aerial hoop', silks: 'Aerial silk', hammock: 'Aerial hammock', original: 'Original genre' };
+// Directions judged only with the art protocol: there are no technical protocols for them.
+export const ART_ONLY_APPARATUS = ['hammock', 'original'];
 export const ENTRY_TYPE_LABELS = { solo: 'Соло', duet: 'Дует', group: 'Група' };
 export const KIND_LABELS = { sport: 'Спорт', art: 'Арт' };
 
