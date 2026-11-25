@@ -38,6 +38,10 @@ export function makeApi(sb) {
     update: (table, id, patch, key = 'id') => q(sb.from(table).update(patch).eq(key, id).select().single()),
     remove: (table, id, key = 'id') => q(sb.from(table).delete().eq(key, id)),
     setMyName: (name) => q(sb.rpc('set_my_name', { p_name: name })),
+    touch: () => q(sb.rpc('touch_activity')),
+    sendFeedback: (message, page) => q(sb.rpc('send_feedback', { p_message: message, p_page: page })),
+    activity: () => q(sb.rpc('activity_report')),
+    feedback: () => q(sb.from('feedback').select('*').order('at', { ascending: false }).limit(200)),
     upsertPerson: (row) => q(sb.from('people').upsert(row).select().single()),
     subscribe(tables, onChange) {
       const channel = sb.channel(`ng-${Math.random().toString(36).slice(2)}`);

@@ -45,6 +45,7 @@ function codeForm(email) {
 }
 
 async function roles(email) {
+  api.touch().catch(() => {});
   let person; let seats;
   try { [person, seats] = await Promise.all([api.person(email), api.mySeats(email)]); } catch { mount(app, h('h1', {}, 'New Generation'), retryCard(() => roles(email))); return; }
   const links = [];

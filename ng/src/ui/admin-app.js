@@ -6,6 +6,8 @@ import { uaError } from './errors.js';
 import { PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS, ART_ONLY_APPARATUS, ENTRY_TYPE_LABELS, KIND_LABELS } from '../protocols/index.js';
 import { parseRoster } from '../admin/csv.js';
 import { rankingTable } from './ranking-table.js';
+import { activityView } from './activity-view.js';
+import { startPresence } from './feedback.js';
 
 const api = makeApi(supabase);
 const app = document.getElementById('app');
@@ -24,6 +26,7 @@ function nav() {
   return h('div', { class: 'tabs' },
     h('button', { onclick: () => run(showTournaments) }, 'Турніри'),
     h('button', { onclick: () => run(showPeople) }, 'Судді та організатори'),
+    h('button', { onclick: () => run(showActivity) }, 'Активність і відгуки'),
     st.tournament ? h('button', { onclick: () => run(() => showTournament(st.tournament)) }, `← ${st.tournament.name}`) : null);
 }
 
@@ -55,6 +58,15 @@ async function showPeople() {
           if (!confirm(`Видалити ${p.email}? Призначення в панелях цієї людини теж треба буде прибрати.`)) return;
           await api.remove('people', p.email, 'email'); await showPeople();
         }) }, 'Видалити'))))))));
+}
+
+// activity ------------------------------------------------------------------
+
+async function showActivity() {
+  const [rows, feedback] = await Promise.all([api.activity(), api.feedback()]);
+  mount(app, nav(), h('h1', {}, 'Активність і відгуки'),
+    h('button', { onclick: () => run(showActivity) }, 'Оновити'),
+    activityView(rows, feedback));
 }
 
 // tournaments ---------------------------------------------------------------
@@ -227,6 +239,7 @@ async function resultsTab(c) {
 (async () => {
   const email = await requireSession(supabase);
   showNav(api, email, 'admin');
+  startPresence(api);
   await run(async () => {
     const me = await api.person(email);
     if (!me?.is_admin) {

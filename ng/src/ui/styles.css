@@ -39,6 +39,11 @@ button:disabled { opacity: .55; cursor: default; }
 .tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 
 /* performance list */
+.feedback-wrap { padding-top: 0; padding-bottom: 0; }
+.feedback-wrap form:not([hidden]) { margin-top: 12px; }
+.feedback[hidden] { display: none; }
+.feedback-text { white-space: pre-wrap; margin: 6px 0 0; }
+.online { color: var(--ok); }
 .tabs.groups button { font-weight: 700; min-height: var(--tap); padding: 8px 18px; }
 .perf-list { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 8px; }
 .perf { width: 100%; justify-content: flex-start; text-align: left; }

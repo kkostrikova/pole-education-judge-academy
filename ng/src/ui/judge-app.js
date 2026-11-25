@@ -2,6 +2,7 @@ import { supabase } from '../data/client.js';
 import { makeApi } from '../data/api.js';
 import { requireSession, signOut, ensureSessionForSync, ensureName, showNameEditor, showNav } from './session.js';
 import { groupedList } from './grouped-list.js';
+import { showFeedbackButton, startPresence } from './feedback.js';
 import { h, mount, toast, retryCard } from './dom.js';
 import { uaError } from './errors.js';
 import { getProtocol, protocolKeyFor, PANEL_LABELS, APPARATUS_LABELS } from '../protocols/index.js';
@@ -142,6 +143,8 @@ async function refresh() {
   await ensureName(api, email, app);
   showNameEditor(api, email);
   showNav(api, email, 'judge');
+  showFeedbackButton(api, 'judge');
+  startPresence(api);
   queue = createSaveQueue({
     storage: localStorage,
     key: `ng-save-queue:${email}`,
