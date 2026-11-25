@@ -3,7 +3,7 @@ import { makeApi } from '../data/api.js';
 import { requireSession, signOut, showNav } from './session.js';
 import { h, mount, toast } from './dom.js';
 import { uaError } from './errors.js';
-import { PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS, ENTRY_TYPE_LABELS, KIND_LABELS } from '../protocols/index.js';
+import { PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS, ART_ONLY_APPARATUS, ENTRY_TYPE_LABELS, KIND_LABELS } from '../protocols/index.js';
 import { parseRoster } from '../admin/csv.js';
 import { rankingTable } from './ranking-table.js';
 
@@ -92,6 +92,10 @@ async function showTournament(t) {
       onsubmit: (e) => run(async () => {
         e.preventDefault();
         const d = formData(e.target);
+        if (d.kind !== 'art' && ART_ONLY_APPARATUS.includes(d.apparatus)) {
+          toast(`${APPARATUS_LABELS[d.apparatus]} судиться лише в типі «${KIND_LABELS.art}».`);
+          return;
+        }
         await api.insert('categories', {
           tournament_id: t.id, name: d.name.trim(), kind: d.kind, apparatus: d.apparatus,
           age_group: d.age_group.trim(), level: d.level.trim(), entry_type: d.entry_type, sort_order: Number(d.sort_order || 0),
