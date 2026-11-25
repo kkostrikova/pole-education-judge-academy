@@ -15,7 +15,9 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 Inte
 #sync:empty { display: none; }
 #sync[data-kind="offline"] { background: var(--warn); padding: 4px 8px; border-radius: 4px; opacity: 1; }
 .topbar { flex-wrap: wrap; }
-.topbar .switch { color: inherit; border: 1px solid rgba(255,255,255,.5); border-radius: 999px; padding: 6px 12px; text-decoration: none; }
+.mainnav { flex-basis: 100%; display: flex; gap: 6px; overflow-x: auto; }
+.mainnav a { color: inherit; text-decoration: none; white-space: nowrap; padding: 9px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.5); font-size: 15px; }
+.mainnav a[aria-current="page"] { background: var(--card); border-color: var(--card); color: var(--accent); font-weight: 700; }
 .page { max-width: 1100px; margin: 0 auto; padding: 16px; }
 .page.narrow { max-width: 480px; padding-top: 12vh; }
 h1 { font-size: 24px; margin: 8px 0 4px; } h2 { font-size: 20px; margin: 16px 0 8px; } h3 { font-size: 16px; margin: 16px 0 8px; }

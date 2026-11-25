@@ -1,6 +1,6 @@
 import { supabase } from '../data/client.js';
 import { makeApi } from '../data/api.js';
-import { requireSession, signOut, ensureSessionForSync, ensureName, showNameEditor, showPageSwitch } from './session.js';
+import { requireSession, signOut, ensureSessionForSync, ensureName, showNameEditor, showNav } from './session.js';
 import { h, mount, toast, retryCard } from './dom.js';
 import { uaError } from './errors.js';
 import { getProtocol, protocolKeyFor, PANEL_LABELS, APPARATUS_LABELS } from '../protocols/index.js';
@@ -137,7 +137,7 @@ async function refresh() {
   const email = await requireSession(supabase);
   await ensureName(api, email, app);
   showNameEditor(api, email);
-  showPageSwitch(api, email, 'judge');
+  showNav(api, email, 'judge');
   queue = createSaveQueue({
     storage: localStorage,
     key: `ng-save-queue:${email}`,
