@@ -1,6 +1,7 @@
 import { supabase } from '../data/client.js';
 import { makeApi } from '../data/api.js';
 import { requireSession, signOut, ensureSessionForSync, ensureName, showNameEditor, showNav } from './session.js';
+import { groupedList } from './grouped-list.js';
 import { h, mount, toast, retryCard } from './dom.js';
 import { uaError } from './errors.js';
 import { getProtocol, protocolKeyFor, PANEL_LABELS, APPARATUS_LABELS } from '../protocols/index.js';
@@ -54,13 +55,16 @@ function showSeats() {
   mount(app,
     h('h1', {}, 'Мої категорії'),
     st.seats.length
-      ? h('ul', { class: 'perf-list' }, st.seats.map(seat => {
-        const c = seat.categories;
-        return h('li', {}, h('button', { class: 'perf', onclick: () => openSeat(seat) },
-          h('span', { class: 'name' }, c.name,
-            h('small', {}, `${c.tournaments.name} · ${APPARATUS_LABELS[c.apparatus]} · ${[c.age_group, c.level].filter(Boolean).join(' · ')}`)),
-          h('span', { class: 'badge' }, `${PANEL_LABELS[seat.panel]} · №${seat.seat_no}`)));
-      }))
+      ? groupedList({
+        items: st.seats, categoryOf: seat => seat.categories, storageKey: 'ng-judge-group',
+        renderItem: seat => {
+          const c = seat.categories;
+          return h('button', { class: 'perf', onclick: () => openSeat(seat) },
+            h('span', { class: 'name' }, c.name,
+              h('small', {}, `${c.tournaments.name} · ${APPARATUS_LABELS[c.apparatus]} · ${[c.age_group, c.level].filter(Boolean).join(' · ')}`)),
+            h('span', { class: 'badge' }, `${PANEL_LABELS[seat.panel]} · №${seat.seat_no}`));
+        },
+      })
       : h('p', { class: 'card' }, 'Вас ще не призначено в жодну панель. Зверніться до організатора.'));
 }
 

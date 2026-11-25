@@ -39,6 +39,7 @@ button:disabled { opacity: .55; cursor: default; }
 .tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 
 /* performance list */
+.tabs.groups button { font-weight: 700; min-height: var(--tap); padding: 8px 18px; }
 .perf-list { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 8px; }
 .perf { width: 100%; justify-content: flex-start; text-align: left; }
 .perf .no { font-weight: 800; min-width: 2.5em; }
