@@ -42,17 +42,22 @@ export async function showNameEditor(api, email, doc = document) {
   anchor.before(btn);
 }
 
-// A person who sits on several protocols (e.g. head judge + deductions) switches pages from the header.
-export async function showPageSwitch(api, email, page, doc = document) {
-  const anchor = doc.getElementById('signout');
+// Main menu under the title bar: every section this person can open, the current one highlighted.
+// A judge with only one section gets no menu.
+export async function showNav(api, email, current, doc = document) {
+  const bar = doc.querySelector('.topbar');
   let person; let seats;
   try { [person, seats] = await Promise.all([api.person(email), api.mySeats(email)]); } catch { return; }
-  const target = page === 'judge'
-    ? (person?.is_admin || seats.some(s => s.panel === 'head')) && ['head.html', 'Head Judge']
-    : seats.some(s => s.panel !== 'head') && ['judge.html', 'Мої протоколи'];
-  if (!anchor || !target) return;
-  const link = h('a', { class: 'switch', href: target[0] }, target[1] + ' →');
-  (doc.getElementById('myname') ?? anchor).before(link);
+  const admin = Boolean(person?.is_admin);
+  const sections = [
+    seats.some(s => s.panel !== 'head') && ['judge', 'judge.html', 'Мої протоколи'],
+    (admin || seats.some(s => s.panel === 'head')) && ['head', 'head.html', 'Head Judge'],
+    admin && ['admin', 'admin.html', 'Організатор'],
+  ].filter(Boolean);
+  if (!bar || sections.length < 2) return;
+  bar.append(h('nav', { class: 'mainnav', 'aria-label': 'Розділи' },
+    [['home', 'index.html', 'Головна'], ...sections].map(([key, href, label]) =>
+      h('a', { href, 'aria-current': key === current ? 'page' : null }, label))));
 }
 
 export async function requireSession(sb) {

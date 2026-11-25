@@ -1,6 +1,6 @@
 import { supabase } from '../data/client.js';
 import { makeApi } from '../data/api.js';
-import { requireSession, signOut } from './session.js';
+import { requireSession, signOut, showNav } from './session.js';
 import { h, mount, toast } from './dom.js';
 import { uaError } from './errors.js';
 import { PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS, ENTRY_TYPE_LABELS, KIND_LABELS } from '../protocols/index.js';
@@ -222,6 +222,7 @@ async function resultsTab(c) {
 
 (async () => {
   const email = await requireSession(supabase);
+  showNav(api, email, 'admin');
   await run(async () => {
     const me = await api.person(email);
     if (!me?.is_admin) {
