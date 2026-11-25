@@ -1,6 +1,7 @@
 import { supabase } from '../data/client.js';
 import { makeApi } from '../data/api.js';
 import { requireSession, signOut, ensureSessionForSync, ensureName, showNameEditor, showNav } from './session.js';
+import { groupedList } from './grouped-list.js';
 import { h, mount, fmt, toast, retryCard } from './dom.js';
 import { uaError } from './errors.js';
 import { getProtocol, protocolKeyFor, PANELS_BY_KIND, PANEL_LABELS, APPARATUS_LABELS } from '../protocols/index.js';
@@ -111,8 +112,11 @@ function showCategories() {
   st.view = 'cats';
   mount(app, h('h1', {}, 'Категорії'),
     st.categories.length
-      ? h('ul', { class: 'perf-list' }, st.categories.map(c => h('li', {}, h('button', { class: 'perf', onclick: () => openCategory(c) },
-        h('span', { class: 'name' }, c.name, h('small', {}, `${c.tournaments?.name ?? ''} · ${APPARATUS_LABELS[c.apparatus]}`))))))
+      ? groupedList({
+        items: st.categories, categoryOf: c => c, storageKey: 'ng-head-group',
+        renderItem: c => h('button', { class: 'perf', onclick: () => openCategory(c) },
+          h('span', { class: 'name' }, c.name, h('small', {}, `${c.tournaments?.name ?? ''} · ${APPARATUS_LABELS[c.apparatus]}`))),
+      })
       : h('p', { class: 'card' }, 'Ви не призначені Head Judge жодної категорії.'));
 }
 
